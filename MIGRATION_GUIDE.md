@@ -69,17 +69,11 @@ When you upgrade, the migration system automatically:
 
 ### Example: Automatic Migration
 
+If you previously had compound-engineering plugin configured:
+
 ```javascript
-// BEFORE (old configuration)
+// BEFORE (old configuration with separate plugin)
 {
-  importClaudePlugin: {
-    plugins: [
-      {
-        path: "compound-engineering-plugin",
-        pluginName: "compound-engineering"
-      }
-    ]
-  },
   agents: {
     "kieran-rails-reviewer": {
       model: "anthropic/claude-opus-4-5"
@@ -87,14 +81,14 @@ When you upgrade, the migration system automatically:
   }
 }
 
-// AFTER (automatically migrated)
+// AFTER (automatically migrated to integrated)
 {
   agents: {
     "compound:kieran-rails-reviewer": {
       model: "anthropic/claude-opus-4-5"
     }
   }
-  // Note: importClaudePlugin section removed (now integrated)
+  // Note: Now using native oh-my-opencode components
 }
 ```
 
@@ -142,14 +136,14 @@ If you prefer to manually update your configuration:
 All commands follow the pattern: `compound:{category}:{action}`
 
 ```javascript
-// Old import structure
-import { myCommandTemplate } from "compound-engineering-plugin"
+// All commands are now native to oh-my-opencode
+// No imports needed - use directly with compound: prefix
 
-// New native commands (no import needed)
+// Available commands:
 // compound:workflow:plan
 // compound:code:refactor
 // compound:git:smart-commit
-// ... etc
+// ... and 21 more
 ```
 
 ### Skill Name Changes

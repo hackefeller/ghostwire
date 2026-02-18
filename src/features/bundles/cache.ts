@@ -89,7 +89,7 @@ export class ComponentCache<T> {
   ): void {
     // Check if component is critical (P0)
     const isCritical = this.config.criticalComponents.has(name)
-    const priority = isCritical ? 0 : (options.priority ?? 99)
+    const priority: Priority = isCritical ? 0 : (options.priority ?? 3)
 
     const memoryEstimate = (options.memoryEstimateMB ?? 1) * 1024 * 1024
 

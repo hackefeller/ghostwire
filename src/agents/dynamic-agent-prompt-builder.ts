@@ -1,4 +1,4 @@
-import type { AgentPromptMetadata, BuiltinAgentName } from "./types"
+import type { AgentCost, AgentPromptMetadata, BuiltinAgentName } from "./types"
 
 export interface AvailableAgent {
   name: BuiltinAgentName
@@ -93,7 +93,14 @@ export function buildToolSelectionTable(
     rows.push(`| ${toolsDisplay} | FREE | Not Complex, Scope Clear, No Implicit Assumptions |`)
   }
 
-  const costOrder = { FREE: 0, CHEAP: 1, EXPENSIVE: 2 }
+  const costOrder: Record<AgentCost, number> = {
+    FREE: 0,
+    CHEAP: 1,
+    LOW: 1,
+    MODERATE: 2,
+    EXPENSIVE: 3,
+    HIGH: 3,
+  }
   const sortedAgents = [...agents]
     .filter((a) => a.metadata.category !== "utility")
     .sort((a, b) => costOrder[a.metadata.cost] - costOrder[b.metadata.cost])

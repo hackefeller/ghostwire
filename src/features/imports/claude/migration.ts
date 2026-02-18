@@ -149,6 +149,7 @@ function transformConfig(oldConfig: Record<string, unknown>): Record<string, unk
   // Move claude_import to imports.claude
   if (oldConfig.claude_import) {
     newConfig.imports = {
+      ...(newConfig.imports as Record<string, unknown>),
       claude: {
         enabled: true,
         ...(oldConfig.claude_import as Record<string, unknown>),
@@ -158,9 +159,10 @@ function transformConfig(oldConfig: Record<string, unknown>): Record<string, unk
   }
 
   // Add unified plugin settings if not present
-  if (!newConfig.imports?.claude) {
+  const importsConfig = newConfig.imports as Record<string, unknown> | undefined
+  if (!importsConfig?.claude) {
     newConfig.imports = {
-      ...(newConfig.imports as Record<string, unknown>),
+      ...importsConfig,
       claude: {
         enabled: true,
         strict: false,

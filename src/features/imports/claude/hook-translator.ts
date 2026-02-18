@@ -5,7 +5,7 @@
  * Documents gaps where no equivalent exists.
  */
 
-import type { HookContext, HookResult } from "../../hooks/claude-code-hooks/types"
+export type HookContext = Record<string, unknown>
 
 /**
  * Claude Hook Types

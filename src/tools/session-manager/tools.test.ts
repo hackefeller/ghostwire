@@ -7,7 +7,7 @@ const mockContext: ToolContext = {
   messageID: "test-message",
   agent: "test-agent",
   abort: new AbortController().signal,
-}
+} as unknown as ToolContext
 
 describe("session-manager tools", () => {
   test("session_list executes without error", async () => {

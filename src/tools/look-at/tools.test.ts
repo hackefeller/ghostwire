@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import { normalizeArgs, validateArgs, createLookAt } from "./tools"
+import type { ToolContext } from "@opencode-ai/plugin/tool"
 
 describe("look-at tool", () => {
   describe("normalizeArgs", () => {
@@ -97,7 +98,7 @@ describe("look-at tool", () => {
         messageID: "parent-message",
         agent: "sisyphus",
         abort: new AbortController().signal,
-      }
+      } as unknown as ToolContext
 
       const result = await tool.execute(
         { file_path: "/test/file.png", goal: "analyze image" },
@@ -135,7 +136,7 @@ describe("look-at tool", () => {
         messageID: "parent-message",
         agent: "sisyphus",
         abort: new AbortController().signal,
-      }
+      } as unknown as ToolContext
 
       const result = await tool.execute(
         { file_path: "/test/file.pdf", goal: "extract text" },
@@ -191,7 +192,7 @@ describe("look-at tool", () => {
         messageID: "parent-message",
         agent: "sisyphus",
         abort: new AbortController().signal,
-      }
+      } as unknown as ToolContext
 
       await tool.execute(
         { file_path: "/test/file.png", goal: "analyze image" },

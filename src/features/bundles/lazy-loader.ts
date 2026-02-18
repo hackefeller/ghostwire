@@ -4,7 +4,7 @@
  * Implements priority-based loading and LRU caching with memory pressure handling.
  */
 
-import type { FeatureBundle, BundleComponents } from "../types"
+import type { FeatureBundle } from "./types"
 
 export type ComponentType = "agent" | "command" | "skill" | "mcp"
 export type Priority = 0 | 1 | 2 | 3 // P0, P1, P2, P3

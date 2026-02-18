@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, mock } from "bun:test"
 import { createSkillMcpTool, applyGrepFilter } from "./tools"
 import { SkillMcpManager } from "../../features/skill-mcp-manager"
 import type { LoadedSkill } from "../../features/opencode-skill-loader/types"
+import type { ToolContext } from "@opencode-ai/plugin/tool"
 
 function createMockSkillWithMcp(name: string, mcpServers: Record<string, unknown>): LoadedSkill {
   return {
@@ -23,7 +24,7 @@ const mockContext = {
   messageID: "msg-1",
   agent: "test-agent",
   abort: new AbortController().signal,
-}
+} as unknown as ToolContext
 
 describe("skill_mcp tool", () => {
   let manager: SkillMcpManager

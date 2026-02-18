@@ -4,6 +4,7 @@ import { createSkillTool } from "./tools"
 import { SkillMcpManager } from "../../features/skill-mcp-manager"
 import type { LoadedSkill } from "../../features/opencode-skill-loader/types"
 import type { Tool as McpTool } from "@modelcontextprotocol/sdk/types.js"
+import type { ToolContext } from "@opencode-ai/plugin/tool"
 
 const originalReadFileSync = fs.readFileSync.bind(fs)
 
@@ -55,7 +56,7 @@ const mockContext = {
   messageID: "msg-1",
   agent: "test-agent",
   abort: new AbortController().signal,
-}
+} as unknown as ToolContext
 
 describe("skill tool - synchronous description", () => {
   it("includes available_skills immediately when skills are pre-provided", () => {

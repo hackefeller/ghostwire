@@ -80,7 +80,7 @@ import { initTaskToastManager } from "./features/task-toast-manager";
 import { TmuxSessionManager } from "./features/tmux-subagent";
 import { clearBoulderState } from "./features/boulder-state";
 import { type HookName } from "./config";
-import { log, detectExternalNotificationPlugin, getNotificationConflictWarning, resetMessageCursor, includesCaseInsensitive, hasConnectedProvidersCache, getOpenCodeVersion, isOpenCodeVersionAtLeast, OPENCODE_NATIVE_AGENTS_INJECTION_VERSION } from "./shared";
+import { log, detectExternalNotificationPlugin, getNotificationConflictWarning, resetMessageCursor, includesCaseInsensitive, hasConnectedProvidersCache, getOpenCodeVersion, isOpenCodeVersionAtLeast, OPENCODE_NATIVE_AGENTS_INJECTION_VERSION, runHookWithTelemetry } from "./shared";
 import { loadPluginConfig } from "./plugin-config";
 import { createModelCacheState, getModelLimit } from "./plugin-state";
 import { createConfigHandler } from "./plugin-handlers";
@@ -102,6 +102,16 @@ const RuachPlugin: Plugin = async (ctx) => {
     agent_pane_min_width: pluginConfig.tmux?.agent_pane_min_width ?? 40,
   } as const;
   const isHookEnabled = (hookName: HookName) => !disabledHooks.has(hookName);
+  const runHook = <T>(
+    phase: "chat.message" | "tool.execute.before" | "tool.execute.after" | "event" | "experimental.chat.messages.transform",
+    hookName: string,
+    invoke: () => Promise<T> | T
+  ) =>
+    runHookWithTelemetry({
+      phase,
+      hookName,
+      invoke,
+    })
 
   const modelCacheState = createModelCacheState();
 
@@ -429,11 +439,21 @@ const RuachPlugin: Plugin = async (ctx) => {
         }
       }
 
-      await stopContinuationGuard?.["chat.message"]?.(input);
-      await keywordDetector?.["chat.message"]?.(input, output);
-      await claudeCodeHooks["chat.message"]?.(input, output);
-      await autoSlashCommand?.["chat.message"]?.(input, output);
-      await startWork?.["chat.message"]?.(input, output);
+      await runHook("chat.message", "stop-continuation-guard", () =>
+        stopContinuationGuard?.["chat.message"]?.(input)
+      );
+      await runHook("chat.message", "keyword-detector", () =>
+        keywordDetector?.["chat.message"]?.(input, output)
+      );
+      await runHook("chat.message", "claude-code-hooks", () =>
+        claudeCodeHooks["chat.message"]?.(input, output)
+      );
+      await runHook("chat.message", "auto-slash-command", () =>
+        autoSlashCommand?.["chat.message"]?.(input, output)
+      );
+      await runHook("chat.message", "start-work", () =>
+        startWork?.["chat.message"]?.(input, output)
+      );
 
       if (!hasConnectedProvidersCache()) {
         ctx.client.tui.showToast({
@@ -505,34 +525,39 @@ const RuachPlugin: Plugin = async (ctx) => {
       output: { messages: Array<{ info: unknown; parts: unknown[] }> }
     ) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await contextInjectorMessagesTransform?.["experimental.chat.messages.transform"]?.(input, output as any);
-      await thinkingBlockValidator?.[
-        "experimental.chat.messages.transform"
+      await runHook("experimental.chat.messages.transform", "context-injector", () =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ]?.(input, output as any);
+        contextInjectorMessagesTransform?.["experimental.chat.messages.transform"]?.(input, output as any)
+      );
+      await runHook("experimental.chat.messages.transform", "thinking-block-validator", () =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        thinkingBlockValidator?.["experimental.chat.messages.transform"]?.(input, output as any)
+      );
 
     },
 
     config: configHandler,
 
     event: async (input) => {
-      await autoUpdateChecker?.event(input);
-      await claudeCodeHooks.event(input);
-      await backgroundNotificationHook?.event(input);
-      await sessionNotification?.(input);
-      await todoContinuationEnforcer?.handler(input);
-      await contextWindowMonitor?.event(input);
-      await directoryAgentsInjector?.event(input);
-      await directoryReadmeInjector?.event(input);
-      await rulesInjector?.event(input);
-      await thinkMode?.event(input);
-      await anthropicContextWindowLimitRecovery?.event(input);
-      await agentUsageReminder?.event(input);
-      await categorySkillReminder?.event(input);
-      await interactiveBashSession?.event(input);
-      await ralphLoop?.event(input);
-      await stopContinuationGuard?.event(input);
-      await atlasHook?.handler(input);
+      await runHook("event", "auto-update-checker", () => autoUpdateChecker?.event(input));
+      await runHook("event", "claude-code-hooks", () => claudeCodeHooks.event(input));
+      await runHook("event", "background-notification", () => backgroundNotificationHook?.event(input));
+      await runHook("event", "session-notification", () => sessionNotification?.(input));
+      await runHook("event", "todo-continuation-enforcer", () => todoContinuationEnforcer?.handler(input));
+      await runHook("event", "context-window-monitor", () => contextWindowMonitor?.event(input));
+      await runHook("event", "directory-agents-injector", () => directoryAgentsInjector?.event(input));
+      await runHook("event", "directory-readme-injector", () => directoryReadmeInjector?.event(input));
+      await runHook("event", "rules-injector", () => rulesInjector?.event(input));
+      await runHook("event", "think-mode", () => thinkMode?.event(input));
+      await runHook("event", "anthropic-context-window-limit-recovery", () =>
+        anthropicContextWindowLimitRecovery?.event(input)
+      );
+      await runHook("event", "agent-usage-reminder", () => agentUsageReminder?.event(input));
+      await runHook("event", "category-skill-reminder", () => categorySkillReminder?.event(input));
+      await runHook("event", "interactive-bash-session", () => interactiveBashSession?.event(input));
+      await runHook("event", "ralph-loop", () => ralphLoop?.event(input));
+      await runHook("event", "stop-continuation-guard", () => stopContinuationGuard?.event(input));
+      await runHook("event", "atlas", () => atlasHook?.handler(input));
 
       const { event } = input;
       const props = event.properties as Record<string, unknown> | undefined;
@@ -611,17 +636,39 @@ const RuachPlugin: Plugin = async (ctx) => {
     },
 
     "tool.execute.before": async (input, output) => {
-      await subagentQuestionBlocker["tool.execute.before"]?.(input, output);
-      await questionLabelTruncator["tool.execute.before"]?.(input, output);
-      await claudeCodeHooks["tool.execute.before"](input, output);
-      await nonInteractiveEnv?.["tool.execute.before"](input, output);
-      await commentChecker?.["tool.execute.before"](input, output);
-      await directoryAgentsInjector?.["tool.execute.before"]?.(input, output);
-      await directoryReadmeInjector?.["tool.execute.before"]?.(input, output);
-      await rulesInjector?.["tool.execute.before"]?.(input, output);
-      await prometheusMdOnly?.["tool.execute.before"]?.(input, output);
-      await sisyphusJuniorNotepad?.["tool.execute.before"]?.(input, output);
-      await atlasHook?.["tool.execute.before"]?.(input, output);
+      await runHook("tool.execute.before", "subagent-question-blocker", () =>
+        subagentQuestionBlocker["tool.execute.before"]?.(input, output)
+      );
+      await runHook("tool.execute.before", "question-label-truncator", () =>
+        questionLabelTruncator["tool.execute.before"]?.(input, output)
+      );
+      await runHook("tool.execute.before", "claude-code-hooks", () =>
+        claudeCodeHooks["tool.execute.before"](input, output)
+      );
+      await runHook("tool.execute.before", "non-interactive-env", () =>
+        nonInteractiveEnv?.["tool.execute.before"](input, output)
+      );
+      await runHook("tool.execute.before", "comment-checker", () =>
+        commentChecker?.["tool.execute.before"](input, output)
+      );
+      await runHook("tool.execute.before", "directory-agents-injector", () =>
+        directoryAgentsInjector?.["tool.execute.before"]?.(input, output)
+      );
+      await runHook("tool.execute.before", "directory-readme-injector", () =>
+        directoryReadmeInjector?.["tool.execute.before"]?.(input, output)
+      );
+      await runHook("tool.execute.before", "rules-injector", () =>
+        rulesInjector?.["tool.execute.before"]?.(input, output)
+      );
+      await runHook("tool.execute.before", "prometheus-md-only", () =>
+        prometheusMdOnly?.["tool.execute.before"]?.(input, output)
+      );
+      await runHook("tool.execute.before", "sisyphus-junior-notepad", () =>
+        sisyphusJuniorNotepad?.["tool.execute.before"]?.(input, output)
+      );
+      await runHook("tool.execute.before", "atlas", () =>
+        atlasHook?.["tool.execute.before"]?.(input, output)
+      );
 
       if (input.tool === "task") {
         const args = output.args as Record<string, unknown>;
@@ -709,21 +756,51 @@ const RuachPlugin: Plugin = async (ctx) => {
       if (!output) {
         return;
       }
-      await claudeCodeHooks["tool.execute.after"](input, output);
-      await toolOutputTruncator?.["tool.execute.after"](input, output);
-      await contextWindowMonitor?.["tool.execute.after"](input, output);
-      await commentChecker?.["tool.execute.after"](input, output);
-      await directoryAgentsInjector?.["tool.execute.after"](input, output);
-      await directoryReadmeInjector?.["tool.execute.after"](input, output);
-      await rulesInjector?.["tool.execute.after"](input, output);
-      await emptyTaskResponseDetector?.["tool.execute.after"](input, output);
-      await agentUsageReminder?.["tool.execute.after"](input, output);
-      await categorySkillReminder?.["tool.execute.after"](input, output);
-      await interactiveBashSession?.["tool.execute.after"](input, output);
-await editErrorRecovery?.["tool.execute.after"](input, output);
-        await delegateTaskRetry?.["tool.execute.after"](input, output);
-        await atlasHook?.["tool.execute.after"]?.(input, output);
-      await taskResumeInfo["tool.execute.after"](input, output);
+      await runHook("tool.execute.after", "claude-code-hooks", () =>
+        claudeCodeHooks["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "tool-output-truncator", () =>
+        toolOutputTruncator?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "context-window-monitor", () =>
+        contextWindowMonitor?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "comment-checker", () =>
+        commentChecker?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "directory-agents-injector", () =>
+        directoryAgentsInjector?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "directory-readme-injector", () =>
+        directoryReadmeInjector?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "rules-injector", () =>
+        rulesInjector?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "empty-task-response-detector", () =>
+        emptyTaskResponseDetector?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "agent-usage-reminder", () =>
+        agentUsageReminder?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "category-skill-reminder", () =>
+        categorySkillReminder?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "interactive-bash-session", () =>
+        interactiveBashSession?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "edit-error-recovery", () =>
+        editErrorRecovery?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "delegate-task-retry", () =>
+        delegateTaskRetry?.["tool.execute.after"](input, output)
+      );
+      await runHook("tool.execute.after", "atlas", () =>
+        atlasHook?.["tool.execute.after"]?.(input, output)
+      );
+      await runHook("tool.execute.after", "task-resume-info", () =>
+        taskResumeInfo["tool.execute.after"](input, output)
+      );
     },
   };
 };

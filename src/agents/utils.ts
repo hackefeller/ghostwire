@@ -17,6 +17,7 @@ import { resolveMultipleSkills } from "../features/opencode-skill-loader/skill-c
 import { createBuiltinSkills } from "../features/builtin-skills"
 import type { LoadedSkill, SkillScope } from "../features/opencode-skill-loader/types"
 import type { BrowserAutomationProvider } from "../config/schema"
+export { createAgentToolRestrictions, createAgentToolAllowlist } from "../shared/permission-compat"
 
 type AgentSource = AgentFactory | AgentConfig
 

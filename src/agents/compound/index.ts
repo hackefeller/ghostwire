@@ -1,6 +1,24 @@
 // Compound Engineering Agents - Unified Export
 // This file exports all 28 compound-engineering agents integrated into ruach
 
+import { createKieranRailsReviewerAgent } from "./review/kieran-rails-reviewer"
+import { createKieranPythonReviewerAgent } from "./review/kieran-python-reviewer"
+import { createKieranTypeScriptReviewerAgent } from "./review/kieran-typescript-reviewer"
+import { createDHHRailsReviewerAgent } from "./review/dhh-rails-reviewer"
+import { createCodeSimplicityReviewerAgent } from "./review/code-simplicity-reviewer"
+import { createFrameworkDocsResearcherAgent } from "./research/framework-docs-researcher"
+import { createLearningsResearcherAgent } from "./research/learnings-researcher"
+import { createBestPracticesResearcherAgent } from "./research/best-practices-researcher"
+import { createGitHistoryAnalyzerAgent } from "./research/git-history-analyzer"
+import { createFigmaDesignSyncAgent } from "./design/figma-design-sync"
+import { createDesignImplementationReviewerAgent } from "./design/design-implementation-reviewer"
+import { createDesignIteratorAgent } from "./design/design-iterator"
+import { createFrontendDesignAgent } from "./design/frontend-design"
+import { createSpecFlowAnalyzerAgent } from "./workflow/spec-flow-analyzer"
+import { createAgentNativeArchitectureAgent } from "./workflow/agent-native-architecture"
+import { createDeploymentVerificationAgent } from "./workflow/deployment-verification-agent"
+import { createAnkaneReadmeWriterAgent } from "./docs/ankane-readme-writer"
+
 // Review Agents (5)
 export { createKieranRailsReviewerAgent, KIERAN_RAILS_REVIEWER_METADATA } from "./review/kieran-rails-reviewer"
 export { createKieranPythonReviewerAgent, KIERAN_PYTHON_REVIEWER_METADATA } from "./review/kieran-python-reviewer"

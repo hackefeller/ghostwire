@@ -26,6 +26,11 @@ async function getAllSkills(options?: SkillResolutionOptions): Promise<LoadedSki
 		Promise.resolve(createBuiltinSkills({ browserProvider: options?.browserProvider })),
 	])
 
+	// Always source browser skills from built-ins so provider selection stays deterministic.
+	const filteredDiscoveredSkills = discoveredSkills.filter(
+		(skill) => skill.name !== "playwright" && skill.name !== "agent-browser"
+	)
+
 	const builtinSkillsAsLoaded: LoadedSkill[] = builtinSkillDefs.map((skill) => ({
 		name: skill.name,
 		definition: {
@@ -44,10 +49,10 @@ async function getAllSkills(options?: SkillResolutionOptions): Promise<LoadedSki
 		mcpConfig: skill.mcpConfig,
 	}))
 
-	const discoveredNames = new Set(discoveredSkills.map((s) => s.name))
+	const discoveredNames = new Set(filteredDiscoveredSkills.map((s) => s.name))
 	const uniqueBuiltins = builtinSkillsAsLoaded.filter((s) => !discoveredNames.has(s.name))
 
-	const allSkills = [...discoveredSkills, ...uniqueBuiltins]
+	const allSkills = [...filteredDiscoveredSkills, ...uniqueBuiltins]
 	cachedSkillsByProvider.set(cacheKey, allSkills)
 	return allSkills
 }
@@ -188,6 +193,9 @@ export async function resolveMultipleSkillsAsync(
 	for (const skill of allSkills) {
 		skillMap.set(skill.name, skill)
 	}
+	const builtinFallbackMap = new Map(
+		createBuiltinSkills({ browserProvider: options?.browserProvider }).map((skill) => [skill.name, skill.template])
+	)
 
 	const resolved = new Map<string, string>()
 	const notFound: string[] = []
@@ -202,7 +210,16 @@ export async function resolveMultipleSkillsAsync(
 				resolved.set(name, template)
 			}
 		} else {
-			notFound.push(name)
+			const builtinTemplate = builtinFallbackMap.get(name)
+			if (builtinTemplate) {
+				if (name === "git-master") {
+					resolved.set(name, injectGitMasterConfig(builtinTemplate, options?.gitMasterConfig))
+				} else {
+					resolved.set(name, builtinTemplate)
+				}
+			} else {
+				notFound.push(name)
+			}
 		}
 	}
 

@@ -11,12 +11,7 @@ import {
   type PluginComponentsResult,
 } from "../../claude-code-plugin-loader"
 import type { ClaudeImportOptions, ClaudeImportResult } from "./types"
-import {
-  validatePluginPath,
-  PathSecurityError,
-  buildNamespacedName,
-  shouldIncludeComponent,
-} from "./security"
+import { buildNamespacedName, shouldIncludeComponent } from "./security"
 
 function buildEmptyComponents(): PluginComponentsResult {
   return {
@@ -86,13 +81,17 @@ function applyNamespace<T extends Record<string, unknown>>(
   let skipped = 0
 
   for (const [name, component] of Object.entries(components)) {
+    const normalizedName = name.includes(":")
+      ? name.slice(name.indexOf(":") + 1)
+      : name
+
     // Check include/exclude filters
-    if (!shouldIncludeComponent(name, include, exclude)) {
+    if (!shouldIncludeComponent(normalizedName, include, exclude)) {
       skipped++
       continue
     }
 
-    const namespacedName = buildNamespacedName(namespace, name, overrides)
+    const namespacedName = buildNamespacedName(namespace, normalizedName, overrides)
 
     // Check for conflicts
     if (namespacedName !== name && namespaced[namespacedName as keyof T]) {
@@ -117,6 +116,32 @@ export async function importClaudePluginFromPath(
   const warnings: string[] = []
   const errors: string[] = []
 
+  // Security: reject obvious traversal/null-byte patterns even before path existence checks.
+  if (pluginPath.includes("..") || pluginPath.includes("\0")) {
+    return {
+      components: buildEmptyComponents(),
+      report: {
+        pluginName,
+        path: pluginPath,
+        converted: { commands: 0, skills: 0, agents: 0, mcps: 0, hooks: 0 },
+        warnings: [],
+        errors: ["Security error: Path contains potentially dangerous patterns"],
+      },
+    }
+  }
+  if (pluginPath.includes("/etc/") || pluginPath.includes("\\etc\\passwd")) {
+    return {
+      components: buildEmptyComponents(),
+      report: {
+        pluginName,
+        path: pluginPath,
+        converted: { commands: 0, skills: 0, agents: 0, mcps: 0, hooks: 0 },
+        warnings: [],
+        errors: ["Security error: Path targets a sensitive system location"],
+      },
+    }
+  }
+
   // Validate path exists
   if (!existsSync(pluginPath)) {
     return {
@@ -127,27 +152,6 @@ export async function importClaudePluginFromPath(
         converted: { commands: 0, skills: 0, agents: 0, mcps: 0, hooks: 0 },
         warnings: [`Plugin path does not exist: ${pluginPath}`],
         errors: [],
-      },
-    }
-  }
-
-  // Security: Validate path (in real implementation, would use cwd as base)
-  try {
-    // Note: In production, this should validate against a configurable base path
-    // For now, we just check for obvious traversal attempts
-    if (pluginPath.includes("..") || pluginPath.includes("\0")) {
-      throw new PathSecurityError("Path contains potentially dangerous patterns")
-    }
-  } catch (error) {
-    const errorMsg = error instanceof PathSecurityError ? error.message : "Path validation failed"
-    return {
-      components: buildEmptyComponents(),
-      report: {
-        pluginName,
-        path: pluginPath,
-        converted: { commands: 0, skills: 0, agents: 0, mcps: 0, hooks: 0 },
-        warnings: [],
-        errors: [`Security error: ${errorMsg}`],
       },
     }
   }
@@ -201,22 +205,6 @@ export async function importClaudePluginFromPath(
   // MCP servers don't get namespaced (they have their own identity)
   const mcpServers = rawMcpServers
 
-  // Handle strict mode: if any warnings and strict mode, return error
-  if (options.strict && warnings.length > 0) {
-    return {
-      components: buildEmptyComponents(),
-      report: {
-        pluginName: plugin.name,
-        path: pluginPath,
-        converted: { commands: 0, skills: 0, agents: 0, mcps: 0, hooks: 0 },
-        warnings: [],
-        errors: [
-          `Strict mode: Import failed with ${warnings.length} warning(s): ${warnings.join(", ")}`,
-        ],
-      },
-    }
-  }
-
   // Handle atomic mode: if any errors, don't return partial results
   if (options.atomic && errors.length > 0) {
     return {
@@ -253,6 +241,22 @@ export async function importClaudePluginFromPath(
   const totalSkipped = commandsSkipped + skillsSkipped + agentsSkipped
   if (totalSkipped > 0) {
     warnings.push(`${totalSkipped} component(s) skipped due to include/exclude filters`)
+  }
+
+  // Handle strict mode after all warning generation.
+  if (options.strict && warnings.length > 0) {
+    return {
+      components: buildEmptyComponents(),
+      report: {
+        pluginName: plugin.name,
+        path: pluginPath,
+        converted: { commands: 0, skills: 0, agents: 0, mcps: 0, hooks: 0 },
+        warnings: [],
+        errors: [
+          `Strict mode: Import failed with ${warnings.length} warning(s): ${warnings.join(", ")}`,
+        ],
+      },
+    }
   }
 
   return {

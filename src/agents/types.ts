@@ -1,4 +1,5 @@
-import type { AgentConfig } from "@opencode-ai/sdk"
+import type { AgentConfig as SDKAgentConfig } from "@opencode-ai/sdk"
+export type AgentConfig = SDKAgentConfig
 
 /**
  * Agent mode determines UI model selection behavior:
@@ -19,12 +20,27 @@ export type AgentFactory = ((model: string) => AgentConfig) & {
 /**
  * Agent category for grouping in Sisyphus prompt sections
  */
-export type AgentCategory = "exploration" | "specialist" | "advisor" | "utility"
+export type AgentCategory =
+  | "exploration"
+  | "specialist"
+  | "advisor"
+  | "utility"
+  | "review"
+  | "research"
+  | "design"
+  | "workflow"
+  | "documentation"
 
 /**
  * Cost classification for Tool Selection table
  */
-export type AgentCost = "FREE" | "CHEAP" | "EXPENSIVE"
+export type AgentCost =
+  | "FREE"
+  | "CHEAP"
+  | "EXPENSIVE"
+  | "LOW"
+  | "MODERATE"
+  | "HIGH"
 
 /**
  * Delegation trigger for Sisyphus prompt's Delegation Table

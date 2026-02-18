@@ -1,6 +1,5 @@
 import type { BuiltinSkill } from "./types"
 import type { BrowserAutomationProvider } from "../../config/schema"
-import { COMPOUND_SKILLS } from "./compound-skills"
 
 const playwrightSkill: BuiltinSkill = {
   name: "playwright",
@@ -1726,5 +1725,5 @@ export function createBuiltinSkills(options: CreateBuiltinSkillsOptions = {}): B
 
   const browserSkill = browserProvider === "agent-browser" ? agentBrowserSkill : playwrightSkill
 
-  return [browserSkill, frontendUiUxSkill, gitMasterSkill, devBrowserSkill, ...COMPOUND_SKILLS]
+  return [browserSkill, frontendUiUxSkill, gitMasterSkill, devBrowserSkill]
 }

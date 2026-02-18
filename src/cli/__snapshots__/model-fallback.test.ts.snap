@@ -5,57 +5,57 @@ exports[`generateModelConfig no providers available returns ULTIMATE_FALLBACK fo
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
   "agents": {
     "atlas": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "explore": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "librarian": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "metis": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "momus": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "multimodal-looker": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "oracle": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "prometheus": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "sisyphus": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
   },
   "categories": {
     "artistry": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "deep": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "quick": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "ultrabrain": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "unspecified-high": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "unspecified-low": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "visual-engineering": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "writing": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
   },
 }
@@ -212,7 +212,7 @@ exports[`generateModelConfig single native provider uses OpenAI models when only
       "model": "opencode/gpt-5-nano",
     },
     "librarian": {
-      "model": "ruach/glm-4.7-free",
+      "model": "opencode/glm-4.7-free",
     },
     "metis": {
       "model": "openai/gpt-5.2",

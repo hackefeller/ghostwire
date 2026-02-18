@@ -37,7 +37,7 @@ export interface GeneratedOmoConfig {
 
 const ZAI_MODEL = "zai-coding-plan/glm-4.7"
 
-const ULTIMATE_FALLBACK = "ruach/glm-4.7-free"
+const ULTIMATE_FALLBACK = "opencode/glm-4.7-free"
 const SCHEMA_URL = "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json"
 
 function toProviderAvailability(config: InstallConfig): ProviderAvailability {
@@ -61,7 +61,7 @@ function isProviderAvailable(provider: string, avail: ProviderAvailability): boo
     openai: avail.native.openai,
     google: avail.native.gemini,
     "github-copilot": avail.copilot,
-    ruach: avail.opencodeZen,
+    opencode: avail.opencodeZen,
     "zai-coding-plan": avail.zai,
     "kimi-for-coding": avail.kimiForCoding,
   }
@@ -150,11 +150,11 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
       if (avail.native.claude) {
         agents[role] = { model: "anthropic/claude-haiku-4-5" }
       } else if (avail.opencodeZen) {
-        agents[role] = { model: "ruach/claude-haiku-4-5" }
+        agents[role] = { model: "opencode/claude-haiku-4-5" }
       } else if (avail.copilot) {
         agents[role] = { model: "github-copilot/gpt-5-mini" }
       } else {
-        agents[role] = { model: "ruach/gpt-5-nano" }
+        agents[role] = { model: "opencode/gpt-5-nano" }
       }
       continue
     }

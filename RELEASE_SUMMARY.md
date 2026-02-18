@@ -1,4 +1,4 @@
-# oh-my-opencode v3.2.0 - Release Summary
+# ruach v3.2.0 - Release Summary
 
 **Compound Engineering True Merge - Complete Implementation**
 
@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-Successfully completed the **true merge** of compound-engineering plugin into oh-my-opencode v3.2.0.
+Successfully completed the **true merge** of compound-engineering plugin into ruach v3.2.0.
 
 - ✅ **125 Components** integrated and production-ready
 - ✅ **59/59 Tests** passing (100% pass rate)
@@ -267,7 +267,7 @@ Skills:   compound:{skill-name}
 ### Test Execution
 ```bash
 # Compound tests
-cd oh-my-opencode
+cd ruach
 npm run test -- tests/compound/
 # Result: 59 pass, 0 fail ✅
 
@@ -364,9 +364,9 @@ The compound engineering true merge is **complete and production-ready**.
 ## Contact & Support
 
 For questions or issues:
-- **GitHub Issues**: https://github.com/code-yeongyu/oh-my-opencode/issues
+- **GitHub Issues**: https://github.com/code-yeongyu/ruach/issues
 - **Documentation**: https://opencode.ai/docs
-- **Discussions**: https://github.com/code-yeongyu/oh-my-opencode/discussions
+- **Discussions**: https://github.com/code-yeongyu/ruach/discussions
 
 ---
 
@@ -374,4 +374,4 @@ For questions or issues:
 **Version**: v3.2.0
 **Status**: ✅ Production Ready
 
-🎉 **oh-my-opencode is now equipped with 125 advanced components!**
+🎉 **ruach is now equipped with 125 advanced components!**

@@ -1,7 +1,7 @@
 import { describe, test, expect, spyOn, beforeEach, afterEach } from "bun:test"
 import { resolveCategoryConfig, createConfigHandler } from "./config-handler"
 import type { CategoryConfig } from "../config/schema"
-import type { OhMyOpenCodeConfig } from "../config"
+import type { RuachConfig } from "../config"
 
 import * as agents from "../agents"
 import * as sisyphusJunior from "../agents/sisyphus-junior"
@@ -108,7 +108,7 @@ afterEach(() => {
 describe("Plan agent demote behavior", () => {
   test("plan agent should be demoted to subagent mode when replacePlan is true", async () => {
     // #given
-    const pluginConfig: OhMyOpenCodeConfig = {
+    const pluginConfig: RuachConfig = {
       sisyphus_agent: {
         planner_enabled: true,
         replace_plan: true,
@@ -145,7 +145,7 @@ describe("Plan agent demote behavior", () => {
 
   test("prometheus should have mode 'all' to be callable via delegate_task", async () => {
     // #given
-    const pluginConfig: OhMyOpenCodeConfig = {
+    const pluginConfig: RuachConfig = {
       sisyphus_agent: {
         planner_enabled: true,
       },
@@ -276,7 +276,7 @@ describe("Prometheus category config resolution", () => {
 describe("Prometheus direct override priority over category", () => {
   test("direct reasoningEffort takes priority over category reasoningEffort", async () => {
     // #given - category has reasoningEffort=xhigh, direct override says "low"
-    const pluginConfig: OhMyOpenCodeConfig = {
+    const pluginConfig: RuachConfig = {
       sisyphus_agent: {
         planner_enabled: true,
       },
@@ -317,7 +317,7 @@ describe("Prometheus direct override priority over category", () => {
 
   test("category reasoningEffort applied when no direct override", async () => {
     // #given - category has reasoningEffort but no direct override
-    const pluginConfig: OhMyOpenCodeConfig = {
+    const pluginConfig: RuachConfig = {
       sisyphus_agent: {
         planner_enabled: true,
       },
@@ -357,7 +357,7 @@ describe("Prometheus direct override priority over category", () => {
 
   test("direct temperature takes priority over category temperature", async () => {
     // #given
-    const pluginConfig: OhMyOpenCodeConfig = {
+    const pluginConfig: RuachConfig = {
       sisyphus_agent: {
         planner_enabled: true,
       },
@@ -405,7 +405,7 @@ describe("Deadlock prevention - fetchAvailableModels must not receive client", (
     // - Server waits for plugin init to complete before handling requests
     const fetchSpy = spyOn(shared, "fetchAvailableModels" as any).mockResolvedValue(new Set<string>())
 
-    const pluginConfig: OhMyOpenCodeConfig = {
+    const pluginConfig: RuachConfig = {
       sisyphus_agent: {
         planner_enabled: true,
       },

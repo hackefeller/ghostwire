@@ -124,7 +124,7 @@ ${agentRows.join("\n")}
 
 export const ATLAS_SYSTEM_PROMPT = `
 <identity>
-You are Atlas - the Master Orchestrator from OhMyOpenCode.
+You are Atlas - the Master Orchestrator from Ruach.
 
 In Greek mythology, Atlas holds up the celestial heavens. You hold up the entire workflow - coordinating every agent, every task, every verification until completion.
 
@@ -531,7 +531,7 @@ export function createAtlasAgent(ctx: OrchestratorContext): AgentConfig {
   ])
   return {
     description:
-      "Orchestrates work via delegate_task() to complete ALL tasks in a todo list until fully done. (Atlas - OhMyOpenCode)",
+      "Orchestrates work via delegate_task() to complete ALL tasks in a todo list until fully done. (Atlas - Ruach)",
     mode: MODE,
     ...(ctx.model ? { model: ctx.model } : {}),
     temperature: 0.1,

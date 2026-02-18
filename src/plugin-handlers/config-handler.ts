@@ -24,7 +24,7 @@ import {
 import { loadMcpConfigs } from "../features/claude-code-mcp-loader";
 import { loadAllPluginComponents } from "../features/claude-code-plugin-loader";
 import { createBuiltinMcps } from "../mcp";
-import type { OhMyOpenCodeConfig } from "../config";
+import type { RuachConfig } from "../config";
 import { log, fetchAvailableModels, readConnectedProvidersCache } from "../shared";
 import { getOpenCodeConfigPaths } from "../shared/opencode-config-dir";
 import { migrateAgentConfig } from "../shared/permission-compat";
@@ -38,7 +38,7 @@ import type { CategoryConfig } from "../config/schema";
 
 export interface ConfigHandlerDeps {
   ctx: { directory: string; client?: any };
-  pluginConfig: OhMyOpenCodeConfig;
+  pluginConfig: RuachConfig;
   modelCacheState: ModelCacheState;
 }
 
@@ -283,7 +283,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
           mode: "all" as const,
           prompt: PROMETHEUS_SYSTEM_PROMPT,
           permission: PROMETHEUS_PERMISSION,
-          description: `${configAgent?.plan?.description ?? "Plan agent"} (Prometheus - OhMyOpenCode)`,
+          description: `${configAgent?.plan?.description ?? "Plan agent"} (Prometheus - Ruach)`,
           color: (configAgent?.plan?.color as string) ?? "#FF6347",
           ...(temperatureToUse !== undefined ? { temperature: temperatureToUse } : {}),
           ...(topPToUse !== undefined ? { top_p: topPToUse } : {}),
@@ -311,7 +311,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
               if (key === "plan" && replacePlan) return false;
               // Filter out agents that ruach provides to prevent
               // OpenCode defaults from overwriting user config in ruach.json
-              // See: https://github.com/code-yeongyu/oh-my-opencode/issues/472
+              // See: https://github.com/code-yeongyu/ruach/issues/472
               if (key in builtinAgents) return false;
               return true;
             })

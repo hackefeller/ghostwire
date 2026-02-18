@@ -3,11 +3,11 @@
 >
 > **ohmyopencode.com 与本项目无关。** 我们不运营或认可该网站。
 >
-> OhMyOpenCode 是**免费且开源的**。请**勿**在声称"官方"的第三方网站下载安装程序或输入付款信息。
+> Ruach 是**免费且开源的**。请**勿**在声称"官方"的第三方网站下载安装程序或输入付款信息。
 >
 > 由于该冒充网站设有付费墙，我们**无法验证其分发的内容**。请将来自该网站的任何下载视为**潜在不安全**。
 >
-> ✅ 官方下载地址：https://github.com/code-yeongyu/oh-my-opencode/releases
+> ✅ 官方下载地址：https://github.com/code-yeongyu/ruach/releases
 
 > [!NOTE]
 >
@@ -56,7 +56,7 @@
 
 > 自2026年1月起，Anthropic 以违反服务条款为由限制了第三方 OAuth 访问。
 >
-> [**Anthropic 将本项目 oh-my-opencode 作为封锁 opencode 的理由。**](https://x.com/thdxr/status/2010149530486911014)
+> [**Anthropic 将本项目 ruach 作为封锁 opencode 的理由。**](https://x.com/thdxr/status/2010149530486911014)
 >
 > 事实上，社区中确实存在一些伪造 Claude Code OAuth 请求签名的插件。
 >
@@ -94,7 +94,7 @@
 
 > "我使用 Ohmyopencode 和 ralph loop 在一夜之间将一个 45k 行的 tauri 应用转换成了 SaaS Web 应用。从访谈提示开始，要求它对问题进行评分和建议。看着它工作非常精彩，今早醒来发现网站基本上已经可以运行了！" - [James Hargis](https://x.com/hargabyte/status/2007299688261882202)
 
-> "用了 oh-my-opencode，你再也不会回头了" — [d0t3ch](https://x.com/d0t3ch/status/2001685618200580503)
+> "用了 ruach，你再也不会回头了" — [d0t3ch](https://x.com/d0t3ch/status/2001685618200580503)
 
 > "我还没能准确表达出它为什么如此出色，但开发体验已经达到了一个完全不同的维度。" - [苔硯:こけすずり](https://x.com/kokesuzuri/status/2008532913961529372?s=20)
 
@@ -111,7 +111,7 @@
 
 ## 目录
 
-- [Oh My OpenCode](#oh-my-opencode)
+- [Oh My OpenCode](#ruach)
   - [直接跳过阅读本文档](#直接跳过阅读本文档)
     - [这是智能体时代](#这是智能体时代)
     - [🪄 魔法词：`ultrawork`](#-魔法词ultrawork)
@@ -226,7 +226,7 @@
 
 需要查找什么？它会搜索官方文档、你的整个代码库历史和公共 GitHub 实现——不仅使用 grep，还使用内置的 LSP 工具和 AST-Grep。
 3. 在委派给 LLM 时不用担心上下文管理。我已经处理好了。
-    - OhMyOpenCode 积极利用多个智能体来减轻上下文负担。
+    - Ruach 积极利用多个智能体来减轻上下文负担。
     - **你的智能体现在是开发团队负责人。你是 AI 经理。**
 4. 它不会停止，直到工作完成。
 5. 不想深入研究这个项目？没问题。只需输入 'ultrathink'。
@@ -240,8 +240,8 @@
 复制以下提示并粘贴到你的 LLM 智能体（Claude Code、AmpCode、Cursor 等）：
 
 ```
-按照以下说明安装和配置 oh-my-opencode：
-https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/docs/guide/installation.md
+按照以下说明安装和配置 ruach：
+https://raw.githubusercontent.com/code-yeongyu/ruach/refs/heads/master/docs/guide/installation.md
 ```
 
 或者直接阅读 [安装指南](docs/guide/installation.md)——但我们强烈建议让智能体来处理。人会犯错，智能体不会。
@@ -251,20 +251,20 @@ https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/
 获取安装指南并按照说明操作：
 
 ```bash
-curl -s https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/docs/guide/installation.md
+curl -s https://raw.githubusercontent.com/code-yeongyu/ruach/refs/heads/master/docs/guide/installation.md
 ```
 
 ## 卸载
 
-要移除 oh-my-opencode：
+要移除 ruach：
 
 1. **从你的 OpenCode 配置中移除插件**
 
-   编辑 `~/.config/opencode/opencode.json`（或 `opencode.jsonc`）并从 `plugin` 数组中移除 `"oh-my-opencode"`：
+   编辑 `~/.config/opencode/opencode.json`（或 `opencode.jsonc`）并从 `plugin` 数组中移除 `"ruach"`：
 
    ```bash
    # 使用 jq
-   jq '.plugin = [.plugin[] | select(. != "oh-my-opencode")]' \
+   jq '.plugin = [.plugin[] | select(. != "ruach")]' \
        ~/.config/opencode/opencode.json > /tmp/oc.json && \
        mv /tmp/oc.json ~/.config/opencode/opencode.json
    ```
@@ -273,10 +273,10 @@ curl -s https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads
 
    ```bash
    # 移除用户配置
-   rm -f ~/.config/opencode/oh-my-opencode.json
+   rm -f ~/.config/opencode/ruach.json
 
    # 移除项目配置（如果存在）
-   rm -f .opencode/oh-my-opencode.json
+   rm -f .opencode/ruach.json
    ```
 
 3. **验证移除**
@@ -308,7 +308,7 @@ curl -s https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads
 详细信息请参阅 [Configuration Documentation](docs/configurations.md)。
 
 **概览：**
-- **配置文件位置**: `.opencode/oh-my-opencode.json` (项目级) 或 `~/.config/opencode/oh-my-opencode.json` (用户级)
+- **配置文件位置**: `.opencode/ruach.json` (项目级) 或 `~/.config/opencode/ruach.json` (用户级)
 - **JSONC 支持**: 支持注释和尾随逗号
 - **智能体**: 覆盖任何智能体的模型、温度、提示和权限
 - **内置技能**: `playwright` (浏览器自动化), `git-master` (原子提交)
@@ -364,7 +364,7 @@ curl -s https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads
   - 其实，我会传播这个消息。让我们看看谁会赢。
 - 如果你使用 [1.0.132](https://github.com/sst/opencode/releases/tag/v1.0.132) 或更早版本，一个 OpenCode bug 可能会破坏配置。
   - [修复](https://github.com/sst/opencode/pull/5040)在 1.0.132 之后合并——使用更新的版本。
-    - 有趣的事实：那个 PR 是借助 OhMyOpenCode 的 Librarian、Explore 和 Oracle 设置发现并修复的。
+    - 有趣的事实：那个 PR 是借助 Ruach 的 Librarian、Explore 和 Oracle 设置发现并修复的。
 
 ## 受到以下专业人士的喜爱
 

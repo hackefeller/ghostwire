@@ -4,7 +4,7 @@
 
 We will build a single OpenCode plugin that consolidates the most valuable capabilities from two sources:
 
-- **oh-my-opencode** (OpenCode-native orchestration, agents, tools, hooks, MCPs)
+- **ruach** (OpenCode-native orchestration, agents, tools, hooks, MCPs)
 - **Integrated compound-engineering** (All agents, commands, skills now native with `compound:` namespace)
 
 The result is one OpenCode plugin with a clear internal architecture, explicit integration points, and a predictable migration path for Claude Code features.
@@ -14,7 +14,7 @@ This document defines the architecture, boundaries, and a phased plan. It focuse
 ## Goals
 
 - Deliver a single OpenCode plugin that is the canonical entry point for advanced orchestration.
-- Preserve `oh-my-opencode` feature depth while adding a clean ingestion layer for Claude Code plugins.
+- Preserve `ruach` feature depth while adding a clean ingestion layer for Claude Code plugins.
 - Keep the plugin modular: separate core orchestration from imported feature bundles.
 - Maintain testability: explicit mapping contracts, fixtures, and golden output for conversions.
 
@@ -28,7 +28,7 @@ This document defines the architecture, boundaries, and a phased plan. It focuse
 
 The plugin is organized into three layers:
 
-1. **Core Orchestration**: oh-my-opencode agents, hooks, tools, MCPs, shared utilities.
+1. **Core Orchestration**: ruach agents, hooks, tools, MCPs, shared utilities.
 2. **Import/Mapping Layer**: adapters that map Claude Code plugin artifacts into OpenCode-compatible structures.
 3. **Feature Bundles**: domain-specific capabilities (compound engineering tools, workflows, prompts) registered as standard OpenCode components.
 
@@ -46,7 +46,7 @@ The plugin is organized into three layers:
 
 ## Component Architecture
 
-### 1) Core Orchestration (Existing oh-my-opencode)
+### 1) Core Orchestration (Existing ruach)
 
 **Location**: `src/agents`, `src/hooks`, `src/tools`, `src/mcp`, `src/features`, `src/shared`
 
@@ -252,7 +252,7 @@ Notes:
 
 ## Testing Strategy
 
-Test coverage should follow the oh-my-opencode TDD requirements.
+Test coverage should follow the ruach TDD requirements.
 
 - Unit tests for mapping rules: `src/features/imports/claude/*.test.ts`
 - Golden fixtures: sample Claude plugin manifest and expected OpenCode registry output
@@ -293,6 +293,6 @@ Test coverage should follow the oh-my-opencode TDD requirements.
 
 ## Status (Completed in v3.2.0)
 
-All compound-engineering components have been successfully integrated into oh-my-opencode.
+All compound-engineering components have been successfully integrated into ruach.
 All 125 components are now natively available and tested.
 Archive location for historical reference: `archive/compound-engineering-plugin/`

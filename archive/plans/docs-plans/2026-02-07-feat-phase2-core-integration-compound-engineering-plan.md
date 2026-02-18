@@ -8,7 +8,7 @@ date: 2026-02-07
 
 ## Overview
 
-Execute Phase 2 of the true merge implementation: integrate all 125+ compound-engineering components (28 agents, 24 commands, 73 skills) directly into oh-my-opencode architecture, removing the import/bundle system and establishing unified component management with `compound:` namespace prefix.
+Execute Phase 2 of the true merge implementation: integrate all 125+ compound-engineering components (28 agents, 24 commands, 73 skills) directly into ruach architecture, removing the import/bundle system and establishing unified component management with `compound:` namespace prefix.
 
 This builds on the completed Phase 1 foundation (backup, mapping strategy, directory structure, migration system design) and implements the core integration work.
 
@@ -34,7 +34,7 @@ Users want direct access to all compound-engineering components without external
 
 ### **Core Integration Architecture**
 
-Implement direct component integration using established oh-my-opencode patterns:
+Implement direct component integration using established ruach patterns:
 
 1. **Agent Integration**: Convert 28 compound-engineering agents to TypeScript agent factories following Oracle/Sisyphus patterns
 2. **Command Integration**: Convert 24 compound commands to builtin command templates following ralph-loop/start-work patterns  
@@ -430,7 +430,7 @@ export const UnifiedCompoundEngineeringConfigSchema = z.object({
 - [ ] Automatic configuration migration from import to unified system
 - [ ] Component-level disable/enable functionality working
 - [ ] Import/bundle system completely removed
-- [ ] Existing oh-my-opencode functionality preserved
+- [ ] Existing ruach functionality preserved
 
 ### **Non-Functional Requirements**
 
@@ -481,9 +481,9 @@ export const UnifiedCompoundEngineeringConfigSchema = z.object({
 
 ### **External Dependencies**
 - **No external dependencies**: All compound-engineering components are now integrated
-- **Development environment**: Bun, TypeScript, existing oh-my-opencode build system
+- **Development environment**: Bun, TypeScript, existing ruach build system
 - **Testing framework**: Existing test infrastructure
-- **All patterns**: Consistent with existing oh-my-opencode architecture
+- **All patterns**: Consistent with existing ruach architecture
 
 ### **Technical Prerequisites**
 - **Schema build system**: `bun run build:schema` working

@@ -8,7 +8,7 @@ date: 2026-02-06
 
 ## Overview
 
-Integrate all 125+ compound-engineering components (28 agents, 24 commands, 73 skills) directly into oh-my-opencode plugin, replacing the current import/bundle system with a unified architecture. This major architectural change will provide users with seamless access to all compound-engineering capabilities without external plugin dependencies.
+Integrate all 125+ compound-engineering components (28 agents, 24 commands, 73 skills) directly into ruach plugin, replacing the current import/bundle system with a unified architecture. This major architectural change will provide users with seamless access to all compound-engineering capabilities without external plugin dependencies.
 
 ## Problem Statement
 
@@ -28,7 +28,7 @@ Replace the import/bundle system with direct integration of all compound-enginee
 **Key Decision Points:**
 
 1. **Remove Import System**: Delete `src/features/imports/` and `src/features/bundles/` entirely
-2. **Direct Integration**: Copy all components into appropriate oh-my-opencode directories
+2. **Direct Integration**: Copy all components into appropriate ruach directories
 3. **Namespace Strategy**: Use `compound:` prefix for all merged components
 4. **Configuration Migration**: Automatic migration from import config to unified config
 
@@ -178,7 +178,7 @@ export function createCompoundEngineeringComponents(config: CompoundEngineeringC
 
 #### **Phase 2: Core Integration (Days 4-7)**
 
-**Objective**: Integrate all 125+ components into oh-my-opencode
+**Objective**: Integrate all 125+ components into ruach
 
 **Tasks:**
 - [ ] Copy and convert 28 agents to TypeScript agent factories
@@ -191,7 +191,7 @@ export function createCompoundEngineeringComponents(config: CompoundEngineeringC
 - [ ] Implement namespace system with `compound:` prefix
 
 **Deliverables:**
-- All 125+ components integrated into oh-my-opencode
+- All 125+ components integrated into ruach
 - Registration systems updated for compound components
 - Import system completely removed
 - Configuration schema updated
@@ -297,9 +297,9 @@ interface ComponentPerformanceFramework {
 
 ### **Functional Requirements**
 
-- [ ] All 125+ compound-engineering components available directly in oh-my-opencode
+- [ ] All 125+ compound-engineering components available directly in ruach
 - [ ] No external plugin dependencies required
-- [ ] Existing oh-my-opencode features remain fully functional
+- [ ] Existing ruach features remain fully functional
 - [ ] Configuration migration from import system to unified config
 - [ ] Component-level enable/disable functionality
 - [ ] Namespace isolation with `compound:` prefix
@@ -346,7 +346,7 @@ interface ComponentPerformanceFramework {
 ## Dependencies & Prerequisites
 
 ### **Critical Dependencies**
-- oh-my-opencode base system (current)
+- ruach base system (current)
 - Integrated compound-engineering components (125+ now native)
 - TypeScript configuration and build system
 - Existing test framework and CI/CD

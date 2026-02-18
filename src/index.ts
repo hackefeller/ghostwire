@@ -85,8 +85,8 @@ import { loadPluginConfig } from "./plugin-config";
 import { createModelCacheState, getModelLimit } from "./plugin-state";
 import { createConfigHandler } from "./plugin-handlers";
 
-const OhMyOpenCodePlugin: Plugin = async (ctx) => {
-  log("[OhMyOpenCodePlugin] ENTRY - plugin loading", { directory: ctx.directory })
+const RuachPlugin: Plugin = async (ctx) => {
+  log("[RuachPlugin] ENTRY - plugin loading", { directory: ctx.directory })
   // Start background tmux check immediately
   startTmuxCheck();
 
@@ -728,10 +728,10 @@ await editErrorRecovery?.["tool.execute.after"](input, output);
   };
 };
 
-export default OhMyOpenCodePlugin;
+export default RuachPlugin;
 
 export type {
-  OhMyOpenCodeConfig,
+  RuachConfig,
   AgentName,
   AgentOverrideConfig,
   AgentOverrides,

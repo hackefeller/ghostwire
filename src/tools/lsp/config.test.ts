@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, afterEach } from "bun:test"
-import { isServerInstalled } from "./config"
-import { mkdtempSync, rmSync, writeFileSync } from "fs"
-import { join } from "path"
+import { findServerForExtension, getAllServers, isServerInstalled } from "./config"
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "fs"
+import { join, resolve } from "path"
 import { tmpdir } from "os"
 
 describe("isServerInstalled", () => {
@@ -127,4 +127,154 @@ describe("isServerInstalled", () => {
           expect(isServerInstalled([binName])).toBe(false)
       })
   }
+})
+
+describe("LSP config source precedence", () => {
+  let tempDir: string
+  let projectDir: string
+  let configDir: string
+  let previousCwd: string
+  let previousConfigDir: string | undefined
+
+  const writeJson = (path: string, value: unknown) => {
+    mkdirSync(resolve(path, ".."), { recursive: true })
+    writeFileSync(path, JSON.stringify(value, null, 2))
+  }
+
+  const writeRaw = (path: string, value: string) => {
+    mkdirSync(resolve(path, ".."), { recursive: true })
+    writeFileSync(path, value)
+  }
+
+  beforeEach(() => {
+    tempDir = mkdtempSync(join(tmpdir(), "lsp-precedence-test-"))
+    projectDir = join(tempDir, "project")
+    configDir = join(tempDir, "config")
+    mkdirSync(projectDir, { recursive: true })
+    mkdirSync(configDir, { recursive: true })
+    previousCwd = process.cwd()
+    previousConfigDir = process.env.OPENCODE_CONFIG_DIR
+    process.chdir(projectDir)
+    process.env.OPENCODE_CONFIG_DIR = configDir
+  })
+
+  afterEach(() => {
+    process.chdir(previousCwd)
+    if (previousConfigDir === undefined) {
+      delete process.env.OPENCODE_CONFIG_DIR
+    } else {
+      process.env.OPENCODE_CONFIG_DIR = previousConfigDir
+    }
+    rmSync(tempDir, { recursive: true, force: true })
+  })
+
+  test("project_ruach_jsonc_takes_precedence_over_project_ruach_json", () => {
+    writeJson(join(projectDir, ".opencode", "ruach.json"), {
+      lsp: { fromProjectJson: { command: ["bun"], extensions: [".prio-a"] } },
+    })
+    writeRaw(
+      join(projectDir, ".opencode", "ruach.jsonc"),
+      `{
+        // higher priority
+        "lsp": { "fromProjectJsonc": { "command": ["bun"], "extensions": [".prio-a"] } }
+      }`
+    )
+
+    const result = findServerForExtension(".prio-a")
+    expect(result.status).toBe("found")
+    if (result.status === "found") {
+      expect(result.server.id).toBe("fromProjectJsonc")
+    }
+  })
+
+  test("project_ruach_json_is_used_when_jsonc_missing", () => {
+    writeJson(join(projectDir, ".opencode", "ruach.json"), {
+      lsp: { ruachProject: { command: ["bun"], extensions: [".prio-b"] } },
+    })
+
+    const result = findServerForExtension(".prio-b")
+    expect(result.status).toBe("found")
+    if (result.status === "found") {
+      expect(result.server.id).toBe("ruachProject")
+    }
+  })
+
+  test("user_ruach_jsonc_takes_precedence_over_user_ruach_json", () => {
+    writeJson(join(configDir, "ruach.json"), {
+      lsp: { fromUserJson: { command: ["bun"], extensions: [".prio-c"] } },
+    })
+    writeRaw(
+      join(configDir, "ruach.jsonc"),
+      `{
+        "lsp": { "fromUserJsonc": { "command": ["bun"], "extensions": [".prio-c"] } }
+      }`
+    )
+
+    const result = findServerForExtension(".prio-c")
+    expect(result.status).toBe("found")
+    if (result.status === "found") {
+      expect(result.server.id).toBe("fromUserJsonc")
+    }
+  })
+
+  test("user_ruach_json_is_used_when_jsonc_missing", () => {
+    writeJson(join(configDir, "ruach.json"), {
+      lsp: { ruachUser: { command: ["bun"], extensions: [".prio-d"] } },
+    })
+
+    const result = findServerForExtension(".prio-d")
+    expect(result.status).toBe("found")
+    if (result.status === "found") {
+      expect(result.server.id).toBe("ruachUser")
+    }
+  })
+
+  test("project_overrides_user_overrides_opencode", () => {
+    writeJson(join(configDir, "opencode.json"), {
+      lsp: { sameServer: { command: ["bun"], extensions: [".prio-e"] } },
+    })
+    writeJson(join(configDir, "ruach.json"), {
+      lsp: { sameServer: { command: ["bun"], extensions: [".prio-e"], priority: 10 } },
+    })
+    writeJson(join(projectDir, ".opencode", "ruach.json"), {
+      lsp: { sameServer: { command: ["bun"], extensions: [".prio-e"], priority: 20 } },
+    })
+
+    const result = findServerForExtension(".prio-e")
+    expect(result.status).toBe("found")
+    if (result.status === "found") {
+      expect(result.server.priority).toBe(20)
+    }
+  })
+
+  test("invalid_high_priority_file_falls_back_to_next_candidate", () => {
+    writeRaw(join(projectDir, ".opencode", "ruach.jsonc"), `{ invalid`)
+    writeJson(join(projectDir, ".opencode", "ruach.json"), {
+      lsp: { fallbackProject: { command: ["bun"], extensions: [".prio-f"] } },
+    })
+
+    const result = findServerForExtension(".prio-f")
+    expect(result.status).toBe("found")
+    if (result.status === "found") {
+      expect(result.server.id).toBe("fallbackProject")
+    }
+  })
+
+  test("disabled_lsp_entries_are_respected_across_sources", () => {
+    writeJson(join(projectDir, ".opencode", "ruach.json"), {
+      lsp: { blocked: { disabled: true } },
+    })
+    writeJson(join(configDir, "ruach.json"), {
+      lsp: { blocked: { command: ["bun"], extensions: [".prio-g"] } },
+    })
+
+    const result = findServerForExtension(".prio-g")
+    expect(result.status).toBe("not_configured")
+  })
+
+  test("builtin_servers_still_loaded_when_not_overridden", () => {
+    const servers = getAllServers()
+    expect(servers.length).toBeGreaterThan(0)
+    expect(servers.some((server) => server.id === "typescript")).toBe(true)
+  })
 })

@@ -2,9 +2,9 @@ import { join, dirname } from "path"
 import { existsSync, mkdirSync, readFileSync, writeFileSync, renameSync, unlinkSync } from "fs"
 import { homedir } from "os"
 import type { z } from "zod"
-import type { OhMyOpenCodeConfig } from "../../config/schema"
+import type { RuachConfig } from "../../config/schema"
 
-export function getTaskDir(listId: string, config: Partial<OhMyOpenCodeConfig>): string {
+export function getTaskDir(listId: string, config: Partial<RuachConfig>): string {
   const tasksConfig = config.sisyphus?.tasks
 
   if (tasksConfig?.claude_code_compat) {
@@ -15,11 +15,11 @@ export function getTaskDir(listId: string, config: Partial<OhMyOpenCodeConfig>):
   return join(process.cwd(), storagePath, listId)
 }
 
-export function getTaskPath(listId: string, taskId: string, config: Partial<OhMyOpenCodeConfig>): string {
+export function getTaskPath(listId: string, taskId: string, config: Partial<RuachConfig>): string {
   return join(getTaskDir(listId, config), `${taskId}.json`)
 }
 
-export function getTeamDir(teamName: string, config: Partial<OhMyOpenCodeConfig>): string {
+export function getTeamDir(teamName: string, config: Partial<RuachConfig>): string {
   const swarmConfig = config.sisyphus?.swarm
 
   if (swarmConfig?.storage_path?.includes("claude")) {
@@ -30,7 +30,7 @@ export function getTeamDir(teamName: string, config: Partial<OhMyOpenCodeConfig>
   return join(process.cwd(), storagePath, teamName)
 }
 
-export function getInboxPath(teamName: string, agentName: string, config: Partial<OhMyOpenCodeConfig>): string {
+export function getInboxPath(teamName: string, agentName: string, config: Partial<RuachConfig>): string {
   return join(getTeamDir(teamName, config), "inboxes", `${agentName}.json`)
 }
 

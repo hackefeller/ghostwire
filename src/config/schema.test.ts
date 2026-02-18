@@ -5,7 +5,7 @@ import {
   BrowserAutomationProviderSchema,
   BuiltinCategoryNameSchema,
   CategoryConfigSchema,
-  OhMyOpenCodeConfigSchema,
+  RuachConfigSchema,
 } from "./schema"
 
 describe("disabled_mcps schema", () => {
@@ -16,7 +16,7 @@ describe("disabled_mcps schema", () => {
     }
 
     //#when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     //#then
     expect(result.success).toBe(true)
@@ -32,7 +32,7 @@ describe("disabled_mcps schema", () => {
     }
 
     //#when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     //#then
     expect(result.success).toBe(true)
@@ -48,7 +48,7 @@ describe("disabled_mcps schema", () => {
     }
 
     //#when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     //#then
     expect(result.success).toBe(true)
@@ -64,7 +64,7 @@ describe("disabled_mcps schema", () => {
     }
 
     //#when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     //#then
     expect(result.success).toBe(true)
@@ -80,7 +80,7 @@ describe("disabled_mcps schema", () => {
     }
 
     //#when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     //#then
     expect(result.success).toBe(false)
@@ -91,7 +91,7 @@ describe("disabled_mcps schema", () => {
     const config = {}
 
     //#when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     //#then
     expect(result.success).toBe(true)
@@ -107,7 +107,7 @@ describe("disabled_mcps schema", () => {
     }
 
     //#when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     //#then
     expect(result.success).toBe(false)
@@ -126,7 +126,7 @@ describe("disabled_mcps schema", () => {
     }
 
     //#when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     //#then
     expect(result.success).toBe(true)
@@ -404,7 +404,7 @@ describe("Sisyphus-Junior agent override", () => {
     }
 
     // #when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     // #then
     expect(result.success).toBe(true)
@@ -426,7 +426,7 @@ describe("Sisyphus-Junior agent override", () => {
     }
 
     // #when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     // #then
     expect(result.success).toBe(true)
@@ -451,7 +451,7 @@ describe("Sisyphus-Junior agent override", () => {
     }
 
     // #when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     // #then
     expect(result.success).toBe(true)
@@ -480,7 +480,7 @@ describe("Sisyphus-Junior agent override", () => {
     }
 
     // #when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     // #then
     expect(result.success).toBe(true)
@@ -505,7 +505,7 @@ describe("Sisyphus-Junior agent override", () => {
     }
 
     // #when
-    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+    const result = RuachConfigSchema.safeParse(config)
 
     // #then
     expect(result.success).toBe(true)
@@ -577,7 +577,7 @@ describe("BrowserAutomationConfigSchema", () => {
   })
 })
 
-describe("OhMyOpenCodeConfigSchema - browser_automation_engine", () => {
+describe("RuachConfigSchema - browser_automation_engine", () => {
   test("accepts browser_automation_engine config", () => {
     // #given
     const input = {
@@ -587,7 +587,7 @@ describe("OhMyOpenCodeConfigSchema - browser_automation_engine", () => {
     }
 
     // #when
-    const result = OhMyOpenCodeConfigSchema.safeParse(input)
+    const result = RuachConfigSchema.safeParse(input)
 
     // #then
     expect(result.success).toBe(true)
@@ -599,7 +599,7 @@ describe("OhMyOpenCodeConfigSchema - browser_automation_engine", () => {
     const input = {}
 
     // #when
-    const result = OhMyOpenCodeConfigSchema.safeParse(input)
+    const result = RuachConfigSchema.safeParse(input)
 
     // #then
     expect(result.success).toBe(true)

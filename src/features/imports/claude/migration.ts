@@ -1,7 +1,7 @@
 /**
  * Migration Tool for Configuration Upgrades
  * 
- * Helps users migrate from older configuration formats to the current oh-my-opencode
+ * Helps users migrate from older configuration formats to the current ruach
  * unified architecture in v3.2.0+.
  * 
  * Note: All compound-engineering components are now natively integrated and available

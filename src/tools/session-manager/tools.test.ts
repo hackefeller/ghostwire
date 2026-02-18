@@ -33,7 +33,7 @@ describe("session-manager tools", () => {
 
   test("session_list filters by project_path", async () => {
     // #given
-    const projectPath = "/Users/yeongyu/local-workspaces/oh-my-opencode"
+    const projectPath = "/Users/yeongyu/local-workspaces/ruach"
 
     // #when
     const result = await session_list.execute({ project_path: projectPath }, mockContext)

@@ -1,10 +1,10 @@
-# oh-my-opencode v3.2.0 - Compound Engineering True Merge
+# ruach v3.2.0 - Compound Engineering True Merge
 
 **Release Date:** February 7, 2026
 
 ## 🎉 Overview
 
-This release completes the **true merge** of the compound-engineering plugin into oh-my-opencode, bringing **125 production-grade components** directly into the core plugin. This is a massive feature expansion that adds advanced capabilities across code review, research, design, and workflow automation.
+This release completes the **true merge** of the compound-engineering plugin into ruach, bringing **125 production-grade components** directly into the core plugin. This is a massive feature expansion that adds advanced capabilities across code review, research, design, and workflow automation.
 
 ### Key Statistics
 - **28 Agents** integrated (from 5 categories: Review, Research, Design, Workflow, Documentation)
@@ -310,7 +310,7 @@ No action needed! All compound components are available by default with the `com
 ### For Existing Compound-Engineering Users
 Your existing configuration will be automatically migrated:
 
-1. Update oh-my-opencode to v3.2.0
+1. Update ruach to v3.2.0
 2. Your existing compound-engineering configuration will be detected
 3. Automatic migration will convert agent/command/skill names to `compound:` prefix
 4. A backup of your original config will be created
@@ -366,8 +366,8 @@ This work was completed in 5 focused commits:
 5. ✅ Build advanced workflows with new commands
 
 ### Feedback & Issues
-- Report bugs: https://github.com/code-yeongyu/oh-my-opencode/issues
-- Suggest features: https://github.com/code-yeongyu/oh-my-opencode/discussions
+- Report bugs: https://github.com/code-yeongyu/ruach/issues
+- Suggest features: https://github.com/code-yeongyu/ruach/discussions
 - Security concerns: Please report privately
 
 ---
@@ -406,7 +406,7 @@ This work was completed in 5 focused commits:
 
 ## 🙏 Credits
 
-This compound engineering merge represents extensive work to integrate best-in-class agents, commands, and skills directly into oh-my-opencode. Special thanks to the OpenCode community for feedback and support!
+This compound engineering merge represents extensive work to integrate best-in-class agents, commands, and skills directly into ruach. Special thanks to the OpenCode community for feedback and support!
 
 ---
 
@@ -414,8 +414,8 @@ This compound engineering merge represents extensive work to integrate best-in-c
 
 For questions or issues related to this release:
 - **Documentation**: https://opencode.ai/docs
-- **GitHub Issues**: https://github.com/code-yeongyu/oh-my-opencode/issues
-- **Discussions**: https://github.com/code-yeongyu/oh-my-opencode/discussions
+- **GitHub Issues**: https://github.com/code-yeongyu/ruach/issues
+- **Discussions**: https://github.com/code-yeongyu/ruach/discussions
 
 ---
 
@@ -431,10 +431,10 @@ For questions or issues related to this release:
 - 📦 Zero breaking changes, fully backward compatible
 
 ### v3.1.10 (Earlier)
-- Previous releases (see https://github.com/code-yeongyu/oh-my-opencode/releases)
+- Previous releases (see https://github.com/code-yeongyu/ruach/releases)
 
 ---
 
-**Thank you for upgrading to oh-my-opencode v3.2.0!**
+**Thank you for upgrading to ruach v3.2.0!**
 
 🚀 *Advanced agent orchestration for the modern development era*

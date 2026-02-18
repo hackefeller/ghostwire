@@ -8,12 +8,12 @@ date: 2026-02-06
 
 ## Overview
 
-Successfully consolidated oh-my-opencode and compound-engineering into a single unified plugin. All 125 components are now natively available with the `compound:` namespace prefix in oh-my-opencode v3.2.0.
+Successfully consolidated ruach and compound-engineering into a single unified plugin. All 125 components are now natively available with the `compound:` namespace prefix in ruach v3.2.0.
 
 ## Problem Statement (Resolved in v3.2.0)
 
 Previously, users needed to manage two separate plugins:
-1. **oh-my-opencode**: Native OpenCode orchestration with agents, hooks, tools, MCPs
+1. **ruach**: Native OpenCode orchestration with agents, hooks, tools, MCPs
 2. **compound-engineering-plugin**: Advanced agents, commands, and skills (now integrated)
 
 This creates:
@@ -281,7 +281,7 @@ export const FeatureBundleConfigSchema = z.object({
 
 ### Required
 - OpenCode SDK >= 1.0.150
-- oh-my-opencode codebase access
+- ruach codebase access
 - Build and test infrastructure
 
 ### Optional
@@ -348,10 +348,10 @@ bun test src/features/imports/claude/mapper.test.ts
 
 All questions have been addressed through the complete integration:
 1. ✅ All components now native - no import layer needed
-2. ✅ Updates handled through oh-my-opencode releases
+2. ✅ Updates handled through ruach releases
 3. ✅ Components are core code - maintainable and consistent
 4. ✅ Rollback via git versioning if needed  
-5. ✅ Configuration system unified with oh-my-opencode schema
+5. ✅ Configuration system unified with ruach schema
 
 ---
 

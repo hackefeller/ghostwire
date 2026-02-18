@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { OhMyOpenCodeConfigSchema, type OhMyOpenCodeConfig } from "./config";
+import { RuachConfigSchema, type RuachConfig } from "./config";
 import {
   log,
   deepMerge,
@@ -15,7 +15,7 @@ import { migrateCompoundEngineering, createConfigBackup } from "./shared/compoun
 export function loadConfigFromPath(
   configPath: string,
   ctx: unknown
-): OhMyOpenCodeConfig | null {
+): RuachConfig | null {
   try {
     if (fs.existsSync(configPath)) {
       const content = fs.readFileSync(configPath, "utf-8");
@@ -37,7 +37,7 @@ export function loadConfigFromPath(
         });
       }
 
-      const result = OhMyOpenCodeConfigSchema.safeParse(rawConfig);
+      const result = RuachConfigSchema.safeParse(rawConfig);
 
       if (!result.success) {
         const errorMsg = result.error.issues
@@ -63,9 +63,9 @@ export function loadConfigFromPath(
 }
 
 export function mergeConfigs(
-  base: OhMyOpenCodeConfig,
-  override: OhMyOpenCodeConfig
-): OhMyOpenCodeConfig {
+  base: RuachConfig,
+  override: RuachConfig
+): RuachConfig {
   return {
     ...base,
     ...override,
@@ -108,7 +108,7 @@ export function mergeConfigs(
 export function loadPluginConfig(
   directory: string,
   ctx: unknown
-): OhMyOpenCodeConfig {
+): RuachConfig {
   // User-level config path - prefer .jsonc over .json
   const configDir = getOpenCodeConfigDir({ binary: "opencode" });
   const userBasePath = path.join(configDir, "ruach");
@@ -127,7 +127,7 @@ export function loadPluginConfig(
       : projectBasePath + ".json";
 
   // Load user config first (base)
-  let config: OhMyOpenCodeConfig =
+  let config: RuachConfig =
     loadConfigFromPath(userConfigPath, ctx) ?? {};
 
   // Override with project config

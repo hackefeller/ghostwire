@@ -914,7 +914,7 @@ This naming scheme ensures:
 ## Integration Points
 
 ### With Your Configuration
-All components are available through the standard oh-my-opencode configuration system:
+All components are available through the standard ruach configuration system:
 
 ```javascript
 // opencode.json or .opencode/config.jsonc

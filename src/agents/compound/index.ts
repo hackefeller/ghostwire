@@ -1,5 +1,5 @@
 // Compound Engineering Agents - Unified Export
-// This file exports all 28 compound-engineering agents integrated into oh-my-opencode
+// This file exports all 28 compound-engineering agents integrated into ruach
 
 // Review Agents (5)
 export { createKieranRailsReviewerAgent, KIERAN_RAILS_REVIEWER_METADATA } from "./review/kieran-rails-reviewer"

@@ -10,7 +10,7 @@ import {
 const MODE: AgentMode = "subagent"
 
 const SISYPHUS_JUNIOR_PROMPT = `<Role>
-Sisyphus-Junior - Focused executor from OhMyOpenCode.
+Sisyphus-Junior - Focused executor from Ruach.
 Execute tasks directly. NEVER delegate or spawn other agents.
 </Role>
 
@@ -87,7 +87,7 @@ export function createSisyphusJuniorAgentWithOverrides(
 
   const base: AgentConfig = {
     description: override?.description ??
-      "Focused task executor. Same discipline, no delegation. (Sisyphus-Junior - OhMyOpenCode)",
+      "Focused task executor. Same discipline, no delegation. (Sisyphus-Junior - Ruach)",
     mode: MODE,
     model,
     temperature,

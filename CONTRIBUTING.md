@@ -1,6 +1,6 @@
 # Contributing to Oh My OpenCode
 
-First off, thanks for taking the time to contribute! This document provides guidelines and instructions for contributing to oh-my-opencode.
+First off, thanks for taking the time to contribute! This document provides guidelines and instructions for contributing to ruach.
 
 ## Table of Contents
 
@@ -61,8 +61,8 @@ If English isn't your first language, don't worry! We value your contributions r
 
 ```bash
 # Clone the repository
-git clone https://github.com/code-yeongyu/oh-my-opencode.git
-cd oh-my-opencode
+git clone https://github.com/code-yeongyu/ruach.git
+cd ruach
 
 # Install dependencies (bun only - never use npm/yarn)
 bun install
@@ -84,21 +84,21 @@ After making changes, you can test your local build in OpenCode:
    ```json
    {
      "plugin": [
-       "file:///absolute/path/to/oh-my-opencode/dist/index.js"
+       "file:///absolute/path/to/ruach/dist/index.js"
      ]
    }
    ```
    
-   For example, if your project is at `/Users/yourname/projects/oh-my-opencode`:
+   For example, if your project is at `/Users/yourname/projects/ruach`:
    ```json
    {
      "plugin": [
-       "file:///Users/yourname/projects/oh-my-opencode/dist/index.js"
+       "file:///Users/yourname/projects/ruach/dist/index.js"
      ]
    }
    ```
 
-   > **Note**: Remove `"oh-my-opencode"` from the plugin array if it exists, to avoid conflicts with the npm version.
+   > **Note**: Remove `"ruach"` from the plugin array if it exists, to avoid conflicts with the npm version.
 
 3. **Restart OpenCode** to load the changes.
 
@@ -107,7 +107,7 @@ After making changes, you can test your local build in OpenCode:
 ## Project Structure
 
 ```
-oh-my-opencode/
+ruach/
 ├── src/
 │   ├── agents/        # AI agents (OmO, oracle, librarian, explore, etc.)
 │   ├── hooks/         # 21 lifecycle hooks
@@ -117,7 +117,7 @@ oh-my-opencode/
 │   ├── config/        # Zod schemas and TypeScript types
 │   ├── auth/          # Google Antigravity OAuth
 │   ├── shared/        # Common utilities
-│   └── index.ts       # Main plugin entry (OhMyOpenCodePlugin)
+│   └── index.ts       # Main plugin entry (RuachPlugin)
 ├── script/            # Build utilities (build-schema.ts, publish.ts)
 ├── assets/            # JSON schema
 └── dist/              # Build output (ESM + .d.ts)

@@ -27,12 +27,12 @@ date: 2026-02-06
 
 ## Overview
 
-Successfully integrated all compound-engineering capabilities directly into oh-my-opencode. All 125 components (28 agents, 24 commands, 73 skills) are now natively available with the `compound:` namespace prefix.
+Successfully integrated all compound-engineering capabilities directly into ruach. All 125 components (28 agents, 24 commands, 73 skills) are now natively available with the `compound:` namespace prefix.
 
 ## Problem Statement
 
 Before the merge, users needed separate plugins for different capabilities:
-1. **oh-my-opencode**: Native OpenCode orchestration with agents, hooks, tools, MCPs
+1. **ruach**: Native OpenCode orchestration with agents, hooks, tools, MCPs
 2. **compound-engineering-plugin**: Advanced agents, commands, and skills (now integrated)
 
 This creates:
@@ -457,7 +457,7 @@ it("returns empty components when path is missing", async () => {
 
 ### Required
 - OpenCode SDK >= 1.0.150
-- oh-my-opencode codebase access
+- ruach codebase access
 - Build and test infrastructure (Bun, TypeScript)
 
 ### Optional
@@ -517,7 +517,7 @@ it("returns empty components when path is missing", async () => {
 
 All questions have been resolved through complete integration:
 1. ✅ All components now native - no import layer needed
-2. ✅ Updates handled through oh-my-opencode releases  
+2. ✅ Updates handled through ruach releases  
 3. ✅ Components are part of core - full maintainability
 4. ✅ Rollback via git if needed
 5. ✅ Configuration system replaced with native schema

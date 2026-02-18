@@ -236,7 +236,7 @@ describe("sisyphus-task", () => {
       )
       
       // #then proceeds without error - uses fallback chain
-      expect(result).not.toContain("oh-my-opencode requires a default model")
+      expect(result).not.toContain("ruach requires a default model")
     })
 
     test("returns clear error when no model can be resolved", async () => {

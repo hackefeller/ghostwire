@@ -1,11 +1,11 @@
 {
-  "name": "oh-my-opencode-windows-x64",
+  "name": "ruach-windows-x64",
   "version": "3.1.10",
-  "description": "Platform-specific binary for oh-my-opencode (windows-x64)",
+  "description": "Platform-specific binary for ruach (windows-x64)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/code-yeongyu/oh-my-opencode"
+    "url": "https://github.com/code-yeongyu/ruach"
   },
   "os": [
     "win32"
@@ -17,6 +17,6 @@
     "bin"
   ],
   "bin": {
-    "oh-my-opencode": "./bin/oh-my-opencode.exe"
+    "ruach": "./bin/ruach.exe"
   }
 }

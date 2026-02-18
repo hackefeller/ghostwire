@@ -1,9 +1,9 @@
-import type { OhMyOpenCodeConfig } from "../config"
+import type { RuachConfig } from "../config"
 import { findCaseInsensitive } from "./case-insensitive"
 import { AGENT_MODEL_REQUIREMENTS, CATEGORY_MODEL_REQUIREMENTS } from "./model-requirements"
 
 export function resolveAgentVariant(
-  config: OhMyOpenCodeConfig,
+  config: RuachConfig,
   agentName?: string
 ): string | undefined {
   if (!agentName) {
@@ -31,7 +31,7 @@ export function resolveAgentVariant(
 }
 
 export function resolveVariantForModel(
-  config: OhMyOpenCodeConfig,
+  config: RuachConfig,
   agentName: string,
   currentModel: { providerID: string; modelID: string },
 ): string | undefined {
@@ -68,7 +68,7 @@ function findVariantInChain(
 }
 
 export function applyAgentVariant(
-  config: OhMyOpenCodeConfig,
+  config: RuachConfig,
   agentName: string | undefined,
   message: { variant?: string }
 ): void {

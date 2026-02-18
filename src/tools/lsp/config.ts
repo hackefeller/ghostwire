@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "fs"
 import { join } from "path"
 import { BUILTIN_SERVERS, EXT_TO_LANG, LSP_INSTALL_HINTS } from "./constants"
 import type { ResolvedServer, ServerLookupResult } from "./types"
-import { getOpenCodeConfigDir, getDataDir } from "../../shared"
+import { getOpenCodeConfigDir, getDataDir, parseJsonc } from "../../shared"
 
 interface LspEntry {
   disabled?: boolean
@@ -26,30 +26,48 @@ interface ServerWithSource extends ResolvedServer {
 function loadJsonFile<T>(path: string): T | null {
   if (!existsSync(path)) return null
   try {
-    return JSON.parse(readFileSync(path, "utf-8")) as T
+    return parseJsonc<T>(readFileSync(path, "utf-8"))
   } catch {
     return null
   }
 }
 
-function getConfigPaths(): { project: string; user: string; opencode: string } {
+function getConfigPaths(): {
+  project: string[]
+  user: string[]
+  opencode: string
+} {
   const cwd = process.cwd()
   const configDir = getOpenCodeConfigDir({ binary: "opencode" })
   return {
-    project: join(cwd, ".opencode", "oh-my-opencode.json"),
-    user: join(configDir, "oh-my-opencode.json"),
+    project: [
+      join(cwd, ".opencode", "ruach.jsonc"),
+      join(cwd, ".opencode", "ruach.json"),
+    ],
+    user: [
+      join(configDir, "ruach.jsonc"),
+      join(configDir, "ruach.json"),
+    ],
     opencode: join(configDir, "opencode.json"),
   }
+}
+
+function loadFirstValidConfig(paths: string[]): ConfigJson | null {
+  for (const path of paths) {
+    const config = loadJsonFile<ConfigJson>(path)
+    if (config) return config
+  }
+  return null
 }
 
 function loadAllConfigs(): Map<ConfigSource, ConfigJson> {
   const paths = getConfigPaths()
   const configs = new Map<ConfigSource, ConfigJson>()
 
-  const project = loadJsonFile<ConfigJson>(paths.project)
+  const project = loadFirstValidConfig(paths.project)
   if (project) configs.set("project", project)
 
-  const user = loadJsonFile<ConfigJson>(paths.user)
+  const user = loadFirstValidConfig(paths.user)
   if (user) configs.set("user", user)
 
   const opencode = loadJsonFile<ConfigJson>(paths.opencode)
@@ -73,6 +91,7 @@ function getMergedServers(): ServerWithSource[] {
     for (const [id, entry] of Object.entries(config.lsp)) {
       if (entry.disabled) {
         disabled.add(id)
+        seen.add(id)
         continue
       }
 
@@ -217,7 +236,7 @@ export function isServerInstalled(command: string[]): boolean {
     }
   }
 
-  // Runtime wrappers (bun/node) are always available in oh-my-opencode context
+  // Runtime wrappers (bun/node) are always available in plugin context
   if (cmd === "bun" || cmd === "node") {
     return true
   }
@@ -284,6 +303,10 @@ export function getAllServers(): Array<{
   return result
 }
 
-export function getConfigPaths_(): { project: string; user: string; opencode: string } {
+export function getConfigPaths_(): {
+  project: string[]
+  user: string[]
+  opencode: string
+} {
   return getConfigPaths()
 }

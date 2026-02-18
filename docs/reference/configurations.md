@@ -46,8 +46,7 @@ Config file locations (priority order):
 | **Windows**     | `~/.config/opencode/ruach.json` (preferred) or `%APPDATA%\opencode\ruach.json` (fallback) |
 | **macOS/Linux** | `~/.config/opencode/ruach.json`                                                                    |
 
-**Legacy filename note (LSP only):**
-The LSP tooling currently reads `oh-my-opencode.json` at the same project/user paths. If you customize `lsp`, mirror that block into the legacy filename until the loader is updated.
+LSP tooling reads the same ruach config files (`ruach.jsonc`/`ruach.json`) with the same project-over-user precedence.
 
 Schema autocomplete supported:
 

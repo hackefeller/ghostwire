@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document defines the mapping strategy for integrating 125+ compound-engineering components into oh-my-opencode architecture.
+This document defines the mapping strategy for integrating 125+ compound-engineering components into ruach architecture.
 
 ## Component Analysis
 
@@ -124,7 +124,7 @@ Analysis Skills (8):
 
 **Rationale**: 
 - Clear identification of compound-engineering origin
-- Prevents naming conflicts with existing oh-my-opencode components
+- Prevents naming conflicts with existing ruach components
 - Maintains traceability for debugging and documentation
 - Allows selective enabling/disabling by namespace
 
@@ -235,7 +235,7 @@ src/features/builtin-skills/compound/
 
 #### **Potential Naming Conflicts**
 ```typescript
-// Existing oh-my-opencode agents
+// Existing ruach agents
 const existingAgents = [
   'sisyphus', 'oracle', 'librarian', 'explore', 'prometheus'
 ];

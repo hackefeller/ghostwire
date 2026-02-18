@@ -1,12 +1,12 @@
-# Migration Guide: oh-my-opencode v3.2.0 - Compound Engineering Integration
+# Migration Guide: ruach v3.2.0 - Compound Engineering Integration
 
-**Upgrading from compound-engineering plugin to unified oh-my-opencode**
+**Upgrading from compound-engineering plugin to unified ruach**
 
 ---
 
 ## Overview
 
-oh-my-opencode v3.2.0 integrates the compound-engineering plugin directly into the core, making all 125 components (28 agents, 24 commands, 73 skills) available natively with the `compound:` namespace prefix.
+ruach v3.2.0 integrates the compound-engineering plugin directly into the core, making all 125 components (28 agents, 24 commands, 73 skills) available natively with the `compound:` namespace prefix.
 
 **Key Points:**
 - ✅ **Zero Breaking Changes** - Full backward compatibility
@@ -18,15 +18,15 @@ oh-my-opencode v3.2.0 integrates the compound-engineering plugin directly into t
 
 ## Upgrade Steps
 
-### Step 1: Update oh-my-opencode
+### Step 1: Update ruach
 
 ```bash
 # Using your package manager
-npm install oh-my-opencode@3.2.0
+npm install ruach@3.2.0
 # or
-yarn upgrade oh-my-opencode@3.2.0
+yarn upgrade ruach@3.2.0
 # or
-bun upgrade oh-my-opencode@3.2.0
+bun upgrade ruach@3.2.0
 ```
 
 ### Step 2: Verify Installation
@@ -49,7 +49,7 @@ This will show:
 
 ### Step 4: Done!
 
-Your configuration has been automatically migrated. Continue using oh-my-opencode as before.
+Your configuration has been automatically migrated. Continue using ruach as before.
 
 ---
 
@@ -88,7 +88,7 @@ If you previously had compound-engineering plugin configured:
       model: "anthropic/claude-opus-4-5"
     }
   }
-  // Note: Now using native oh-my-opencode components
+  // Note: Now using native ruach components
 }
 ```
 
@@ -136,7 +136,7 @@ If you prefer to manually update your configuration:
 All commands follow the pattern: `compound:{category}:{action}`
 
 ```javascript
-// All commands are now native to oh-my-opencode
+// All commands are now native to ruach
 // No imports needed - use directly with compound: prefix
 
 // Available commands:
@@ -184,7 +184,7 @@ After upgrading, minimal configuration enables all compound components:
 
 ```javascript
 {
-  // Core oh-my-opencode agents
+  // Core ruach agents
   agents: {
     sisyphus: {
       model: "anthropic/claude-opus-4-5"
@@ -227,10 +227,10 @@ cp ~/.config/opencode/config.jsonc.backup.2026-02-07T12:34:56Z \
    ~/.config/opencode/config.jsonc
 ```
 
-### Option 2: Downgrade oh-my-opencode
+### Option 2: Downgrade ruach
 
 ```bash
-npm install oh-my-opencode@3.1.10
+npm install ruach@3.1.10
 # or your previous version
 ```
 
@@ -288,7 +288,7 @@ opencode agent list --verbose
 opencode agent describe compound:kieran-rails-reviewer
 
 # See full documentation
-# https://github.com/code-yeongyu/oh-my-opencode/docs
+# https://github.com/code-yeongyu/ruach/docs
 ```
 
 ---
@@ -385,7 +385,7 @@ commands: {
 
 ### Q: Do I need to uninstall the old compound-engineering plugin?
 
-**A**: No, it can remain installed but will not be used. The integrated version in oh-my-opencode v3.2.0 takes precedence.
+**A**: No, it can remain installed but will not be used. The integrated version in ruach v3.2.0 takes precedence.
 
 ### Q: Will my old configuration still work?
 
@@ -430,7 +430,7 @@ cp ~/.config/opencode/config.jsonc.backup.* ~/.config/opencode/config.jsonc
 
 ### Q: Where do I report issues?
 
-**A**: Issues and feature requests: https://github.com/code-yeongyu/oh-my-opencode/issues
+**A**: Issues and feature requests: https://github.com/code-yeongyu/ruach/issues
 
 ### Q: Is this a beta?
 
@@ -446,7 +446,7 @@ cp ~/.config/opencode/config.jsonc.backup.* ~/.config/opencode/config.jsonc
 - Multiple imports and configurations
 
 **After Migration:**
-- Integrated into oh-my-opencode
+- Integrated into ruach
 - 125 components available natively
 - Simplified configuration with `compound:` namespace
 - No action required - automatic migration
@@ -474,8 +474,8 @@ For release notes, see: `RELEASE_NOTES_v3.2.0.md`
 
 ---
 
-**Questions? See the oh-my-opencode documentation:**
+**Questions? See the ruach documentation:**
 - https://opencode.ai/docs
-- https://github.com/code-yeongyu/oh-my-opencode
+- https://github.com/code-yeongyu/ruach
 
 **Happy coding with 125 new superpowers! 🚀**

@@ -247,7 +247,7 @@ async function showSpinnerToast(ctx: PluginInput, version: string, message: stri
     await ctx.client.tui
       .showToast({
         body: {
-          title: `${spinner} OhMyOpenCode ${version}`,
+          title: `${spinner} Ruach ${version}`,
           message,
           variant: "info" as const,
           duration: frameInterval + 50,
@@ -266,7 +266,7 @@ async function showUpdateAvailableToast(
   await ctx.client.tui
     .showToast({
       body: {
-        title: `OhMyOpenCode ${latestVersion}`,
+        title: `Ruach ${latestVersion}`,
         message: getToastMessage(true, latestVersion),
         variant: "info" as const,
         duration: 8000,
@@ -280,7 +280,7 @@ async function showAutoUpdatedToast(ctx: PluginInput, oldVersion: string, newVer
   await ctx.client.tui
     .showToast({
       body: {
-        title: `OhMyOpenCode Updated!`,
+        title: `Ruach Updated!`,
         message: `v${oldVersion} → v${newVersion}\nRestart OpenCode to apply.`,
         variant: "success" as const,
         duration: 8000,

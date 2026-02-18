@@ -1,11 +1,11 @@
 import { describe, expect, test } from "bun:test"
-import type { OhMyOpenCodeConfig } from "../config"
+import type { RuachConfig } from "../config"
 import { applyAgentVariant, resolveAgentVariant, resolveVariantForModel } from "./agent-variant"
 
 describe("resolveAgentVariant", () => {
   test("returns undefined when agent name missing", () => {
     // #given
-    const config = {} as OhMyOpenCodeConfig
+    const config = {} as RuachConfig
 
     // #when
     const variant = resolveAgentVariant(config)
@@ -20,7 +20,7 @@ describe("resolveAgentVariant", () => {
       agents: {
         sisyphus: { variant: "low" },
       },
-    } as OhMyOpenCodeConfig
+    } as RuachConfig
 
     // #when
     const variant = resolveAgentVariant(config, "sisyphus")
@@ -38,7 +38,7 @@ describe("resolveAgentVariant", () => {
       categories: {
         ultrabrain: { model: "openai/gpt-5.2", variant: "xhigh" },
       },
-    } as OhMyOpenCodeConfig
+    } as RuachConfig
 
     // #when
     const variant = resolveAgentVariant(config, "sisyphus")
@@ -55,7 +55,7 @@ describe("applyAgentVariant", () => {
       agents: {
         sisyphus: { variant: "low" },
       },
-    } as OhMyOpenCodeConfig
+    } as RuachConfig
     const message: { variant?: string } = {}
 
     // #when
@@ -71,7 +71,7 @@ describe("applyAgentVariant", () => {
       agents: {
         sisyphus: { variant: "low" },
       },
-    } as OhMyOpenCodeConfig
+    } as RuachConfig
     const message = { variant: "max" }
 
     // #when
@@ -85,7 +85,7 @@ describe("applyAgentVariant", () => {
 describe("resolveVariantForModel", () => {
   test("returns correct variant for anthropic provider", () => {
     // #given
-    const config = {} as OhMyOpenCodeConfig
+    const config = {} as RuachConfig
     const model = { providerID: "anthropic", modelID: "claude-opus-4-5" }
 
     // #when
@@ -97,7 +97,7 @@ describe("resolveVariantForModel", () => {
 
   test("returns correct variant for openai provider", () => {
     // #given
-    const config = {} as OhMyOpenCodeConfig
+    const config = {} as RuachConfig
     const model = { providerID: "openai", modelID: "gpt-5.2" }
 
     // #when
@@ -109,7 +109,7 @@ describe("resolveVariantForModel", () => {
 
   test("returns undefined for provider with no variant in chain", () => {
     // #given
-    const config = {} as OhMyOpenCodeConfig
+    const config = {} as RuachConfig
     const model = { providerID: "google", modelID: "gemini-3-pro" }
 
     // #when
@@ -121,7 +121,7 @@ describe("resolveVariantForModel", () => {
 
   test("returns undefined for provider not in chain", () => {
     // #given
-    const config = {} as OhMyOpenCodeConfig
+    const config = {} as RuachConfig
     const model = { providerID: "unknown-provider", modelID: "some-model" }
 
     // #when
@@ -133,7 +133,7 @@ describe("resolveVariantForModel", () => {
 
   test("returns undefined for unknown agent", () => {
     // #given
-    const config = {} as OhMyOpenCodeConfig
+    const config = {} as RuachConfig
     const model = { providerID: "anthropic", modelID: "claude-opus-4-5" }
 
     // #when
@@ -145,7 +145,7 @@ describe("resolveVariantForModel", () => {
 
   test("returns variant for zai-coding-plan provider without variant", () => {
     // #given
-    const config = {} as OhMyOpenCodeConfig
+    const config = {} as RuachConfig
     const model = { providerID: "zai-coding-plan", modelID: "glm-4.7" }
 
     // #when
@@ -161,7 +161,7 @@ describe("resolveVariantForModel", () => {
       agents: {
         "custom-agent": { category: "ultrabrain" },
       },
-    } as OhMyOpenCodeConfig
+    } as RuachConfig
     const model = { providerID: "openai", modelID: "gpt-5.2-codex" }
 
     // #when
@@ -173,7 +173,7 @@ describe("resolveVariantForModel", () => {
 
   test("returns correct variant for oracle agent with openai", () => {
     // #given
-    const config = {} as OhMyOpenCodeConfig
+    const config = {} as RuachConfig
     const model = { providerID: "openai", modelID: "gpt-5.2" }
 
     // #when
@@ -185,7 +185,7 @@ describe("resolveVariantForModel", () => {
 
   test("returns correct variant for oracle agent with anthropic", () => {
     // #given
-    const config = {} as OhMyOpenCodeConfig
+    const config = {} as RuachConfig
     const model = { providerID: "anthropic", modelID: "claude-opus-4-5" }
 
     // #when

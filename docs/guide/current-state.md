@@ -19,7 +19,7 @@ Ruach is an OpenCode plugin with a CLI wrapper. It provides orchestration (Prome
 - **User**: `~/.config/opencode/ruach.json` or `~/.config/opencode/ruach.jsonc`
 - **OpenCode core**: `~/.config/opencode/opencode.json`
 
-**Legacy note (LSP only):** LSP config still reads `oh-my-opencode.json` (project/user). If you customize `lsp`, mirror that block into the legacy filename for now.
+LSP config now follows the same ruach config discovery path as runtime config (`ruach.jsonc` then `ruach.json` in project/user scope).
 
 ## Core Runtime Systems
 
@@ -54,8 +54,7 @@ Implemented as a library, not wired into runtime:
 
 ## Known Mismatches / Legacy Names
 
-- Some user-facing strings still mention `oh-my-opencode` in tool messages and LSP helpers.
-- Config load uses `ruach.json` only; legacy `oh-my-opencode.json` is not loaded except for LSP.
+- Legacy naming artifacts are being removed; prefer `ruach` naming in all user-facing text and config guidance.
 
 ## How to Start Work
 
@@ -65,4 +64,3 @@ Implemented as a library, not wired into runtime:
    - `bun run build`
    - `bun test`
    - `bun run typecheck`
-

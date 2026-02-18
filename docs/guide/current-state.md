@@ -40,12 +40,6 @@ Implemented as a library, not wired into runtime:
 - **Security checks**: basic path validation (blocks `..` and null bytes).
 - **Status**: available for tests/utilities, but **not invoked** by `src/index.ts`.
 
-## Feature Bundles
-
-- **Registry/loader/cache**: `src/features/bundles/`
-- **Compound bundle listing**: `src/features/bundles/compound-engineering/`
-- **Status**: not wired into runtime; loader returns placeholders.
-
 ## Compound Engineering Components
 
 - **Integrated into core** with `compound:` namespace.

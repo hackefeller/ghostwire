@@ -127,7 +127,6 @@ Implemented and runtime-wired:
 - MCP merge path and skill command loading path
 
 Implemented but not currently integrated into the main runtime bootstrap:
-- Feature bundle infrastructure (`src/features/bundles/*`)
 - Claude import translation utilities under `src/features/imports/claude/*` (library/tested surfaces, not core bootstrap wiring)
 
 ## 11) Operational Hotspots / Risk Zones

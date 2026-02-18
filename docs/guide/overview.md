@@ -162,6 +162,7 @@ For detailed configuration options including per-agent settings, category custom
 ## Next Steps
 
 - [Understanding the Orchestration System](./understanding-orchestration-system.md) - Deep dive into Prometheus → Orchestrator → Junior workflow
+- [System Deep Dive](../architecture/system-deep-dive.md) - Runtime architecture, control flow, and data flow
 - [Current State](./current-state.md) - What is actually implemented right now
 - [Ultrawork Manifesto](./ultrawork-manifesto.md) - Philosophy and principles behind Ruach
 - [Installation Guide](./installation.md) - Detailed installation instructions

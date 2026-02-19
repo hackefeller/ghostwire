@@ -1,8 +1,8 @@
 import type { PluginInput } from "@opencode-ai/plugin"
-import type { ShellType } from "../../../shared"
+import type { ShellType } from "../../../integration/shared"
 import { HOOK_NAME, NON_INTERACTIVE_ENV, SHELL_COMMAND_PATTERNS } from "./constants"
 import { isNonInteractive } from "./detector"
-import { log, buildEnvPrefix } from "../../../shared"
+import { log, buildEnvPrefix } from "../../../integration/shared"
 
 export * from "./constants"
 export * from "./detector"

@@ -1,11 +1,11 @@
 import { promises as fs, type Dirent } from "fs"
 import { join, basename } from "path"
-import { parseFrontmatter } from "../../../shared/frontmatter"
-import { sanitizeModelField } from "../../../shared/model-sanitizer"
-import { isMarkdownFile } from "../../../shared/file-utils"
+import { parseFrontmatter } from "../../../integration/shared/frontmatter"
+import { sanitizeModelField } from "../../../integration/shared/model-sanitizer"
+import { isMarkdownFile } from "../../../integration/shared/file-utils"
 import { getClaudeConfigDir } from "../../../platform/claude/config-dir"
 import { getOpenCodeConfigDir } from "../../../platform/opencode/config-dir"
-import { log } from "../../../shared/logger"
+import { log } from "../../../integration/shared/logger"
 import type { CommandScope, CommandDefinition, CommandFrontmatter, LoadedCommand } from "./types"
 
 async function loadCommandsFromDir(

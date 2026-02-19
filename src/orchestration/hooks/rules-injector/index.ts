@@ -15,7 +15,7 @@ import {
   loadInjectedRules,
   saveInjectedRules,
 } from "./storage";
-import { createDynamicTruncator } from "../../../shared/dynamic-truncator";
+import { createDynamicTruncator } from "../../../integration/shared/dynamic-truncator";
 
 interface ToolExecuteInput {
   tool: string;

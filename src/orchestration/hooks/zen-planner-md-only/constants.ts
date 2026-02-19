@@ -1,5 +1,5 @@
-import { createSystemDirective, SystemDirectiveTypes } from "../../../shared/system-directive"
-import { getAgentDisplayName } from "../../../shared/agent-display-names"
+import { createSystemDirective, SystemDirectiveTypes } from "../../../integration/shared/system-directive"
+import { getAgentDisplayName } from "../../../integration/shared/agent-display-names"
 
 export const HOOK_NAME = "zen-planner-md-only"
 

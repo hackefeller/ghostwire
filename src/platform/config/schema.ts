@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { AnyMcpNameSchema, McpNameSchema } from "../mcp/types";
+import { AnyMcpNameSchema, McpNameSchema } from "../../integration/mcp/types";
 
 const PermissionValue = z.enum(["ask", "allow", "deny"]);
 
@@ -628,4 +628,4 @@ export {
   type AnyMcpName,
   McpNameSchema,
   type McpName,
-} from "../mcp/types";
+} from "../../integration/mcp/types";

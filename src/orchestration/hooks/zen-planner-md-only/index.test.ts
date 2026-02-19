@@ -3,7 +3,7 @@ import { mkdirSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 import { createAugurPlannerMdOnlyHook } from "./index"
 import { MESSAGE_STORAGE } from "../../../execution/features/hook-message-injector"
-import { SYSTEM_DIRECTIVE_PREFIX, createSystemDirective, SystemDirectiveTypes } from "../../../shared/system-directive"
+import { SYSTEM_DIRECTIVE_PREFIX, createSystemDirective, SystemDirectiveTypes } from "../../../integration/shared/system-directive"
 import { clearSessionAgent } from "../../../execution/features/claude-code-session-state"
 
 describe("zen-planner-md-only", () => {

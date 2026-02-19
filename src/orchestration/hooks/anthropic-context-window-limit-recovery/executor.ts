@@ -3,7 +3,7 @@ import type {
   RetryState,
   TruncateState,
 } from "./types";
-import type { ExperimentalConfig } from "../../../config";
+import type { ExperimentalConfig } from "../../../platform/config";
 import { RETRY_CONFIG, TRUNCATE_CONFIG } from "./types";
 
 import {
@@ -17,7 +17,7 @@ import {
   injectTextPart,
   replaceEmptyTextParts,
 } from "../session-recovery/storage";
-import { log } from "../../../shared/logger";
+import { log } from "../../../integration/shared/logger";
 
 const PLACEHOLDER_TEXT = "[user interrupted]";
 

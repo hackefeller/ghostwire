@@ -1,13 +1,13 @@
 import type { LoadedSkill, SkillScope, SkillMetadata } from "./types"
-import type { SkillsConfig, SkillDefinition } from "../../../config/schema"
+import type { SkillsConfig, SkillDefinition } from "../../../platform/config/schema"
 import type { BuiltinSkill } from "../builtin-skills/types"
 import type { CommandDefinition } from "../claude-code-command-loader/types"
 import { readFileSync, existsSync } from "fs"
 import { dirname, resolve, isAbsolute } from "path"
 import { homedir } from "os"
-import { parseFrontmatter } from "../../../shared/frontmatter"
-import { sanitizeModelField } from "../../../shared/model-sanitizer"
-import { deepMerge } from "../../../shared/deep-merge"
+import { parseFrontmatter } from "../../../integration/shared/frontmatter"
+import { sanitizeModelField } from "../../../integration/shared/model-sanitizer"
+import { deepMerge } from "../../../integration/shared/deep-merge"
 
 function parseAllowedToolsFromMetadata(allowedTools: string | string[] | undefined): string[] | undefined {
   if (!allowedTools) return undefined

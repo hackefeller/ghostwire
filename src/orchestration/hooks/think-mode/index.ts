@@ -1,7 +1,7 @@
 import { detectThinkKeyword, extractPromptText } from "./detector"
 import { getHighVariant, isAlreadyHighVariant, getThinkingConfig } from "./switcher"
 import type { ThinkModeState, ThinkModeInput } from "./types"
-import { log } from "../../../shared"
+import { log } from "../../../integration/shared"
 
 export * from "./detector"
 export * from "./switcher"

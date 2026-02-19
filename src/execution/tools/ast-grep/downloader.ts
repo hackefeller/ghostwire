@@ -2,8 +2,8 @@ import { existsSync, mkdirSync, chmodSync, unlinkSync } from "fs"
 import { join } from "path"
 import { homedir } from "os"
 import { createRequire } from "module"
-import { extractZip } from "../../../shared"
-import { log } from "../../../shared/logger"
+import { extractZip } from "../../../integration/shared"
+import { log } from "../../../integration/shared/logger"
 
 const REPO = "ast-grep/ast-grep"
 

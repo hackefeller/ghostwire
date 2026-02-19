@@ -8,7 +8,7 @@ import type {
   McpScope,
 } from "./types"
 import { transformMcpServer } from "./transformer"
-import { log } from "../../../shared/logger"
+import { log } from "../../../integration/shared/logger"
 
 interface McpConfigPath {
   path: string

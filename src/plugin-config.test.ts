@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { mergeConfigs } from "./plugin-config";
-import type { GhostwireConfig } from "./config";
+import type { GhostwireConfig } from "./platform/config";
 
 describe("mergeConfigs", () => {
   describe("categories merging", () => {

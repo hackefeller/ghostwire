@@ -11,7 +11,7 @@ import {
 } from "vscode-jsonrpc/node"
 import { getLanguageId } from "./config"
 import type { Diagnostic, ResolvedServer } from "./types"
-import { log } from "../../../shared/logger"
+import { log } from "../../../integration/shared/logger"
 
 interface ManagedClient {
   client: LSPClient

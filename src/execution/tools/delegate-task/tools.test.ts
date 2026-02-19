@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, afterEach, spyOn } from "bun:test"
 import { DEFAULT_CATEGORIES, CATEGORY_PROMPT_APPENDS, CATEGORY_DESCRIPTIONS, isPlanAgent, PLAN_AGENT_NAMES } from "./constants"
 import { resolveCategoryConfig } from "./tools"
-import type { CategoryConfig } from "../../../config/schema"
+import type { CategoryConfig } from "../../../platform/config/schema"
 import { __resetModelCache } from "../../../platform/opencode/model-availability"
 import { clearSkillCache } from "../../features/opencode-skill-loader/skill-content"
 import { __setTimingConfig, __resetTimingConfig } from "./timing"

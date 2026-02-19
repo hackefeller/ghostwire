@@ -1,7 +1,7 @@
 import type { PluginInput } from "@opencode-ai/plugin"
-import { isCallerOrchestrator } from "../../../shared/session-utils"
-import { SYSTEM_DIRECTIVE_PREFIX } from "../../../shared/system-directive"
-import { log } from "../../../shared/logger"
+import { isCallerOrchestrator } from "../../../integration/shared/session-utils"
+import { SYSTEM_DIRECTIVE_PREFIX } from "../../../integration/shared/system-directive"
+import { log } from "../../../integration/shared/logger"
 import { HOOK_NAME, NOTEPAD_DIRECTIVE } from "./constants"
 
 export * from "./constants"

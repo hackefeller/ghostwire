@@ -43,8 +43,8 @@ import {
   applyAgentVariant,
   resolveAgentVariant,
   resolveVariantForModel,
-} from "./shared/agent-variant";
-import { createFirstMessageVariantGate } from "./shared/first-message-variant";
+} from "./integration/shared/agent-variant";
+import { createFirstMessageVariantGate } from "./integration/shared/first-message-variant";
 import {
   discoverUserClaudeSkills,
   discoverProjectClaudeSkills,
@@ -81,13 +81,13 @@ import { SkillMcpManager } from "./execution/features/skill-mcp-manager";
 import { initTaskToastManager } from "./execution/features/task-toast-manager";
 import { TmuxSessionManager } from "./execution/features/tmux-subagent";
 import { clearBoulderState } from "./execution/features/boulder-state";
-import { type HookName } from "./config";
+import { type HookName } from "./platform/config";
 import {
   log,
   resetMessageCursor,
   includesCaseInsensitive,
   runHookWithTelemetry,
-} from "./shared";
+} from "./integration/shared";
 import {
   detectExternalNotificationPlugin,
   getNotificationConflictWarning,
@@ -932,9 +932,9 @@ export type {
   McpName,
   HookName,
   BuiltinCommandName,
-} from "./config";
+} from "./platform/config";
 
 // NOTE: Do NOT export functions from main index.ts!
 // OpenCode treats ALL exports as plugin instances and calls them.
 // Config error utilities are available via "./shared/config-errors" for internal use only.
-export type { ConfigLoadError } from "./shared/config-errors";
+export type { ConfigLoadError } from "./integration/shared/config-errors";

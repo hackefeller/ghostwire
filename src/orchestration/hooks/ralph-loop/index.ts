@@ -1,8 +1,8 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import { existsSync, readFileSync, readdirSync } from "node:fs"
 import { join } from "node:path"
-import { log } from "../../../shared/logger"
-import { SYSTEM_DIRECTIVE_PREFIX } from "../../../shared/system-directive"
+import { log } from "../../../integration/shared/logger"
+import { SYSTEM_DIRECTIVE_PREFIX } from "../../../integration/shared/system-directive"
 import { readState, writeState, clearState, incrementIteration } from "./storage"
 import {
   HOOK_NAME,

@@ -3,7 +3,7 @@ import type {
   StopOutput,
   ClaudeHooksConfig,
 } from "./types"
-import { findMatchingHooks, executeHookCommand, log } from "../../../shared"
+import { findMatchingHooks, executeHookCommand, log } from "../../../integration/shared"
 import { DEFAULT_CONFIG } from "./plugin-config"
 import { getTodoPath } from "./todo"
 import { isHookCommandDisabled, type PluginExtendedConfig } from "./config-loader"

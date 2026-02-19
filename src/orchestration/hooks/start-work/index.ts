@@ -9,7 +9,7 @@ import {
   getPlanName,
   clearBoulderState,
 } from "../../../execution/features/boulder-state"
-import { log } from "../../../shared/logger"
+import { log } from "../../../integration/shared/logger"
 import { getSessionAgent, updateSessionAgent } from "../../../execution/features/claude-code-session-state"
 
 export const HOOK_NAME = "jack-in-work"

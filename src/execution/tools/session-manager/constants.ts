@@ -1,5 +1,5 @@
 import { join } from "node:path"
-import { getOpenCodeStorageDir } from "../../../shared/data-path"
+import { getOpenCodeStorageDir } from "../../../integration/shared/data-path"
 import { getClaudeConfigDir } from "../../../platform/claude/config-dir"
 
 export const OPENCODE_STORAGE = getOpenCodeStorageDir()

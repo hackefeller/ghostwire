@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import { getOpenCodeStorageDir } from "../../../shared/data-path";
+import { getOpenCodeStorageDir } from "../../../integration/shared/data-path";
 
 export const OPENCODE_STORAGE = getOpenCodeStorageDir();
 export const INTERACTIVE_BASH_SESSION_STORAGE = join(

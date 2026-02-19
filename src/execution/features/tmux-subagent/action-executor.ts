@@ -1,7 +1,7 @@
-import type { TmuxConfig } from "../../../config/schema"
+import type { TmuxConfig } from "../../../platform/config/schema"
 import type { PaneAction, WindowState } from "./types"
-import { spawnTmuxPane, closeTmuxPane, enforceMainPaneWidth, replaceTmuxPane } from "../../../shared/tmux"
-import { log } from "../../../shared"
+import { spawnTmuxPane, closeTmuxPane, enforceMainPaneWidth, replaceTmuxPane } from "../../../integration/shared/tmux"
+import { log } from "../../../integration/shared"
 
 export interface ActionResult {
   success: boolean

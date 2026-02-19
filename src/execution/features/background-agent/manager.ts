@@ -5,11 +5,11 @@ import type {
   LaunchInput,
   ResumeInput,
 } from "./types"
-import { log, promptWithModelSuggestionRetry } from "../../../shared"
+import { log, promptWithModelSuggestionRetry } from "../../../integration/shared"
 import { getAgentToolRestrictions } from "../../../orchestration/agents/agent-tool-restrictions"
 import { ConcurrencyManager } from "./concurrency"
-import type { BackgroundTaskConfig, TmuxConfig } from "../../../config/schema"
-import { isInsideTmux } from "../../../shared/tmux"
+import type { BackgroundTaskConfig, TmuxConfig } from "../../../platform/config/schema"
+import { isInsideTmux } from "../../../integration/shared/tmux"
 
 import { subagentSessions } from "../claude-code-session-state"
 import { getTaskToastManager } from "../task-toast-manager"

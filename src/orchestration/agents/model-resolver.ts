@@ -1,4 +1,4 @@
-import { log } from "../../shared/logger"
+import { log } from "../../integration/shared/logger"
 import { fuzzyMatchModel } from "../../platform/opencode/model-availability"
 import type { FallbackEntry } from "./model-requirements"
 import { readConnectedProvidersCache } from "../../platform/opencode/connected-providers-cache"

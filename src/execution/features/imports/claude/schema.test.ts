@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect } from "bun:test"
-import { ClaudeImportConfigSchema } from "../../../../config/schema"
+import { ClaudeImportConfigSchema } from "../../../../platform/config/schema"
 
 describe("ClaudeImportConfigSchema", () => {
   it("accepts valid full config", () => {

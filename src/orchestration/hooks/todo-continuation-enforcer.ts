@@ -8,8 +8,8 @@ import {
     MESSAGE_STORAGE,
     type ToolPermission,
 } from "../../execution/features/hook-message-injector"
-import { log } from "../../shared/logger"
-import { createSystemDirective, SystemDirectiveTypes } from "../../shared/system-directive"
+import { log } from "../../integration/shared/logger"
+import { createSystemDirective, SystemDirectiveTypes } from "../../integration/shared/system-directive"
 
 const HOOK_NAME = "grid-todo-continuation-enforcer"
 

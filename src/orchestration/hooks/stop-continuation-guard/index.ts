@@ -1,5 +1,5 @@
 import type { PluginInput } from "@opencode-ai/plugin"
-import { log } from "../../../shared/logger"
+import { log } from "../../../integration/shared/logger"
 
 const HOOK_NAME = "grid-stop-continuation-guard"
 

@@ -1,6 +1,6 @@
 import { describe, expect, test, spyOn, beforeEach, afterEach, mock } from "bun:test"
 import { resolveModel, resolveModelWithFallback, type ModelResolutionInput, type ExtendedModelResolutionInput, type ModelResolutionResult, type ModelSource } from "./model-resolver"
-import * as logger from "../../shared/logger"
+import * as logger from "../../integration/shared/logger"
 import * as connectedProvidersCache from "../../platform/opencode/connected-providers-cache"
 
 describe("resolveModel", () => {

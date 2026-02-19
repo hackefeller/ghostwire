@@ -26,7 +26,7 @@ import {
 import { cacheToolInput, getToolInput } from "./tool-input-cache"
 import { recordToolUse, recordToolResult, getTranscriptPath, recordUserMessage } from "./transcript"
 import type { PluginConfig } from "./types"
-import { log } from "../../../shared"
+import { log } from "../../../integration/shared"
 import { isHookDisabled } from "../../../platform/claude/hook-disabled"
 import type { ContextCollector } from "../../../execution/features/context-injector"
 

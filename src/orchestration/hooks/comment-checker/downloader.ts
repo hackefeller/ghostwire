@@ -9,8 +9,8 @@ import {
 import { join } from "path";
 import { homedir, tmpdir } from "os";
 import { createRequire } from "module";
-import { extractZip } from "../../../shared";
-import { log } from "../../../shared/logger";
+import { extractZip } from "../../../integration/shared";
+import { log } from "../../../integration/shared/logger";
 
 const DEBUG = process.env.COMMENT_CHECKER_DEBUG === "1";
 const DEBUG_FILE = join(tmpdir(), "grid-comment-checker-debug.log");

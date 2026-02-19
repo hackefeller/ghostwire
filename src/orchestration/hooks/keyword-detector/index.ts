@@ -1,8 +1,8 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import { detectKeywordsWithType, extractPromptText, removeCodeBlocks } from "./detector"
 import { isPlannerAgent } from "./constants"
-import { log } from "../../../shared"
-import { hasSystemReminder, isSystemDirective, removeSystemReminders } from "../../../shared/system-directive"
+import { log } from "../../../integration/shared"
+import { hasSystemReminder, isSystemDirective, removeSystemReminders } from "../../../integration/shared/system-directive"
 import { getMainSessionID, getSessionAgent, subagentSessions } from "../../../execution/features/claude-code-session-state"
 import type { ContextCollector } from "../../../execution/features/context-injector"
 

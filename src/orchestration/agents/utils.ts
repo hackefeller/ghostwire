@@ -10,7 +10,7 @@ import type {
   CategoriesConfig,
   CategoryConfig,
   GitMasterConfig,
-} from "../../config/schema";
+} from "../../platform/config/schema";
 import { createSisyphusAgent } from "./void-runner";
 import { createOracleAgent, ORACLE_PROMPT_METADATA } from "./eye-ops";
 import {
@@ -35,7 +35,7 @@ import {
   deepMerge,
   findCaseInsensitive,
   includesCaseInsensitive,
-} from "../../shared";
+} from "../../integration/shared";
 import {
   fetchAvailableModels,
   isModelAvailable,
@@ -53,11 +53,11 @@ import type {
   LoadedSkill,
   SkillScope,
 } from "../../execution/features/opencode-skill-loader/types";
-import type { BrowserAutomationProvider } from "../../config/schema";
+import type { BrowserAutomationProvider } from "../../platform/config/schema";
 export {
   createAgentToolRestrictions,
   createAgentToolAllowlist,
-} from "../../config/permission-compat";
+} from "../../platform/config/permission-compat";
 
 type AgentSource = AgentFactory | AgentConfig;
 

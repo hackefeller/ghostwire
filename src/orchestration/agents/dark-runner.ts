@@ -1,11 +1,11 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentMode } from "./types"
 import { isGptModel } from "./types"
-import type { AgentOverrideConfig } from "../../config/schema"
+import type { AgentOverrideConfig } from "../../platform/config/schema"
 import {
   createAgentToolRestrictions,
   type PermissionValue,
-} from "../../config/permission-compat"
+} from "../../platform/config/permission-compat"
 
 const MODE: AgentMode = "subagent"
 

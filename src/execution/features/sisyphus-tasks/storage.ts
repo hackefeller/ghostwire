@@ -9,7 +9,7 @@ import {
 } from "fs";
 import { homedir } from "os";
 import type { z } from "zod";
-import type { GhostwireConfig } from "../../../config/schema";
+import type { GhostwireConfig } from "../../../platform/config/schema";
 
 export function getTaskDir(
   listId: string,

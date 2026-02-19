@@ -3,7 +3,7 @@ import { pathToFileURL } from "node:url"
 import { tool, type PluginInput, type ToolDefinition } from "@opencode-ai/plugin"
 import { LOOK_AT_DESCRIPTION, MULTIMODAL_LOOKER_AGENT } from "./constants"
 import type { LookAtArgs } from "./types"
-import { findByNameCaseInsensitive, log, promptWithModelSuggestionRetry } from "../../../shared"
+import { findByNameCaseInsensitive, log, promptWithModelSuggestionRetry } from "../../../integration/shared"
 
 interface LookAtArgsWithAlias extends LookAtArgs {
   path?: string

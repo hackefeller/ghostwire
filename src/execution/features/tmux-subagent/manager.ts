@@ -1,5 +1,5 @@
 import type { PluginInput } from "@opencode-ai/plugin"
-import type { TmuxConfig } from "../../../config/schema"
+import type { TmuxConfig } from "../../../platform/config/schema"
 import type { TrackedSession, CapacityConfig } from "./types"
 import {
   isInsideTmux as defaultIsInsideTmux,
@@ -8,8 +8,8 @@ import {
   SESSION_MISSING_GRACE_MS,
   SESSION_READY_POLL_INTERVAL_MS,
   SESSION_READY_TIMEOUT_MS,
-} from "../../../shared/tmux"
-import { log } from "../../../shared"
+} from "../../../integration/shared/tmux"
+import { log } from "../../../integration/shared"
 import { queryWindowState } from "./pane-state-querier"
 import { decideSpawnActions, decideCloseAction, type SessionMapping } from "./decision-engine"
 import { executeActions, executeAction } from "./action-executor"

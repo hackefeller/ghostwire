@@ -13,7 +13,7 @@ import {
   getWindowsAppdataDir,
 } from "./constants"
 import * as os from "node:os"
-import { log } from "../../../shared/logger"
+import { log } from "../../../integration/shared/logger"
 
 export function isLocalDevMode(directory: string): boolean {
   return getLocalDevPath(directory) !== null

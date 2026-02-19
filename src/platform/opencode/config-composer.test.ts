@@ -1,7 +1,7 @@
 import { describe, test, expect, spyOn, beforeEach, afterEach } from "bun:test";
 import { resolveCategoryConfig, createConfigHandler } from "./config-composer";
-import type { CategoryConfig } from "../../config/schema";
-import type { GhostwireConfig } from "../../config";
+import type { CategoryConfig } from "../../platform/config/schema";
+import type { GhostwireConfig } from "../../platform/config";
 
 import * as agents from "../../orchestration/agents";
 import * as cipherJunior from "../../orchestration/agents/dark-runner";
@@ -11,12 +11,12 @@ import * as skillLoader from "../../execution/features/opencode-skill-loader";
 import * as agentLoader from "../../execution/features/claude-code-agent-loader";
 import * as mcpLoader from "../../execution/features/claude-code-mcp-loader";
 import * as pluginLoader from "../../execution/features/claude-code-plugin-loader";
-import * as mcpModule from "../../mcp";
-import * as logger from "../../shared/logger";
+import * as mcpModule from "../../integration/mcp";
+import * as logger from "../../integration/shared/logger";
 import * as modelAvailability from "./model-availability";
 import * as providersCache from "./connected-providers-cache";
 import * as configDir from "./config-dir";
-import * as permissionCompat from "../../config/permission-compat";
+import * as permissionCompat from "../../platform/config/permission-compat";
 import * as modelResolver from "../../orchestration/agents/model-resolver";
 
 beforeEach(() => {

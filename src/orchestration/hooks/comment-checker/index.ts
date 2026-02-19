@@ -1,6 +1,6 @@
 import type { PendingCall } from "./types"
 import { runCommentChecker, getCommentCheckerPath, startBackgroundInit, type HookInput } from "./cli"
-import type { CommentCheckerConfig } from "../../../config/schema"
+import type { CommentCheckerConfig } from "../../../platform/config/schema"
 
 import * as fs from "fs"
 import { existsSync } from "fs"

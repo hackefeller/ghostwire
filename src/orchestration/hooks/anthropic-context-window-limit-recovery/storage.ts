@@ -1,6 +1,6 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
-import { getOpenCodeStorageDir } from "../../../shared/data-path"
+import { getOpenCodeStorageDir } from "../../../integration/shared/data-path"
 
 const OPENCODE_STORAGE = getOpenCodeStorageDir()
 const MESSAGE_STORAGE = join(OPENCODE_STORAGE, "message")

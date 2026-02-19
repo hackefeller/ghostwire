@@ -7,7 +7,7 @@ import {
   clearInjectedPaths,
 } from "./storage";
 import { AGENTS_FILENAME } from "./constants";
-import { createDynamicTruncator } from "../../../shared/dynamic-truncator";
+import { createDynamicTruncator } from "../../../integration/shared/dynamic-truncator";
 
 interface ToolExecuteInput {
   tool: string;

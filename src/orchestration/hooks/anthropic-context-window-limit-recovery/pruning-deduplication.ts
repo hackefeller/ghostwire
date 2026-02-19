@@ -2,7 +2,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import type { PruningState, ToolCallSignature } from "./pruning-types"
 import { estimateTokens } from "./pruning-types"
-import { log } from "../../../shared/logger"
+import { log } from "../../../integration/shared/logger"
 import { MESSAGE_STORAGE } from "../../../execution/features/hook-message-injector"
 
 export interface DeduplicationConfig {

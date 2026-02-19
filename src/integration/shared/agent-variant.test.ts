@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import type { GhostwireConfig } from "../config";
+import type { GhostwireConfig } from "../../platform/config";
 import {
   applyAgentVariant,
   resolveAgentVariant,

@@ -6,8 +6,8 @@
 import * as fs from "node:fs"
 import * as path from "node:path"
 import * as os from "node:os"
-import { log } from "../../shared/logger"
-import { parseJsoncSafe } from "../../shared/jsonc-parser"
+import { log } from "../../integration/shared/logger"
+import { parseJsoncSafe } from "../../integration/shared/jsonc-parser"
 
 interface OpencodeConfig {
   plugin?: string[]

@@ -6,8 +6,8 @@ import type { BackgroundTaskArgs, BackgroundOutputArgs, BackgroundCancelArgs } f
 import { BACKGROUND_TASK_DESCRIPTION, BACKGROUND_OUTPUT_DESCRIPTION, BACKGROUND_CANCEL_DESCRIPTION } from "./constants"
 import { findNearestMessageWithFields, findFirstMessageWithAgent, MESSAGE_STORAGE } from "../../features/hook-message-injector"
 import { getSessionAgent } from "../../features/claude-code-session-state"
-import { log } from "../../../shared/logger"
-import { consumeNewMessages } from "../../../shared/session-cursor"
+import { log } from "../../../integration/shared/logger"
+import { consumeNewMessages } from "../../../integration/shared/session-cursor"
 
 type OpencodeClient = PluginInput["client"]
 

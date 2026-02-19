@@ -3,7 +3,7 @@ import {
   extractPromptText,
 } from "./detector"
 import { executeSlashCommand, type ExecutorOptions } from "./executor"
-import { log } from "../../../shared"
+import { log } from "../../../integration/shared"
 import {
   AUTO_SLASH_COMMAND_TAG_OPEN,
   AUTO_SLASH_COMMAND_TAG_CLOSE,

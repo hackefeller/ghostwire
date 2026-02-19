@@ -12,7 +12,7 @@ import type {
   CategoriesConfig,
   GitMasterConfig,
   BrowserAutomationProvider,
-} from "../../../config/schema";
+} from "../../../platform/config/schema";
 import {
   DEFAULT_CATEGORIES,
   CATEGORY_PROMPT_APPENDS,
@@ -39,7 +39,7 @@ import {
   findByNameCaseInsensitive,
   equalsIgnoreCase,
   promptWithModelSuggestionRetry,
-} from "../../../shared";
+} from "../../../integration/shared";
 import { getAgentToolRestrictions } from "../../../orchestration/agents/agent-tool-restrictions";
 import { resolveModel } from "../../../orchestration/agents/model-resolver";
 import { getOpenCodeConfigPaths } from "../../../platform/opencode/config-dir";

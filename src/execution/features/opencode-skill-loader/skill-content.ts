@@ -1,12 +1,12 @@
 import { createBuiltinSkills } from "../builtin-skills/skills";
 import { discoverSkills } from "./loader";
 import type { LoadedSkill } from "./types";
-import { parseFrontmatter } from "../../../shared/frontmatter";
+import { parseFrontmatter } from "../../../integration/shared/frontmatter";
 import { readFileSync } from "node:fs";
 import type {
   GitMasterConfig,
   BrowserAutomationProvider,
-} from "../../../config/schema";
+} from "../../../platform/config/schema";
 
 export interface SkillResolutionOptions {
   gitMasterConfig?: GitMasterConfig;

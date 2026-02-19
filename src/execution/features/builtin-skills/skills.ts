@@ -1,5 +1,5 @@
 import type { BuiltinSkill } from "./types"
-import type { BrowserAutomationProvider } from "../../../config/schema"
+import type { BrowserAutomationProvider } from "../../../platform/config/schema"
 
 const playwrightSkill: BuiltinSkill = {
   name: "playwright",

@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach } from "bun:test"
 import { ConcurrencyManager } from "./concurrency"
-import type { BackgroundTaskConfig } from "../../../config/schema"
+import type { BackgroundTaskConfig } from "../../../platform/config/schema"
 
 describe("ConcurrencyManager.getConcurrencyLimit", () => {
   test("should return model-specific limit when modelConcurrency is set", () => {

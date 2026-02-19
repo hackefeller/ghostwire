@@ -1,6 +1,6 @@
 import type { SkillScope, LoadedSkill } from "../../features/opencode-skill-loader/types"
 import type { SkillMcpManager } from "../../features/skill-mcp-manager"
-import type { GitMasterConfig } from "../../../config/schema"
+import type { GitMasterConfig } from "../../../platform/config/schema"
 
 export interface SkillArgs {
   name: string

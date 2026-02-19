@@ -23,18 +23,18 @@ import {
 } from "../../execution/features/claude-code-agent-loader";
 import { loadMcpConfigs } from "../../execution/features/claude-code-mcp-loader";
 import { loadAllPluginComponents } from "../../execution/features/claude-code-plugin-loader";
-import { createBuiltinMcps } from "../../mcp";
-import type { GhostwireConfig } from "../../config";
+import { createBuiltinMcps } from "../../integration/mcp";
+import type { GhostwireConfig } from "../../platform/config";
 import {
   log,
-} from "../../shared";
+} from "../../integration/shared";
 import {
   fetchAvailableModels,
   readConnectedProvidersCache,
 } from "./index";
 import { getOpenCodeConfigPaths } from "./config-dir";
-import { migrateAgentConfig } from "../../config/permission-compat";
-import { AGENT_NAME_MAP } from "../../config/migration";
+import { migrateAgentConfig } from "../../platform/config/permission-compat";
+import { AGENT_NAME_MAP } from "../../platform/config/migration";
 import { resolveModelWithFallback } from "../../orchestration/agents/model-resolver";
 import { AGENT_MODEL_REQUIREMENTS } from "../../orchestration/agents/model-requirements";
 import {
@@ -43,7 +43,7 @@ import {
 } from "../../orchestration/agents/zen-planner";
 import { DEFAULT_CATEGORIES } from "../../execution/tools/delegate-task/constants";
 import type { ModelCacheState } from "../../plugin-state";
-import type { CategoryConfig } from "../../config/schema";
+import type { CategoryConfig } from "../../platform/config/schema";
 
 export interface ConfigHandlerDeps {
   ctx: { directory: string; client?: any };

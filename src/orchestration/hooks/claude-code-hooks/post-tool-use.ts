@@ -3,7 +3,7 @@ import type {
   PostToolUseOutput,
   ClaudeHooksConfig,
 } from "./types"
-import { findMatchingHooks, executeHookCommand, objectToSnakeCase, transformToolName, log } from "../../../shared"
+import { findMatchingHooks, executeHookCommand, objectToSnakeCase, transformToolName, log } from "../../../integration/shared"
 import { DEFAULT_CONFIG } from "./plugin-config"
 import { buildTranscriptFromSession, deleteTempTranscript } from "./transcript"
 import { isHookCommandDisabled, type PluginExtendedConfig } from "./config-loader"

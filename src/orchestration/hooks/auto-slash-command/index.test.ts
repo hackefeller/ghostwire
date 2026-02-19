@@ -5,7 +5,7 @@ import type {
 } from "./types"
 
 // Import real shared module to avoid mock leaking to other test files
-import * as logger from "../../../shared/logger"
+import * as logger from "../../../integration/shared/logger"
 
 // Spy on log instead of mocking the entire module
 const logMock = spyOn(logger, "log").mockImplementation(() => {})

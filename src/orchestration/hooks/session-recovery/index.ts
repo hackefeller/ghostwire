@@ -1,6 +1,6 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import type { createOpencodeClient } from "@opencode-ai/sdk"
-import type { ExperimentalConfig } from "../../../config"
+import type { ExperimentalConfig } from "../../../platform/config"
 import {
   findEmptyMessages,
   findEmptyMessageByIndex,
@@ -16,7 +16,7 @@ import {
   stripThinkingParts,
 } from "./storage"
 import type { MessageData, ResumeConfig } from "./types"
-import { log } from "../../../shared/logger"
+import { log } from "../../../integration/shared/logger"
 
 export interface SessionRecoveryOptions {
   experimental?: ExperimentalConfig

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import { includesCaseInsensitive } from "./shared"
+import { includesCaseInsensitive } from "./integration/shared"
 
 /**
  * Tests for conditional tool registration logic in index.ts

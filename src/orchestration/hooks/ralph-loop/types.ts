@@ -1,4 +1,4 @@
-import type { RalphLoopConfig } from "../../../config"
+import type { RalphLoopConfig } from "../../../platform/config"
 
 export interface RalphLoopState {
   active: boolean

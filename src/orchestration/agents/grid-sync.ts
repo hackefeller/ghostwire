@@ -4,9 +4,9 @@ import type { AgentMode, AgentPromptMetadata } from "./types"
 const MODE: AgentMode = "primary"
 import type { AvailableAgent, AvailableSkill, AvailableCategory } from "./dynamic-agent-prompt-builder"
 import { buildCategorySkillsDelegationGuide } from "./dynamic-agent-prompt-builder"
-import type { CategoryConfig } from "../../config/schema"
+import type { CategoryConfig } from "../../platform/config/schema"
 import { DEFAULT_CATEGORIES, CATEGORY_DESCRIPTIONS } from "../../execution/tools/delegate-task/constants"
-import { createAgentToolRestrictions } from "../../config/permission-compat"
+import { createAgentToolRestrictions } from "../../platform/config/permission-compat"
 
 const getCategoryDescription = (name: string, userCategories?: Record<string, CategoryConfig>) =>
   userCategories?.[name]?.description ?? CATEGORY_DESCRIPTIONS[name] ?? "General tasks"

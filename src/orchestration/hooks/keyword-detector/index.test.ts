@@ -2,7 +2,7 @@ import { describe, expect, test, beforeEach, afterEach, spyOn } from "bun:test"
 import { createKeywordDetectorHook } from "./index"
 import { setMainSession, updateSessionAgent, clearSessionAgent, _resetForTesting } from "../../../execution/features/claude-code-session-state"
 import { ContextCollector } from "../../../execution/features/context-injector"
-import * as logger from "../../../shared/logger"
+import * as logger from "../../../integration/shared/logger"
 import * as sessionState from "../../../execution/features/claude-code-session-state"
 
 describe("grid-keyword-detector message transform", () => {

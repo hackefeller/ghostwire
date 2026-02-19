@@ -1,6 +1,6 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import { getSessionAgent } from "../../../execution/features/claude-code-session-state"
-import { log } from "../../../shared"
+import { log } from "../../../integration/shared"
 
 /**
  * Target agents that should receive category+skill reminders.

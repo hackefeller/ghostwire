@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { join } from "node:path"
 import { MESSAGE_STORAGE, PART_STORAGE } from "./constants"
 import type { MessageMeta, OriginalMessageContext, TextPart, ToolPermission } from "./types"
-import { log } from "../../../shared/logger"
+import { log } from "../../../integration/shared/logger"
 
 export interface StoredMessage {
   agent?: string

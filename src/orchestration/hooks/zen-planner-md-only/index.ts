@@ -4,9 +4,9 @@ import { join, resolve, relative, isAbsolute } from "node:path"
 import { HOOK_NAME, AUGUR_PLANNER_AGENTS, ALLOWED_EXTENSIONS, ALLOWED_PATH_PREFIX, BLOCKED_TOOLS, PLANNING_CONSULT_WARNING, AUGUR_PLANNER_WORKFLOW_REMINDER } from "./constants"
 import { findNearestMessageWithFields, findFirstMessageWithAgent, MESSAGE_STORAGE } from "../../../execution/features/hook-message-injector"
 import { getSessionAgent } from "../../../execution/features/claude-code-session-state"
-import { log } from "../../../shared/logger"
-import { SYSTEM_DIRECTIVE_PREFIX } from "../../../shared/system-directive"
-import { getAgentDisplayName } from "../../../shared/agent-display-names"
+import { log } from "../../../integration/shared/logger"
+import { SYSTEM_DIRECTIVE_PREFIX } from "../../../integration/shared/system-directive"
+import { getAgentDisplayName } from "../../../integration/shared/agent-display-names"
 
 export * from "./constants"
 

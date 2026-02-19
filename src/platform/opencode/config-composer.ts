@@ -1,5 +1,5 @@
-import { createBuiltinAgents } from "../../agents";
-import { createSisyphusJuniorAgentWithOverrides } from "../../agents/dark-runner";
+import { createBuiltinAgents } from "../../orchestration/agents";
+import { createSisyphusJuniorAgentWithOverrides } from "../../orchestration/agents/dark-runner";
 import {
   loadUserCommands,
   loadProjectCommands,
@@ -35,12 +35,12 @@ import {
 import { getOpenCodeConfigPaths } from "./config-dir";
 import { migrateAgentConfig } from "../../config/permission-compat";
 import { AGENT_NAME_MAP } from "../../config/migration";
-import { resolveModelWithFallback } from "../../agents/model-resolver";
-import { AGENT_MODEL_REQUIREMENTS } from "../../agents/model-requirements";
+import { resolveModelWithFallback } from "../../orchestration/agents/model-resolver";
+import { AGENT_MODEL_REQUIREMENTS } from "../../orchestration/agents/model-requirements";
 import {
   AUGUR_PLANNER_SYSTEM_PROMPT,
   AUGUR_PLANNER_PERMISSION,
-} from "../../agents/zen-planner";
+} from "../../orchestration/agents/zen-planner";
 import { DEFAULT_CATEGORIES } from "../../tools/delegate-task/constants";
 import type { ModelCacheState } from "../../plugin-state";
 import type { CategoryConfig } from "../../config/schema";

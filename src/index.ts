@@ -34,7 +34,7 @@ import {
   createQuestionLabelTruncatorHook,
   createSubagentQuestionBlockerHook,
   createStopContinuationGuardHook,
-} from "./hooks";
+} from "./orchestration/hooks";
 import {
   contextCollector,
   createContextInjectorMessagesTransformHook,

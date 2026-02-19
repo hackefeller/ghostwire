@@ -172,7 +172,7 @@ for each task_id: background_output(task_id="...")
 \`\`\`
 AGENTS_LOCATIONS = [
   { path: ".", type: "root" },
-  { path: "src/hooks", score: 18, reason: "high complexity" },
+  { path: "sr./orchestration/hooks", score: 18, reason: "high complexity" },
   { path: "src/api", score: 12, reason: "distinct domain" }
 ]
 \`\`\`
@@ -276,7 +276,7 @@ Mode: {update | create-new}
 
 Files:
   [OK] ./AGENTS.md (root, {N} lines)
-  [OK] ./src/hooks/AGENTS.md ({N} lines)
+  [OK] ./sr./orchestration/hooks/AGENTS.md ({N} lines)
 
 Dirs Analyzed: {N}
 AGENTS.md Created: {N}
@@ -284,7 +284,7 @@ AGENTS.md Updated: {N}
 
 Hierarchy:
   ./AGENTS.md
-  └── src/hooks/AGENTS.md
+  └── sr./orchestration/hooks/AGENTS.md
 \`\`\`
 
 ---

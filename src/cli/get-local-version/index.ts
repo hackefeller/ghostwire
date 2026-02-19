@@ -1,4 +1,4 @@
-import { getCachedVersion, getLatestVersion, isLocalDevMode, findPluginEntry } from "../../hooks/auto-update-checker/checker"
+import { getCachedVersion, getLatestVersion, isLocalDevMode, findPluginEntry } from "../../orchestration/hooks/auto-update-checker/checker"
 import type { GetLocalVersionOptions, VersionInfo } from "./types"
 import { formatVersionOutput, formatJsonOutput } from "./formatter"
 
@@ -54,7 +54,7 @@ export async function getLocalVersion(options: GetLocalVersionOptions = {}): Pro
       return 1
     }
 
-    const { extractChannel } = await import("../../hooks/auto-update-checker/index")
+    const { extractChannel } = await import("../../orchestration/hooks/auto-update-checker/index")
     const channel = extractChannel(pluginInfo?.pinnedVersion ?? currentVersion)
     const latestVersion = await getLatestVersion(channel)
     

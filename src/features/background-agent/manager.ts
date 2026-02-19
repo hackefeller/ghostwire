@@ -6,7 +6,7 @@ import type {
   ResumeInput,
 } from "./types"
 import { log, promptWithModelSuggestionRetry } from "../../shared"
-import { getAgentToolRestrictions } from "../../agents/agent-tool-restrictions"
+import { getAgentToolRestrictions } from "../../orchestration/agents/agent-tool-restrictions"
 import { ConcurrencyManager } from "./concurrency"
 import type { BackgroundTaskConfig, TmuxConfig } from "../../config/schema"
 import { isInsideTmux } from "../../shared/tmux"

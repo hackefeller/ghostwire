@@ -3,8 +3,8 @@ import { resolveCategoryConfig, createConfigHandler } from "./config-composer";
 import type { CategoryConfig } from "../../config/schema";
 import type { GhostwireConfig } from "../../config";
 
-import * as agents from "../../agents";
-import * as cipherJunior from "../../agents/dark-runner";
+import * as agents from "../../orchestration/agents";
+import * as cipherJunior from "../../orchestration/agents/dark-runner";
 import * as commandLoader from "../../features/claude-code-command-loader";
 import * as builtinCommands from "../../features/builtin-commands";
 import * as skillLoader from "../../features/opencode-skill-loader";
@@ -17,7 +17,7 @@ import * as modelAvailability from "./model-availability";
 import * as providersCache from "./connected-providers-cache";
 import * as configDir from "./config-dir";
 import * as permissionCompat from "../../config/permission-compat";
-import * as modelResolver from "../../agents/model-resolver";
+import * as modelResolver from "../../orchestration/agents/model-resolver";
 
 beforeEach(() => {
   spyOn(agents, "createBuiltinAgents" as any).mockResolvedValue({

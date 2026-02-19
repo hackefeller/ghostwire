@@ -34,33 +34,37 @@ Directory maps (for navigation and audits) live here:
 ```
 ghostwire/
 ├── src/
-│   ├── agents/        # 10 AI agents
-│   ├── hooks/         # 32 lifecycle hooks
-│   ├── tools/         # 20+ tools
-│   ├── features/      # Background agents, Claude Code compat
-│   ├── shared/        # 55 cross-cutting utilities
-│   ├── cli/           # CLI installer, doctor
-│   ├── mcp/           # Built-in MCPs
-│   ├── config/        # Zod schema, TypeScript types
-│   └── index.ts       # Main plugin entry (672 lines)
-├── script/            # build-schema.ts, build-binaries.ts
-├── packages/          # 7 platform-specific binaries
-└── dist/              # Build output (ESM + .d.ts)
+│   ├── orchestration/  # Agents + Hooks (what orchestrates)
+│   │   ├── agents/        # 10 AI agents
+│   │   └── hooks/         # 32 lifecycle hooks
+│   ├── execution/      # Features + Tools (what does work)
+│   │   ├── features/      # Background agents, Claude Code compat
+│   │   └── tools/         # 20+ tools
+│   ├── integration/    # Shared + MCP (what connects)
+│   │   ├── shared/        # 55 cross-cutting utilities
+│   │   └── mcp/           # Built-in MCPs
+│   ├── platform/       # Config (what provides foundation)
+│   │   └── config/        # Zod schema, TypeScript types
+│   ├── cli/            # CLI installer, doctor
+│   └── index.ts        # Main plugin entry (672 lines)
+├── script/             # build-schema.ts, build-binaries.ts
+├── packages/           # 7 platform-specific binaries
+└── dist/               # Build output (ESM + .d.ts)
 ```
 
 ## WHERE TO LOOK
 
 | Task | Location | Notes |
 |------|----------|-------|
-| Add agent | `src/agents/` | Create .ts with factory, add to `agentSources` |
-| Add hook | `src/hooks/` | Create dir with `createXXXHook()`, register in index.ts |
-| Add tool | `src/tools/` | Dir with index/types/constants/tools.ts |
-| Add MCP | `src/mcp/` | Create config, add to index.ts |
-| Add skill | `src/features/builtin-skills/` | Create dir with SKILL.md |
-| Add command | `src/features/builtin-commands/` | Add template + register in commands.ts |
-| Config schema | `src/config/schema.ts` | Zod schema, run `bun run build:schema` |
-| Background agents | `src/features/background-agent/` | manager.ts (1377 lines) |
-| Orchestrator | `src/hooks/nexus-orchestrator/` | Main orchestration hook (752 lines) |
+| Add agent | `src/orchestration/agents/` | Create .ts with factory, add to `agentSources` |
+| Add hook | `src/orchestration/hooks/` | Create dir with `createXXXHook()`, register in index.ts |
+| Add tool | `src/execution/tools/` | Dir with index/types/constants/tools.ts |
+| Add MCP | `src/integration/mcp/` | Create config, add to index.ts |
+| Add skill | `src/execution/features/builtin-skills/` | Create dir with SKILL.md |
+| Add command | `src/execution/features/builtin-commands/` | Add template + register in commands.ts |
+| Config schema | `src/platform/config/schema.ts` | Zod schema, run `bun run build:schema` |
+| Background agents | `src/execution/features/background-agent/` | manager.ts (1377 lines) |
+| Orchestrator | `src/orchestration/hooks/nexus-orchestrator/` | Main orchestration hook (752 lines) |
 
 ## TDD (Test-Driven Development)
 
@@ -128,14 +132,14 @@ bun test               # 100 test files
 
 | File | Lines | Description |
 |------|-------|-------------|
-| `src/features/builtin-skills/skills.ts` | 1729 | Skill definitions |
-| `src/features/background-agent/manager.ts` | 1377 | Task lifecycle, concurrency |
-| `src/agents/augur-planner-prompt.ts` | 1196 | Planning agent |
-| `src/tools/delegate-task/tools.ts` | 1070 | Category-based delegation |
-| `src/hooks/nexus-orchestrator/index.ts` | 752 | Orchestrator hook |
+| `src/execution/features/builtin-skills/skills.ts` | 1729 | Skill definitions |
+| `src/execution/features/background-agent/manager.ts` | 1377 | Task lifecycle, concurrency |
+| `src/orchestration/agents/augur-planner-prompt.ts` | 1196 | Planning agent |
+| `src/execution/tools/delegate-task/tools.ts` | 1070 | Category-based delegation |
+| `src/orchestration/hooks/nexus-orchestrator/index.ts` | 752 | Orchestrator hook |
 | `src/cli/config-manager.ts` | 664 | JSONC config parsing |
 | `src/index.ts` | 672 | Main plugin entry |
-| `src/features/builtin-commands/templates/refactor.ts` | 619 | Refactor command template |
+| `src/execution/features/builtin-commands/templates/refactor.ts` | 619 | Refactor command template |
 
 ## MCP ARCHITECTURE
 
@@ -146,7 +150,7 @@ Three-tier system:
 
 ## CONFIG SYSTEM
 
-- **Zod validation**: `src/config/schema.ts`
+- **Zod validation**: `src/platform/config/schema.ts`
 - **JSONC support**: Comments, trailing commas
 - **Multi-level**: Project (`.opencode/`) → User (`~/.config/opencode/`)
 

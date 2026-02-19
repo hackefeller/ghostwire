@@ -100,14 +100,14 @@ describe("Compound Engineering Migration", () => {
       expect(result.success).toBe(true)
       expect(result.changed).toBe(true)
       expect(result.migratedCount).toBe(1)
-      expect(config.agents).toHaveProperty("compound:kieran-rails-reviewer")
+      expect(config.agents).toHaveProperty("grid:kieran-rails-reviewer")
     })
 
     test("preserves already namespaced agents", () => {
       //#given
       const config = {
         agents: {
-          "compound:kieran-rails-reviewer": {
+          "grid:kieran-rails-reviewer": {
             model: "anthropic/claude-opus-4-5",
           },
         },
@@ -121,7 +121,7 @@ describe("Compound Engineering Migration", () => {
       //#then
       expect(result.success).toBe(true)
       expect(result.changed).toBe(false)
-      expect(config.agents).toHaveProperty("compound:kieran-rails-reviewer")
+      expect(config.agents).toHaveProperty("grid:kieran-rails-reviewer")
     })
   })
 
@@ -141,8 +141,8 @@ describe("Compound Engineering Migration", () => {
       expect(result.success).toBe(true)
       expect(result.changed).toBe(true)
       expect(result.migratedCount).toBe(2)
-      expect((config.disabled_commands as string[]).includes("compound:workflows:plan")).toBe(true)
-      expect((config.disabled_commands as string[]).includes("compound:code:refactor")).toBe(true)
+      expect((config.disabled_commands as string[]).includes("grid:workflows:plan")).toBe(true)
+      expect((config.disabled_commands as string[]).includes("grid:code:refactor")).toBe(true)
     })
   })
 
@@ -186,7 +186,7 @@ describe("Compound Engineering Migration", () => {
       //#given
       const config = {
         agents: {
-          sisyphus: { model: "anthropic/claude-opus-4-5" },
+          "cipher-operator": { model: "anthropic/claude-opus-4-5" },
         },
       }
 
@@ -225,7 +225,7 @@ describe("Compound Engineering Migration", () => {
       const config = {
         agents: {
           "kieran-rails-reviewer": { model: "anthropic/claude-opus-4-5" },
-          sisyphus: { model: "anthropic/claude-opus-4-5" },
+          "cipher-operator": { model: "anthropic/claude-opus-4-5" },
         },
         disabled_commands: ["workflows:plan", "code:refactor"],
         disabled_skills: [],
@@ -251,13 +251,13 @@ describe("Compound Engineering Migration", () => {
       expect(result.migratedCount).toBeGreaterThan(0)
 
       // Verify agents migrated
-      expect(config.agents).toHaveProperty("compound:kieran-rails-reviewer")
-      expect(config.agents).toHaveProperty("sisyphus")
+      expect(config.agents).toHaveProperty("grid:kieran-rails-reviewer")
+      expect(config.agents).toHaveProperty("cipher-operator")
 
       // Verify commands migrated
       const disabledCmds = config.disabled_commands as string[]
-      expect(disabledCmds.includes("compound:workflows:plan")).toBe(true)
-      expect(disabledCmds.includes("compound:code:refactor")).toBe(true)
+      expect(disabledCmds.includes("grid:workflows:plan")).toBe(true)
+      expect(disabledCmds.includes("grid:code:refactor")).toBe(true)
 
       // Verify feature structure upgraded
       const feature = (config.features as Record<string, unknown>).compound_engineering as Record<

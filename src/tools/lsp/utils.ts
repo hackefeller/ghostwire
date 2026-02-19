@@ -68,7 +68,7 @@ export function formatServerLookupError(result: Exclude<ServerLookupResult, { st
     ``,
     `Available servers: ${result.availableServers.slice(0, 10).join(", ")}${result.availableServers.length > 10 ? "..." : ""}`,
     ``,
-    `To add a custom server, configure 'lsp' in ruach.json or ruach.jsonc:`,
+    `To add a custom server, configure 'lsp' in ghostwire.json or ghostwire.jsonc:`,
     `  {`,
     `    "lsp": {`,
     `      "my-server": {`,

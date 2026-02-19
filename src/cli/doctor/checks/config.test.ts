@@ -55,7 +55,7 @@ describe("config check", () => {
       // #given valid config
       getInfoSpy = spyOn(config, "getConfigInfo").mockReturnValue({
         exists: true,
-        path: "/home/user/.config/opencode/ruach.json",
+        path: "/home/user/.config/opencode/ghostwire.json",
         format: "json",
         valid: true,
         errors: [],
@@ -73,10 +73,10 @@ describe("config check", () => {
       // #given invalid config
       getInfoSpy = spyOn(config, "getConfigInfo").mockReturnValue({
         exists: true,
-        path: "/home/user/.config/opencode/ruach.json",
+        path: "/home/user/.config/opencode/ghostwire.json",
         format: "json",
         valid: false,
-        errors: ["agents.oracle: Invalid model format"],
+        errors: ['agents."seer-advisor": Invalid model format'],
       })
 
       // #when checking validity

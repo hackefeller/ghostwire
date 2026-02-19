@@ -16,7 +16,7 @@
 
 ## Review Agents (5)
 
-### compound:kieran-rails-reviewer
+### grid:kieran-rails-reviewer
 **Purpose**: Rails code review with Kieran's strict conventions and quality standards
 
 **Temperature**: 0.1 (Precise, deterministic)
@@ -31,7 +31,7 @@
 ```javascript
 {
   agents: {
-    "compound:kieran-rails-reviewer": {
+    "grid:kieran-rails-reviewer": {
       model: "anthropic/claude-opus-4-5",
       temperature: 0.1
     }
@@ -39,7 +39,7 @@
 }
 ```
 
-### compound:kieran-python-reviewer
+### grid:kieran-python-reviewer
 **Purpose**: Python code review with PEP 8 compliance and Pythonic patterns
 
 **Temperature**: 0.1
@@ -50,7 +50,7 @@
 - Validating Python best practices
 - Checking for Pythonic patterns and idioms
 
-### compound:kieran-typescript-reviewer
+### grid:kieran-typescript-reviewer
 **Purpose**: TypeScript code review with type safety focus and strict typing
 
 **Temperature**: 0.1
@@ -61,7 +61,7 @@
 - Validating TypeScript best practices
 - Checking for type safety issues
 
-### compound:dhh-rails-reviewer
+### grid:dhh-rails-reviewer
 **Purpose**: Rails code review from David Heinemeier Hansson's perspective
 
 **Temperature**: 0.2 (Slightly more expressive personality)
@@ -72,7 +72,7 @@
 - Enforcing REST purity in Rails
 - Checking for JavaScript framework contamination
 
-### compound:code-simplicity-reviewer
+### grid:code-simplicity-reviewer
 **Purpose**: YAGNI principle enforcement and code simplification
 
 **Temperature**: 0.1
@@ -87,7 +87,7 @@
 
 ## Research Agents (4)
 
-### compound:framework-docs-researcher
+### grid:framework-docs-researcher
 **Purpose**: Comprehensive documentation research for frameworks and libraries
 
 **Temperature**: 0.1
@@ -98,7 +98,7 @@
 - Understanding framework features deeply
 - Building informed implementation decisions
 
-### compound:learnings-researcher
+### grid:learnings-researcher
 **Purpose**: Search and synthesize institutional knowledge from docs/solutions/
 
 **Temperature**: 0.1
@@ -109,7 +109,7 @@
 - Researching documented gotchas and learnings
 - Building on existing institutional knowledge
 
-### compound:best-practices-researcher
+### grid:best-practices-researcher
 **Purpose**: Industry standards and best practices research
 
 **Temperature**: 0.1
@@ -120,7 +120,7 @@
 - Finding authoritative references
 - Validating approach against standards
 
-### compound:git-history-analyzer
+### grid:git-history-analyzer
 **Purpose**: Repository archaeology and historical pattern analysis
 
 **Temperature**: 0.1
@@ -135,7 +135,7 @@
 
 ## Design Agents (4)
 
-### compound:figma-design-sync
+### grid:figma-design-sync
 **Purpose**: Synchronize web implementations with Figma designs
 
 **Temperature**: 0.1
@@ -146,7 +146,7 @@
 - Ensuring design system compliance
 - Automating design-to-code synchronization
 
-### compound:design-implementation-reviewer
+### grid:design-implementation-reviewer
 **Purpose**: Verify UI code matches design specifications
 
 **Temperature**: 0.1
@@ -157,7 +157,7 @@
 - Checking responsive design behavior
 - Verifying component implementations
 
-### compound:design-iterator
+### grid:design-iterator
 **Purpose**: Iterative design refinement with visual analysis
 
 **Temperature**: 0.3 (Higher for creative work)
@@ -168,7 +168,7 @@
 - Design system consistency checking
 - Component refinement
 
-### compound:frontend-design-agent
+### grid:frontend-design-agent
 **Purpose**: Production-grade frontend interface creation
 
 **Temperature**: 0.3
@@ -183,7 +183,7 @@
 
 ## Workflow Agents (3)
 
-### compound:spec-flow-analyzer
+### grid:spec-flow-analyzer
 **Purpose**: User flow analysis and gap identification
 
 **Temperature**: 0.1
@@ -194,7 +194,7 @@
 - Validating feature specifications
 - Mapping user journeys and flows
 
-### compound:agent-native-architecture
+### grid:agent-native-architecture
 **Purpose**: Design systems for agent-first applications
 
 **Temperature**: 0.1
@@ -205,7 +205,7 @@
 - Building autonomous workflows
 - Creating agent orchestration systems
 
-### compound:deployment-verification-agent
+### grid:deployment-verification-agent
 **Purpose**: Pre-deployment Go/No-Go checklists and verification
 
 **Temperature**: 0.1
@@ -220,7 +220,7 @@
 
 ## Documentation Agents (12)
 
-### compound:ankane-readme-writer
+### grid:ankane-readme-writer
 **Purpose**: Ruby gem documentation in Ankane style
 
 **Temperature**: 0.1
@@ -231,7 +231,7 @@
 - Creating clear, concise gem documentation
 - Writing installation and usage guides
 
-### compound:every-style-editor
+### grid:every-style-editor
 **Purpose**: Text content editing for Every's style guide
 
 **Temperature**: 0.1
@@ -242,7 +242,7 @@
 - Text polishing and refinement
 - Copy editing for publications
 
-### compound:andrew-kane-gem-writer
+### grid:andrew-kane-gem-writer
 **Purpose**: Ruby gem creation following Andrew Kane's patterns
 
 **Temperature**: 0.1
@@ -270,12 +270,12 @@ The remaining 9 documentation agents provide specialized expertise for:
 
 ## Workflow Commands (4)
 
-### compound:workflow:plan
+### grid:workflow:plan
 **Description**: Strategic planning and specification development
 
 **Usage**:
 ```bash
-compound:workflow:plan --task "Add user authentication to Rails app"
+grid:workflow:plan --task "Add user authentication to Rails app"
 ```
 
 **What it does**:
@@ -284,12 +284,12 @@ compound:workflow:plan --task "Add user authentication to Rails app"
 - Identifies risks and mitigations
 - Proposes implementation approaches
 
-### compound:workflow:create
+### grid:workflow:create
 **Description**: Feature and component creation
 
 **Usage**:
 ```bash
-compound:workflow:create --type component --name UserProfile
+grid:workflow:create --type component --name UserProfile
 ```
 
 **What it does**:
@@ -298,12 +298,12 @@ compound:workflow:create --type component --name UserProfile
 - Sets up necessary files and directories
 - Creates test stubs
 
-### compound:workflow:status
+### grid:workflow:status
 **Description**: Project status tracking and reporting
 
 **Usage**:
 ```bash
-compound:workflow:status --project my-app
+grid:workflow:status --project my-app
 ```
 
 **What it does**:
@@ -312,12 +312,12 @@ compound:workflow:status --project my-app
 - Identifies blockers
 - Suggests next steps
 
-### compound:workflow:complete
+### grid:workflow:complete
 **Description**: Task completion and cleanup workflows
 
 **Usage**:
 ```bash
-compound:workflow:complete --task-id 123
+grid:workflow:complete --task-id 123
 ```
 
 **What it does**:
@@ -330,12 +330,12 @@ compound:workflow:complete --task-id 123
 
 ## Code Commands (4)
 
-### compound:code:refactor
+### grid:code:refactor
 **Description**: Code refactoring with quality checks
 
 **Usage**:
 ```bash
-compound:code:refactor --file src/services/user.ts
+grid:code:refactor --file src/services/user.ts
 ```
 
 **What it does**:
@@ -344,12 +344,12 @@ compound:code:refactor --file src/services/user.ts
 - Maintains backward compatibility
 - Validates test passage
 
-### compound:code:review
+### grid:code:review
 **Description**: Comprehensive code review
 
 **Usage**:
 ```bash
-compound:code:review --file src/components/Button.tsx
+grid:code:review --file src/components/Button.tsx
 ```
 
 **What it does**:
@@ -358,12 +358,12 @@ compound:code:review --file src/components/Button.tsx
 - Provides specific recommendations
 - Creates actionable feedback
 
-### compound:code:optimize
+### grid:code:optimize
 **Description**: Performance optimization
 
 **Usage**:
 ```bash
-compound:code:optimize --target database-queries
+grid:code:optimize --target database-queries
 ```
 
 **What it does**:
@@ -372,12 +372,12 @@ compound:code:optimize --target database-queries
 - Recommends caching strategies
 - Provides before/after comparisons
 
-### compound:code:format
+### grid:code:format
 **Description**: Code formatting and style standardization
 
 **Usage**:
 ```bash
-compound:code:format --dir src/
+grid:code:format --dir src/
 ```
 
 **What it does**:
@@ -390,12 +390,12 @@ compound:code:format --dir src/
 
 ## Git Commands (4)
 
-### compound:git:smart-commit
+### grid:git:smart-commit
 **Description**: Intelligent commit message generation
 
 **Usage**:
 ```bash
-compound:git:smart-commit --staged
+grid:git:smart-commit --staged
 ```
 
 **What it does**:
@@ -404,12 +404,12 @@ compound:git:smart-commit --staged
 - Follows conventional commits
 - Provides commit suggestions
 
-### compound:git:branch
+### grid:git:branch
 **Description**: Smart branch creation and management
 
 **Usage**:
 ```bash
-compound:git:branch --create feature/user-auth
+grid:git:branch --create feature/user-auth
 ```
 
 **What it does**:
@@ -418,12 +418,12 @@ compound:git:branch --create feature/user-auth
 - Sets up tracking relationships
 - Manages branch lifecycle
 
-### compound:git:merge
+### grid:git:merge
 **Description**: Intelligent merge workflows
 
 **Usage**:
 ```bash
-compound:git:merge --feature-branch feature/user-auth
+grid:git:merge --feature-branch feature/user-auth
 ```
 
 **What it does**:
@@ -432,12 +432,12 @@ compound:git:merge --feature-branch feature/user-auth
 - Validates merge integrity
 - Creates merge commits
 
-### compound:git:cleanup
+### grid:git:cleanup
 **Description**: Repository cleanup utilities
 
 **Usage**:
 ```bash
-compound:git:cleanup --remove-stale-branches
+grid:git:cleanup --remove-stale-branches
 ```
 
 **What it does**:
@@ -450,12 +450,12 @@ compound:git:cleanup --remove-stale-branches
 
 ## Project Commands (4)
 
-### compound:project:init
+### grid:project:init
 **Description**: Project initialization and setup
 
 **Usage**:
 ```bash
-compound:project:init --template next-app --name my-project
+grid:project:init --template next-app --name my-project
 ```
 
 **What it does**:
@@ -464,12 +464,12 @@ compound:project:init --template next-app --name my-project
 - Sets up development environment
 - Installs dependencies
 
-### compound:project:build
+### grid:project:build
 **Description**: Build process management
 
 **Usage**:
 ```bash
-compound:project:build --target production
+grid:project:build --target production
 ```
 
 **What it does**:
@@ -478,12 +478,12 @@ compound:project:build --target production
 - Generates artifacts
 - Reports build status
 
-### compound:project:deploy
+### grid:project:deploy
 **Description**: Deployment workflows and automation
 
 **Usage**:
 ```bash
-compound:project:deploy --environment staging
+grid:project:deploy --environment staging
 ```
 
 **What it does**:
@@ -492,12 +492,12 @@ compound:project:deploy --environment staging
 - Validates deployment success
 - Provides rollback options
 
-### compound:project:test
+### grid:project:test
 **Description**: Testing automation and reporting
 
 **Usage**:
 ```bash
-compound:project:test --type unit
+grid:project:test --type unit
 ```
 
 **What it does**:
@@ -510,12 +510,12 @@ compound:project:test --type unit
 
 ## Utility Commands (4)
 
-### compound:util:clean
+### grid:util:clean
 **Description**: Project cleanup and artifact removal
 
 **Usage**:
 ```bash
-compound:util:clean --remove-build-artifacts
+grid:util:clean --remove-build-artifacts
 ```
 
 **What it does**:
@@ -524,12 +524,12 @@ compound:util:clean --remove-build-artifacts
 - Removes temporary files
 - Frees disk space
 
-### compound:util:backup
+### grid:util:backup
 **Description**: Configuration and state backup
 
 **Usage**:
 ```bash
-compound:util:backup --create
+grid:util:backup --create
 ```
 
 **What it does**:
@@ -538,12 +538,12 @@ compound:util:backup --create
 - Ensures recovery capability
 - Validates backup integrity
 
-### compound:util:restore
+### grid:util:restore
 **Description**: Configuration and state restoration
 
 **Usage**:
 ```bash
-compound:util:restore --from backup-id
+grid:util:restore --from backup-id
 ```
 
 **What it does**:
@@ -552,12 +552,12 @@ compound:util:restore --from backup-id
 - Verifies state consistency
 - Provides rollback options
 
-### compound:util:doctor
+### grid:util:doctor
 **Description**: System diagnostics and health checks
 
 **Usage**:
 ```bash
-compound:util:doctor --check environment
+grid:util:doctor --check environment
 ```
 
 **What it does**:
@@ -570,12 +570,12 @@ compound:util:doctor --check environment
 
 ## Documentation Commands (4)
 
-### compound:docs:deploy-docs
+### grid:docs:deploy-docs
 **Description**: Documentation deployment and publishing
 
 **Usage**:
 ```bash
-compound:docs:deploy-docs --site my-docs
+grid:docs:deploy-docs --site my-docs
 ```
 
 **What it does**:
@@ -584,12 +584,12 @@ compound:docs:deploy-docs --site my-docs
 - Updates DNS and routing
 - Validates accessibility
 
-### compound:docs:release-docs
+### grid:docs:release-docs
 **Description**: Release documentation and changelog generation
 
 **Usage**:
 ```bash
-compound:docs:release-docs --version 2.0.0
+grid:docs:release-docs --version 2.0.0
 ```
 
 **What it does**:
@@ -598,12 +598,12 @@ compound:docs:release-docs --version 2.0.0
 - Documents breaking changes
 - Publishes release documentation
 
-### compound:docs:feature-video
+### grid:docs:feature-video
 **Description**: Feature demonstration video creation
 
 **Usage**:
 ```bash
-compound:docs:feature-video --feature new-dashboard
+grid:docs:feature-video --feature new-dashboard
 ```
 
 **What it does**:
@@ -612,12 +612,12 @@ compound:docs:feature-video --feature new-dashboard
 - Creates tutorial videos
 - Produces educational content
 
-### compound:docs:test-browser
+### grid:docs:test-browser
 **Description**: Browser-based testing for documentation
 
 **Usage**:
 ```bash
-compound:docs:test-browser --docs-url http://localhost:3000
+grid:docs:test-browser --docs-url http://localhost:3000
 ```
 
 **What it does**:
@@ -632,55 +632,55 @@ compound:docs:test-browser --docs-url http://localhost:3000
 
 ## Development Skills (25)
 
-### compound:typescript-development
+### grid:typescript-development
 Advanced TypeScript patterns, type systems, and best practices
 
-### compound:python-development
+### grid:python-development
 Python development including asyncio, type hints, and frameworks
 
-### compound:ruby-development
+### grid:ruby-development
 Ruby development with Rails patterns and conventions
 
-### compound:go-development
+### grid:go-development
 Go programming, concurrency, and performance optimization
 
-### compound:rust-development
+### grid:rust-development
 Rust ownership system, error handling, and performance
 
-### compound:react-development
+### grid:react-development
 React components, hooks, state management
 
-### compound:vue-development
+### grid:vue-development
 Vue.js components, composition API, and patterns
 
-### compound:nextjs-development
+### grid:nextjs-development
 Next.js SSR, API routes, and full-stack development
 
-### compound:nodejs-development
+### grid:nodejs-development
 Node.js runtime, event loop, and server development
 
-### compound:database-design
+### grid:database-design
 Database schema design, normalization, and optimization
 
-### compound:api-design
+### grid:api-design
 RESTful and GraphQL API design patterns
 
-### compound:testing-development
+### grid:testing-development
 Unit, integration, and E2E testing strategies
 
-### compound:security-auditing
+### grid:security-auditing
 Security vulnerability identification and remediation
 
-### compound:performance-optimization
+### grid:performance-optimization
 Performance profiling and optimization techniques
 
-### compound:code-refactoring
+### grid:code-refactoring
 Safe refactoring patterns and techniques
 
-### compound:code-review-expertise
+### grid:code-review-expertise
 Professional code review practices
 
-### compound:architecture-analysis
+### grid:architecture-analysis
 System architecture analysis and design
 
 **And 8 more specialized development skills covering:**
@@ -696,31 +696,31 @@ System architecture analysis and design
 
 ## Design Skills (18)
 
-### compound:frontend-design
+### grid:frontend-design
 Creating production-grade frontend interfaces and components
 
-### compound:figma-integration
+### grid:figma-integration
 Designing in Figma and exporting to code
 
-### compound:design-systems
+### grid:design-systems
 Building and maintaining design systems
 
-### compound:accessibility-a11y
+### grid:accessibility-a11y
 WCAG compliance, accessibility patterns, inclusive design
 
-### compound:responsive-design
+### grid:responsive-design
 Mobile-first responsive design patterns
 
-### compound:css-styling
+### grid:css-styling
 CSS frameworks, custom properties, advanced styling
 
-### compound:tailwind-css
+### grid:tailwind-css
 Utility-first CSS with Tailwind
 
-### compound:animation-design
+### grid:animation-design
 UI animations, transitions, and motion design
 
-### compound:component-libraries
+### grid:component-libraries
 Building reusable component libraries
 
 **And 9 more design skills covering:**
@@ -738,31 +738,31 @@ Building reusable component libraries
 
 ## DevOps Skills (12)
 
-### compound:docker-containerization
+### grid:docker-containerization
 Docker images, containers, and Docker Compose
 
-### compound:kubernetes-deployment
+### grid:kubernetes-deployment
 Kubernetes orchestration, deployment, scaling
 
-### compound:ci-cd-pipelines
+### grid:ci-cd-pipelines
 GitHub Actions, GitLab CI, Jenkins workflows
 
-### compound:terraform-iac
+### grid:terraform-iac
 Infrastructure as Code with Terraform
 
-### compound:aws-cloud
+### grid:aws-cloud
 AWS services, EC2, S3, Lambda, RDS
 
-### compound:gcp-cloud
+### grid:gcp-cloud
 Google Cloud Platform services and deployment
 
-### compound:monitoring-observability
-Prometheus, Grafana, logging, tracing
+### grid:monitoring-observability
+Augur Planner, Grafana, logging, tracing
 
-### compound:scaling-strategies
+### grid:scaling-strategies
 Horizontal/vertical scaling, auto-scaling
 
-### compound:deployment-strategies
+### grid:deployment-strategies
 Blue-green, canary, rolling deployments
 
 **And 3 more DevOps skills:**
@@ -774,28 +774,28 @@ Blue-green, canary, rolling deployments
 
 ## Documentation Skills (10)
 
-### compound:api-documentation
+### grid:api-documentation
 OpenAPI/Swagger, API documentation best practices
 
-### compound:technical-writing
+### grid:technical-writing
 Technical content writing and clarity
 
-### compound:readme-best-practices
+### grid:readme-best-practices
 Effective README creation and maintenance
 
-### compound:tutorial-creation
+### grid:tutorial-creation
 Step-by-step tutorial writing
 
-### compound:changelog-management
+### grid:changelog-management
 Changelog creation and maintenance
 
-### compound:documentation-sites
+### grid:documentation-sites
 Docusaurus, MkDocs, documentation deployment
 
-### compound:api-specifications
+### grid:api-specifications
 OpenAPI, GraphQL schema documentation
 
-### compound:style-guides
+### grid:style-guides
 Creating and enforcing style guides
 
 **And 2 more documentation skills:**
@@ -806,28 +806,28 @@ Creating and enforcing style guides
 
 ## Analysis Skills (8)
 
-### compound:code-analysis
+### grid:code-analysis
 Static code analysis and quality metrics
 
-### compound:performance-profiling
+### grid:performance-profiling
 Performance analysis and optimization
 
-### compound:security-scanning
+### grid:security-scanning
 Vulnerability scanning and assessment
 
-### compound:git-analytics
+### grid:git-analytics
 Git history analysis and metrics
 
-### compound:dependency-analysis
+### grid:dependency-analysis
 Dependency audit and management
 
-### compound:data-analysis
+### grid:data-analysis
 Data processing and analysis
 
-### compound:trend-analysis
+### grid:trend-analysis
 Trend detection and forecasting
 
-### compound:cost-analysis
+### grid:cost-analysis
 Cloud cost optimization and analysis
 
 ---
@@ -839,15 +839,15 @@ Cloud cost optimization and analysis
 ```javascript
 {
   agents: {
-    "compound:kieran-rails-reviewer": {
+    "grid:kieran-rails-reviewer": {
       model: "anthropic/claude-opus-4-5",
       temperature: 0.1,
-      skills: ["compound:rails-development", "compound:code-review-expertise"]
+      skills: ["grid:rails-development", "grid:code-review-expertise"]
     }
   },
   commands: {
     "code-review": {
-      template: "Review this Rails code: ${file} using compound:kieran-rails-reviewer"
+      template: "Review this Rails code: ${file} using grid:kieran-rails-reviewer"
     }
   }
 }
@@ -858,9 +858,9 @@ Cloud cost optimization and analysis
 ```javascript
 {
   agents: {
-    "compound:spec-flow-analyzer": {
+    "grid:spec-flow-analyzer": {
       model: "anthropic/claude-opus-4-5",
-      skills: ["compound:api-design", "compound:architecture-analysis"]
+      skills: ["grid:api-design", "grid:architecture-analysis"]
     }
   },
   commands: {
@@ -876,10 +876,10 @@ Cloud cost optimization and analysis
 ```javascript
 {
   agents: {
-    "compound:figma-design-sync": {
+    "grid:figma-design-sync": {
       model: "anthropic/claude-opus-4-5",
       temperature: 0.1,
-      skills: ["compound:figma-integration", "compound:responsive-design"]
+      skills: ["grid:figma-integration", "grid:responsive-design"]
     }
   },
   commands: {
@@ -894,14 +894,14 @@ Cloud cost optimization and analysis
 
 ## Namespace Convention
 
-All components follow the `compound:` prefix convention:
+All components follow the `grid:` prefix convention:
 
-- **Agents**: `compound:{category}:{agent-name}`
-  - Example: `compound:kieran-rails-reviewer`
-- **Commands**: `compound:{category}:{action}`
-  - Example: `compound:code:refactor`
-- **Skills**: `compound:{skill-name}`
-  - Example: `compound:typescript-development`
+- **Agents**: `grid:{category}:{agent-name}`
+  - Example: `grid:kieran-rails-reviewer`
+- **Commands**: `grid:{category}:{action}`
+  - Example: `grid:code:refactor`
+- **Skills**: `grid:{skill-name}`
+  - Example: `grid:typescript-development`
 
 This naming scheme ensures:
 - ✅ Clear origin and purpose
@@ -914,16 +914,16 @@ This naming scheme ensures:
 ## Integration Points
 
 ### With Your Configuration
-All components are available through the standard ruach configuration system:
+All components are available through the standard ghostwire configuration system:
 
 ```javascript
 // opencode.json or .opencode/config.jsonc
 {
   agents: {
-    "compound:*": { ... }  // Enable all compound agents
+    "grid:*": { ... }  // Enable all compound agents
   },
   commands: {
-    "compound:*": { ... }  // Enable all compound commands
+    "grid:*": { ... }  // Enable all compound commands
   }
 }
 ```

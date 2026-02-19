@@ -3,15 +3,15 @@ import * as os from "node:os"
 import * as fs from "node:fs"
 import { getOpenCodeConfigDir } from "../../shared"
 
-export const PACKAGE_NAME = "ruach"
+export const PACKAGE_NAME = "ghostwire"
 export const NPM_REGISTRY_URL = `https://registry.npmjs.org/-/package/${PACKAGE_NAME}/dist-tags`
 export const NPM_FETCH_TIMEOUT = 5000
 
 function getCacheDir(): string {
   if (process.platform === "win32") {
-    return path.join(process.env.LOCALAPPDATA ?? os.homedir(), "ruach")
+    return path.join(process.env.LOCALAPPDATA ?? os.homedir(), "ghostwire")
   }
-  return path.join(os.homedir(), ".cache", "ruach")
+  return path.join(os.homedir(), ".cache", "ghostwire")
 }
 
 export const CACHE_DIR = getCacheDir()
@@ -29,5 +29,5 @@ export function getWindowsAppdataDir(): string | null {
 }
 
 export const USER_CONFIG_DIR = getOpenCodeConfigDir({ binary: "opencode" })
-export const USER_OPENCODE_CONFIG = path.join(USER_CONFIG_DIR, "ruach.json")
-export const USER_OPENCODE_CONFIG_JSONC = path.join(USER_CONFIG_DIR, "ruach.jsonc")
+export const USER_OPENCODE_CONFIG = path.join(USER_CONFIG_DIR, "ghostwire.json")
+export const USER_OPENCODE_CONFIG_JSONC = path.join(USER_CONFIG_DIR, "ghostwire.jsonc")

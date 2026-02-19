@@ -1,11 +1,11 @@
 /**
  * Migration Tool for Configuration Upgrades
  * 
- * Helps users migrate from older configuration formats to the current ruach
+ * Helps users migrate from older configuration formats to the current ghostwire
  * unified architecture in v3.2.0+.
  * 
  * Note: All compound-engineering components are now natively integrated and available
- * through the `compound:` namespace prefix.
+ * through the `grid:` namespace prefix.
  */
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "fs"

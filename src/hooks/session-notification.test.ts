@@ -4,7 +4,7 @@ import { createSessionNotification } from "./session-notification"
 import { setMainSession, subagentSessions, _resetForTesting } from "../features/claude-code-session-state"
 import * as utils from "./session-notification-utils"
 
-describe("session-notification", () => {
+describe("grid-session-notification", () => {
   let notificationCalls: string[]
 
   function createMockPluginInput() {

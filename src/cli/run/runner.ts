@@ -64,7 +64,7 @@ export async function run(options: RunOptions): Promise<number> {
 
       for (let attempt = 1; attempt <= SESSION_CREATE_MAX_RETRIES; attempt++) {
         const sessionRes = await client.session.create({
-          body: { title: "ruach run" },
+          body: { title: "ghostwire run" },
         })
 
         if (sessionRes.error) {

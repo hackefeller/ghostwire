@@ -24,7 +24,7 @@ describe("claude-code-session-state", () => {
     test("should store agent for session", () => {
       // #given
       const sessionID = "test-session-1"
-      const agent = "Prometheus (Planner)"
+      const agent = "Augur Planner (Planner)"
 
       // #when
       setSessionAgent(sessionID, agent)
@@ -36,13 +36,13 @@ describe("claude-code-session-state", () => {
     test("should NOT overwrite existing agent (first-write wins)", () => {
       // #given
       const sessionID = "test-session-1"
-      setSessionAgent(sessionID, "Prometheus (Planner)")
+      setSessionAgent(sessionID, "Augur Planner (Planner)")
 
       // #when - try to overwrite
-      setSessionAgent(sessionID, "sisyphus")
+      setSessionAgent(sessionID, "cipher-operator")
 
       // #then - first agent preserved
-      expect(getSessionAgent(sessionID)).toBe("Prometheus (Planner)")
+      expect(getSessionAgent(sessionID)).toBe("Augur Planner (Planner)")
     })
 
     test("should return undefined for unknown session", () => {
@@ -57,13 +57,13 @@ describe("claude-code-session-state", () => {
     test("should overwrite existing agent", () => {
       // #given
       const sessionID = "test-session-1"
-      setSessionAgent(sessionID, "Prometheus (Planner)")
+      setSessionAgent(sessionID, "Augur Planner (Planner)")
 
       // #when - force update
-      updateSessionAgent(sessionID, "sisyphus")
+      updateSessionAgent(sessionID, "cipher-operator")
 
       // #then
-      expect(getSessionAgent(sessionID)).toBe("sisyphus")
+      expect(getSessionAgent(sessionID)).toBe("cipher-operator")
     })
   })
 
@@ -71,8 +71,8 @@ describe("claude-code-session-state", () => {
     test("should remove agent from session", () => {
       // #given
       const sessionID = "test-session-1"
-      setSessionAgent(sessionID, "Prometheus (Planner)")
-      expect(getSessionAgent(sessionID)).toBe("Prometheus (Planner)")
+      setSessionAgent(sessionID, "Augur Planner (Planner)")
+      expect(getSessionAgent(sessionID)).toBe("Augur Planner (Planner)")
 
       // #when
       clearSessionAgent(sessionID)
@@ -102,24 +102,24 @@ describe("claude-code-session-state", () => {
     })
   })
 
-  describe("prometheus-md-only integration scenario", () => {
-    test("should correctly identify Prometheus agent for permission checks", () => {
-      // #given - Prometheus session
-      const sessionID = "test-prometheus-session"
-      const prometheusAgent = "Prometheus (Planner)"
+  describe("augur-planner-md-only integration scenario", () => {
+    test("should correctly identify Augur Planner agent for permission checks", () => {
+      // #given - Augur Planner session
+      const sessionID = "test-augurPlanner-session"
+      const augurAgent = "Augur Planner (Planner)"
 
       // #when - agent is set (simulating chat.message hook)
-      setSessionAgent(sessionID, prometheusAgent)
+      setSessionAgent(sessionID, augurAgent)
 
-      // #then - getSessionAgent returns correct agent for prometheus-md-only hook
+      // #then - getSessionAgent returns correct agent for augurPlanner-md-only hook
       const agent = getSessionAgent(sessionID)
-      expect(agent).toBe("Prometheus (Planner)")
-      expect(["Prometheus (Planner)"].includes(agent!)).toBe(true)
+      expect(agent).toBe("Augur Planner (Planner)")
+      expect(["Augur Planner (Planner)"].includes(agent!)).toBe(true)
     })
 
     test("should return undefined when agent not set (bug scenario)", () => {
       // #given - session exists but no agent set (the bug)
-      const sessionID = "test-prometheus-session"
+      const sessionID = "test-augurPlanner-session"
 
       // #when / #then - this is the bug: agent is undefined
       expect(getSessionAgent(sessionID)).toBeUndefined()
@@ -131,14 +131,14 @@ describe("claude-code-session-state", () => {
       // #given - user switches to custom agent "MyCustomAgent"
       const sessionID = "test-session-custom"
       const customAgent = "MyCustomAgent"
-      const defaultAgent = "sisyphus"
+      const defaultAgent = "cipher-operator"
 
       // User switches to custom agent (via UI)
       setSessionAgent(sessionID, customAgent)
       expect(getSessionAgent(sessionID)).toBe(customAgent)
 
       // #when - first message after switch sends default agent
-      // This simulates the bug: input.agent = "Sisyphus" on first message
+      // This simulates the bug: input.agent = "Cipher Operator" on first message
       // Using setSessionAgent (first-write wins) should preserve custom agent
       setSessionAgent(sessionID, defaultAgent)
 

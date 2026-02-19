@@ -48,7 +48,7 @@ Conduct comprehensive code reviews leveraging multiple specialist agents.
 - Use \`kieran-typescript-reviewer\` for TypeScript/JavaScript
 - Use \`dhh-rails-reviewer\` for architectural opinions
 - Use \`security-sentinel\` for security issues
-- Use \`performance-oracle\` for optimization
+- Use \`performance-seerAdvisor\` for optimization
 - Use \`code-simplicity-reviewer\` for YAGNI violations
 
 ## Output
@@ -74,7 +74,7 @@ Improve performance, reduce bundle size, or enhance runtime efficiency.
 
 ## Key Agents & Tasks
 
-- Use \`performance-oracle\` for systematic optimization
+- Use \`performance-seerAdvisor\` for systematic optimization
 - Measure performance before and after optimizations
 - Profile code to identify actual bottlenecks
 - Prioritize high-impact optimizations

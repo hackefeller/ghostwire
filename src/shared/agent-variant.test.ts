@@ -1,159 +1,163 @@
-import { describe, expect, test } from "bun:test"
-import type { RuachConfig } from "../config"
-import { applyAgentVariant, resolveAgentVariant, resolveVariantForModel } from "./agent-variant"
+import { describe, expect, test } from "bun:test";
+import type { GhostwireConfig } from "../config";
+import {
+  applyAgentVariant,
+  resolveAgentVariant,
+  resolveVariantForModel,
+} from "./agent-variant";
 
 describe("resolveAgentVariant", () => {
   test("returns undefined when agent name missing", () => {
     // #given
-    const config = {} as RuachConfig
+    const config = {} as GhostwireConfig;
 
     // #when
-    const variant = resolveAgentVariant(config)
+    const variant = resolveAgentVariant(config);
 
     // #then
-    expect(variant).toBeUndefined()
-  })
+    expect(variant).toBeUndefined();
+  });
 
   test("returns agent override variant", () => {
     // #given
     const config = {
       agents: {
-        sisyphus: { variant: "low" },
+        "cipher-operator": { variant: "low" },
       },
-    } as RuachConfig
+    } as GhostwireConfig;
 
     // #when
-    const variant = resolveAgentVariant(config, "sisyphus")
+    const variant = resolveAgentVariant(config, "cipher-operator");
 
     // #then
-    expect(variant).toBe("low")
-  })
+    expect(variant).toBe("low");
+  });
 
   test("returns category variant when agent uses category", () => {
     // #given
     const config = {
       agents: {
-        sisyphus: { category: "ultrabrain" },
+        "cipher-operator": { category: "ultrabrain" },
       },
       categories: {
         ultrabrain: { model: "openai/gpt-5.2", variant: "xhigh" },
       },
-    } as RuachConfig
+    } as GhostwireConfig;
 
     // #when
-    const variant = resolveAgentVariant(config, "sisyphus")
+    const variant = resolveAgentVariant(config, "cipher-operator");
 
     // #then
-    expect(variant).toBe("xhigh")
-  })
-})
+    expect(variant).toBe("xhigh");
+  });
+});
 
 describe("applyAgentVariant", () => {
   test("sets variant when message is undefined", () => {
     // #given
     const config = {
       agents: {
-        sisyphus: { variant: "low" },
+        "cipher-operator": { variant: "low" },
       },
-    } as RuachConfig
-    const message: { variant?: string } = {}
+    } as GhostwireConfig;
+    const message: { variant?: string } = {};
 
     // #when
-    applyAgentVariant(config, "sisyphus", message)
+    applyAgentVariant(config, "cipher-operator", message);
 
     // #then
-    expect(message.variant).toBe("low")
-  })
+    expect(message.variant).toBe("low");
+  });
 
   test("does not override existing variant", () => {
     // #given
     const config = {
       agents: {
-        sisyphus: { variant: "low" },
+        "cipher-operator": { variant: "low" },
       },
-    } as RuachConfig
-    const message = { variant: "max" }
+    } as GhostwireConfig;
+    const message = { variant: "max" };
 
     // #when
-    applyAgentVariant(config, "sisyphus", message)
+    applyAgentVariant(config, "cipher-operator", message);
 
     // #then
-    expect(message.variant).toBe("max")
-  })
-})
+    expect(message.variant).toBe("max");
+  });
+});
 
 describe("resolveVariantForModel", () => {
   test("returns correct variant for anthropic provider", () => {
     // #given
-    const config = {} as RuachConfig
-    const model = { providerID: "anthropic", modelID: "claude-opus-4-5" }
+    const config = {} as GhostwireConfig;
+    const model = { providerID: "anthropic", modelID: "claude-opus-4-5" };
 
     // #when
-    const variant = resolveVariantForModel(config, "sisyphus", model)
+    const variant = resolveVariantForModel(config, "cipher-operator", model);
 
     // #then
-    expect(variant).toBe("max")
-  })
+    expect(variant).toBe("max");
+  });
 
   test("returns correct variant for openai provider", () => {
     // #given
-    const config = {} as RuachConfig
-    const model = { providerID: "openai", modelID: "gpt-5.2" }
+    const config = {} as GhostwireConfig;
+    const model = { providerID: "openai", modelID: "gpt-5.2" };
 
     // #when
-    const variant = resolveVariantForModel(config, "sisyphus", model)
+    const variant = resolveVariantForModel(config, "cipher-operator", model);
 
     // #then
-    expect(variant).toBe("medium")
-  })
+    expect(variant).toBe("medium");
+  });
 
   test("returns undefined for provider with no variant in chain", () => {
     // #given
-    const config = {} as RuachConfig
-    const model = { providerID: "google", modelID: "gemini-3-pro" }
+    const config = {} as GhostwireConfig;
+    const model = { providerID: "google", modelID: "gemini-3-pro" };
 
     // #when
-    const variant = resolveVariantForModel(config, "sisyphus", model)
+    const variant = resolveVariantForModel(config, "cipher-operator", model);
 
     // #then
-    expect(variant).toBeUndefined()
-  })
+    expect(variant).toBeUndefined();
+  });
 
   test("returns undefined for provider not in chain", () => {
     // #given
-    const config = {} as RuachConfig
-    const model = { providerID: "unknown-provider", modelID: "some-model" }
+    const config = {} as GhostwireConfig;
+    const model = { providerID: "unknown-provider", modelID: "some-model" };
 
     // #when
-    const variant = resolveVariantForModel(config, "sisyphus", model)
+    const variant = resolveVariantForModel(config, "cipher-operator", model);
 
     // #then
-    expect(variant).toBeUndefined()
-  })
+    expect(variant).toBeUndefined();
+  });
 
   test("returns undefined for unknown agent", () => {
     // #given
-    const config = {} as RuachConfig
-    const model = { providerID: "anthropic", modelID: "claude-opus-4-5" }
+    const config = {} as GhostwireConfig;
+    const model = { providerID: "anthropic", modelID: "claude-opus-4-5" };
 
     // #when
-    const variant = resolveVariantForModel(config, "nonexistent-agent", model)
+    const variant = resolveVariantForModel(config, "nonexistent-agent", model);
 
     // #then
-    expect(variant).toBeUndefined()
-  })
+    expect(variant).toBeUndefined();
+  });
 
   test("returns variant for zai-coding-plan provider without variant", () => {
     // #given
-    const config = {} as RuachConfig
-    const model = { providerID: "zai-coding-plan", modelID: "glm-4.7" }
+    const config = {} as GhostwireConfig;
+    const model = { providerID: "zai-coding-plan", modelID: "glm-4.7" };
 
     // #when
-    const variant = resolveVariantForModel(config, "sisyphus", model)
+    const variant = resolveVariantForModel(config, "cipher-operator", model);
 
     // #then
-    expect(variant).toBeUndefined()
-  })
+    expect(variant).toBeUndefined();
+  });
 
   test("falls back to category chain when agent has no requirement", () => {
     // #given
@@ -161,37 +165,37 @@ describe("resolveVariantForModel", () => {
       agents: {
         "custom-agent": { category: "ultrabrain" },
       },
-    } as RuachConfig
-    const model = { providerID: "openai", modelID: "gpt-5.2-codex" }
+    } as GhostwireConfig;
+    const model = { providerID: "openai", modelID: "gpt-5.2-codex" };
 
     // #when
-    const variant = resolveVariantForModel(config, "custom-agent", model)
+    const variant = resolveVariantForModel(config, "custom-agent", model);
 
     // #then
-    expect(variant).toBe("xhigh")
-  })
+    expect(variant).toBe("xhigh");
+  });
 
-  test("returns correct variant for oracle agent with openai", () => {
+  test("returns correct variant for seerAdvisor agent with openai", () => {
     // #given
-    const config = {} as RuachConfig
-    const model = { providerID: "openai", modelID: "gpt-5.2" }
+    const config = {} as GhostwireConfig;
+    const model = { providerID: "openai", modelID: "gpt-5.2" };
 
     // #when
-    const variant = resolveVariantForModel(config, "oracle", model)
+    const variant = resolveVariantForModel(config, "seer-advisor", model);
 
     // #then
-    expect(variant).toBe("high")
-  })
+    expect(variant).toBe("high");
+  });
 
-  test("returns correct variant for oracle agent with anthropic", () => {
+  test("returns correct variant for seerAdvisor agent with anthropic", () => {
     // #given
-    const config = {} as RuachConfig
-    const model = { providerID: "anthropic", modelID: "claude-opus-4-5" }
+    const config = {} as GhostwireConfig;
+    const model = { providerID: "anthropic", modelID: "claude-opus-4-5" };
 
     // #when
-    const variant = resolveVariantForModel(config, "oracle", model)
+    const variant = resolveVariantForModel(config, "seer-advisor", model);
 
     // #then
-    expect(variant).toBe("max")
-  })
-})
+    expect(variant).toBe("max");
+  });
+});

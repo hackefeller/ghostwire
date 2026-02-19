@@ -1,17 +1,17 @@
-# Ruach CLI Guide
+# Ghostwire CLI Guide
 
-This document provides a comprehensive guide to using the Ruach CLI tools.
+This document provides a comprehensive guide to using the Ghostwire CLI tools.
 
 ## 1. Overview
 
-Ruach provides CLI tools accessible via the `bunx ruach` command. The CLI supports various features including plugin installation, environment diagnostics, and session execution.
+Ghostwire provides CLI tools accessible via the `bunx ghostwire` command. The CLI supports various features including plugin installation, environment diagnostics, and session execution.
 
 ```bash
 # Basic execution (displays help)
-bunx ruach
+bunx ghostwire
 
 # Or run with npx
-npx ruach
+npx ghostwire
 ```
 
 ---
@@ -30,20 +30,20 @@ npx ruach
 
 ## 3. `install` - Interactive Setup Wizard
 
-An interactive installation tool for initial Ruach setup. Provides a beautiful TUI (Text User Interface) based on `@clack/prompts`.
+An interactive installation tool for initial Ghostwire setup. Provides a beautiful TUI (Text User Interface) based on `@clack/prompts`.
 
 ### Usage
 
 ```bash
-bunx ruach install
+bunx ghostwire install
 ```
 
 ### Installation Process
 
 1. **Provider Selection**: Choose your AI provider from Claude, ChatGPT, or Gemini.
 2. **API Key Input**: Enter the API key for your selected provider.
-3. **Configuration File Creation**: Generates `opencode.json` or `ruach.json` files.
-4. **Plugin Registration**: Automatically registers the ruach plugin in OpenCode settings.
+3. **Configuration File Creation**: Generates `opencode.json` or `ghostwire.json` files.
+4. **Plugin Registration**: Automatically registers the ghostwire plugin in OpenCode settings.
 
 ### Options
 
@@ -56,12 +56,12 @@ bunx ruach install
 
 ## 4. `doctor` - Environment Diagnostics
 
-Diagnoses your environment to ensure Ruach is functioning correctly. Performs 17+ health checks.
+Diagnoses your environment to ensure Ghostwire is functioning correctly. Performs 17+ health checks.
 
 ### Usage
 
 ```bash
-bunx ruach doctor
+bunx ghostwire doctor
 ```
 
 ### Diagnostic Categories
@@ -86,10 +86,10 @@ bunx ruach doctor
 ### Example Output
 
 ```
-ruach doctor
+ghostwire doctor
 
 ┌──────────────────────────────────────────────────┐
-│  Ruach Doctor                           │
+│  Ghostwire Doctor                           │
 └──────────────────────────────────────────────────┘
 
 Installation
@@ -97,7 +97,7 @@ Installation
   ✓ Plugin registered in opencode.json
 
 Configuration
-  ✓ ruach.json is valid
+  ✓ ghostwire.json is valid
   ⚠ categories.visual-engineering: using default model
 
 Authentication
@@ -122,7 +122,7 @@ Executes OpenCode sessions and monitors task completion.
 ### Usage
 
 ```bash
-bunx ruach run [prompt]
+bunx ghostwire run [prompt]
 ```
 
 ### Options
@@ -142,16 +142,16 @@ Manages OAuth 2.1 authentication for remote MCP servers.
 
 ```bash
 # Login to an OAuth-protected MCP server
-bunx ruach mcp oauth login <server-name> --server-url https://api.example.com
+bunx ghostwire mcp oauth login <server-name> --server-url https://api.example.com
 
 # Login with explicit client ID and scopes
-bunx ruach mcp oauth login my-api --server-url https://api.example.com --client-id my-client --scopes "read,write"
+bunx ghostwire mcp oauth login my-api --server-url https://api.example.com --client-id my-client --scopes "read,write"
 
 # Remove stored OAuth tokens
-bunx ruach mcp oauth logout <server-name>
+bunx ghostwire mcp oauth logout <server-name>
 
 # Check OAuth token status
-bunx ruach mcp oauth status [server-name]
+bunx ghostwire mcp oauth status [server-name]
 ```
 
 ### Options
@@ -176,13 +176,13 @@ Manages Google Antigravity OAuth authentication. Required for using Gemini model
 
 ```bash
 # Login
-bunx ruach auth login
+bunx ghostwire auth login
 
 # Logout
-bunx ruach auth logout
+bunx ghostwire auth logout
 
 # Check current status
-bunx ruach auth status
+bunx ghostwire auth status
 ```
 
 ---
@@ -191,8 +191,8 @@ bunx ruach auth status
 
 The CLI searches for configuration files in the following locations (in priority order):
 
-1. **Project Level**: `.opencode/ruach.json`
-2. **User Level**: `~/.config/opencode/ruach.json`
+1. **Project Level**: `.opencode/ghostwire.json`
+2. **User Level**: `~/.config/opencode/ghostwire.json`
 
 ### JSONC Support
 
@@ -201,7 +201,7 @@ Configuration files support **JSONC (JSON with Comments)** format. You can use c
 ```jsonc
 {
   // Agent configuration
-  "sisyphus_agent": {
+  "cipher_agent": {
     "disabled": false,
     "planner_enabled": true,
   },
@@ -232,17 +232,17 @@ bun install -g opencode@latest
 
 ```bash
 # Reinstall plugin
-bunx ruach install
+bunx ghostwire install
 ```
 
 ### Doctor Check Failures
 
 ```bash
 # Diagnose with detailed information
-bunx ruach doctor --verbose
+bunx ghostwire doctor --verbose
 
 # Check specific category only
-bunx ruach doctor --category authentication
+bunx ghostwire doctor --category authentication
 ```
 
 ---
@@ -253,10 +253,10 @@ Use the `--no-tui` option for CI/CD environments.
 
 ```bash
 # Run doctor in CI environment
-bunx ruach doctor --no-tui --json
+bunx ghostwire doctor --no-tui --json
 
 # Save results to file
-bunx ruach doctor --json > doctor-report.json
+bunx ghostwire doctor --json > doctor-report.json
 ```
 
 ---

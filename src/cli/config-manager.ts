@@ -131,7 +131,7 @@ export async function fetchNpmDistTags(packageName: string): Promise<NpmDistTags
   }
 }
 
-const PACKAGE_NAME = "ruach"
+const PACKAGE_NAME = "ghostwire"
 
 const PRIORITIZED_TAGS = ["latest", "beta", "next"] as const
 
@@ -354,7 +354,7 @@ export function writeOmoConfig(installConfig: InstallConfig): ConfigMergeResult 
 
     return { success: true, configPath: omoConfigPath }
   } catch (err) {
-    return { success: false, configPath: omoConfigPath, error: formatErrorWithSuggestion(err, "write ruach config") }
+    return { success: false, configPath: omoConfigPath, error: formatErrorWithSuggestion(err, "write ghostwire config") }
   }
 }
 
@@ -648,7 +648,7 @@ export function detectCurrentConfig(): DetectedConfig {
 
   const openCodeConfig = parseResult.config
   const plugins = openCodeConfig.plugin ?? []
-  result.isInstalled = plugins.some((p) => p.startsWith("ruach"))
+  result.isInstalled = plugins.some((p) => p.startsWith("ghostwire"))
 
   if (!result.isInstalled) {
     return result

@@ -1,4 +1,4 @@
-export const HOOK_NAME = "non-interactive-env"
+export const HOOK_NAME = "grid-non-interactive-env"
 
 export const NON_INTERACTIVE_ENV: Record<string, string> = {
   CI: "true",

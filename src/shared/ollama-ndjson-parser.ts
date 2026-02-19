@@ -4,11 +4,11 @@
  * Parses newline-delimited JSON (NDJSON) responses from Ollama API.
  *
  * @module ollama-ndjson-parser
- * @see https://github.com/code-yeongyu/ruach/issues/1124
+ * @see https://github.com/pontistudios/ghostwire/issues/1124
  * @see https://github.com/ollama/ollama/blob/main/docs/api.md
  */
 
-import { log } from "./logger"
+import { log } from "./logger";
 
 /**
  * Ollama message structure
@@ -16,41 +16,41 @@ import { log } from "./logger"
 export interface OllamaMessage {
   tool_calls?: Array<{
     function: {
-      name: string
-      arguments: Record<string, unknown>
-    }
-  }>
-  content?: string
+      name: string;
+      arguments: Record<string, unknown>;
+    };
+  }>;
+  content?: string;
 }
 
 /**
  * Ollama NDJSON line structure
  */
 export interface OllamaNDJSONLine {
-  message?: OllamaMessage
-  done: boolean
-  total_duration?: number
-  load_duration?: number
-  prompt_eval_count?: number
-  prompt_eval_duration?: number
-  eval_count?: number
-  eval_duration?: number
+  message?: OllamaMessage;
+  done: boolean;
+  total_duration?: number;
+  load_duration?: number;
+  prompt_eval_count?: number;
+  prompt_eval_duration?: number;
+  eval_count?: number;
+  eval_duration?: number;
 }
 
 /**
  * Merged Ollama response
  */
 export interface OllamaMergedResponse {
-  message: OllamaMessage
-  done: boolean
+  message: OllamaMessage;
+  done: boolean;
   stats?: {
-    total_duration?: number
-    load_duration?: number
-    prompt_eval_count?: number
-    prompt_eval_duration?: number
-    eval_count?: number
-    eval_duration?: number
-  }
+    total_duration?: number;
+    load_duration?: number;
+    prompt_eval_count?: number;
+    prompt_eval_duration?: number;
+    eval_count?: number;
+    eval_duration?: number;
+  };
 }
 
 /**
@@ -90,41 +90,44 @@ export interface OllamaMergedResponse {
  * // }
  * ```
  */
-export function parseOllamaStreamResponse(response: string): OllamaMergedResponse {
-  const lines = response.split("\n").filter((line) => line.trim())
+export function parseOllamaStreamResponse(
+  response: string,
+): OllamaMergedResponse {
+  const lines = response.split("\n").filter((line) => line.trim());
 
   if (lines.length === 0) {
-    throw new Error("No valid NDJSON lines found in response")
+    throw new Error("No valid NDJSON lines found in response");
   }
 
   const mergedMessage: OllamaMessage = {
     tool_calls: [],
     content: "",
-  }
+  };
 
-  let done = false
-  let stats: OllamaMergedResponse["stats"] = {}
+  let done = false;
+  let stats: OllamaMergedResponse["stats"] = {};
 
   for (const line of lines) {
     try {
-      const json = JSON.parse(line) as OllamaNDJSONLine
+      const json = JSON.parse(line) as OllamaNDJSONLine;
 
       // Merge tool_calls
       if (json.message?.tool_calls) {
         mergedMessage.tool_calls = [
           ...(mergedMessage.tool_calls || []),
           ...json.message.tool_calls,
-        ]
+        ];
       }
 
       // Merge content (concatenate)
       if (json.message?.content) {
-        mergedMessage.content = (mergedMessage.content || "") + json.message.content
+        mergedMessage.content =
+          (mergedMessage.content || "") + json.message.content;
       }
 
       // Update done flag (final line has done: true)
       if (json.done) {
-        done = true
+        done = true;
 
         // Capture stats from final line
         stats = {
@@ -134,11 +137,13 @@ export function parseOllamaStreamResponse(response: string): OllamaMergedRespons
           prompt_eval_duration: json.prompt_eval_duration,
           eval_count: json.eval_count,
           eval_duration: json.eval_duration,
-        }
+        };
       }
     } catch (error) {
-      log(`[ollama-ndjson-parser] Skipping malformed NDJSON line: ${line}`, { error })
-      continue
+      log(`[ollama-ndjson-parser] Skipping malformed NDJSON line: ${line}`, {
+        error,
+      });
+      continue;
     }
   }
 
@@ -146,7 +151,7 @@ export function parseOllamaStreamResponse(response: string): OllamaMergedRespons
     message: mergedMessage,
     done,
     ...(Object.keys(stats).length > 0 ? { stats } : {}),
-  }
+  };
 }
 
 /**
@@ -170,29 +175,29 @@ export function parseOllamaStreamResponse(response: string): OllamaMergedRespons
  * ```
  */
 export function isNDJSONResponse(response: string): boolean {
-  const lines = response.split("\n").filter((line) => line.trim())
+  const lines = response.split("\n").filter((line) => line.trim());
 
   // Single line is not NDJSON
   if (lines.length <= 1) {
-    return false
+    return false;
   }
 
-  let hasValidJSON = false
-  let hasDoneField = false
+  let hasValidJSON = false;
+  let hasDoneField = false;
 
   for (const line of lines) {
     try {
-      const json = JSON.parse(line) as Record<string, unknown>
-      hasValidJSON = true
+      const json = JSON.parse(line) as Record<string, unknown>;
+      hasValidJSON = true;
 
       if ("done" in json) {
-        hasDoneField = true
+        hasDoneField = true;
       }
     } catch {
       // If any line fails to parse, it's not NDJSON
-      return false
+      return false;
     }
   }
 
-  return hasValidJSON && hasDoneField
+  return hasValidJSON && hasDoneField;
 }

@@ -6,30 +6,30 @@ describe("Compound Engineering Commands", () => {
     test("all compound command names are valid", () => {
       //#given
       const compoundCommands = [
-        "compound:workflows:plan",
-        "compound:workflows:create",
-        "compound:workflows:status",
-        "compound:workflows:complete",
-        "compound:code:refactor",
-        "compound:code:review",
-        "compound:code:optimize",
-        "compound:code:format",
-        "compound:git:smart-commit",
-        "compound:git:branch",
-        "compound:git:merge",
-        "compound:git:cleanup",
-        "compound:project:init",
-        "compound:project:build",
-        "compound:project:deploy",
-        "compound:project:test",
-        "compound:util:clean",
-        "compound:util:backup",
-        "compound:util:restore",
-        "compound:util:doctor",
-        "compound:docs:deploy-docs",
-        "compound:docs:release-docs",
-        "compound:docs:feature-video",
-        "compound:docs:test-browser",
+        "grid:workflows:plan",
+        "grid:workflows:create",
+        "grid:workflows:status",
+        "grid:workflows:complete",
+        "grid:code:refactor",
+        "grid:code:review",
+        "grid:code:optimize",
+        "grid:code:format",
+        "grid:git:smart-commit",
+        "grid:git:branch",
+        "grid:git:merge",
+        "grid:git:cleanup",
+        "grid:project:init",
+        "grid:project:build",
+        "grid:project:deploy",
+        "grid:project:test",
+        "grid:util:clean",
+        "grid:util:backup",
+        "grid:util:restore",
+        "grid:util:doctor",
+        "grid:docs:deploy-docs",
+        "grid:docs:release-docs",
+        "grid:docs:feature-video",
+        "grid:docs:test-browser",
       ]
 
       //#when
@@ -40,19 +40,19 @@ describe("Compound Engineering Commands", () => {
       expect(failures.length).toBe(0)
     })
 
-    test("all command names follow compound:category:action pattern", () => {
+    test("all command names follow grid:category:action pattern", () => {
       //#given
       const compoundCommands = [
-        "compound:workflows:plan",
-        "compound:code:refactor",
-        "compound:git:smart-commit",
-        "compound:project:init",
-        "compound:util:clean",
-        "compound:docs:deploy-docs",
+        "grid:workflows:plan",
+        "grid:code:refactor",
+        "grid:git:smart-commit",
+        "grid:project:init",
+        "grid:util:clean",
+        "grid:docs:deploy-docs",
       ]
 
       //#when
-      const pattern = /^compound:[a-z]+:[a-z-]+$/
+      const pattern = /^grid:[a-z]+:[a-z-]+$/
       const validCommands = compoundCommands.filter((cmd) => pattern.test(cmd))
 
       //#then
@@ -64,10 +64,10 @@ describe("Compound Engineering Commands", () => {
     test("workflows commands exist (4)", () => {
       //#given
       const workflowCommands = [
-        "compound:workflows:plan",
-        "compound:workflows:create",
-        "compound:workflows:status",
-        "compound:workflows:complete",
+        "grid:workflows:plan",
+        "grid:workflows:create",
+        "grid:workflows:status",
+        "grid:workflows:complete",
       ]
 
       //#when
@@ -80,10 +80,10 @@ describe("Compound Engineering Commands", () => {
     test("code commands exist (4)", () => {
       //#given
       const codeCommands = [
-        "compound:code:refactor",
-        "compound:code:review",
-        "compound:code:optimize",
-        "compound:code:format",
+        "grid:code:refactor",
+        "grid:code:review",
+        "grid:code:optimize",
+        "grid:code:format",
       ]
 
       //#when
@@ -96,10 +96,10 @@ describe("Compound Engineering Commands", () => {
     test("git commands exist (4)", () => {
       //#given
       const gitCommands = [
-        "compound:git:smart-commit",
-        "compound:git:branch",
-        "compound:git:merge",
-        "compound:git:cleanup",
+        "grid:git:smart-commit",
+        "grid:git:branch",
+        "grid:git:merge",
+        "grid:git:cleanup",
       ]
 
       //#when
@@ -112,10 +112,10 @@ describe("Compound Engineering Commands", () => {
     test("project commands exist (4)", () => {
       //#given
       const projectCommands = [
-        "compound:project:init",
-        "compound:project:build",
-        "compound:project:deploy",
-        "compound:project:test",
+        "grid:project:init",
+        "grid:project:build",
+        "grid:project:deploy",
+        "grid:project:test",
       ]
 
       //#when
@@ -128,10 +128,10 @@ describe("Compound Engineering Commands", () => {
     test("util commands exist (4)", () => {
       //#given
       const utilCommands = [
-        "compound:util:clean",
-        "compound:util:backup",
-        "compound:util:restore",
-        "compound:util:doctor",
+        "grid:util:clean",
+        "grid:util:backup",
+        "grid:util:restore",
+        "grid:util:doctor",
       ]
 
       //#when
@@ -144,10 +144,10 @@ describe("Compound Engineering Commands", () => {
     test("docs commands exist (4)", () => {
       //#given
       const docCommands = [
-        "compound:docs:deploy-docs",
-        "compound:docs:release-docs",
-        "compound:docs:feature-video",
-        "compound:docs:test-browser",
+        "grid:docs:deploy-docs",
+        "grid:docs:release-docs",
+        "grid:docs:feature-video",
+        "grid:docs:test-browser",
       ]
 
       //#when
@@ -162,30 +162,30 @@ describe("Compound Engineering Commands", () => {
     test("24 total compound commands", () => {
       //#given
       const allCommands = [
-        "compound:workflows:plan",
-        "compound:workflows:create",
-        "compound:workflows:status",
-        "compound:workflows:complete",
-        "compound:code:refactor",
-        "compound:code:review",
-        "compound:code:optimize",
-        "compound:code:format",
-        "compound:git:smart-commit",
-        "compound:git:branch",
-        "compound:git:merge",
-        "compound:git:cleanup",
-        "compound:project:init",
-        "compound:project:build",
-        "compound:project:deploy",
-        "compound:project:test",
-        "compound:util:clean",
-        "compound:util:backup",
-        "compound:util:restore",
-        "compound:util:doctor",
-        "compound:docs:deploy-docs",
-        "compound:docs:release-docs",
-        "compound:docs:feature-video",
-        "compound:docs:test-browser",
+        "grid:workflows:plan",
+        "grid:workflows:create",
+        "grid:workflows:status",
+        "grid:workflows:complete",
+        "grid:code:refactor",
+        "grid:code:review",
+        "grid:code:optimize",
+        "grid:code:format",
+        "grid:git:smart-commit",
+        "grid:git:branch",
+        "grid:git:merge",
+        "grid:git:cleanup",
+        "grid:project:init",
+        "grid:project:build",
+        "grid:project:deploy",
+        "grid:project:test",
+        "grid:util:clean",
+        "grid:util:backup",
+        "grid:util:restore",
+        "grid:util:doctor",
+        "grid:docs:deploy-docs",
+        "grid:docs:release-docs",
+        "grid:docs:feature-video",
+        "grid:docs:test-browser",
       ]
 
       //#when
@@ -198,30 +198,30 @@ describe("Compound Engineering Commands", () => {
     test("no duplicate commands", () => {
       //#given
       const allCommands = [
-        "compound:workflows:plan",
-        "compound:workflows:create",
-        "compound:workflows:status",
-        "compound:workflows:complete",
-        "compound:code:refactor",
-        "compound:code:review",
-        "compound:code:optimize",
-        "compound:code:format",
-        "compound:git:smart-commit",
-        "compound:git:branch",
-        "compound:git:merge",
-        "compound:git:cleanup",
-        "compound:project:init",
-        "compound:project:build",
-        "compound:project:deploy",
-        "compound:project:test",
-        "compound:util:clean",
-        "compound:util:backup",
-        "compound:util:restore",
-        "compound:util:doctor",
-        "compound:docs:deploy-docs",
-        "compound:docs:release-docs",
-        "compound:docs:feature-video",
-        "compound:docs:test-browser",
+        "grid:workflows:plan",
+        "grid:workflows:create",
+        "grid:workflows:status",
+        "grid:workflows:complete",
+        "grid:code:refactor",
+        "grid:code:review",
+        "grid:code:optimize",
+        "grid:code:format",
+        "grid:git:smart-commit",
+        "grid:git:branch",
+        "grid:git:merge",
+        "grid:git:cleanup",
+        "grid:project:init",
+        "grid:project:build",
+        "grid:project:deploy",
+        "grid:project:test",
+        "grid:util:clean",
+        "grid:util:backup",
+        "grid:util:restore",
+        "grid:util:doctor",
+        "grid:docs:deploy-docs",
+        "grid:docs:release-docs",
+        "grid:docs:feature-video",
+        "grid:docs:test-browser",
       ]
 
       //#when

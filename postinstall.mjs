@@ -32,9 +32,9 @@ function main() {
     
     // Try to resolve the binary
     require.resolve(binPath);
-    console.log(`✓ ruach binary installed for ${platform}-${arch}`);
+    console.log(`✓ ghostwire binary installed for ${platform}-${arch}`);
   } catch (error) {
-    console.warn(`⚠ ruach: ${error.message}`);
+    console.warn(`⚠ ghostwire: ${error.message}`);
     console.warn(`  The CLI may not work on this platform.`);
     // Don't fail installation - let user try anyway
   }

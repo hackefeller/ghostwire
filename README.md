@@ -3,48 +3,48 @@
 >
 > **ohmyopencode.com is NOT affiliated with this project.** We do not operate or endorse that site.
 >
-> Ruach is **free and open-source**. Do **not** download installers or enter payment details on third-party sites that claim to be "official."
+> Ghostwire is **free and open-source**. Do **not** download installers or enter payment details on third-party sites that claim to be "official."
 >
 > Because the impersonation site is behind a paywall, we **cannot verify what it distributes**. Treat any downloads from it as **potentially unsafe**.
 >
-> ✅ Official downloads: https://github.com/code-yeongyu/ruach/releases
+> ✅ Official downloads: https://github.com/pontistudios/ghostwire/releases
 
 > [!NOTE]
 >
-> [![Sisyphus Labs — Sisyphus is the agent that codes like your team.](./.github/assets/sisyphuslabs.png?v=2)](https://sisyphuslabs.ai)
-> > **We're building a fully productized version of Sisyphus to define the future of frontier agents. <br />Join the waitlist [here](https://sisyphuslabs.ai).**
+> [![Cipher Operator Labs — Cipher Operator is the agent that codes like your team.](./.github/assets/ghostwire.png?v=2)](https://ghostwire.ai)
+> > **We're building a fully productized version of Cipher Operator to define the future of frontier agents. <br />Join the waitlist [here](https://ghostwire.ai).**
 
 > [!TIP]
 >
-> [![Ruach 3.0 is now stable!](./.github/assets/orchestrator-atlas.png?v=3)](https://github.com/code-yeongyu/ruach/releases/tag/v3.0.0)
-> > **Ruach 3.0 is now stable! Use `ruach@latest` to install it.**
+> [![Ghostwire 3.0 is now stable!](./.github/assets/orchestrator-nexus-orchestrator.png?v=3)](https://github.com/pontistudios/ghostwire/releases/tag/v3.0.0)
+> > **Ghostwire 3.0 is now stable! Use `ghostwire@latest` to install it.**
 >
 > Be with us!
 >
-> | [<img alt="Discord link" src="https://img.shields.io/discord/1452487457085063218?color=5865F2&label=discord&labelColor=black&logo=discord&logoColor=white&style=flat-square" width="156px" />](https://discord.gg/PUwSMR9XNk) | Join our [Discord community](https://discord.gg/PUwSMR9XNk) to connect with contributors and fellow `ruach` users. |
+> | [<img alt="Discord link" src="https://img.shields.io/discord/1452487457085063218?color=5865F2&label=discord&labelColor=black&logo=discord&logoColor=white&style=flat-square" width="156px" />](https://discord.gg/PUwSMR9XNk) | Join our [Discord community](https://discord.gg/PUwSMR9XNk) to connect with contributors and fellow `ghostwire` users. |
 > | :-----| :----- |
-> | [<img alt="X link" src="https://img.shields.io/badge/Follow-%40justsisyphus-00CED1?style=flat-square&logo=x&labelColor=black" width="156px" />](https://x.com/justsisyphus) | News and updates for `ruach` used to be posted on my X account. <br /> Since it was suspended mistakenly, [@justsisyphus](https://x.com/justsisyphus) now posts updates on my behalf. |
-> | [<img alt="GitHub Follow" src="https://img.shields.io/github/followers/code-yeongyu?style=flat-square&logo=github&labelColor=black&color=24292f" width="156px" />](https://github.com/code-yeongyu) | Follow [@code-yeongyu](https://github.com/code-yeongyu) on GitHub for more projects. |
+> | [<img alt="X link" src="https://img.shields.io/badge/Follow-%40justghostwire-00CED1?style=flat-square&logo=x&labelColor=black" width="156px" />](https://x.com/justghostwire) | News and updates for `ghostwire` used to be posted on my X account. <br /> Since it was suspended mistakenly, [@justghostwire](https://x.com/justghostwire) now posts updates on my behalf. |
+> | [<img alt="GitHub Follow" src="https://img.shields.io/github/followers/pontistudios?style=flat-square&logo=github&labelColor=black&color=24292f" width="156px" />](https://github.com/pontistudios) | Follow [@pontistudios](https://github.com/pontistudios) on GitHub for more projects. |
 
 <!-- <CENTERED SECTION FOR GITHUB DISPLAY> -->
 
 <div align="center">
 
 
-[![Ruach](./.github/assets/hero.jpg)](https://github.com/code-yeongyu/ruach#ruach)
+[![Ghostwire](./.github/assets/hero.jpg)](https://github.com/pontistudios/ghostwire#ghostwire)
 
-[![Preview](./.github/assets/omo.png)](https://github.com/code-yeongyu/ruach#ruach)
+[![Preview](./.github/assets/grid.png)](https://github.com/pontistudios/ghostwire#ghostwire)
 
 
 </div>
 
-> This is coding on steroids—`ruach` in action. Run background agents, call specialized agents like oracle, librarian, and frontend engineer. Use crafted LSP/AST tools, curated MCPs, and a full Claude Code compatibility layer.
+> This is coding on steroids—`ghostwire` in action. Run background agents, call specialized agents like seer-advisor, archive-researcher, and frontend engineer. Use crafted LSP/AST tools, curated MCPs, and a full Claude Code compatibility layer.
 
 # Claude OAuth Access Notice
 
 ## TL;DR
 
-> Q. Can I use ruach?
+> Q. Can I use ghostwire?
 
 Yes.
 
@@ -56,7 +56,7 @@ Yes, technically possible. But I cannot recommend using it.
 
 > As of January 2026, Anthropic has restricted third-party OAuth access citing ToS violations.
 >
-> [**Anthropic has cited this project, ruach as justification for blocking opencode.**](https://x.com/thdxr/status/2010149530486911014)
+> [**Anthropic has cited this project, ghostwire as justification for blocking opencode.**](https://x.com/thdxr/status/2010149530486911014)
 >
 > Indeed, some plugins that spoof Claude Code's oauth request signatures exist in the community.
 >
@@ -67,14 +67,14 @@ Yes, technically possible. But I cannot recommend using it.
 
 <div align="center">
 
-[![GitHub Release](https://img.shields.io/github/v/release/code-yeongyu/ruach?color=369eff&labelColor=black&logo=github&style=flat-square)](https://github.com/code-yeongyu/ruach/releases)
-[![npm downloads](https://img.shields.io/npm/dt/ruach?color=ff6b35&labelColor=black&style=flat-square)](https://www.npmjs.com/package/ruach)
-[![GitHub Contributors](https://img.shields.io/github/contributors/code-yeongyu/ruach?color=c4f042&labelColor=black&style=flat-square)](https://github.com/code-yeongyu/ruach/graphs/contributors)
-[![GitHub Forks](https://img.shields.io/github/forks/code-yeongyu/ruach?color=8ae8ff&labelColor=black&style=flat-square)](https://github.com/code-yeongyu/ruach/network/members)
-[![GitHub Stars](https://img.shields.io/github/stars/code-yeongyu/ruach?color=ffcb47&labelColor=black&style=flat-square)](https://github.com/code-yeongyu/ruach/stargazers)
-[![GitHub Issues](https://img.shields.io/github/issues/code-yeongyu/ruach?color=ff80eb&labelColor=black&style=flat-square)](https://github.com/code-yeongyu/ruach/issues)
-[![License](https://img.shields.io/badge/license-SUL--1.0-white?labelColor=black&style=flat-square)](https://github.com/code-yeongyu/ruach/blob/master/LICENSE.md)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/code-yeongyu/ruach)
+[![GitHub Release](https://img.shields.io/github/v/release/pontistudios/ghostwire?color=369eff&labelColor=black&logo=github&style=flat-square)](https://github.com/pontistudios/ghostwire/releases)
+[![npm downloads](https://img.shields.io/npm/dt/ghostwire?color=ff6b35&labelColor=black&style=flat-square)](https://www.npmjs.com/package/ghostwire)
+[![GitHub Contributors](https://img.shields.io/github/contributors/pontistudios/ghostwire?color=c4f042&labelColor=black&style=flat-square)](https://github.com/pontistudios/ghostwire/graphs/contributors)
+[![GitHub Forks](https://img.shields.io/github/forks/pontistudios/ghostwire?color=8ae8ff&labelColor=black&style=flat-square)](https://github.com/pontistudios/ghostwire/network/members)
+[![GitHub Stars](https://img.shields.io/github/stars/pontistudios/ghostwire?color=ffcb47&labelColor=black&style=flat-square)](https://github.com/pontistudios/ghostwire/stargazers)
+[![GitHub Issues](https://img.shields.io/github/issues/pontistudios/ghostwire?color=ff80eb&labelColor=black&style=flat-square)](https://github.com/pontistudios/ghostwire/issues)
+[![License](https://img.shields.io/badge/license-SUL--1.0-white?labelColor=black&style=flat-square)](https://github.com/pontistudios/ghostwire/blob/master/LICENSE.md)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/pontistudios/ghostwire)
 
 [English](README.md) | [한국어](README.ko.md) | [日本語](README.ja.md) | [简体中文](README.zh-cn.md)
 
@@ -86,13 +86,13 @@ Yes, technically possible. But I cannot recommend using it.
 
 > "It made me cancel my Cursor subscription. Unbelievable things are happening in the open source community." - [Arthur Guiot](https://x.com/arthur_guiot/status/2008736347092382053?s=20)
 
-> "If Claude Code does in 7 days what a human does in 3 months, Sisyphus does it in 1 hour. It just works until the task is done. It is a discipline agent." — B, Quant Researcher
+> "If Claude Code does in 7 days what a human does in 3 months, Cipher Operator does it in 1 hour. It just works until the task is done. It is a discipline agent." — B, Quant Researcher
 
 > "Knocked out 8000 eslint warnings with Oh My Opencode, just in a day" — [Jacob Ferrari](https://x.com/jacobferrari_/status/2003258761952289061)
 
 > "I converted a 45k line tauri app into a SaaS web app overnight using Ohmyopencode and ralph loop. Started with interview me prompt, asked it for ratings and recommendations on the questions. It was amazing to watch it work and to wake up this morning to a mostly working website!" - [James Hargis](https://x.com/hargabyte/status/2007299688261882202)
 
-> "use ruach, you will never go back" — [d0t3ch](https://x.com/d0t3ch/status/2001685618200580503)
+> "use ghostwire, you will never go back" — [d0t3ch](https://x.com/d0t3ch/status/2001685618200580503)
 
 > "I haven't really been able to articulate exactly what makes it so great yet, but the development experience has reached a completely different dimension." - [
 苔硯:こけすずり](https://x.com/kokesuzuri/status/2008532913961529372?s=20)
@@ -110,11 +110,11 @@ Yes, technically possible. But I cannot recommend using it.
 
 ## Contents
 
-- [Oh My OpenCode](#ruach)
+- [Oh My OpenCode](#ghostwire)
   - [Just Skip Reading This Readme](#just-skip-reading-this-readme)
     - [It's the Age of Agents](#its-the-age-of-agents)
     - [🪄 The Magic Word: `ultrawork`](#-the-magic-word-ultrawork)
-    - [For Those Who Want to Read: Meet Sisyphus](#for-those-who-want-to-read-meet-sisyphus)
+    - [For Those Who Want to Read: Meet Cipher Operator](#for-those-who-want-to-read-meet-cipher-operator)
       - [Just Install It.](#just-install-it)
   - [Installation](#installation)
     - [For Humans](#for-humans)
@@ -128,7 +128,7 @@ Yes, technically possible. But I cannot recommend using it.
       - [Permission Options](#permission-options)
     - [Built-in Skills](#built-in-skills)
     - [Git Master](#git-master)
-    - [Sisyphus Agent](#sisyphus-agent)
+    - [Cipher Operator Agent](#cipher-operator-agent)
     - [Background Tasks](#background-tasks)
     - [Categories](#categories)
     - [Hooks](#hooks)
@@ -172,7 +172,7 @@ Hand this doc to an agent and let them set it up.
 As following:
 
 ```
-Hey please read this readme and tell me why it is different from other agent harness? why is this actually good? https://raw.githubusercontent.com/code-yeongyu/ruach/refs/heads/dev/README.md
+Hey please read this readme and tell me why it is different from other agent harness? why is this actually good? https://raw.githubusercontent.com/pontistudios/ghostwire/refs/heads/dev/README.md
 ```
 
 ### 🪄 The Magic Word: `ultrawork`
@@ -181,26 +181,26 @@ Hey please read this readme and tell me why it is different from other agent har
 
 That's it. All the features we provide will work like magic—parallel agents, background tasks, deep exploration, and relentless execution until completion. The agent figures out the rest automatically.
 
-### For Those Who Want to Read: Meet Sisyphus
+### For Those Who Want to Read: Meet Cipher Operator
 
-![Meet Sisyphus](.github/assets/sisyphus.png)
+![Meet Cipher Operator](.github/assets/cipher-operator.png)
 
-In greek mythology, Sisyphus was condemned to roll a boulder up a hill for eternity as punishment for deceiving the gods. LLM Agents haven't really done anything wrong, yet they too roll their "stones"—their thoughts—every single day.
+In greek mythology, Cipher Operator was condemned to roll a boulder up a hill for eternity as punishment for deceiving the gods. LLM Agents haven't really done anything wrong, yet they too roll their "stones"—their thoughts—every single day.
 My life is no different. Looking back, we are not so different from these agents.
 **Yes! LLM Agents are no different from us. They can write code as brilliant as ours and work just as excellently—if you give them great tools and solid teammates.**
 
-Meet our main agent: Sisyphus (Opus 4.5 High). Below are the tools Sisyphus uses to keep that boulder rolling.
+Meet our main agent: Cipher Operator (Opus 4.5 High). Below are the tools Cipher Operator uses to keep that boulder rolling.
 
 *Everything below is customizable. Take what you want. All features are enabled by default. You don't have to do anything. Battery Included, works out of the box.*
 
-- Sisyphus's Teammates (Curated Agents)
-  - Oracle: Design, debugging (GPT 5.2 Medium)
+- Cipher Operator's Teammates (Curated Agents)
+  - Seer Advisor: Design, debugging (GPT 5.2 Medium)
   - Frontend UI/UX Engineer: Frontend development (Gemini 3 Pro)
-  - Librarian: Official docs, open source implementations, codebase exploration (Claude Sonnet 4.5)
-  - Explore: Blazing fast codebase exploration (Contextual Grep) (Claude Haiku 4.5)
+  - Archive Researcher: Official docs, open source implementations, codebase exploration (Claude Sonnet 4.5)
+  - Scout Recon: Blazing fast codebase exploration (Contextual Grep) (Claude Haiku 4.5)
 - Full LSP / AstGrep Support: Refactor decisively.
-- Todo Continuation Enforcer: Forces the agent to continue if it quits halfway. **This is what keeps Sisyphus rolling that boulder.**
-- Comment Checker: Prevents AI from adding excessive comments. Code generated by Sisyphus should be indistinguishable from human-written code.
+- Todo Continuation Enforcer: Forces the agent to continue if it quits halfway. **This is what keeps Cipher Operator rolling that boulder.**
+- Comment Checker: Prevents AI from adding excessive comments. Code generated by Cipher Operator should be indistinguishable from human-written code.
 - Claude Code Compatibility: Command, Agent, Skill, MCP, Hook(PreToolUse, PostToolUse, UserPromptSubmit, Stop)
 - Curated MCPs:
   - Exa (Web Search)
@@ -216,19 +216,19 @@ You can learn a lot from [overview page](docs/guide/overview.md), but following 
 
 Just by installing this, you make your agents to work like:
 
-1. Sisyphus doesn't waste time hunting for files himself; he keeps the main agent's context lean. Instead, he fires off background tasks to faster, cheaper models in parallel to map the territory for him.
-1. Sisyphus leverages LSP for refactoring; it's more deterministic, safer, and surgical.
-1. When the heavy lifting requires a UI touch, Sisyphus delegates frontend tasks directly to Gemini 3 Pro.
-1. If Sisyphus gets stuck in a loop or hits a wall, he doesn't keep banging his head—he calls GPT 5.2 for high-IQ strategic backup.
-1. Working with a complex open-source framework? Sisyphus spawns subagents to digest the raw source code and documentation in real-time. He operates with total contextual awareness.
-1. When Sisyphus touches comments, he either justifies their existence or nukes them. He keeps your codebase clean.
-1. Sisyphus is bound by his TODO list. If he doesn't finish what he started, the system forces him back into "bouldering" mode. Your task gets done, period.
-1. Honestly, don't even bother reading the docs. Just write your prompt. Include the 'ultrawork' keyword. Sisyphus will analyze the structure, gather the context, dig through external source code, and just keep bouldering until the job is 100% complete.
+1. Cipher Operator doesn't waste time hunting for files himself; he keeps the main agent's context lean. Instead, he fires off background tasks to faster, cheaper models in parallel to map the territory for him.
+1. Cipher Operator leverages LSP for refactoring; it's more deterministic, safer, and surgical.
+1. When the heavy lifting requires a UI touch, Cipher Operator delegates frontend tasks directly to Gemini 3 Pro.
+1. If Cipher Operator gets stuck in a loop or hits a wall, he doesn't keep banging his head—he calls GPT 5.2 for high-IQ strategic backup.
+1. Working with a complex open-source framework? Cipher Operator spawns subagents to digest the raw source code and documentation in real-time. He operates with total contextual awareness.
+1. When Cipher Operator touches comments, he either justifies their existence or nukes them. He keeps your codebase clean.
+1. Cipher Operator is bound by his TODO list. If he doesn't finish what he started, the system forces him back into "bouldering" mode. Your task gets done, period.
+1. Honestly, don't even bother reading the docs. Just write your prompt. Include the 'ultrawork' keyword. Cipher Operator will analyze the structure, gather the context, dig through external source code, and just keep bouldering until the job is 100% complete.
 1. Actually, typing 'ultrawork' is too much effort. Just type 'ulw'. Just ulw. Sip your coffee. Your work is done.
 
 Need to look something up? It scours official docs, your entire codebase history, and public GitHub implementations—using not just grep but built-in LSP tools and AST-Grep.
 3. Stop worrying about context management when delegating to LLMs. I've got it covered.
-    - Ruach aggressively leverages multiple agents to lighten the context load.
+    - Ghostwire aggressively leverages multiple agents to lighten the context load.
     - **Your agent is now the dev team lead. You're the AI Manager.**
 4. It doesn't stop until the job is done.
 5. Don't want to dive deep into this project? No problem. Just type 'ultrathink'.
@@ -242,8 +242,8 @@ If you don't want all this, as mentioned, you can just pick and choose specific 
 Copy and paste this prompt to your LLM agent (Claude Code, AmpCode, Cursor, etc.):
 
 ```
-Install and configure ruach by following the instructions here:
-https://raw.githubusercontent.com/code-yeongyu/ruach/refs/heads/master/docs/guide/installation.md
+Install and configure ghostwire by following the instructions here:
+https://raw.githubusercontent.com/pontistudios/ghostwire/refs/heads/master/docs/guide/installation.md
 ```
 
 Or read the [Installation Guide](docs/guide/installation.md) directly—but **we strongly recommend letting an agent handle it. Humans make mistakes.**
@@ -253,20 +253,20 @@ Or read the [Installation Guide](docs/guide/installation.md) directly—but **we
 Fetch the installation guide and follow it:
 
 ```bash
-curl -s https://raw.githubusercontent.com/code-yeongyu/ruach/refs/heads/master/docs/guide/installation.md
+curl -s https://raw.githubusercontent.com/pontistudios/ghostwire/refs/heads/master/docs/guide/installation.md
 ```
 
 ## Uninstallation
 
-To remove ruach:
+To remove ghostwire:
 
 1. **Remove the plugin from your OpenCode config**
 
-   Edit `~/.config/opencode/opencode.json` (or `opencode.jsonc`) and remove `"ruach"` from the `plugin` array:
+   Edit `~/.config/opencode/opencode.json` (or `opencode.jsonc`) and remove `"ghostwire"` from the `plugin` array:
 
    ```bash
    # Using jq
-   jq '.plugin = [.plugin[] | select(. != "ruach")]' \
+   jq '.plugin = [.plugin[] | select(. != "ghostwire")]' \
        ~/.config/opencode/opencode.json > /tmp/oc.json && \
        mv /tmp/oc.json ~/.config/opencode/opencode.json
    ```
@@ -275,10 +275,10 @@ To remove ruach:
 
    ```bash
    # Remove user config
-   rm -f ~/.config/opencode/ruach.json
+   rm -f ~/.config/opencode/ghostwire.json
 
    # Remove project config (if exists)
-   rm -f .opencode/ruach.json
+   rm -f .opencode/ghostwire.json
    ```
 
 3. **Verify removal**
@@ -294,7 +294,7 @@ We have lots of features that you'll think should obviously exist, and once you 
 See the full [Features Documentation](docs/features.md) for detailed information.
 
 **Quick Overview:**
-- **Agents**: Sisyphus (the main agent), Prometheus (planner), Oracle (architecture/debugging), Librarian (docs/code search), Explore (fast codebase grep), Multimodal Looker
+- **Agents**: Cipher Operator (the main agent), Augur Planner (planner), Seer Advisor (architecture/debugging), Archive Researcher (docs/code search), Scout Recon (fast codebase grep), Multimodal Looker
 - **Background Agents**: Run multiple agents in parallel like a real dev team
 - **LSP & AST Tools**: Refactoring, rename, diagnostics, AST-aware code search
 - **Context Injection**: Auto-inject AGENTS.md, README.md, conditional rules
@@ -309,11 +309,11 @@ Highly opinionated, but adjustable to taste.
 See the full [Configuration Documentation](docs/configurations.md) for detailed information.
 
 **Quick Overview:**
-- **Config Locations**: `.opencode/ruach.json` (project) or `~/.config/opencode/ruach.json` (user)
+- **Config Locations**: `.opencode/ghostwire.json` (project) or `~/.config/opencode/ghostwire.json` (user)
 - **JSONC Support**: Comments and trailing commas supported
 - **Agents**: Override models, temperatures, prompts, and permissions for any agent
 - **Built-in Skills**: `playwright` (browser automation), `git-master` (atomic commits)
-- **Sisyphus Agent**: Main orchestrator with Prometheus (Planner) and Metis (Plan Consultant)
+- **Cipher Operator Agent**: Main orchestrator with Augur Planner (Planner) and Tactician Strategist (Plan Consultant)
 - **Background Tasks**: Configure concurrency limits per provider/model
 - **Categories**: Domain-specific task delegation (`visual`, `business-logic`, custom)
 - **Hooks**: 25+ built-in hooks, all configurable via `disabled_hooks`
@@ -365,7 +365,7 @@ I have no affiliation with any project or model mentioned here. This is purely p
   - Actually, I'll spread the word. Let's see who wins.
 - If you're on [1.0.132](https://github.com/sst/opencode/releases/tag/v1.0.132) or older, an OpenCode bug may break config.
   - [The fix](https://github.com/sst/opencode/pull/5040) was merged after 1.0.132—use a newer version.
-    - Fun fact: That PR was discovered and fixed thanks to Ruach's Librarian, Explore, and Oracle setup.
+    - Fun fact: That PR was discovered and fixed thanks to Ghostwire's Archive Researcher, Scout Recon, and Seer Advisor setup.
 
 ## Loved by professionals at
 

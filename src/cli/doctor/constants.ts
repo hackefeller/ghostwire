@@ -27,7 +27,7 @@ export const CHECK_IDS = {
   AUTH_GOOGLE: "auth-google",
   DEP_AST_GREP_CLI: "dep-ast-grep-cli",
   DEP_AST_GREP_NAPI: "dep-ast-grep-napi",
-  DEP_COMMENT_CHECKER: "dep-comment-checker",
+  DEP_COMMENT_CHECKER: "dep-grid-comment-checker",
   GH_CLI: "gh-cli",
   LSP_SERVERS: "lsp-servers",
   MCP_BUILTIN: "mcp-builtin",
@@ -71,6 +71,6 @@ export const EXIT_CODES = {
 
 export const MIN_OPENCODE_VERSION = "1.0.150"
 
-export const PACKAGE_NAME = "ruach"
+export const PACKAGE_NAME = "ghostwire"
 
 export const OPENCODE_BINARIES = ["opencode", "opencode-desktop"] as const

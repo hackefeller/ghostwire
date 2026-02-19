@@ -2,33 +2,33 @@
 
 exports[`generateModelConfig no providers available returns ULTIMATE_FALLBACK for all agents and categories when no providers 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
+    "archive-researcher": {
       "model": "opencode/glm-4.7-free",
     },
-    "explore": {
+    "augur-planner": {
       "model": "opencode/glm-4.7-free",
     },
-    "librarian": {
+    "cipher-operator": {
       "model": "opencode/glm-4.7-free",
     },
-    "metis": {
+    "glitch-auditor": {
       "model": "opencode/glm-4.7-free",
     },
-    "momus": {
+    "nexus-orchestrator": {
       "model": "opencode/glm-4.7-free",
     },
-    "multimodal-looker": {
+    "optic-analyst": {
       "model": "opencode/glm-4.7-free",
     },
-    "oracle": {
+    "scout-recon": {
       "model": "opencode/glm-4.7-free",
     },
-    "prometheus": {
+    "seer-advisor": {
       "model": "opencode/glm-4.7-free",
     },
-    "sisyphus": {
+    "tactician-strategist": {
       "model": "opencode/glm-4.7-free",
     },
   },
@@ -63,38 +63,38 @@ exports[`generateModelConfig no providers available returns ULTIMATE_FALLBACK fo
 
 exports[`generateModelConfig single native provider uses Claude models when only Claude is available 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
+    "archive-researcher": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "explore": {
+    "augur-planner": {
+      "model": "anthropic/claude-opus-4-5",
+      "variant": "max",
+    },
+    "cipher-operator": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "glitch-auditor": {
+      "model": "anthropic/claude-opus-4-5",
+      "variant": "max",
+    },
+    "nexus-orchestrator": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "optic-analyst": {
       "model": "anthropic/claude-haiku-4-5",
     },
-    "librarian": {
-      "model": "anthropic/claude-sonnet-4-5",
-    },
-    "metis": {
-      "model": "anthropic/claude-opus-4-5",
-      "variant": "max",
-    },
-    "momus": {
-      "model": "anthropic/claude-opus-4-5",
-      "variant": "max",
-    },
-    "multimodal-looker": {
+    "scout-recon": {
       "model": "anthropic/claude-haiku-4-5",
     },
-    "oracle": {
+    "seer-advisor": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
-    },
-    "sisyphus": {
-      "model": "anthropic/claude-sonnet-4-5",
     },
   },
   "categories": {
@@ -132,37 +132,37 @@ exports[`generateModelConfig single native provider uses Claude models when only
 
 exports[`generateModelConfig single native provider uses Claude models with isMax20 flag 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
+    "archive-researcher": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "explore": {
-      "model": "anthropic/claude-haiku-4-5",
+    "augur-planner": {
+      "model": "anthropic/claude-opus-4-5",
+      "variant": "max",
     },
-    "librarian": {
+    "cipher-operator": {
+      "model": "anthropic/claude-opus-4-5",
+      "variant": "max",
+    },
+    "glitch-auditor": {
+      "model": "anthropic/claude-opus-4-5",
+      "variant": "max",
+    },
+    "nexus-orchestrator": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "metis": {
-      "model": "anthropic/claude-opus-4-5",
-      "variant": "max",
-    },
-    "momus": {
-      "model": "anthropic/claude-opus-4-5",
-      "variant": "max",
-    },
-    "multimodal-looker": {
+    "optic-analyst": {
       "model": "anthropic/claude-haiku-4-5",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "anthropic/claude-haiku-4-5",
+    },
+    "seer-advisor": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "prometheus": {
-      "model": "anthropic/claude-opus-4-5",
-      "variant": "max",
-    },
-    "sisyphus": {
+    "tactician-strategist": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
@@ -203,37 +203,37 @@ exports[`generateModelConfig single native provider uses Claude models with isMa
 
 exports[`generateModelConfig single native provider uses OpenAI models when only OpenAI is available 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "openai/gpt-5.2",
-    },
-    "explore": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "opencode/glm-4.7-free",
     },
-    "metis": {
+    "augur-planner": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "openai/gpt-5.2",
+      "variant": "high",
+    },
+    "glitch-auditor": {
       "model": "openai/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
       "model": "openai/gpt-5.2",
     },
-    "oracle": {
+    "optic-analyst": {
+      "model": "openai/gpt-5.2",
+    },
+    "scout-recon": {
+      "model": "opencode/gpt-5-nano",
+    },
+    "seer-advisor": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
-      "model": "openai/gpt-5.2",
-      "variant": "high",
-    },
-    "sisyphus": {
+    "tactician-strategist": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
@@ -273,39 +273,39 @@ exports[`generateModelConfig single native provider uses OpenAI models when only
 
 exports[`generateModelConfig single native provider uses OpenAI models with isMax20 flag 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "openai/gpt-5.2",
-    },
-    "explore": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "opencode/glm-4.7-free",
     },
-    "metis": {
+    "augur-planner": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "momus": {
-      "model": "openai/gpt-5.2",
-      "variant": "medium",
-    },
-    "multimodal-looker": {
-      "model": "openai/gpt-5.2",
-    },
-    "oracle": {
-      "model": "openai/gpt-5.2",
-      "variant": "high",
-    },
-    "prometheus": {
-      "model": "openai/gpt-5.2",
-      "variant": "high",
-    },
-    "sisyphus": {
+    "cipher-operator": {
       "model": "openai/gpt-5.2-codex",
       "variant": "medium",
+    },
+    "glitch-auditor": {
+      "model": "openai/gpt-5.2",
+      "variant": "medium",
+    },
+    "nexus-orchestrator": {
+      "model": "openai/gpt-5.2",
+    },
+    "optic-analyst": {
+      "model": "openai/gpt-5.2",
+    },
+    "scout-recon": {
+      "model": "opencode/gpt-5-nano",
+    },
+    "seer-advisor": {
+      "model": "openai/gpt-5.2",
+      "variant": "high",
+    },
+    "tactician-strategist": {
+      "model": "openai/gpt-5.2",
+      "variant": "high",
     },
   },
   "categories": {
@@ -343,37 +343,37 @@ exports[`generateModelConfig single native provider uses OpenAI models with isMa
 
 exports[`generateModelConfig single native provider uses Gemini models when only Gemini is available 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "google/gemini-3-pro",
-    },
-    "explore": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "opencode/glm-4.7-free",
     },
-    "metis": {
+    "augur-planner": {
+      "model": "google/gemini-3-pro",
+    },
+    "cipher-operator": {
+      "model": "google/gemini-3-pro",
+    },
+    "glitch-auditor": {
       "model": "google/gemini-3-pro",
       "variant": "max",
     },
-    "momus": {
+    "nexus-orchestrator": {
       "model": "google/gemini-3-pro",
-      "variant": "max",
     },
-    "multimodal-looker": {
+    "optic-analyst": {
       "model": "google/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "opencode/gpt-5-nano",
+    },
+    "seer-advisor": {
       "model": "google/gemini-3-pro",
       "variant": "max",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "google/gemini-3-pro",
-    },
-    "sisyphus": {
-      "model": "google/gemini-3-pro",
+      "variant": "max",
     },
   },
   "categories": {
@@ -410,37 +410,37 @@ exports[`generateModelConfig single native provider uses Gemini models when only
 
 exports[`generateModelConfig single native provider uses Gemini models with isMax20 flag 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "google/gemini-3-pro",
-    },
-    "explore": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "opencode/glm-4.7-free",
     },
-    "metis": {
+    "augur-planner": {
+      "model": "google/gemini-3-pro",
+    },
+    "cipher-operator": {
+      "model": "google/gemini-3-pro",
+    },
+    "glitch-auditor": {
       "model": "google/gemini-3-pro",
       "variant": "max",
     },
-    "momus": {
+    "nexus-orchestrator": {
       "model": "google/gemini-3-pro",
-      "variant": "max",
     },
-    "multimodal-looker": {
+    "optic-analyst": {
       "model": "google/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "opencode/gpt-5-nano",
+    },
+    "seer-advisor": {
       "model": "google/gemini-3-pro",
       "variant": "max",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "google/gemini-3-pro",
-    },
-    "sisyphus": {
-      "model": "google/gemini-3-pro",
+      "variant": "max",
     },
   },
   "categories": {
@@ -477,38 +477,38 @@ exports[`generateModelConfig single native provider uses Gemini models with isMa
 
 exports[`generateModelConfig all native providers uses preferred models from fallback chains when all natives available 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
+    "archive-researcher": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "explore": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "librarian": {
-      "model": "anthropic/claude-sonnet-4-5",
-    },
-    "metis": {
+    "augur-planner": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "glitch-auditor": {
       "model": "openai/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "optic-analyst": {
       "model": "google/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "anthropic/claude-haiku-4-5",
+    },
+    "seer-advisor": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
-    },
-    "sisyphus": {
-      "model": "anthropic/claude-sonnet-4-5",
     },
   },
   "categories": {
@@ -545,37 +545,37 @@ exports[`generateModelConfig all native providers uses preferred models from fal
 
 exports[`generateModelConfig all native providers uses preferred models with isMax20 flag when all natives available 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
+    "archive-researcher": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "explore": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "librarian": {
-      "model": "anthropic/claude-sonnet-4-5",
-    },
-    "metis": {
+    "augur-planner": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "anthropic/claude-opus-4-5",
+      "variant": "max",
+    },
+    "glitch-auditor": {
       "model": "openai/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "optic-analyst": {
       "model": "google/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "anthropic/claude-haiku-4-5",
+    },
+    "seer-advisor": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
-      "model": "anthropic/claude-opus-4-5",
-      "variant": "max",
-    },
-    "sisyphus": {
+    "tactician-strategist": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
@@ -615,38 +615,38 @@ exports[`generateModelConfig all native providers uses preferred models with isM
 
 exports[`generateModelConfig fallback providers uses OpenCode Zen models when only OpenCode Zen is available 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "opencode/kimi-k2.5-free",
-    },
-    "explore": {
-      "model": "opencode/claude-haiku-4-5",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "opencode/glm-4.7-free",
     },
-    "metis": {
+    "augur-planner": {
       "model": "opencode/claude-opus-4-5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "opencode/claude-sonnet-4-5",
+    },
+    "glitch-auditor": {
       "model": "opencode/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "opencode/kimi-k2.5-free",
+    },
+    "optic-analyst": {
       "model": "opencode/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "opencode/claude-haiku-4-5",
+    },
+    "seer-advisor": {
       "model": "opencode/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "opencode/claude-opus-4-5",
       "variant": "max",
-    },
-    "sisyphus": {
-      "model": "opencode/claude-sonnet-4-5",
     },
   },
   "categories": {
@@ -683,37 +683,37 @@ exports[`generateModelConfig fallback providers uses OpenCode Zen models when on
 
 exports[`generateModelConfig fallback providers uses OpenCode Zen models with isMax20 flag 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "opencode/kimi-k2.5-free",
-    },
-    "explore": {
-      "model": "opencode/claude-haiku-4-5",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "opencode/glm-4.7-free",
     },
-    "metis": {
+    "augur-planner": {
       "model": "opencode/claude-opus-4-5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "opencode/claude-opus-4-5",
+      "variant": "max",
+    },
+    "glitch-auditor": {
       "model": "opencode/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "opencode/kimi-k2.5-free",
+    },
+    "optic-analyst": {
       "model": "opencode/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "opencode/claude-haiku-4-5",
+    },
+    "seer-advisor": {
       "model": "opencode/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
-      "model": "opencode/claude-opus-4-5",
-      "variant": "max",
-    },
-    "sisyphus": {
+    "tactician-strategist": {
       "model": "opencode/claude-opus-4-5",
       "variant": "max",
     },
@@ -753,38 +753,38 @@ exports[`generateModelConfig fallback providers uses OpenCode Zen models with is
 
 exports[`generateModelConfig fallback providers uses GitHub Copilot models when only Copilot is available 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
+    "archive-researcher": {
       "model": "github-copilot/claude-sonnet-4.5",
     },
-    "explore": {
-      "model": "github-copilot/gpt-5-mini",
-    },
-    "librarian": {
-      "model": "github-copilot/claude-sonnet-4.5",
-    },
-    "metis": {
+    "augur-planner": {
       "model": "github-copilot/claude-opus-4.5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "github-copilot/claude-sonnet-4.5",
+    },
+    "glitch-auditor": {
       "model": "github-copilot/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "github-copilot/claude-sonnet-4.5",
+    },
+    "optic-analyst": {
       "model": "github-copilot/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "github-copilot/gpt-5-mini",
+    },
+    "seer-advisor": {
       "model": "github-copilot/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "github-copilot/claude-opus-4.5",
       "variant": "max",
-    },
-    "sisyphus": {
-      "model": "github-copilot/claude-sonnet-4.5",
     },
   },
   "categories": {
@@ -821,37 +821,37 @@ exports[`generateModelConfig fallback providers uses GitHub Copilot models when 
 
 exports[`generateModelConfig fallback providers uses GitHub Copilot models with isMax20 flag 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
+    "archive-researcher": {
       "model": "github-copilot/claude-sonnet-4.5",
     },
-    "explore": {
-      "model": "github-copilot/gpt-5-mini",
-    },
-    "librarian": {
-      "model": "github-copilot/claude-sonnet-4.5",
-    },
-    "metis": {
+    "augur-planner": {
       "model": "github-copilot/claude-opus-4.5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
+    },
+    "glitch-auditor": {
       "model": "github-copilot/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "github-copilot/claude-sonnet-4.5",
+    },
+    "optic-analyst": {
       "model": "github-copilot/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "github-copilot/gpt-5-mini",
+    },
+    "seer-advisor": {
       "model": "github-copilot/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
-    },
-    "sisyphus": {
+    "tactician-strategist": {
       "model": "github-copilot/claude-opus-4.5",
       "variant": "max",
     },
@@ -889,35 +889,35 @@ exports[`generateModelConfig fallback providers uses GitHub Copilot models with 
 }
 `;
 
-exports[`generateModelConfig fallback providers uses ZAI model for librarian when only ZAI is available 1`] = `
+exports[`generateModelConfig fallback providers uses ZAI model for archiveResearcher when only ZAI is available 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "explore": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "zai-coding-plan/glm-4.7",
     },
-    "metis": {
+    "augur-planner": {
       "model": "opencode/glm-4.7-free",
     },
-    "momus": {
+    "cipher-operator": {
       "model": "opencode/glm-4.7-free",
     },
-    "multimodal-looker": {
+    "glitch-auditor": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "nexus-orchestrator": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "optic-analyst": {
       "model": "zai-coding-plan/glm-4.6v",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "opencode/gpt-5-nano",
+    },
+    "seer-advisor": {
       "model": "opencode/glm-4.7-free",
     },
-    "prometheus": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "sisyphus": {
+    "tactician-strategist": {
       "model": "opencode/glm-4.7-free",
     },
   },
@@ -950,36 +950,36 @@ exports[`generateModelConfig fallback providers uses ZAI model for librarian whe
 }
 `;
 
-exports[`generateModelConfig fallback providers uses ZAI model for librarian with isMax20 flag 1`] = `
+exports[`generateModelConfig fallback providers uses ZAI model for archiveResearcher with isMax20 flag 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "explore": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "zai-coding-plan/glm-4.7",
     },
-    "metis": {
+    "augur-planner": {
       "model": "opencode/glm-4.7-free",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "zai-coding-plan/glm-4.7",
+    },
+    "glitch-auditor": {
       "model": "opencode/glm-4.7-free",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "optic-analyst": {
       "model": "zai-coding-plan/glm-4.6v",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "opencode/gpt-5-nano",
+    },
+    "seer-advisor": {
       "model": "opencode/glm-4.7-free",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "opencode/glm-4.7-free",
-    },
-    "sisyphus": {
-      "model": "zai-coding-plan/glm-4.7",
     },
   },
   "categories": {
@@ -1013,38 +1013,38 @@ exports[`generateModelConfig fallback providers uses ZAI model for librarian wit
 
 exports[`generateModelConfig mixed provider scenarios uses Claude + OpenCode Zen combination 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "opencode/kimi-k2.5-free",
-    },
-    "explore": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "opencode/glm-4.7-free",
     },
-    "metis": {
+    "augur-planner": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "glitch-auditor": {
       "model": "opencode/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "opencode/kimi-k2.5-free",
+    },
+    "optic-analyst": {
       "model": "opencode/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "anthropic/claude-haiku-4-5",
+    },
+    "seer-advisor": {
       "model": "opencode/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
-    },
-    "sisyphus": {
-      "model": "anthropic/claude-sonnet-4-5",
     },
   },
   "categories": {
@@ -1081,38 +1081,38 @@ exports[`generateModelConfig mixed provider scenarios uses Claude + OpenCode Zen
 
 exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot combination 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
+    "archive-researcher": {
       "model": "github-copilot/claude-sonnet-4.5",
     },
-    "explore": {
-      "model": "github-copilot/gpt-5-mini",
-    },
-    "librarian": {
-      "model": "github-copilot/claude-sonnet-4.5",
-    },
-    "metis": {
+    "augur-planner": {
       "model": "github-copilot/claude-opus-4.5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "github-copilot/claude-sonnet-4.5",
+    },
+    "glitch-auditor": {
       "model": "openai/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "github-copilot/claude-sonnet-4.5",
+    },
+    "optic-analyst": {
       "model": "github-copilot/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "github-copilot/gpt-5-mini",
+    },
+    "seer-advisor": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "github-copilot/claude-opus-4.5",
       "variant": "max",
-    },
-    "sisyphus": {
-      "model": "github-copilot/claude-sonnet-4.5",
     },
   },
   "categories": {
@@ -1147,40 +1147,40 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
 }
 `;
 
-exports[`generateModelConfig mixed provider scenarios uses Claude + ZAI combination (librarian uses ZAI) 1`] = `
+exports[`generateModelConfig mixed provider scenarios uses Claude + ZAI combination (archiveResearcher uses ZAI) 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "anthropic/claude-sonnet-4-5",
-    },
-    "explore": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "zai-coding-plan/glm-4.7",
     },
-    "metis": {
+    "augur-planner": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "glitch-auditor": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "optic-analyst": {
       "model": "zai-coding-plan/glm-4.6v",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "anthropic/claude-haiku-4-5",
+    },
+    "seer-advisor": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
-    },
-    "sisyphus": {
-      "model": "anthropic/claude-sonnet-4-5",
     },
   },
   "categories": {
@@ -1216,40 +1216,40 @@ exports[`generateModelConfig mixed provider scenarios uses Claude + ZAI combinat
 }
 `;
 
-exports[`generateModelConfig mixed provider scenarios uses Gemini + Claude combination (explore uses Gemini) 1`] = `
+exports[`generateModelConfig mixed provider scenarios uses Gemini + Claude combination (scoutRecon uses Gemini) 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
+    "archive-researcher": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "explore": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "librarian": {
-      "model": "anthropic/claude-sonnet-4-5",
-    },
-    "metis": {
+    "augur-planner": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "glitch-auditor": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "optic-analyst": {
       "model": "google/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "anthropic/claude-haiku-4-5",
+    },
+    "seer-advisor": {
       "model": "google/gemini-3-pro",
       "variant": "max",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
-    },
-    "sisyphus": {
-      "model": "anthropic/claude-sonnet-4-5",
     },
   },
   "categories": {
@@ -1286,38 +1286,38 @@ exports[`generateModelConfig mixed provider scenarios uses Gemini + Claude combi
 
 exports[`generateModelConfig mixed provider scenarios uses all fallback providers together 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "opencode/kimi-k2.5-free",
-    },
-    "explore": {
-      "model": "opencode/claude-haiku-4-5",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "zai-coding-plan/glm-4.7",
     },
-    "metis": {
+    "augur-planner": {
       "model": "github-copilot/claude-opus-4.5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "github-copilot/claude-sonnet-4.5",
+    },
+    "glitch-auditor": {
       "model": "github-copilot/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "opencode/kimi-k2.5-free",
+    },
+    "optic-analyst": {
       "model": "github-copilot/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "opencode/claude-haiku-4-5",
+    },
+    "seer-advisor": {
       "model": "github-copilot/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "github-copilot/claude-opus-4.5",
       "variant": "max",
-    },
-    "sisyphus": {
-      "model": "github-copilot/claude-sonnet-4.5",
     },
   },
   "categories": {
@@ -1354,38 +1354,38 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
 
 exports[`generateModelConfig mixed provider scenarios uses all providers together 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "opencode/kimi-k2.5-free",
-    },
-    "explore": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "zai-coding-plan/glm-4.7",
     },
-    "metis": {
+    "augur-planner": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "glitch-auditor": {
       "model": "openai/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "opencode/kimi-k2.5-free",
+    },
+    "optic-analyst": {
       "model": "google/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "anthropic/claude-haiku-4-5",
+    },
+    "seer-advisor": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
+    "tactician-strategist": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
-    },
-    "sisyphus": {
-      "model": "anthropic/claude-sonnet-4-5",
     },
   },
   "categories": {
@@ -1422,37 +1422,37 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
 
 exports[`generateModelConfig mixed provider scenarios uses all providers with isMax20 flag 1`] = `
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "atlas": {
-      "model": "opencode/kimi-k2.5-free",
-    },
-    "explore": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "librarian": {
+    "archive-researcher": {
       "model": "zai-coding-plan/glm-4.7",
     },
-    "metis": {
+    "augur-planner": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },
-    "momus": {
+    "cipher-operator": {
+      "model": "anthropic/claude-opus-4-5",
+      "variant": "max",
+    },
+    "glitch-auditor": {
       "model": "openai/gpt-5.2",
       "variant": "medium",
     },
-    "multimodal-looker": {
+    "nexus-orchestrator": {
+      "model": "opencode/kimi-k2.5-free",
+    },
+    "optic-analyst": {
       "model": "google/gemini-3-flash",
     },
-    "oracle": {
+    "scout-recon": {
+      "model": "anthropic/claude-haiku-4-5",
+    },
+    "seer-advisor": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "prometheus": {
-      "model": "anthropic/claude-opus-4-5",
-      "variant": "max",
-    },
-    "sisyphus": {
+    "tactician-strategist": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max",
     },

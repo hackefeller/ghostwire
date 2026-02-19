@@ -7,7 +7,7 @@ import {
   extractPromptText,
 } from "./detector"
 
-describe("auto-slash-command detector", () => {
+describe("grid-auto-slash-command detector", () => {
   describe("removeCodeBlocks", () => {
     it("should remove markdown code blocks", () => {
       // #given text with code blocks
@@ -160,26 +160,26 @@ After`
   })
 
   describe("isExcludedCommand", () => {
-    it("should exclude ralph-loop", () => {
-      // #given ralph-loop command
+    it("should exclude overclock-loop", () => {
+      // #given overclock-loop command
       // #when checking exclusion
       // #then should be excluded
-      expect(isExcludedCommand("ralph-loop")).toBe(true)
+      expect(isExcludedCommand("overclock-loop")).toBe(true)
     })
 
-    it("should exclude cancel-ralph", () => {
-      // #given cancel-ralph command
+    it("should exclude cancel-overclock", () => {
+      // #given cancel-overclock command
       // #when checking exclusion
       // #then should be excluded
-      expect(isExcludedCommand("cancel-ralph")).toBe(true)
+      expect(isExcludedCommand("cancel-overclock")).toBe(true)
     })
 
     it("should be case-insensitive for exclusion", () => {
       // #given uppercase variants
       // #when checking exclusion
       // #then should still be excluded
-      expect(isExcludedCommand("RALPH-LOOP")).toBe(true)
-      expect(isExcludedCommand("Cancel-Ralph")).toBe(true)
+      expect(isExcludedCommand("OVERCLOCK-LOOP")).toBe(true)
+      expect(isExcludedCommand("CANCEL-OVERCLOCK")).toBe(true)
     })
 
     it("should not exclude regular commands", () => {
@@ -231,7 +231,7 @@ After`
 
     it("should NOT detect excluded commands", () => {
       // #given excluded command
-      const text = "/ralph-loop do something"
+      const text = "/overclock-loop do something"
 
       // #when detecting
       const result = detectSlashCommand(text)

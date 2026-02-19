@@ -148,7 +148,7 @@ You MUST execute this EXACT pagination loop. DO NOT simplify. DO NOT skip iterat
 #!/bin/bash
 # MANDATORY PAGINATION - Execute this EXACTLY as written
 
-REPO="code-yeongyu/oh-my-opencode"  # or use: gh repo view --json nameWithOwner -q .nameWithOwner
+REPO="pontistudios/ghostwire"  # or use: gh repo view --json nameWithOwner -q .nameWithOwner
 TIME_RANGE=48  # hours
 CUTOFF_DATE=$(date -v-${TIME_RANGE}H +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -d "${TIME_RANGE} hours ago" -Iseconds)
 
@@ -444,7 +444,7 @@ Group analyzed issues by status:
 ### Fixed in Version X
 \`\`\`
 This issue was resolved in vX.Y.Z via PR #NNN.
-Please update: \`bunx oh-my-opencode@X.Y.Z install\`
+Please update: \`bunx ghostwire@X.Y.Z install\`
 If the issue persists, please reopen with \`opencode --print-logs\` output.
 \`\`\`
 

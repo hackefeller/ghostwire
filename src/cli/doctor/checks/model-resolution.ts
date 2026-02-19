@@ -42,7 +42,7 @@ function loadAvailableModels(): { providers: string[]; modelCount: number; cache
   }
 }
 
-const PACKAGE_NAME = "ruach"
+const PACKAGE_NAME = "ghostwire"
 const USER_CONFIG_DIR = join(homedir(), ".config", "opencode")
 const USER_CONFIG_BASE = join(USER_CONFIG_DIR, PACKAGE_NAME)
 const PROJECT_CONFIG_BASE = join(process.cwd(), ".opencode", PACKAGE_NAME)

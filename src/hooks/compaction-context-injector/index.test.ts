@@ -20,7 +20,7 @@ mock.module("../../shared/system-directive", () => ({
     SINGLE_TASK_ONLY: "SINGLE TASK ONLY",
     COMPACTION_CONTEXT: "COMPACTION CONTEXT",
     CONTEXT_WINDOW_MONITOR: "CONTEXT WINDOW MONITOR",
-    PROMETHEUS_READ_ONLY: "PROMETHEUS READ-ONLY",
+    AUGUR_PLANNER_READ_ONLY: "AUGUR PLANNER READ-ONLY",
   },
 }))
 
@@ -56,7 +56,7 @@ describe("createCompactionContextInjector", () => {
       expect(injectedPrompt).toContain("Verification Progress")
     })
 
-    it("includes Momus-specific context for reviewer agents", async () => {
+    it("includes Glitch Auditor-specific context for reviewer agents", async () => {
       // given
       const injector = createCompactionContextInjector()
       const context: SummarizeContext = {

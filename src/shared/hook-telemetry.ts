@@ -16,10 +16,10 @@ const PHASE_BUDGET_MS: Record<HookTelemetryPhase, number> = {
 }
 
 const HOOK_BUDGET_OVERRIDES_MS: Record<string, number> = {
-  "tool.execute.before:atlas": 200,
-  "tool.execute.after:atlas": 250,
-  "event:atlas": 200,
-  "event:ralph-loop": 150,
+  "tool.execute.before:nexus-orchestrator": 200,
+  "tool.execute.after:nexus-orchestrator": 250,
+  "event:nexus-orchestrator": 200,
+  "event:overclock-loop": 150,
 }
 
 type Logger = (message: string, data?: unknown) => void

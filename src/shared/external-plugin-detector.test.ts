@@ -8,7 +8,7 @@ describe("external-plugin-detector", () => {
   let tempDir: string
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "omo-test-"))
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "grid-test-"))
   })
 
   afterEach(() => {
@@ -25,13 +25,13 @@ describe("external-plugin-detector", () => {
       expect(result.pluginName).toBeNull()
     })
 
-    test("should return detected=false when only ruach is configured", () => {
-      // #given - opencode.json with only ruach
+    test("should return detected=false when only ghostwire is configured", () => {
+      // #given - opencode.json with only ghostwire
       const opencodeDir = path.join(tempDir, ".opencode")
       fs.mkdirSync(opencodeDir, { recursive: true })
       fs.writeFileSync(
         path.join(opencodeDir, "opencode.json"),
-        JSON.stringify({ plugin: ["ruach"] })
+        JSON.stringify({ plugin: ["ghostwire"] })
       )
 
       // #when
@@ -40,7 +40,7 @@ describe("external-plugin-detector", () => {
       // #then
       expect(result.detected).toBe(false)
       expect(result.pluginName).toBeNull()
-      expect(result.allPlugins).toContain("ruach")
+      expect(result.allPlugins).toContain("ghostwire")
     })
 
     test("should detect opencode-notifier plugin", () => {
@@ -49,7 +49,7 @@ describe("external-plugin-detector", () => {
       fs.mkdirSync(opencodeDir, { recursive: true })
       fs.writeFileSync(
         path.join(opencodeDir, "opencode.json"),
-        JSON.stringify({ plugin: ["ruach", "opencode-notifier"] })
+        JSON.stringify({ plugin: ["ghostwire", "opencode-notifier"] })
       )
 
       // #when
@@ -66,7 +66,7 @@ describe("external-plugin-detector", () => {
       fs.mkdirSync(opencodeDir, { recursive: true })
       fs.writeFileSync(
         path.join(opencodeDir, "opencode.json"),
-        JSON.stringify({ plugin: ["ruach", "opencode-notifier@1.2.3"] })
+        JSON.stringify({ plugin: ["ghostwire", "opencode-notifier@1.2.3"] })
       )
 
       // #when
@@ -83,7 +83,7 @@ describe("external-plugin-detector", () => {
       fs.mkdirSync(opencodeDir, { recursive: true })
       fs.writeFileSync(
         path.join(opencodeDir, "opencode.json"),
-        JSON.stringify({ plugin: ["ruach", "@mohak34/opencode-notifier"] })
+        JSON.stringify({ plugin: ["ghostwire", "@mohak34/opencode-notifier"] })
       )
 
       // #when
@@ -103,7 +103,7 @@ describe("external-plugin-detector", () => {
         `{
           // This is a comment
           "plugin": [
-            "ruach",
+            "ghostwire",
             "opencode-notifier" // Another comment
           ]
         }`

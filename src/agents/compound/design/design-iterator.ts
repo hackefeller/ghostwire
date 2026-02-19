@@ -120,7 +120,7 @@ export function createDesignIteratorAgent(model: string): AgentConfig {
   }
 }
 
-// Agent metadata for Sisyphus prompt building and task delegation
+// Agent metadata for Cipher Operator prompt building and task delegation
 export const DESIGN_ITERATOR_METADATA: AgentPromptMetadata = {
   category: "design",
   cost: "EXPENSIVE", // Multiple iterations with screenshot analysis

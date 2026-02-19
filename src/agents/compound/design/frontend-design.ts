@@ -133,7 +133,7 @@ export function createFrontendDesignAgent(model: string): AgentConfig {
   }
 }
 
-// Agent metadata for Sisyphus prompt building and task delegation  
+// Agent metadata for Cipher Operator prompt building and task delegation  
 export const FRONTEND_DESIGN_METADATA: AgentPromptMetadata = {
   category: "design",
   cost: "EXPENSIVE", // Comprehensive design and implementation work

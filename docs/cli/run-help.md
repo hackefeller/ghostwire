@@ -3,9 +3,9 @@
 ## Examples
 
 ```bash
-$ bunx ruach run "Fix the bug in index.ts"
-$ bunx ruach run --agent Sisyphus "Implement feature X"
-$ bunx ruach run --timeout 3600000 "Large refactoring task"
+$ bunx ghostwire run "Fix the bug in index.ts"
+$ bunx ghostwire run --agent Cipher Operator "Implement feature X"
+$ bunx ghostwire run --timeout 3600000 "Large refactoring task"
 ```
 
 ## Notes

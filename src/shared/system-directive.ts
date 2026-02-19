@@ -1,5 +1,5 @@
 /**
- * Unified system directive prefix for ruach internal messages.
+ * Unified system directive prefix for ghostwire internal messages.
  * All system-generated messages should use this prefix for consistent filtering.
  *
  * Format: [SYSTEM DIRECTIVE: RUACH - {TYPE}]
@@ -17,8 +17,8 @@ export function createSystemDirective(type: string): string {
 }
 
 /**
- * Checks if a message starts with the ruach system directive prefix.
- * Used by keyword-detector and other hooks to skip system-generated messages.
+ * Checks if a message starts with the ghostwire system directive prefix.
+ * Used by grid-keyword-detector and other hooks to skip system-generated messages.
  * @param text - The message text to check
  * @returns true if the message is a system directive
  */
@@ -54,7 +54,7 @@ export const SystemDirectiveTypes = {
   SINGLE_TASK_ONLY: "SINGLE TASK ONLY",
   COMPACTION_CONTEXT: "COMPACTION CONTEXT",
   CONTEXT_WINDOW_MONITOR: "CONTEXT WINDOW MONITOR",
-  PROMETHEUS_READ_ONLY: "PROMETHEUS READ-ONLY",
+  AUGUR_PLANNER_READ_ONLY: "AUGUR PLANNER READ-ONLY",
 } as const
 
 export type SystemDirectiveType = (typeof SystemDirectiveTypes)[keyof typeof SystemDirectiveTypes]

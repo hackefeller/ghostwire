@@ -25,9 +25,9 @@ describe("Compound Engineering Skills", () => {
       expect(uniqueNames.size).toBe(COMPOUND_SKILLS.length)
     })
 
-    test("all skill names use compound: prefix", () => {
+    test("all skill names use grid: prefix", () => {
       //#given
-      const invalidSkills = COMPOUND_SKILLS.filter((skill) => !skill.name.startsWith("compound:"))
+      const invalidSkills = COMPOUND_SKILLS.filter((skill) => !skill.name.startsWith("grid:"))
 
       //#when & #then
       expect(invalidSkills.length).toBe(0)

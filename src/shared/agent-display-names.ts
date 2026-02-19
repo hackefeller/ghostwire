@@ -1,19 +1,19 @@
 /**
  * Agent config keys to display names mapping.
- * Config keys are lowercase (e.g., "sisyphus", "atlas").
- * Display names include suffixes for UI/logs (e.g., "Sisyphus (Ultraworker)").
+ * Config keys are lowercase (e.g., "cipher-operator", "nexus-orchestrator").
+ * Display names include suffixes for UI/logs (e.g., "Cipher Operator (Ultraworker)").
  */
 export const AGENT_DISPLAY_NAMES: Record<string, string> = {
-  sisyphus: "Sisyphus (Ultraworker)",
-  atlas: "Atlas (Plan Execution Orchestrator)",
-  prometheus: "Prometheus (Plan Builder)",
-  "sisyphus-junior": "Sisyphus-Junior",
-  metis: "Metis (Plan Consultant)",
-  momus: "Momus (Plan Reviewer)",
-  oracle: "oracle",
-  librarian: "librarian",
-  explore: "explore",
-  "multimodal-looker": "multimodal-looker",
+  "cipher-operator": "Cipher Operator (Ultraworker)",
+  "nexus-orchestrator": "Nexus Orchestrator (Plan Execution Orchestrator)",
+  "augur-planner": "Augur Planner (Plan Builder)",
+  "cipher-runner": "Cipher Operator-Junior",
+  "tactician-strategist": "Tactician Strategist (Plan Consultant)",
+  "glitch-auditor": "Glitch Auditor (Plan Reviewer)",
+  "seer-advisor": "seer-advisor",
+  "archive-researcher": "archive-researcher",
+  "scout-recon": "scout-recon",
+  "optic-analyst": "optic-analyst",
 }
 
 /**
@@ -26,10 +26,15 @@ export function getAgentDisplayName(configKey: string): string {
   const exactMatch = AGENT_DISPLAY_NAMES[configKey]
   if (exactMatch !== undefined) return exactMatch
   
-  // Fall back to case-insensitive search
+  // Fall back to case-insensitive + normalized search
   const lowerKey = configKey.toLowerCase()
+  const normalizedKey = lowerKey.replace(/\s+/g, "-")
+  const aliasKey = normalizedKey === "cipher-operator-junior" ? "cipher-runner" : normalizedKey
   for (const [k, v] of Object.entries(AGENT_DISPLAY_NAMES)) {
-    if (k.toLowerCase() === lowerKey) return v
+    const lowerMapKey = k.toLowerCase()
+    if (lowerMapKey === lowerKey || lowerMapKey === normalizedKey || lowerMapKey === aliasKey) {
+      return v
+    }
   }
   
   // Unknown agent: return original key

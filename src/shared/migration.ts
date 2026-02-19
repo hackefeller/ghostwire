@@ -3,56 +3,56 @@ import { log } from "./logger"
 
 // Migration map: old keys → new keys (for backward compatibility)
 export const AGENT_NAME_MAP: Record<string, string> = {
-  // Sisyphus variants → "sisyphus"
-  omo: "sisyphus",
-  OmO: "sisyphus",
-  Sisyphus: "sisyphus",
-  sisyphus: "sisyphus",
+  // Cipher Operator variants → "cipher-operator"
+  "grid": "cipher-operator",
+  "OmO": "cipher-operator",
+  "Cipher Operator": "cipher-operator",
+  "cipher-operator": "cipher-operator",
 
-  // Prometheus variants → "prometheus"
-  "OmO-Plan": "prometheus",
-  "omo-plan": "prometheus",
-  "Planner-Sisyphus": "prometheus",
-  "planner-sisyphus": "prometheus",
-  "Prometheus (Planner)": "prometheus",
-  prometheus: "prometheus",
+  // Augur Planner variants → "augur-planner"
+  "OmO-Plan": "augur-planner",
+  "grid-plan": "augur-planner",
+  "Planner-Cipher Operator": "augur-planner",
+  "planner-cipher-operator": "augur-planner",
+  "Augur Planner (Planner)": "augur-planner",
+  "augur-planner": "augur-planner",
 
-  // Atlas variants → "atlas"
-  "orchestrator-sisyphus": "atlas",
-  Atlas: "atlas",
-  atlas: "atlas",
+  // Nexus Orchestrator variants → "nexus-orchestrator"
+  "orchestrator-cipher-operator": "nexus-orchestrator",
+  "Nexus Orchestrator": "nexus-orchestrator",
+  "nexus-orchestrator": "nexus-orchestrator",
 
-  // Metis variants → "metis"
-  "plan-consultant": "metis",
-  "Metis (Plan Consultant)": "metis",
-  metis: "metis",
+  // Tactician Strategist variants → "tactician-strategist"
+  "plan-consultant": "tactician-strategist",
+  "Tactician Strategist (Plan Consultant)": "tactician-strategist",
+  "tactician-strategist": "tactician-strategist",
 
-  // Momus variants → "momus"
-  "Momus (Plan Reviewer)": "momus",
-  momus: "momus",
+  // Glitch Auditor variants → "glitch-auditor"
+  "Glitch Auditor (Plan Reviewer)": "glitch-auditor",
+  "glitch-auditor": "glitch-auditor",
 
-  // Sisyphus-Junior → "sisyphus-junior"
-  "Sisyphus-Junior": "sisyphus-junior",
-  "sisyphus-junior": "sisyphus-junior",
+  // Cipher Operator-Junior → "cipher-runner"
+  "Cipher Operator-Junior": "cipher-runner",
+  "cipher-runner": "cipher-runner",
 
   // Already lowercase - passthrough
-  build: "build",
-  oracle: "oracle",
-  librarian: "librarian",
-  explore: "explore",
-  "multimodal-looker": "multimodal-looker",
+  "build": "build",
+  "seer-advisor": "seer-advisor",
+  "archive-researcher": "archive-researcher",
+  "scout-recon": "scout-recon",
+  "optic-analyst": "optic-analyst",
 }
 
 export const BUILTIN_AGENT_NAMES = new Set([
-  "sisyphus",           // was "Sisyphus"
-  "oracle",
-  "librarian",
-  "explore",
-  "multimodal-looker",
-  "metis",              // was "Metis (Plan Consultant)"
-  "momus",              // was "Momus (Plan Reviewer)"
-  "prometheus",         // was "Prometheus (Planner)"
-  "atlas",              // was "Atlas"
+  "cipher-operator",           // was "Cipher Operator"
+  "seer-advisor",
+  "archive-researcher",
+  "scout-recon",
+  "optic-analyst",
+  "tactician-strategist",              // was "Tactician Strategist (Plan Consultant)"
+  "glitch-auditor",              // was "Glitch Auditor (Plan Reviewer)"
+  "augur-planner",         // was "Augur Planner (Planner)"
+  "nexus-orchestrator",              // was "Nexus Orchestrator"
   "build",
 ])
 
@@ -60,8 +60,8 @@ export const BUILTIN_AGENT_NAMES = new Set([
 // null means the hook was removed and should be filtered out from disabled_hooks
 export const HOOK_NAME_MAP: Record<string, string | null> = {
   // Legacy names (backward compatibility)
-  "anthropic-auto-compact": "anthropic-context-window-limit-recovery",
-  "sisyphus-orchestrator": "atlas",
+  "anthropic-auto-compact": "grid-anthropic-context-window-limit-recovery",
+  "cipher-operator-orchestrator": "nexus-orchestrator",
 
   // Removed hooks (v3.0.0) - will be filtered out and user warned
   "preemptive-compaction": null,
@@ -182,7 +182,7 @@ export function migrateConfigFile(configPath: string, rawConfig: Record<string, 
 
 
   if (rawConfig.omo_agent) {
-    rawConfig.sisyphus_agent = rawConfig.omo_agent
+    rawConfig.cipher_agent = rawConfig.omo_agent
     delete rawConfig.omo_agent
     needsWrite = true
   }

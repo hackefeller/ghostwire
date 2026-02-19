@@ -51,8 +51,8 @@ export function createAutoUpdateCheckerHook(ctx: PluginInput, options: AutoUpdat
   const getToastMessage = (isUpdate: boolean, latestVersion?: string): string => {
     if (isSisyphusEnabled) {
       return isUpdate
-        ? `Sisyphus on steroids is steering OpenCode.\nv${latestVersion} available. Restart to apply.`
-        : `Sisyphus on steroids is steering OpenCode.`
+        ? `Cipher Operator on steroids is steering OpenCode.\nv${latestVersion} available. Restart to apply.`
+        : `Cipher Operator on steroids is steering OpenCode.`
     }
     return isUpdate
       ? `OpenCode is now on Steroids. oMoMoMoMo...\nv${latestVersion} available. Restart OpenCode to apply.`
@@ -84,7 +84,7 @@ export function createAutoUpdateCheckerHook(ctx: PluginInput, options: AutoUpdat
           if (showStartupToast) {
             showLocalDevToast(ctx, displayVersion, isSisyphusEnabled).catch(() => {})
           }
-          log("[auto-update-checker] Local development mode")
+          log("[grid-auto-update-checker] Local development mode")
           return
         }
 
@@ -93,7 +93,7 @@ export function createAutoUpdateCheckerHook(ctx: PluginInput, options: AutoUpdat
         }
 
         runBackgroundUpdateCheck(ctx, autoUpdate, getToastMessage).catch(err => {
-          log("[auto-update-checker] Background update check failed:", err)
+          log("[grid-auto-update-checker] Background update check failed:", err)
         })
       }, 0)
     },
@@ -107,34 +107,34 @@ async function runBackgroundUpdateCheck(
 ): Promise<void> {
   const pluginInfo = findPluginEntry(ctx.directory)
   if (!pluginInfo) {
-    log("[auto-update-checker] Plugin not found in config")
+    log("[grid-auto-update-checker] Plugin not found in config")
     return
   }
 
   const cachedVersion = getCachedVersion()
   const currentVersion = cachedVersion ?? pluginInfo.pinnedVersion
   if (!currentVersion) {
-    log("[auto-update-checker] No version found (cached or pinned)")
+    log("[grid-auto-update-checker] No version found (cached or pinned)")
     return
   }
 
   const channel = extractChannel(pluginInfo.pinnedVersion ?? currentVersion)
   const latestVersion = await getLatestVersion(channel)
   if (!latestVersion) {
-    log("[auto-update-checker] Failed to fetch latest version for channel:", channel)
+    log("[grid-auto-update-checker] Failed to fetch latest version for channel:", channel)
     return
   }
 
   if (currentVersion === latestVersion) {
-    log("[auto-update-checker] Already on latest version for channel:", channel)
+    log("[grid-auto-update-checker] Already on latest version for channel:", channel)
     return
   }
 
-  log(`[auto-update-checker] Update available (${channel}): ${currentVersion} → ${latestVersion}`)
+  log(`[grid-auto-update-checker] Update available (${channel}): ${currentVersion} → ${latestVersion}`)
 
   if (!autoUpdate) {
     await showUpdateAvailableToast(ctx, latestVersion, getToastMessage)
-    log("[auto-update-checker] Auto-update disabled, notification only")
+    log("[grid-auto-update-checker] Auto-update disabled, notification only")
     return
   }
 
@@ -142,10 +142,10 @@ async function runBackgroundUpdateCheck(
     const updated = updatePinnedVersion(pluginInfo.configPath, pluginInfo.entry, latestVersion)
     if (!updated) {
       await showUpdateAvailableToast(ctx, latestVersion, getToastMessage)
-      log("[auto-update-checker] Failed to update pinned version in config")
+      log("[grid-auto-update-checker] Failed to update pinned version in config")
       return
     }
-    log(`[auto-update-checker] Config updated: ${pluginInfo.entry} → ${PACKAGE_NAME}@${latestVersion}`)
+    log(`[grid-auto-update-checker] Config updated: ${pluginInfo.entry} → ${PACKAGE_NAME}@${latestVersion}`)
   }
 
   invalidatePackage(PACKAGE_NAME)
@@ -154,10 +154,10 @@ async function runBackgroundUpdateCheck(
 
   if (installSuccess) {
     await showAutoUpdatedToast(ctx, currentVersion, latestVersion)
-    log(`[auto-update-checker] Update installed: ${currentVersion} → ${latestVersion}`)
+    log(`[grid-auto-update-checker] Update installed: ${currentVersion} → ${latestVersion}`)
   } else {
     await showUpdateAvailableToast(ctx, latestVersion, getToastMessage)
-    log("[auto-update-checker] bun install failed; update not installed (falling back to notification-only)")
+    log("[grid-auto-update-checker] bun install failed; update not installed (falling back to notification-only)")
   }
 }
 
@@ -166,7 +166,7 @@ async function runBunInstallSafe(): Promise<boolean> {
     return await runBunInstall()
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err)
-    log("[auto-update-checker] bun install error:", errorMessage)
+    log("[grid-auto-update-checker] bun install error:", errorMessage)
     return false
   }
 }
@@ -185,7 +185,7 @@ async function showModelCacheWarningIfNeeded(ctx: PluginInput): Promise<void> {
     })
     .catch(() => {})
 
-  log("[auto-update-checker] Model cache warning shown")
+  log("[grid-auto-update-checker] Model cache warning shown")
 }
 
 async function updateAndShowConnectedProvidersCacheStatus(ctx: PluginInput): Promise<void> {
@@ -205,9 +205,9 @@ async function updateAndShowConnectedProvidersCacheStatus(ctx: PluginInput): Pro
       })
       .catch(() => {})
 
-    log("[auto-update-checker] Connected providers cache toast shown (first run)")
+    log("[grid-auto-update-checker] Connected providers cache toast shown (first run)")
   } else {
-    log("[auto-update-checker] Connected providers cache exists, updating in background")
+    log("[grid-auto-update-checker] Connected providers cache exists, updating in background")
   }
 }
 
@@ -227,14 +227,14 @@ async function showConfigErrorsIfAny(ctx: PluginInput): Promise<void> {
     })
     .catch(() => {})
 
-  log(`[auto-update-checker] Config load errors shown: ${errors.length} error(s)`)
+  log(`[grid-auto-update-checker] Config load errors shown: ${errors.length} error(s)`)
   clearConfigLoadErrors()
 }
 
 async function showVersionToast(ctx: PluginInput, version: string | null, message: string): Promise<void> {
   const displayVersion = version ?? "unknown"
   await showSpinnerToast(ctx, displayVersion, message)
-  log(`[auto-update-checker] Startup toast shown: v${displayVersion}`)
+  log(`[grid-auto-update-checker] Startup toast shown: v${displayVersion}`)
 }
 
 async function showSpinnerToast(ctx: PluginInput, version: string, message: string): Promise<void> {
@@ -247,7 +247,7 @@ async function showSpinnerToast(ctx: PluginInput, version: string, message: stri
     await ctx.client.tui
       .showToast({
         body: {
-          title: `${spinner} Ruach ${version}`,
+          title: `${spinner} Ghostwire ${version}`,
           message,
           variant: "info" as const,
           duration: frameInterval + 50,
@@ -266,37 +266,37 @@ async function showUpdateAvailableToast(
   await ctx.client.tui
     .showToast({
       body: {
-        title: `Ruach ${latestVersion}`,
+        title: `Ghostwire ${latestVersion}`,
         message: getToastMessage(true, latestVersion),
         variant: "info" as const,
         duration: 8000,
       },
     })
     .catch(() => {})
-  log(`[auto-update-checker] Update available toast shown: v${latestVersion}`)
+  log(`[grid-auto-update-checker] Update available toast shown: v${latestVersion}`)
 }
 
 async function showAutoUpdatedToast(ctx: PluginInput, oldVersion: string, newVersion: string): Promise<void> {
   await ctx.client.tui
     .showToast({
       body: {
-        title: `Ruach Updated!`,
+        title: `Ghostwire Updated!`,
         message: `v${oldVersion} → v${newVersion}\nRestart OpenCode to apply.`,
         variant: "success" as const,
         duration: 8000,
       },
     })
     .catch(() => {})
-  log(`[auto-update-checker] Auto-updated toast shown: v${oldVersion} → v${newVersion}`)
+  log(`[grid-auto-update-checker] Auto-updated toast shown: v${oldVersion} → v${newVersion}`)
 }
 
 async function showLocalDevToast(ctx: PluginInput, version: string | null, isSisyphusEnabled: boolean): Promise<void> {
   const displayVersion = version ?? "dev"
   const message = isSisyphusEnabled
-    ? "Sisyphus running in local development mode."
+    ? "Cipher Operator running in local development mode."
     : "Running in local development mode. oMoMoMo..."
   await showSpinnerToast(ctx, `${displayVersion} (dev)`, message)
-  log(`[auto-update-checker] Local dev toast shown: v${displayVersion}`)
+  log(`[grid-auto-update-checker] Local dev toast shown: v${displayVersion}`)
 }
 
 export type { UpdateCheckResult, AutoUpdateCheckerOptions } from "./types"

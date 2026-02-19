@@ -1,7 +1,7 @@
 import { describe, test, expect } from "bun:test"
 import { getLatestVersion } from "./checker"
 
-describe("auto-update-checker/checker", () => {
+describe("grid-auto-update-checker/checker", () => {
   describe("getLatestVersion", () => {
     test("accepts channel parameter", async () => {
       const result = await getLatestVersion("beta")

@@ -55,7 +55,7 @@ export function resolveModelWithFallback(
 		return { model: normalizedUiModel, source: "override" }
 	}
 
-	// Step 2: Config Override (from ruach.json user config)
+	// Step 2: Config Override (from ghostwire.json user config)
 	const normalizedUserModel = normalizeModel(userModel)
 	if (normalizedUserModel) {
 		log("Model resolved via config override", { model: normalizedUserModel })

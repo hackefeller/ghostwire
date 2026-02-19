@@ -15,7 +15,7 @@ export function formatVersionOutput(info: VersionInfo): string {
   const lines: string[] = []
 
   lines.push("")
-  lines.push(color.bold(color.white("Ruach Version Information")))
+  lines.push(color.bold(color.white("Ghostwire Version Information")))
   lines.push(color.dim("─".repeat(50)))
   lines.push("")
 
@@ -37,7 +37,7 @@ export function formatVersionOutput(info: VersionInfo): string {
       break
     case "outdated":
       lines.push(`  ${SYMBOLS.warn} ${color.yellow("Update available")}`)
-      lines.push(`  ${color.dim("Run:")} ${color.cyan("cd ~/.config/opencode && bun update ruach")}`)
+      lines.push(`  ${color.dim("Run:")} ${color.cyan("cd ~/.config/opencode && bun update ghostwire")}`)
       break
     case "local-dev":
       lines.push(`  ${SYMBOLS.dev} ${color.cyan("Running in local development mode")}`)

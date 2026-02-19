@@ -1,6 +1,6 @@
 # Contributing to Oh My OpenCode
 
-First off, thanks for taking the time to contribute! This document provides guidelines and instructions for contributing to ruach.
+First off, thanks for taking the time to contribute! This document provides guidelines and instructions for contributing to ghostwire.
 
 ## Table of Contents
 
@@ -61,8 +61,8 @@ If English isn't your first language, don't worry! We value your contributions r
 
 ```bash
 # Clone the repository
-git clone https://github.com/code-yeongyu/ruach.git
-cd ruach
+git clone https://github.com/pontistudios/ghostwire.git
+cd ghostwire
 
 # Install dependencies (bun only - never use npm/yarn)
 bun install
@@ -84,21 +84,21 @@ After making changes, you can test your local build in OpenCode:
    ```json
    {
      "plugin": [
-       "file:///absolute/path/to/ruach/dist/index.js"
+       "file:///absolute/path/to/ghostwire/dist/index.js"
      ]
    }
    ```
    
-   For example, if your project is at `/Users/yourname/projects/ruach`:
+   For example, if your project is at `/Users/yourname/projects/ghostwire`:
    ```json
    {
      "plugin": [
-       "file:///Users/yourname/projects/ruach/dist/index.js"
+       "file:///Users/yourname/projects/ghostwire/dist/index.js"
      ]
    }
    ```
 
-   > **Note**: Remove `"ruach"` from the plugin array if it exists, to avoid conflicts with the npm version.
+   > **Note**: Remove `"ghostwire"` from the plugin array if it exists, to avoid conflicts with the npm version.
 
 3. **Restart OpenCode** to load the changes.
 
@@ -107,9 +107,9 @@ After making changes, you can test your local build in OpenCode:
 ## Project Structure
 
 ```
-ruach/
+ghostwire/
 ├── src/
-│   ├── agents/        # AI agents (OmO, oracle, librarian, explore, etc.)
+│   ├── agents/        # AI agents (OmO, seer-advisor, archive-researcher, scout-recon, etc.)
 │   ├── hooks/         # 21 lifecycle hooks
 │   ├── tools/         # LSP (11), AST-Grep, Grep, Glob, etc.
 │   ├── mcp/           # MCP server integrations (context7, grep_app)
@@ -117,11 +117,42 @@ ruach/
 │   ├── config/        # Zod schemas and TypeScript types
 │   ├── auth/          # Google Antigravity OAuth
 │   ├── shared/        # Common utilities
-│   └── index.ts       # Main plugin entry (RuachPlugin)
+│   └── index.ts       # Main plugin entry (GhostwirePlugin)
 ├── script/            # Build utilities (build-schema.ts, publish.ts)
 ├── assets/            # JSON schema
 └── dist/              # Build output (ESM + .d.ts)
 ```
+
+### Current Implementation State
+
+Ghostwire is an OpenCode plugin with a CLI wrapper providing orchestration (Augur Planner/Nexus Orchestrator), built-in agents, tools, skills, MCP integration, and a partial Claude plugin import layer.
+
+**Primary Entry Points:**
+- Plugin entry: `src/index.ts`
+- Config load/merge: `src/plugin-config.ts`
+- Config schema: `src/config/schema.ts`
+- CLI: `src/cli/`
+
+**Config Files (Runtime):**
+- Project: `.opencode/ghostwire.json` or `.opencode/ghostwire.jsonc`
+- User: `~/.config/opencode/ghostwire.json` or `~/.config/opencode/ghostwire.jsonc`
+- OpenCode core: `~/.config/opencode/opencode.json`
+
+**Core Runtime Systems:**
+- Orchestration: `src/hooks/nexus-orchestrator/index.ts`
+- Background agents: `src/features/background-agent/manager.ts`
+- Agents: `src/agents/` + registry wiring in `src/index.ts`
+- Tools: `src/tools/`
+- Hooks: `src/hooks/`
+- Skills: `src/features/builtin-skills/`
+- Commands: `src/features/builtin-commands/`
+- MCP: `src/mcp/`
+
+**Unified Plugin Import (Claude):**
+Implemented as a library in `src/features/imports/claude/` but **not wired into runtime** - available for tests/utilities only.
+
+**Compound Engineering Components:**
+Integrated into core with `grid:` namespace. Migration handled via `src/shared/compound-migration.ts`.
 
 ## Development Workflow
 
@@ -147,7 +178,7 @@ bun run build:schema
 |------------|------|
 | Package Manager | **Bun only** (`bun run`, `bun build`, `bunx`) |
 | Types | Use `bun-types`, not `@types/node` |
-| Directory Naming | kebab-case (`ast-grep/`, `claude-code-hooks/`) |
+| Directory Naming | kebab-case (`ast-grep/`, `grid-claude-code-hooks/`) |
 | File Operations | Never use bash commands (mkdir/touch/rm) for file creation in code |
 | Tool Structure | Each tool: `index.ts`, `types.ts`, `constants.ts`, `tools.ts`, `utils.ts` |
 | Hook Pattern | `createXXXHook(input: PluginInput)` function naming |

@@ -11,26 +11,26 @@ const EXPLORATION_AGENT_DENYLIST: Record<string, boolean> = {
   edit: false,
   task: false,
   delegate_task: false,
-  call_omo_agent: false,
+  call_grid_agent: false,
 }
 
 const AGENT_RESTRICTIONS: Record<string, Record<string, boolean>> = {
-  explore: EXPLORATION_AGENT_DENYLIST,
+  "scout-recon": EXPLORATION_AGENT_DENYLIST,
 
-  librarian: EXPLORATION_AGENT_DENYLIST,
+  "archive-researcher": EXPLORATION_AGENT_DENYLIST,
 
-  oracle: {
+  "seer-advisor": {
     write: false,
     edit: false,
     task: false,
     delegate_task: false,
   },
 
-  "multimodal-looker": {
+  "optic-analyst": {
     read: true,
   },
 
-  "sisyphus-junior": {
+  "cipher-runner": {
     task: false,
     delegate_task: false,
   },

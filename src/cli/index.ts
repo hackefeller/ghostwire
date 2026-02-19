@@ -21,13 +21,13 @@ const DOCTOR_HELP = fs.readFileSync(new URL("../../docs/cli/doctor-help.md", imp
 const program = new Command()
 
 program
-  .name("ruach")
-  .description("The ultimate Ruach plugin - multi-model orchestration, LSP tools, and more")
+  .name("ghostwire")
+  .description("The ultimate Ghostwire plugin - multi-model orchestration, LSP tools, and more")
   .version(VERSION, "-v, --version", "Show version number")
 
 program
   .command("install")
-  .description("Install and configure ruach with interactive setup")
+  .description("Install and configure ghostwire with interactive setup")
   .option("--no-tui", "Run in non-interactive mode (requires all options)")
   .option("--claude <value>", "Claude subscription: no, yes, max20")
   .option("--openai <value>", "OpenAI/ChatGPT subscription: no, yes (default: no)")
@@ -56,8 +56,8 @@ program
 
 program
   .command("run <message>")
-  .description("Run ruach with todo/background task completion enforcement")
-  .option("-a, --agent <name>", "Agent to use (default: Sisyphus)")
+  .description("Run ghostwire with todo/background task completion enforcement")
+  .option("-a, --agent <name>", "Agent to use (default: Cipher Operator)")
   .option("-d, --directory <path>", "Working directory")
   .option("-t, --timeout <ms>", "Timeout in milliseconds (default: 30 minutes)", parseInt)
   .addHelpText("after", RUN_HELP)
@@ -89,7 +89,7 @@ program
 
 program
   .command("doctor")
-  .description("Check ruach installation health and diagnose issues")
+  .description("Check ghostwire installation health and diagnose issues")
   .option("--verbose", "Show detailed diagnostic information")
   .option("--json", "Output results in JSON format")
   .option("--category <category>", "Run only specific category")
@@ -108,7 +108,7 @@ program
   .command("version")
   .description("Show version information")
   .action(() => {
-    console.log(`ruach v${VERSION}`)
+    console.log(`ghostwire v${VERSION}`)
   })
 
 program.addCommand(createMcpOAuthCommand())

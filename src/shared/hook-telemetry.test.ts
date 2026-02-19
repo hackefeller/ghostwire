@@ -5,7 +5,7 @@ describe("hook telemetry", () => {
   test("uses per-hook override budget when available", () => {
     //#given
     const phase = "tool.execute.after"
-    const hookName = "atlas"
+    const hookName = "nexus-orchestrator"
 
     //#when
     const budget = getHookBudgetMs(phase, hookName)
@@ -17,7 +17,7 @@ describe("hook telemetry", () => {
   test("uses phase default budget when no override exists", () => {
     //#given
     const phase = "chat.message"
-    const hookName = "keyword-detector"
+    const hookName = "grid-keyword-detector"
 
     //#when
     const budget = getHookBudgetMs(phase, hookName)
@@ -35,7 +35,7 @@ describe("hook telemetry", () => {
     //#when
     await runHookWithTelemetry({
       phase: "tool.execute.before",
-      hookName: "keyword-detector",
+      hookName: "grid-keyword-detector",
       invoke: async () => {},
       logger: (message, data) => logs.push({ message, data }),
       now,
@@ -43,7 +43,7 @@ describe("hook telemetry", () => {
 
     //#then
     expect(logs.length).toBe(2)
-    expect(logs[0].message).toContain("[hook-telemetry] tool.execute.before:keyword-detector")
-    expect(logs[1].message).toContain("[hook-budget-exceeded] tool.execute.before:keyword-detector")
+    expect(logs[0].message).toContain("[hook-telemetry] tool.execute.before:grid-keyword-detector")
+    expect(logs[1].message).toContain("[hook-budget-exceeded] tool.execute.before:grid-keyword-detector")
   })
 })

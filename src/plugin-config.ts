@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { RuachConfigSchema, type RuachConfig } from "./config";
+import { GhostwireConfigSchema, type GhostwireConfig } from "./config";
 import {
   log,
   deepMerge,
@@ -10,12 +10,15 @@ import {
   detectConfigFile,
   migrateConfigFile,
 } from "./shared";
-import { migrateCompoundEngineering, createConfigBackup } from "./shared/compound-migration";
+import {
+  migrateCompoundEngineering,
+  createConfigBackup,
+} from "./shared/compound-migration";
 
 export function loadConfigFromPath(
   configPath: string,
-  ctx: unknown
-): RuachConfig | null {
+  ctx: unknown,
+): GhostwireConfig | null {
   try {
     if (fs.existsSync(configPath)) {
       const content = fs.readFileSync(configPath, "utf-8");
@@ -25,9 +28,15 @@ export function loadConfigFromPath(
       migrateConfigFile(configPath, rawConfig);
 
       // Then run compound engineering migration
-      const compoundMigration = migrateCompoundEngineering(configPath, rawConfig);
+      const compoundMigration = migrateCompoundEngineering(
+        configPath,
+        rawConfig,
+      );
       if (!compoundMigration.success) {
-        log(`Warning: Compound engineering migration had errors:`, compoundMigration.errors);
+        log(
+          `Warning: Compound engineering migration had errors:`,
+          compoundMigration.errors,
+        );
       } else if (compoundMigration.changed) {
         // Create backup if migration made changes
         createConfigBackup(configPath);
@@ -37,7 +46,7 @@ export function loadConfigFromPath(
         });
       }
 
-      const result = RuachConfigSchema.safeParse(rawConfig);
+      const result = GhostwireConfigSchema.safeParse(rawConfig);
 
       if (!result.success) {
         const errorMsg = result.error.issues
@@ -63,9 +72,9 @@ export function loadConfigFromPath(
 }
 
 export function mergeConfigs(
-  base: RuachConfig,
-  override: RuachConfig
-): RuachConfig {
+  base: GhostwireConfig,
+  override: GhostwireConfig,
+): GhostwireConfig {
   return {
     ...base,
     ...override,
@@ -107,19 +116,17 @@ export function mergeConfigs(
 
 export function loadPluginConfig(
   directory: string,
-  ctx: unknown
-): RuachConfig {
+  ctx: unknown,
+): GhostwireConfig {
   // User-level config path - prefer .jsonc over .json
   const configDir = getOpenCodeConfigDir({ binary: "opencode" });
-  const userBasePath = path.join(configDir, "ruach");
+  const userBasePath = path.join(configDir, "ghostwire");
   const userDetected = detectConfigFile(userBasePath);
   const userConfigPath =
-    userDetected.format !== "none"
-      ? userDetected.path
-      : userBasePath + ".json";
+    userDetected.format !== "none" ? userDetected.path : userBasePath + ".json";
 
   // Project-level config path - prefer .jsonc over .json
-  const projectBasePath = path.join(directory, ".opencode", "ruach");
+  const projectBasePath = path.join(directory, ".opencode", "ghostwire");
   const projectDetected = detectConfigFile(projectBasePath);
   const projectConfigPath =
     projectDetected.format !== "none"
@@ -127,8 +134,7 @@ export function loadPluginConfig(
       : projectBasePath + ".json";
 
   // Load user config first (base)
-  let config: RuachConfig =
-    loadConfigFromPath(userConfigPath, ctx) ?? {};
+  let config: GhostwireConfig = loadConfigFromPath(userConfigPath, ctx) ?? {};
 
   // Override with project config
   const projectConfig = loadConfigFromPath(projectConfigPath, ctx);

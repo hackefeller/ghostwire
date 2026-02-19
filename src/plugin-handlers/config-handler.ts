@@ -1,5 +1,5 @@
 import { createBuiltinAgents } from "../agents";
-import { createSisyphusJuniorAgentWithOverrides } from "../agents/sisyphus-junior";
+import { createSisyphusJuniorAgentWithOverrides } from "../agents/cipher-runner";
 import {
   loadUserCommands,
   loadProjectCommands,
@@ -24,27 +24,34 @@ import {
 import { loadMcpConfigs } from "../features/claude-code-mcp-loader";
 import { loadAllPluginComponents } from "../features/claude-code-plugin-loader";
 import { createBuiltinMcps } from "../mcp";
-import type { RuachConfig } from "../config";
-import { log, fetchAvailableModels, readConnectedProvidersCache } from "../shared";
+import type { GhostwireConfig } from "../config";
+import {
+  log,
+  fetchAvailableModels,
+  readConnectedProvidersCache,
+} from "../shared";
 import { getOpenCodeConfigPaths } from "../shared/opencode-config-dir";
 import { migrateAgentConfig } from "../shared/permission-compat";
 import { AGENT_NAME_MAP } from "../shared/migration";
 import { resolveModelWithFallback } from "../shared/model-resolver";
 import { AGENT_MODEL_REQUIREMENTS } from "../shared/model-requirements";
-import { PROMETHEUS_SYSTEM_PROMPT, PROMETHEUS_PERMISSION } from "../agents/prometheus-prompt";
+import {
+  AUGUR_PLANNER_SYSTEM_PROMPT,
+  AUGUR_PLANNER_PERMISSION,
+} from "../agents/augur-planner-prompt";
 import { DEFAULT_CATEGORIES } from "../tools/delegate-task/constants";
 import type { ModelCacheState } from "../plugin-state";
 import type { CategoryConfig } from "../config/schema";
 
 export interface ConfigHandlerDeps {
   ctx: { directory: string; client?: any };
-  pluginConfig: RuachConfig;
+  pluginConfig: GhostwireConfig;
   modelCacheState: ModelCacheState;
 }
 
 export function resolveCategoryConfig(
   categoryName: string,
-  userCategories?: Record<string, CategoryConfig>
+  userCategories?: Record<string, CategoryConfig>,
 ): CategoryConfig | undefined {
   return userCategories?.[categoryName] ?? DEFAULT_CATEGORIES[categoryName];
 }
@@ -75,7 +82,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
             if (contextLimit) {
               modelCacheState.modelContextLimitsCache.set(
                 `${providerID}/${modelID}`,
-                contextLimit
+                contextLimit,
               );
             }
           }
@@ -83,19 +90,20 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       }
     }
 
-    const pluginComponents = (pluginConfig.claude_code?.plugins ?? true)
-      ? await loadAllPluginComponents({
-          enabledPluginsOverride: pluginConfig.claude_code?.plugins_override,
-        })
-      : {
-          commands: {},
-          skills: {},
-          agents: {},
-          mcpServers: {},
-          hooksConfigs: [],
-          plugins: [],
-          errors: [],
-        };
+    const pluginComponents =
+      (pluginConfig.claude_code?.plugins ?? true)
+        ? await loadAllPluginComponents({
+            enabledPluginsOverride: pluginConfig.claude_code?.plugins_override,
+          })
+        : {
+            commands: {},
+            skills: {},
+            agents: {},
+            mcpServers: {},
+            hooksConfigs: [],
+            plugins: [],
+            errors: [],
+          };
 
     if (pluginComponents.plugins.length > 0) {
       log(`Loaded ${pluginComponents.plugins.length} Claude Code plugins`, {
@@ -108,19 +116,28 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     }
 
     // Migrate disabled_agents from old names to new names
-    const migratedDisabledAgents = (pluginConfig.disabled_agents ?? []).map(agent => {
-      return AGENT_NAME_MAP[agent.toLowerCase()] ?? AGENT_NAME_MAP[agent] ?? agent
-    }) as typeof pluginConfig.disabled_agents
+    const migratedDisabledAgents = (pluginConfig.disabled_agents ?? []).map(
+      (agent) => {
+        return (
+          AGENT_NAME_MAP[agent.toLowerCase()] ?? AGENT_NAME_MAP[agent] ?? agent
+        );
+      },
+    ) as typeof pluginConfig.disabled_agents;
 
-    const includeClaudeSkillsForAwareness = pluginConfig.claude_code?.skills ?? true;
+    const includeClaudeSkillsForAwareness =
+      pluginConfig.claude_code?.skills ?? true;
     const [
       discoveredUserSkills,
       discoveredProjectSkills,
       discoveredOpencodeGlobalSkills,
       discoveredOpencodeProjectSkills,
     ] = await Promise.all([
-      includeClaudeSkillsForAwareness ? discoverUserClaudeSkills() : Promise.resolve([]),
-      includeClaudeSkillsForAwareness ? discoverProjectClaudeSkills() : Promise.resolve([]),
+      includeClaudeSkillsForAwareness
+        ? discoverUserClaudeSkills()
+        : Promise.resolve([]),
+      includeClaudeSkillsForAwareness
+        ? discoverProjectClaudeSkills()
+        : Promise.resolve([]),
       discoverOpencodeGlobalSkills(),
       discoverOpencodeProjectSkills(),
     ]);
@@ -132,7 +149,8 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       ...discoveredUserSkills,
     ];
 
-    const browserProvider = pluginConfig.browser_automation_engine?.provider ?? "playwright";
+    const browserProvider =
+      pluginConfig.browser_automation_engine?.provider ?? "playwright";
     // config.model represents the currently active model in OpenCode (including UI selection)
     // Pass it as uiSelectedModel so it takes highest priority in model resolution
     const currentModel = config.model as string | undefined;
@@ -146,18 +164,16 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       allDiscoveredSkills,
       ctx.client,
       browserProvider,
-      currentModel // uiSelectedModel - takes highest priority
+      currentModel, // uiSelectedModel - takes highest priority
     );
 
     // Claude Code agents: Do NOT apply permission migration
     // Claude Code uses whitelist-based tools format which is semantically different
     // from OpenCode's denylist-based permission system
-    const userAgents = (pluginConfig.claude_code?.agents ?? true)
-      ? loadUserAgents()
-      : {};
-    const projectAgents = (pluginConfig.claude_code?.agents ?? true)
-      ? loadProjectAgents()
-      : {};
+    const userAgents =
+      (pluginConfig.claude_code?.agents ?? true) ? loadUserAgents() : {};
+    const projectAgents =
+      (pluginConfig.claude_code?.agents ?? true) ? loadProjectAgents() : {};
 
     // Plugin agents: Apply permission migration for compatibility
     const rawPluginAgents = pluginComponents.agents;
@@ -165,47 +181,43 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       Object.entries(rawPluginAgents).map(([k, v]) => [
         k,
         v ? migrateAgentConfig(v as Record<string, unknown>) : v,
-      ])
+      ]),
     );
 
-    const isSisyphusEnabled = pluginConfig.sisyphus_agent?.disabled !== true;
+    const isSisyphusEnabled = pluginConfig.cipher_agent?.disabled !== true;
     const builderEnabled =
-      pluginConfig.sisyphus_agent?.default_builder_enabled ?? false;
-    const plannerEnabled =
-      pluginConfig.sisyphus_agent?.planner_enabled ?? true;
-    const replacePlan = pluginConfig.sisyphus_agent?.replace_plan ?? true;
+      pluginConfig.cipher_agent?.default_builder_enabled ?? false;
+    const plannerEnabled = pluginConfig.cipher_agent?.planner_enabled ?? true;
+    const replacePlan = pluginConfig.cipher_agent?.replace_plan ?? true;
 
-    type AgentConfig = Record<
-      string,
-      Record<string, unknown> | undefined
-    > & {
+    type AgentConfig = Record<string, Record<string, unknown> | undefined> & {
       build?: Record<string, unknown>;
       plan?: Record<string, unknown>;
-      explore?: { tools?: Record<string, unknown> };
-      librarian?: { tools?: Record<string, unknown> };
-      "multimodal-looker"?: { tools?: Record<string, unknown> };
-      atlas?: { tools?: Record<string, unknown> };
-      sisyphus?: { tools?: Record<string, unknown> };
+      scoutRecon?: { tools?: Record<string, unknown> };
+      archiveResearcher?: { tools?: Record<string, unknown> };
+      "optic-analyst"?: { tools?: Record<string, unknown> };
+      nexusOrchestrator?: { tools?: Record<string, unknown> };
+      cipherOperator?: { tools?: Record<string, unknown> };
     };
     const configAgent = config.agent as AgentConfig | undefined;
 
-    if (isSisyphusEnabled && builtinAgents.sisyphus) {
-      (config as { default_agent?: string }).default_agent = "sisyphus";
+    if (isSisyphusEnabled && builtinAgents["cipher-operator"]) {
+      (config as { default_agent?: string }).default_agent = "cipher-operator";
 
       const agentConfig: Record<string, unknown> = {
-        sisyphus: builtinAgents.sisyphus,
+        "cipher-operator": builtinAgents["cipher-operator"],
       };
 
-      agentConfig["sisyphus-junior"] = createSisyphusJuniorAgentWithOverrides(
-        pluginConfig.agents?.["sisyphus-junior"],
-        config.model as string | undefined
+      agentConfig["cipher-runner"] = createSisyphusJuniorAgentWithOverrides(
+        pluginConfig.agents?.["cipher-runner"],
+        config.model as string | undefined,
       );
 
       if (builderEnabled) {
         const { name: _buildName, ...buildConfigWithoutName } =
           configAgent?.build ?? {};
         const migratedBuildConfig = migrateAgentConfig(
-          buildConfigWithoutName as Record<string, unknown>
+          buildConfigWithoutName as Record<string, unknown>,
         );
         const openCodeBuilderOverride =
           pluginConfig.agents?.["OpenCode-Builder"];
@@ -220,74 +232,85 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       }
 
       if (plannerEnabled) {
-        const { name: _planName, mode: _planMode, ...planConfigWithoutName } =
-          configAgent?.plan ?? {};
+        const {
+          name: _planName,
+          mode: _planMode,
+          ...planConfigWithoutName
+        } = configAgent?.plan ?? {};
         const migratedPlanConfig = migrateAgentConfig(
-          planConfigWithoutName as Record<string, unknown>
+          planConfigWithoutName as Record<string, unknown>,
         );
-        const prometheusOverride =
-          pluginConfig.agents?.["prometheus"] as
-            | (Record<string, unknown> & {
-                category?: string
-                model?: string
-                variant?: string
-                reasoningEffort?: string
-                textVerbosity?: string
-                thinking?: { type: string; budgetTokens?: number }
-                temperature?: number
-                top_p?: number
-                maxTokens?: number
-              })
-            | undefined;
+        const augurOverride = pluginConfig.agents?.["augur-planner"] as
+          | (Record<string, unknown> & {
+              category?: string;
+              model?: string;
+              variant?: string;
+              reasoningEffort?: string;
+              textVerbosity?: string;
+              thinking?: { type: string; budgetTokens?: number };
+              temperature?: number;
+              top_p?: number;
+              maxTokens?: number;
+            })
+          | undefined;
 
-        const categoryConfig = prometheusOverride?.category
+        const categoryConfig = augurOverride?.category
           ? resolveCategoryConfig(
-              prometheusOverride.category,
-              pluginConfig.categories
+              augurOverride.category,
+              pluginConfig.categories,
             )
           : undefined;
 
-        const prometheusRequirement = AGENT_MODEL_REQUIREMENTS["prometheus"];
+        const augurRequirement = AGENT_MODEL_REQUIREMENTS["augur-planner"];
         const connectedProviders = readConnectedProvidersCache();
         // IMPORTANT: Do NOT pass ctx.client to fetchAvailableModels during plugin initialization.
         // Calling client API (e.g., client.provider.list()) from config handler causes deadlock:
         // - Plugin init waits for server response
         // - Server waits for plugin init to complete before handling requests
         // Use cache-only mode instead. If cache is unavailable, fallback chain uses first model.
-        // See: https://github.com/code-yeongyu/ruach/issues/1301
+        // See: https://github.com/pontistudios/ghostwire/issues/1301
         const availableModels = await fetchAvailableModels(undefined, {
           connectedProviders: connectedProviders ?? undefined,
         });
 
         const modelResolution = resolveModelWithFallback({
           uiSelectedModel: currentModel,
-          userModel: prometheusOverride?.model ?? categoryConfig?.model,
-          fallbackChain: prometheusRequirement?.fallbackChain,
+          userModel: augurOverride?.model ?? categoryConfig?.model,
+          fallbackChain: augurRequirement?.fallbackChain,
           availableModels,
           systemDefaultModel: undefined,
         });
         const resolvedModel = modelResolution?.model;
         const resolvedVariant = modelResolution?.variant;
 
-        const variantToUse = prometheusOverride?.variant ?? resolvedVariant;
-        const reasoningEffortToUse = prometheusOverride?.reasoningEffort ?? categoryConfig?.reasoningEffort;
-        const textVerbosityToUse = prometheusOverride?.textVerbosity ?? categoryConfig?.textVerbosity;
-        const thinkingToUse = prometheusOverride?.thinking ?? categoryConfig?.thinking;
-        const temperatureToUse = prometheusOverride?.temperature ?? categoryConfig?.temperature;
-        const topPToUse = prometheusOverride?.top_p ?? categoryConfig?.top_p;
-        const maxTokensToUse = prometheusOverride?.maxTokens ?? categoryConfig?.maxTokens;
-        const prometheusBase = {
-          name: "prometheus",
+        const variantToUse = augurOverride?.variant ?? resolvedVariant;
+        const reasoningEffortToUse =
+          augurOverride?.reasoningEffort ?? categoryConfig?.reasoningEffort;
+        const textVerbosityToUse =
+          augurOverride?.textVerbosity ?? categoryConfig?.textVerbosity;
+        const thinkingToUse =
+          augurOverride?.thinking ?? categoryConfig?.thinking;
+        const temperatureToUse =
+          augurOverride?.temperature ?? categoryConfig?.temperature;
+        const topPToUse = augurOverride?.top_p ?? categoryConfig?.top_p;
+        const maxTokensToUse =
+          augurOverride?.maxTokens ?? categoryConfig?.maxTokens;
+        const augurBase = {
+          name: "augur-planner",
           ...(resolvedModel ? { model: resolvedModel } : {}),
           ...(variantToUse ? { variant: variantToUse } : {}),
           mode: "all" as const,
-          prompt: PROMETHEUS_SYSTEM_PROMPT,
-          permission: PROMETHEUS_PERMISSION,
-          description: `${configAgent?.plan?.description ?? "Plan agent"} (Prometheus - Ruach)`,
+          prompt: AUGUR_PLANNER_SYSTEM_PROMPT,
+          permission: AUGUR_PLANNER_PERMISSION,
+          description: `${configAgent?.plan?.description ?? "Plan agent"} (Augur Planner - Ghostwire)`,
           color: (configAgent?.plan?.color as string) ?? "#FF6347",
-          ...(temperatureToUse !== undefined ? { temperature: temperatureToUse } : {}),
+          ...(temperatureToUse !== undefined
+            ? { temperature: temperatureToUse }
+            : {}),
           ...(topPToUse !== undefined ? { top_p: topPToUse } : {}),
-          ...(maxTokensToUse !== undefined ? { maxTokens: maxTokensToUse } : {}),
+          ...(maxTokensToUse !== undefined
+            ? { maxTokens: maxTokensToUse }
+            : {}),
           ...(categoryConfig?.tools ? { tools: categoryConfig.tools } : {}),
           ...(thinkingToUse ? { thinking: thinkingToUse } : {}),
           ...(reasoningEffortToUse !== undefined
@@ -298,46 +321,51 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
             : {}),
         };
 
-        agentConfig["prometheus"] = prometheusOverride
-          ? { ...prometheusBase, ...prometheusOverride }
-          : prometheusBase;
+        agentConfig["augur-planner"] = augurOverride
+          ? { ...augurBase, ...augurOverride }
+          : augurBase;
       }
 
-    const filteredConfigAgents = configAgent
-      ? Object.fromEntries(
-          Object.entries(configAgent)
-            .filter(([key]) => {
-              if (key === "build") return false;
-              if (key === "plan" && replacePlan) return false;
-              // Filter out agents that ruach provides to prevent
-              // OpenCode defaults from overwriting user config in ruach.json
-              // See: https://github.com/code-yeongyu/ruach/issues/472
-              if (key in builtinAgents) return false;
-              return true;
-            })
-            .map(([key, value]) => [
-              key,
-              value ? migrateAgentConfig(value as Record<string, unknown>) : value,
-            ])
-        )
-      : {};
+      const filteredConfigAgents = configAgent
+        ? Object.fromEntries(
+            Object.entries(configAgent)
+              .filter(([key]) => {
+                if (key === "build") return false;
+                if (key === "plan" && replacePlan) return false;
+                // Filter out agents that ghostwire provides to prevent
+                // OpenCode defaults from overwriting user config in ghostwire.json
+                // See: https://github.com/pontistudios/ghostwire/issues/472
+                if (key in builtinAgents) return false;
+                return true;
+              })
+              .map(([key, value]) => [
+                key,
+                value
+                  ? migrateAgentConfig(value as Record<string, unknown>)
+                  : value,
+              ]),
+          )
+        : {};
 
       const migratedBuild = configAgent?.build
         ? migrateAgentConfig(configAgent.build as Record<string, unknown>)
         : {};
 
-      const planDemoteConfig = replacePlan && agentConfig["prometheus"]
-        ? { 
-            ...agentConfig["prometheus"],
-            name: "plan", 
-            mode: "subagent" as const 
-          }
-        : undefined;
+      const planDemoteConfig =
+        replacePlan && agentConfig["augur-planner"]
+          ? {
+              ...agentConfig["augur-planner"],
+              name: "plan",
+              mode: "subagent" as const,
+            }
+          : undefined;
 
       config.agent = {
         ...agentConfig,
         ...Object.fromEntries(
-          Object.entries(builtinAgents).filter(([k]) => k !== "sisyphus")
+          Object.entries(builtinAgents).filter(
+            ([k]) => k !== "cipher-operator",
+          ),
         ),
         ...userAgents,
         ...projectAgents,
@@ -367,29 +395,44 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     };
 
     type AgentWithPermission = { permission?: Record<string, unknown> };
-    
-    if (agentResult.librarian) {
-      const agent = agentResult.librarian as AgentWithPermission;
+
+    if (agentResult.archiveResearcher) {
+      const agent = agentResult.archiveResearcher as AgentWithPermission;
       agent.permission = { ...agent.permission, "grep_app_*": "allow" };
     }
-    if (agentResult["multimodal-looker"]) {
-      const agent = agentResult["multimodal-looker"] as AgentWithPermission;
+    if (agentResult["optic-analyst"]) {
+      const agent = agentResult["optic-analyst"] as AgentWithPermission;
       agent.permission = { ...agent.permission, task: "deny", look_at: "deny" };
     }
-    if (agentResult["atlas"]) {
-      const agent = agentResult["atlas"] as AgentWithPermission;
-      agent.permission = { ...agent.permission, task: "deny", call_omo_agent: "deny", delegate_task: "allow" };
+    if (agentResult["nexus-orchestrator"]) {
+      const agent = agentResult["nexus-orchestrator"] as AgentWithPermission;
+      agent.permission = {
+        ...agent.permission,
+        task: "deny",
+        call_grid_agent: "deny",
+        delegate_task: "allow",
+      };
     }
-    if (agentResult.sisyphus) {
-      const agent = agentResult.sisyphus as AgentWithPermission;
-      agent.permission = { ...agent.permission, call_omo_agent: "deny", delegate_task: "allow", question: "allow" };
+    if (agentResult["cipher-operator"]) {
+      const agent = agentResult["cipher-operator"] as AgentWithPermission;
+      agent.permission = {
+        ...agent.permission,
+        call_grid_agent: "deny",
+        delegate_task: "allow",
+        question: "allow",
+      };
     }
-    if (agentResult["prometheus"]) {
-      const agent = agentResult["prometheus"] as AgentWithPermission;
-      agent.permission = { ...agent.permission, call_omo_agent: "deny", delegate_task: "allow", question: "allow" };
+    if (agentResult["augur-planner"]) {
+      const agent = agentResult["augur-planner"] as AgentWithPermission;
+      agent.permission = {
+        ...agent.permission,
+        call_grid_agent: "deny",
+        delegate_task: "allow",
+        question: "allow",
+      };
     }
-    if (agentResult["sisyphus-junior"]) {
-      const agent = agentResult["sisyphus-junior"] as AgentWithPermission;
+    if (agentResult["cipher-runner"]) {
+      const agent = agentResult["cipher-runner"] as AgentWithPermission;
       agent.permission = { ...agent.permission, delegate_task: "allow" };
     }
 
@@ -400,9 +443,10 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       delegate_task: "deny",
     };
 
-    const mcpResult = (pluginConfig.claude_code?.mcp ?? true)
-      ? await loadMcpConfigs()
-      : { servers: {} };
+    const mcpResult =
+      (pluginConfig.claude_code?.mcp ?? true)
+        ? await loadMcpConfigs()
+        : { servers: {} };
 
     config.mcp = {
       ...createBuiltinMcps(pluginConfig.disabled_mcps),

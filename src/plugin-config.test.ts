@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { mergeConfigs } from "./plugin-config";
-import type { RuachConfig } from "./config";
+import type { GhostwireConfig } from "./config";
 
 describe("mergeConfigs", () => {
   describe("categories merging", () => {
@@ -19,7 +19,7 @@ describe("mergeConfigs", () => {
             model: "anthropic/claude-haiku-4-5",
           },
         },
-      } as RuachConfig;
+      } as GhostwireConfig;
 
       const override = {
         categories: {
@@ -30,7 +30,7 @@ describe("mergeConfigs", () => {
             model: "google/gemini-3-pro",
           },
         },
-      } as unknown as RuachConfig;
+      } as unknown as GhostwireConfig;
 
       const result = mergeConfigs(base, override);
 
@@ -39,13 +39,15 @@ describe("mergeConfigs", () => {
       // #then general.temperature should be overridden
       expect(result.categories?.general?.temperature).toBe(0.3);
       // #then quick should be preserved from base
-      expect(result.categories?.quick?.model).toBe("anthropic/claude-haiku-4-5");
+      expect(result.categories?.quick?.model).toBe(
+        "anthropic/claude-haiku-4-5",
+      );
       // #then visual should be added from override
       expect(result.categories?.visual?.model).toBe("google/gemini-3-pro");
     });
 
     it("should preserve base categories when override has no categories", () => {
-      const base: RuachConfig = {
+      const base: GhostwireConfig = {
         categories: {
           general: {
             model: "openai/gpt-5.2",
@@ -53,7 +55,7 @@ describe("mergeConfigs", () => {
         },
       };
 
-      const override: RuachConfig = {};
+      const override: GhostwireConfig = {};
 
       const result = mergeConfigs(base, override);
 
@@ -61,9 +63,9 @@ describe("mergeConfigs", () => {
     });
 
     it("should use override categories when base has no categories", () => {
-      const base: RuachConfig = {};
+      const base: GhostwireConfig = {};
 
-      const override: RuachConfig = {
+      const override: GhostwireConfig = {
         categories: {
           general: {
             model: "openai/gpt-5.2",
@@ -79,40 +81,42 @@ describe("mergeConfigs", () => {
 
   describe("existing behavior preservation", () => {
     it("should deep merge agents", () => {
-      const base: RuachConfig = {
+      const base: GhostwireConfig = {
         agents: {
-          oracle: { model: "openai/gpt-5.2" },
+          "seer-advisor": { model: "openai/gpt-5.2" },
         },
       };
 
-      const override: RuachConfig = {
+      const override: GhostwireConfig = {
         agents: {
-          oracle: { temperature: 0.5 },
-          explore: { model: "anthropic/claude-haiku-4-5" },
+          "seer-advisor": { temperature: 0.5 },
+          "scout-recon": { model: "anthropic/claude-haiku-4-5" },
         },
       };
 
       const result = mergeConfigs(base, override);
 
-      expect(result.agents?.oracle?.model).toBe("openai/gpt-5.2");
-      expect(result.agents?.oracle?.temperature).toBe(0.5);
-      expect(result.agents?.explore?.model).toBe("anthropic/claude-haiku-4-5");
+      expect(result.agents?.["seer-advisor"]?.model).toBe("openai/gpt-5.2");
+      expect(result.agents?.["seer-advisor"]?.temperature).toBe(0.5);
+      expect(result.agents?.["scout-recon"]?.model).toBe(
+        "anthropic/claude-haiku-4-5",
+      );
     });
 
     it("should merge disabled arrays without duplicates", () => {
-      const base: RuachConfig = {
-        disabled_hooks: ["comment-checker", "think-mode"],
+      const base: GhostwireConfig = {
+        disabled_hooks: ["grid-comment-checker", "grid-think-mode"],
       };
 
-      const override: RuachConfig = {
-        disabled_hooks: ["think-mode", "session-recovery"],
+      const override: GhostwireConfig = {
+        disabled_hooks: ["grid-think-mode", "grid-session-recovery"],
       };
 
       const result = mergeConfigs(base, override);
 
-      expect(result.disabled_hooks).toContain("comment-checker");
-      expect(result.disabled_hooks).toContain("think-mode");
-      expect(result.disabled_hooks).toContain("session-recovery");
+      expect(result.disabled_hooks).toContain("grid-comment-checker");
+      expect(result.disabled_hooks).toContain("grid-think-mode");
+      expect(result.disabled_hooks).toContain("grid-session-recovery");
       expect(result.disabled_hooks?.length).toBe(3);
     });
   });

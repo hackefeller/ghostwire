@@ -1,7 +1,7 @@
 import { describe, test, expect } from "bun:test"
 import { isPrereleaseVersion, isDistTag, isPrereleaseOrDistTag, extractChannel } from "./index"
 
-describe("auto-update-checker", () => {
+describe("grid-auto-update-checker", () => {
   describe("isPrereleaseVersion", () => {
     test("returns true for beta versions", () => {
       // #given a beta version

@@ -125,7 +125,7 @@ export function createCodeSimplicityReviewerAgent(model: string): AgentConfig {
   }
 }
 
-// Agent metadata for Sisyphus prompt building and task delegation
+// Agent metadata for Cipher Operator prompt building and task delegation
 export const CODE_SIMPLICITY_REVIEWER_METADATA: AgentPromptMetadata = {
   category: "review",
   cost: "MODERATE",

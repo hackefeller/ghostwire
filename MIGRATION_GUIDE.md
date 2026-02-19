@@ -1,12 +1,12 @@
-# Migration Guide: ruach v3.2.0 - Compound Engineering Integration
+# Migration Guide: ghostwire v3.2.0 - Compound Engineering Integration
 
-**Upgrading from compound-engineering plugin to unified ruach**
+**Upgrading from compound-engineering plugin to unified ghostwire**
 
 ---
 
 ## Overview
 
-ruach v3.2.0 integrates the compound-engineering plugin directly into the core, making all 125 components (28 agents, 24 commands, 73 skills) available natively with the `compound:` namespace prefix.
+ghostwire v3.2.0 integrates the compound-engineering plugin directly into the core, making all 125 components (28 agents, 24 commands, 73 skills) available natively with the `grid:` namespace prefix.
 
 **Key Points:**
 - ✅ **Zero Breaking Changes** - Full backward compatibility
@@ -18,15 +18,15 @@ ruach v3.2.0 integrates the compound-engineering plugin directly into the core, 
 
 ## Upgrade Steps
 
-### Step 1: Update ruach
+### Step 1: Update ghostwire
 
 ```bash
 # Using your package manager
-npm install ruach@3.2.0
+npm install ghostwire@3.2.0
 # or
-yarn upgrade ruach@3.2.0
+yarn upgrade ghostwire@3.2.0
 # or
-bun upgrade ruach@3.2.0
+bun upgrade ghostwire@3.2.0
 ```
 
 ### Step 2: Verify Installation
@@ -49,7 +49,7 @@ This will show:
 
 ### Step 4: Done!
 
-Your configuration has been automatically migrated. Continue using ruach as before.
+Your configuration has been automatically migrated. Continue using ghostwire as before.
 
 ---
 
@@ -60,9 +60,9 @@ Your configuration has been automatically migrated. Continue using ruach as befo
 When you upgrade, the migration system automatically:
 
 1. **Detects** old compound-engineering plugin imports
-2. **Remaps** agent names to new `compound:` prefix
-3. **Remaps** command names to new `compound:` prefix
-4. **Remaps** skill names to new `compound:` prefix
+2. **Remaps** agent names to new `grid:` prefix
+3. **Remaps** command names to new `grid:` prefix
+4. **Remaps** skill names to new `grid:` prefix
 5. **Upgrades** feature structure to unified format
 6. **Creates** automatic backups of original config
 7. **Logs** detailed migration results
@@ -84,11 +84,11 @@ If you previously had compound-engineering plugin configured:
 // AFTER (automatically migrated to integrated)
 {
   agents: {
-    "compound:kieran-rails-reviewer": {
+    "grid:kieran-rails-reviewer": {
       model: "anthropic/claude-opus-4-5"
     }
   }
-  // Note: Now using native ruach components
+  // Note: Now using native ghostwire components
 }
 ```
 
@@ -112,37 +112,37 @@ If you prefer to manually update your configuration:
 
 ```javascript
 // Old names → New names
-"kieran-rails-reviewer"        → "compound:kieran-rails-reviewer"
-"kieran-python-reviewer"       → "compound:kieran-python-reviewer"
-"kieran-typescript-reviewer"   → "compound:kieran-typescript-reviewer"
-"dhh-rails-reviewer"           → "compound:dhh-rails-reviewer"
-"code-simplicity-reviewer"     → "compound:code-simplicity-reviewer"
-"framework-docs-researcher"    → "compound:framework-docs-researcher"
-"learnings-researcher"         → "compound:learnings-researcher"
-"best-practices-researcher"    → "compound:best-practices-researcher"
-"git-history-analyzer"         → "compound:git-history-analyzer"
-"figma-design-sync"            → "compound:figma-design-sync"
-"design-implementation-reviewer" → "compound:design-implementation-reviewer"
-"design-iterator"              → "compound:design-iterator"
-"frontend-design-agent"        → "compound:frontend-design-agent"
-"spec-flow-analyzer"           → "compound:spec-flow-analyzer"
-"agent-native-architecture"    → "compound:agent-native-architecture"
-"deployment-verification-agent" → "compound:deployment-verification-agent"
+"kieran-rails-reviewer"        → "grid:kieran-rails-reviewer"
+"kieran-python-reviewer"       → "grid:kieran-python-reviewer"
+"kieran-typescript-reviewer"   → "grid:kieran-typescript-reviewer"
+"dhh-rails-reviewer"           → "grid:dhh-rails-reviewer"
+"code-simplicity-reviewer"     → "grid:code-simplicity-reviewer"
+"framework-docs-researcher"    → "grid:framework-docs-researcher"
+"learnings-researcher"         → "grid:learnings-researcher"
+"best-practices-researcher"    → "grid:best-practices-researcher"
+"git-history-analyzer"         → "grid:git-history-analyzer"
+"figma-design-sync"            → "grid:figma-design-sync"
+"design-implementation-reviewer" → "grid:design-implementation-reviewer"
+"design-iterator"              → "grid:design-iterator"
+"frontend-design-agent"        → "grid:frontend-design-agent"
+"spec-flow-analyzer"           → "grid:spec-flow-analyzer"
+"agent-native-architecture"    → "grid:agent-native-architecture"
+"deployment-verification-agent" → "grid:deployment-verification-agent"
 // ... and 12 documentation agents
 ```
 
 ### Command Name Changes
 
-All commands follow the pattern: `compound:{category}:{action}`
+All commands follow the pattern: `grid:{category}:{action}`
 
 ```javascript
-// All commands are now native to ruach
-// No imports needed - use directly with compound: prefix
+// All commands are now native to ghostwire
+// No imports needed - use directly with grid: prefix
 
 // Available commands:
-// compound:workflow:plan
-// compound:code:refactor
-// compound:git:smart-commit
+// grid:workflow:plan
+// grid:code:refactor
+// grid:git:smart-commit
 // ... and 21 more
 ```
 
@@ -150,9 +150,9 @@ All commands follow the pattern: `compound:{category}:{action}`
 
 ```javascript
 // Old
-"typescript-development"  → "compound:typescript-development"
-"rails-development"       → "compound:ruby-development"
-"react-development"       → "compound:react-development"
+"typescript-development"  → "grid:typescript-development"
+"rails-development"       → "grid:ruby-development"
+"react-development"       → "grid:react-development"
 // ... and 70 more skills
 ```
 
@@ -172,7 +172,7 @@ After upgrading, minimal configuration enables all compound components:
   
   agents: {
     // You can still override specific agents if needed
-    "compound:kieran-rails-reviewer": {
+    "grid:kieran-rails-reviewer": {
       model: "anthropic/claude-opus-4-5",
       temperature: 0.1
     }
@@ -184,21 +184,21 @@ After upgrading, minimal configuration enables all compound components:
 
 ```javascript
 {
-  // Core ruach agents
+  // Core ghostwire agents
   agents: {
-    sisyphus: {
+    cipher-operator: {
       model: "anthropic/claude-opus-4-5"
     },
     
     // Compound engineering agents
-    "compound:kieran-rails-reviewer": {
+    "grid:kieran-rails-reviewer": {
       model: "anthropic/claude-opus-4-5",
       temperature: 0.1
     },
-    "compound:figma-design-sync": {
+    "grid:figma-design-sync": {
       model: "anthropic/claude-opus-4-5"
     },
-    "compound:deployment-verification-agent": {
+    "grid:deployment-verification-agent": {
       model: "anthropic/claude-opus-4-5"
     }
   },
@@ -227,16 +227,16 @@ cp ~/.config/opencode/config.jsonc.backup.2026-02-07T12:34:56Z \
    ~/.config/opencode/config.jsonc
 ```
 
-### Option 2: Downgrade ruach
+### Option 2: Downgrade ghostwire
 
 ```bash
-npm install ruach@3.1.10
+npm install ghostwire@3.1.10
 # or your previous version
 ```
 
 ### Option 3: Manually Edit Configuration
 
-Revert agent/command/skill names to their old format (remove `compound:` prefix).
+Revert agent/command/skill names to their old format (remove `grid:` prefix).
 
 ---
 
@@ -265,8 +265,8 @@ opencode start
 # Check if components are registered
 opencode agent list --verbose
 
-# If using old names, update to compound: prefix
-# Example: change "kieran-rails-reviewer" to "compound:kieran-rails-reviewer"
+# If using old names, update to grid: prefix
+# Example: change "kieran-rails-reviewer" to "grid:kieran-rails-reviewer"
 ```
 
 ### Issue: Configuration conflicts
@@ -285,10 +285,10 @@ opencode agent list --verbose
 **Solution**:
 ```bash
 # View agent details
-opencode agent describe compound:kieran-rails-reviewer
+opencode agent describe grid:kieran-rails-reviewer
 
 # See full documentation
-# https://github.com/code-yeongyu/ruach/docs
+# https://github.com/pontistudios/ghostwire/docs
 ```
 
 ---
@@ -299,46 +299,46 @@ All 125 components are now available:
 
 ### Agents (28)
 ```
-✅ compound:kieran-rails-reviewer
-✅ compound:kieran-python-reviewer
-✅ compound:kieran-typescript-reviewer
-✅ compound:dhh-rails-reviewer
-✅ compound:code-simplicity-reviewer
-✅ compound:framework-docs-researcher
-✅ compound:learnings-researcher
-✅ compound:best-practices-researcher
-✅ compound:git-history-analyzer
-✅ compound:figma-design-sync
-✅ compound:design-implementation-reviewer
-✅ compound:design-iterator
-✅ compound:frontend-design-agent
-✅ compound:spec-flow-analyzer
-✅ compound:agent-native-architecture
-✅ compound:deployment-verification-agent
-✅ compound:ankane-readme-writer
+✅ grid:kieran-rails-reviewer
+✅ grid:kieran-python-reviewer
+✅ grid:kieran-typescript-reviewer
+✅ grid:dhh-rails-reviewer
+✅ grid:code-simplicity-reviewer
+✅ grid:framework-docs-researcher
+✅ grid:learnings-researcher
+✅ grid:best-practices-researcher
+✅ grid:git-history-analyzer
+✅ grid:figma-design-sync
+✅ grid:design-implementation-reviewer
+✅ grid:design-iterator
+✅ grid:frontend-design-agent
+✅ grid:spec-flow-analyzer
+✅ grid:agent-native-architecture
+✅ grid:deployment-verification-agent
+✅ grid:ankane-readme-writer
 ... and 11 more documentation agents
 ```
 
 ### Commands (24)
-All commands are namespaced as `compound:{category}:{action}`:
+All commands are namespaced as `grid:{category}:{action}`:
 ```
-✅ compound:workflow:*      (plan, create, status, complete)
-✅ compound:code:*          (refactor, review, optimize, format)
-✅ compound:git:*           (smart-commit, branch, merge, cleanup)
-✅ compound:project:*       (init, build, deploy, test)
-✅ compound:util:*          (clean, backup, restore, doctor)
-✅ compound:docs:*          (deploy-docs, release-docs, feature-video, test-browser)
+✅ grid:workflow:*      (plan, create, status, complete)
+✅ grid:code:*          (refactor, review, optimize, format)
+✅ grid:git:*           (smart-commit, branch, merge, cleanup)
+✅ grid:project:*       (init, build, deploy, test)
+✅ grid:util:*          (clean, backup, restore, doctor)
+✅ grid:docs:*          (deploy-docs, release-docs, feature-video, test-browser)
 ```
 
 ### Skills (73)
 ```
-✅ compound:typescript-development
-✅ compound:python-development
-✅ compound:ruby-development
-✅ compound:react-development
-✅ compound:figma-integration
-✅ compound:docker-containerization
-✅ compound:kubernetes-deployment
+✅ grid:typescript-development
+✅ grid:python-development
+✅ grid:ruby-development
+✅ grid:react-development
+✅ grid:figma-integration
+✅ grid:docker-containerization
+✅ grid:kubernetes-deployment
 ... and 66 more skills across 5 categories
 ```
 
@@ -352,7 +352,7 @@ Once migrated, you can use:
 ```javascript
 // Use for complex code review
 agents: {
-  "compound:kieran-rails-reviewer": { ... }
+  "grid:kieran-rails-reviewer": { ... }
 }
 ```
 
@@ -360,7 +360,7 @@ agents: {
 ```javascript
 // Use for workflow automation
 commands: {
-  "compound:workflow:plan": { ... }
+  "grid:workflow:plan": { ... }
 }
 ```
 
@@ -371,8 +371,8 @@ commands: {
   agents: {
     myAgent: {
       skills: [
-        "compound:kubernetes-deployment",
-        "compound:api-design"
+        "grid:kubernetes-deployment",
+        "grid:api-design"
       ]
     }
   }
@@ -385,7 +385,7 @@ commands: {
 
 ### Q: Do I need to uninstall the old compound-engineering plugin?
 
-**A**: No, it can remain installed but will not be used. The integrated version in ruach v3.2.0 takes precedence.
+**A**: No, it can remain installed but will not be used. The integrated version in ghostwire v3.2.0 takes precedence.
 
 ### Q: Will my old configuration still work?
 
@@ -393,7 +393,7 @@ commands: {
 
 ### Q: Can I use both old and new names?
 
-**A**: The migration system automatically remaps old names to new ones, so you should use the new `compound:` prefix format.
+**A**: The migration system automatically remaps old names to new ones, so you should use the new `grid:` prefix format.
 
 ### Q: How do I disable compound components?
 
@@ -401,7 +401,7 @@ commands: {
 ```javascript
 {
   agents: {
-    "compound:kieran-rails-reviewer": null  // Disabled
+    "grid:kieran-rails-reviewer": null  // Disabled
   }
 }
 ```
@@ -412,7 +412,7 @@ commands: {
 ```javascript
 {
   agents: {
-    "compound:kieran-rails-reviewer": {
+    "grid:kieran-rails-reviewer": {
       model: "your-preferred-model",
       temperature: 0.2,  // Increase creativity
       prompt_append: "Additional context..."
@@ -430,7 +430,7 @@ cp ~/.config/opencode/config.jsonc.backup.* ~/.config/opencode/config.jsonc
 
 ### Q: Where do I report issues?
 
-**A**: Issues and feature requests: https://github.com/code-yeongyu/ruach/issues
+**A**: Issues and feature requests: https://github.com/pontistudios/ghostwire/issues
 
 ### Q: Is this a beta?
 
@@ -446,9 +446,9 @@ cp ~/.config/opencode/config.jsonc.backup.* ~/.config/opencode/config.jsonc
 - Multiple imports and configurations
 
 **After Migration:**
-- Integrated into ruach
+- Integrated into ghostwire
 - 125 components available natively
-- Simplified configuration with `compound:` namespace
+- Simplified configuration with `grid:` namespace
 - No action required - automatic migration
 
 **Result:**
@@ -474,8 +474,8 @@ For release notes, see: `RELEASE_NOTES_v3.2.0.md`
 
 ---
 
-**Questions? See the ruach documentation:**
+**Questions? See the ghostwire documentation:**
 - https://opencode.ai/docs
-- https://github.com/code-yeongyu/ruach
+- https://github.com/pontistudios/ghostwire
 
 **Happy coding with 125 new superpowers! 🚀**

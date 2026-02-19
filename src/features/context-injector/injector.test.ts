@@ -21,7 +21,7 @@ describe("createContextInjectorMessagesTransformHook", () => {
       sessionID,
       role,
       time: { created: Date.now() },
-      agent: "sisyphus",
+      agent: "cipher-operator",
       model: { providerID: "test", modelID: "test" },
       path: { cwd: "/", root: "/" },
     },
@@ -42,7 +42,7 @@ describe("createContextInjectorMessagesTransformHook", () => {
     const sessionID = "ses_transform1"
     collector.register(sessionID, {
       id: "ulw",
-      source: "keyword-detector",
+      source: "grid-keyword-detector",
       content: "Ultrawork context",
     })
     const messages = [
@@ -85,7 +85,7 @@ describe("createContextInjectorMessagesTransformHook", () => {
     const sessionID = "ses_transform3"
     collector.register(sessionID, {
       id: "ctx",
-      source: "keyword-detector",
+      source: "grid-keyword-detector",
       content: "Context",
     })
     const messages = [createMockMessage("assistant", "Response", sessionID)]
@@ -106,7 +106,7 @@ describe("createContextInjectorMessagesTransformHook", () => {
     const sessionID = "ses_transform4"
     collector.register(sessionID, {
       id: "ctx",
-      source: "keyword-detector",
+      source: "grid-keyword-detector",
       content: "Context",
     })
     const messages = [createMockMessage("user", "Message", sessionID)]

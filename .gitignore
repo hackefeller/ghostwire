@@ -6,8 +6,8 @@ node_modules/
 dist/
 
 # Platform binaries (built, not committed)
-packages/*/bin/ruach
-packages/*/bin/ruach.exe
+packages/*/bin/ghostwire
+packages/*/bin/ghostwire.exe
 
 # IDE
 .idea/

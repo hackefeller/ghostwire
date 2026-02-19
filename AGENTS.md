@@ -23,7 +23,7 @@ OpenCode plugin: multi-model agent orchestration (Claude Opus 4.5, GPT-5.2, Gemi
 ## STRUCTURE
 
 ```
-ruach/
+ghostwire/
 ├── src/
 │   ├── agents/        # 10 AI agents - see src/agents/AGENTS.md
 │   ├── hooks/         # 32 lifecycle hooks - see src/hooks/AGENTS.md
@@ -51,7 +51,7 @@ ruach/
 | Add command | `src/features/builtin-commands/` | Add template + register in commands.ts |
 | Config schema | `src/config/schema.ts` | Zod schema, run `bun run build:schema` |
 | Background agents | `src/features/background-agent/` | manager.ts (1377 lines) |
-| Orchestrator | `src/hooks/atlas/` | Main orchestration hook (752 lines) |
+| Orchestrator | `src/hooks/nexus-orchestrator/` | Main orchestration hook (752 lines) |
 
 ## TDD (Test-Driven Development)
 
@@ -98,13 +98,13 @@ ruach/
 
 | Agent | Model | Purpose |
 |-------|-------|---------|
-| Sisyphus | anthropic/claude-opus-4-5 | Primary orchestrator (fallback: kimi-k2.5 → glm-4.7 → gpt-5.2-codex → gemini-3-pro) |
-| Atlas | anthropic/claude-sonnet-4-5 | Master orchestrator (fallback: kimi-k2.5 → gpt-5.2) |
-| oracle | openai/gpt-5.2 | Consultation, debugging |
-| librarian | zai-coding-plan/glm-4.7 | Docs, GitHub search (fallback: glm-4.7-free) |
-| explore | anthropic/claude-haiku-4-5 | Fast codebase grep (fallback: gpt-5-mini → gpt-5-nano) |
-| multimodal-looker | google/gemini-3-flash | PDF/image analysis |
-| Prometheus | anthropic/claude-opus-4-5 | Strategic planning (fallback: kimi-k2.5 → gpt-5.2) |
+| Cipher Operator | anthropic/claude-opus-4-5 | Primary orchestrator (fallback: kimi-k2.5 → glm-4.7 → gpt-5.2-codex → gemini-3-pro) |
+| Nexus Orchestrator | anthropic/claude-sonnet-4-5 | Master orchestrator (fallback: kimi-k2.5 → gpt-5.2) |
+| seer-advisor | openai/gpt-5.2 | Consultation, debugging |
+| archive-researcher | zai-coding-plan/glm-4.7 | Docs, GitHub search (fallback: glm-4.7-free) |
+| scout-recon | anthropic/claude-haiku-4-5 | Fast codebase grep (fallback: gpt-5-mini → gpt-5-nano) |
+| optic-analyst | google/gemini-3-flash | PDF/image analysis |
+| Augur Planner | anthropic/claude-opus-4-5 | Strategic planning (fallback: kimi-k2.5 → gpt-5.2) |
 
 ## COMMANDS
 
@@ -128,9 +128,9 @@ bun test               # 100 test files
 |------|-------|-------------|
 | `src/features/builtin-skills/skills.ts` | 1729 | Skill definitions |
 | `src/features/background-agent/manager.ts` | 1377 | Task lifecycle, concurrency |
-| `src/agents/prometheus-prompt.ts` | 1196 | Planning agent |
+| `src/agents/augur-planner-prompt.ts` | 1196 | Planning agent |
 | `src/tools/delegate-task/tools.ts` | 1070 | Category-based delegation |
-| `src/hooks/atlas/index.ts` | 752 | Orchestrator hook |
+| `src/hooks/nexus-orchestrator/index.ts` | 752 | Orchestrator hook |
 | `src/cli/config-manager.ts` | 664 | JSONC config parsing |
 | `src/index.ts` | 672 | Main plugin entry |
 | `src/features/builtin-commands/templates/refactor.ts` | 619 | Refactor command template |
@@ -151,5 +151,5 @@ Three-tier system:
 ## NOTES
 
 - **OpenCode**: Requires >= 1.0.150
-- **Flaky tests**: ralph-loop (CI timeout), session-state (parallel pollution)
-- **Trusted deps**: @ast-grep/cli, @ast-grep/napi, @code-yeongyu/comment-checker
+- **Flaky tests**: overclock-loop (CI timeout), session-state (parallel pollution)
+- **Trusted deps**: @ast-grep/cli, @ast-grep/napi, @pontistudios/grid-comment-checker

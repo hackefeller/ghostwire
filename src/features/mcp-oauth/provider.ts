@@ -222,7 +222,7 @@ export class McpOAuthProvider {
     const clientInfo = await getOrRegisterClient({
       registrationEndpoint: metadata.registrationEndpoint,
       serverIdentifier: this.serverUrl,
-      clientName: "ruach",
+      clientName: "ghostwire",
       redirectUris: [this.redirectUrl()],
       tokenEndpointAuthMethod: "none",
       clientId: this.configClientId,

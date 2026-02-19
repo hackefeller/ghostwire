@@ -1,6 +1,6 @@
 # Contributor License Agreement
 
-Thank you for your interest in contributing to ruach ("Project"), owned by YeonGyu Kim ("Owner").
+Thank you for your interest in contributing to ghostwire ("Project"), owned by YeonGyu Kim ("Owner").
 
 By signing this Contributor License Agreement ("Agreement"), you agree to the following terms:
 

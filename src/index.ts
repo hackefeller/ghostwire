@@ -12,7 +12,6 @@ import {
   createThinkModeHook,
   createClaudeCodeHooksHook,
   createAnthropicContextWindowLimitRecoveryHook,
-
   createCompactionContextInjector,
   createRulesInjectorHook,
   createBackgroundNotificationHook,
@@ -21,7 +20,6 @@ import {
   createAgentUsageReminderHook,
   createNonInteractiveEnvHook,
   createInteractiveBashSessionHook,
-
   createThinkingBlockValidatorHook,
   createCategorySkillReminderHook,
   createRalphLoopHook,
@@ -31,7 +29,7 @@ import {
   createTaskResumeInfoHook,
   createStartWorkHook,
   createAtlasHook,
-  createPrometheusMdOnlyHook,
+  createAugurPlannerMdOnlyHook,
   createSisyphusJuniorNotepadHook,
   createQuestionLabelTruncatorHook,
   createSubagentQuestionBlockerHook,
@@ -41,7 +39,11 @@ import {
   contextCollector,
   createContextInjectorMessagesTransformHook,
 } from "./features/context-injector";
-import { applyAgentVariant, resolveAgentVariant, resolveVariantForModel } from "./shared/agent-variant";
+import {
+  applyAgentVariant,
+  resolveAgentVariant,
+  resolveVariantForModel,
+} from "./shared/agent-variant";
 import { createFirstMessageVariantGate } from "./shared/first-message-variant";
 import {
   discoverUserClaudeSkills,
@@ -80,13 +82,24 @@ import { initTaskToastManager } from "./features/task-toast-manager";
 import { TmuxSessionManager } from "./features/tmux-subagent";
 import { clearBoulderState } from "./features/boulder-state";
 import { type HookName } from "./config";
-import { log, detectExternalNotificationPlugin, getNotificationConflictWarning, resetMessageCursor, includesCaseInsensitive, hasConnectedProvidersCache, getOpenCodeVersion, isOpenCodeVersionAtLeast, OPENCODE_NATIVE_AGENTS_INJECTION_VERSION, runHookWithTelemetry } from "./shared";
+import {
+  log,
+  detectExternalNotificationPlugin,
+  getNotificationConflictWarning,
+  resetMessageCursor,
+  includesCaseInsensitive,
+  hasConnectedProvidersCache,
+  getOpenCodeVersion,
+  isOpenCodeVersionAtLeast,
+  OPENCODE_NATIVE_AGENTS_INJECTION_VERSION,
+  runHookWithTelemetry,
+} from "./shared";
 import { loadPluginConfig } from "./plugin-config";
 import { createModelCacheState, getModelLimit } from "./plugin-state";
 import { createConfigHandler } from "./plugin-handlers";
 
-const RuachPlugin: Plugin = async (ctx) => {
-  log("[RuachPlugin] ENTRY - plugin loading", { directory: ctx.directory })
+const GhostwirePlugin: Plugin = async (ctx) => {
+  log("[GhostwirePlugin] ENTRY - plugin loading", { directory: ctx.directory });
   // Start background tmux check immediately
   startTmuxCheck();
 
@@ -96,156 +109,179 @@ const RuachPlugin: Plugin = async (ctx) => {
 
   const tmuxConfig = {
     enabled: pluginConfig.tmux?.enabled ?? false,
-    layout: pluginConfig.tmux?.layout ?? 'main-vertical',
+    layout: pluginConfig.tmux?.layout ?? "main-vertical",
     main_pane_size: pluginConfig.tmux?.main_pane_size ?? 60,
     main_pane_min_width: pluginConfig.tmux?.main_pane_min_width ?? 120,
     agent_pane_min_width: pluginConfig.tmux?.agent_pane_min_width ?? 40,
   } as const;
   const isHookEnabled = (hookName: HookName) => !disabledHooks.has(hookName);
   const runHook = <T>(
-    phase: "chat.message" | "tool.execute.before" | "tool.execute.after" | "event" | "experimental.chat.messages.transform",
+    phase:
+      | "chat.message"
+      | "tool.execute.before"
+      | "tool.execute.after"
+      | "event"
+      | "experimental.chat.messages.transform",
     hookName: string,
-    invoke: () => Promise<T> | T
+    invoke: () => Promise<T> | T,
   ) =>
     runHookWithTelemetry({
       phase,
       hookName,
       invoke,
-    })
+    });
 
   const modelCacheState = createModelCacheState();
 
-  const contextWindowMonitor = isHookEnabled("context-window-monitor")
+  const contextWindowMonitor = isHookEnabled("grid-context-window-monitor")
     ? createContextWindowMonitorHook(ctx)
     : null;
-  const sessionRecovery = isHookEnabled("session-recovery")
-    ? createSessionRecoveryHook(ctx, { experimental: pluginConfig.experimental })
+  const sessionRecovery = isHookEnabled("grid-session-recovery")
+    ? createSessionRecoveryHook(ctx, {
+        experimental: pluginConfig.experimental,
+      })
     : null;
-  
-  // Check for conflicting notification plugins before creating session-notification
+
+  // Check for conflicting notification plugins before creating grid-session-notification
   let sessionNotification = null;
-  if (isHookEnabled("session-notification")) {
+  if (isHookEnabled("grid-session-notification")) {
     const forceEnable = pluginConfig.notification?.force_enable ?? false;
     const externalNotifier = detectExternalNotificationPlugin(ctx.directory);
-    
+
     if (externalNotifier.detected && !forceEnable) {
       // External notification plugin detected - skip our notification to avoid conflicts
       log(getNotificationConflictWarning(externalNotifier.pluginName!));
-      log("session-notification disabled due to external notifier conflict", {
-        detected: externalNotifier.pluginName,
-        allPlugins: externalNotifier.allPlugins,
-      });
+      log(
+        "grid-session-notification disabled due to external notifier conflict",
+        {
+          detected: externalNotifier.pluginName,
+          allPlugins: externalNotifier.allPlugins,
+        },
+      );
     } else {
       sessionNotification = createSessionNotification(ctx);
     }
   }
 
-  const commentChecker = isHookEnabled("comment-checker")
+  const commentChecker = isHookEnabled("grid-comment-checker")
     ? createCommentCheckerHooks(pluginConfig.comment_checker)
     : null;
-  const toolOutputTruncator = isHookEnabled("tool-output-truncator")
+  const toolOutputTruncator = isHookEnabled("grid-tool-output-truncator")
     ? createToolOutputTruncatorHook(ctx, {
         experimental: pluginConfig.experimental,
       })
     : null;
   // Check for native OpenCode AGENTS.md injection support before creating hook
   let directoryAgentsInjector = null;
-  if (isHookEnabled("directory-agents-injector")) {
+  if (isHookEnabled("grid-directory-agents-injector")) {
     const currentVersion = getOpenCodeVersion();
-    const hasNativeSupport = currentVersion !== null &&
+    const hasNativeSupport =
+      currentVersion !== null &&
       isOpenCodeVersionAtLeast(OPENCODE_NATIVE_AGENTS_INJECTION_VERSION);
 
     if (hasNativeSupport) {
-      log("directory-agents-injector auto-disabled due to native OpenCode support", {
-        currentVersion,
-        nativeVersion: OPENCODE_NATIVE_AGENTS_INJECTION_VERSION,
-      });
+      log(
+        "grid-directory-agents-injector auto-disabled due to native OpenCode support",
+        {
+          currentVersion,
+          nativeVersion: OPENCODE_NATIVE_AGENTS_INJECTION_VERSION,
+        },
+      );
     } else {
       directoryAgentsInjector = createDirectoryAgentsInjectorHook(ctx);
     }
   }
-  const directoryReadmeInjector = isHookEnabled("directory-readme-injector")
+  const directoryReadmeInjector = isHookEnabled(
+    "grid-directory-readme-injector",
+  )
     ? createDirectoryReadmeInjectorHook(ctx)
     : null;
-  const emptyTaskResponseDetector = isHookEnabled("empty-task-response-detector")
+  const emptyTaskResponseDetector = isHookEnabled(
+    "grid-empty-task-response-detector",
+  )
     ? createEmptyTaskResponseDetectorHook(ctx)
     : null;
-  const thinkMode = isHookEnabled("think-mode") ? createThinkModeHook() : null;
+  const thinkMode = isHookEnabled("grid-think-mode")
+    ? createThinkModeHook()
+    : null;
   const claudeCodeHooks = createClaudeCodeHooksHook(
     ctx,
     {
-      disabledHooks: (pluginConfig.claude_code?.hooks ?? true) ? undefined : true,
-      keywordDetectorDisabled: !isHookEnabled("keyword-detector"),
+      disabledHooks:
+        (pluginConfig.claude_code?.hooks ?? true) ? undefined : true,
+      keywordDetectorDisabled: !isHookEnabled("grid-keyword-detector"),
     },
-    contextCollector
+    contextCollector,
   );
   const anthropicContextWindowLimitRecovery = isHookEnabled(
-    "anthropic-context-window-limit-recovery"
+    "grid-anthropic-context-window-limit-recovery",
   )
     ? createAnthropicContextWindowLimitRecoveryHook(ctx, {
         experimental: pluginConfig.experimental,
       })
     : null;
-  const compactionContextInjector = isHookEnabled("compaction-context-injector")
+  const compactionContextInjector = isHookEnabled(
+    "grid-compaction-context-injector",
+  )
     ? createCompactionContextInjector()
     : undefined;
-  const rulesInjector = isHookEnabled("rules-injector")
+  const rulesInjector = isHookEnabled("grid-rules-injector")
     ? createRulesInjectorHook(ctx)
     : null;
-  const autoUpdateChecker = isHookEnabled("auto-update-checker")
+  const autoUpdateChecker = isHookEnabled("grid-auto-update-checker")
     ? createAutoUpdateCheckerHook(ctx, {
-        showStartupToast: isHookEnabled("startup-toast"),
-        isSisyphusEnabled: pluginConfig.sisyphus_agent?.disabled !== true,
+        showStartupToast: isHookEnabled("grid-startup-toast"),
+        isSisyphusEnabled: pluginConfig.cipher_agent?.disabled !== true,
         autoUpdate: pluginConfig.auto_update ?? true,
       })
     : null;
-  const keywordDetector = isHookEnabled("keyword-detector")
+  const keywordDetector = isHookEnabled("grid-keyword-detector")
     ? createKeywordDetectorHook(ctx, contextCollector)
     : null;
   const contextInjectorMessagesTransform =
     createContextInjectorMessagesTransformHook(contextCollector);
-  const agentUsageReminder = isHookEnabled("agent-usage-reminder")
+  const agentUsageReminder = isHookEnabled("grid-agent-usage-reminder")
     ? createAgentUsageReminderHook(ctx)
     : null;
-  const nonInteractiveEnv = isHookEnabled("non-interactive-env")
+  const nonInteractiveEnv = isHookEnabled("grid-non-interactive-env")
     ? createNonInteractiveEnvHook(ctx)
     : null;
-  const interactiveBashSession = isHookEnabled("interactive-bash-session")
+  const interactiveBashSession = isHookEnabled("grid-interactive-bash-session")
     ? createInteractiveBashSessionHook(ctx)
     : null;
 
-  const thinkingBlockValidator = isHookEnabled("thinking-block-validator")
+  const thinkingBlockValidator = isHookEnabled("grid-thinking-block-validator")
     ? createThinkingBlockValidatorHook()
     : null;
 
-  const categorySkillReminder = isHookEnabled("category-skill-reminder")
+  const categorySkillReminder = isHookEnabled("grid-category-skill-reminder")
     ? createCategorySkillReminderHook(ctx)
     : null;
 
-  const ralphLoop = isHookEnabled("ralph-loop")
+  const ralphLoop = isHookEnabled("overclock-loop")
     ? createRalphLoopHook(ctx, {
         config: pluginConfig.ralph_loop,
         checkSessionExists: async (sessionId) => sessionExists(sessionId),
       })
     : null;
 
-  const editErrorRecovery = isHookEnabled("edit-error-recovery")
+  const editErrorRecovery = isHookEnabled("grid-edit-error-recovery")
     ? createEditErrorRecoveryHook(ctx)
     : null;
 
-  const delegateTaskRetry = isHookEnabled("delegate-task-retry")
+  const delegateTaskRetry = isHookEnabled("grid-delegate-task-retry")
     ? createDelegateTaskRetryHook(ctx)
     : null;
 
-  const startWork = isHookEnabled("start-work")
+  const startWork = isHookEnabled("jack-in-work")
     ? createStartWorkHook(ctx)
     : null;
 
-  const prometheusMdOnly = isHookEnabled("prometheus-md-only")
-    ? createPrometheusMdOnlyHook(ctx)
+  const augurMdOnly = isHookEnabled("augur-planner-md-only")
+    ? createAugurPlannerMdOnlyHook(ctx)
     : null;
 
-  const sisyphusJuniorNotepad = isHookEnabled("sisyphus-junior-notepad")
+  const cipherJuniorNotepad = isHookEnabled("cipher-runner-notepad")
     ? createSisyphusJuniorNotepadHook(ctx)
     : null;
 
@@ -256,44 +292,50 @@ const RuachPlugin: Plugin = async (ctx) => {
 
   const tmuxSessionManager = new TmuxSessionManager(ctx, tmuxConfig);
 
-  const backgroundManager = new BackgroundManager(ctx, pluginConfig.background_task, {
-    tmuxConfig,
-    onSubagentSessionCreated: async (event) => {
-      log("[index] onSubagentSessionCreated callback received", {
-        sessionID: event.sessionID,
-        parentID: event.parentID,
-        title: event.title,
-      });
-      await tmuxSessionManager.onSessionCreated({
-        type: "session.created",
-        properties: {
-          info: {
-            id: event.sessionID,
-            parentID: event.parentID,
-            title: event.title,
+  const backgroundManager = new BackgroundManager(
+    ctx,
+    pluginConfig.background_task,
+    {
+      tmuxConfig,
+      onSubagentSessionCreated: async (event) => {
+        log("[index] onSubagentSessionCreated callback received", {
+          sessionID: event.sessionID,
+          parentID: event.parentID,
+          title: event.title,
+        });
+        await tmuxSessionManager.onSessionCreated({
+          type: "session.created",
+          properties: {
+            info: {
+              id: event.sessionID,
+              parentID: event.parentID,
+              title: event.title,
+            },
           },
-        },
-      });
-      log("[index] onSubagentSessionCreated callback completed");
+        });
+        log("[index] onSubagentSessionCreated callback completed");
+      },
+      onShutdown: () => {
+        tmuxSessionManager.cleanup().catch((error) => {
+          log("[index] tmux cleanup error during shutdown:", error);
+        });
+      },
     },
-    onShutdown: () => {
-      tmuxSessionManager.cleanup().catch((error) => {
-        log("[index] tmux cleanup error during shutdown:", error)
-      })
-    },
-  });
+  );
 
-  const atlasHook = isHookEnabled("atlas")
+  const nexusHook = isHookEnabled("nexus-orchestrator")
     ? createAtlasHook(ctx, { directory: ctx.directory, backgroundManager })
     : null;
 
   initTaskToastManager(ctx.client);
 
-  const stopContinuationGuard = isHookEnabled("stop-continuation-guard")
+  const stopContinuationGuard = isHookEnabled("grid-stop-continuation-guard")
     ? createStopContinuationGuardHook(ctx)
     : null;
 
-  const todoContinuationEnforcer = isHookEnabled("todo-continuation-enforcer")
+  const todoContinuationEnforcer = isHookEnabled(
+    "grid-todo-continuation-enforcer",
+  )
     ? createTodoContinuationEnforcer(ctx, {
         backgroundManager,
         isContinuationStopped: stopContinuationGuard?.isStopped,
@@ -303,11 +345,13 @@ const RuachPlugin: Plugin = async (ctx) => {
   if (sessionRecovery && todoContinuationEnforcer) {
     sessionRecovery.setOnAbortCallback(todoContinuationEnforcer.markRecovering);
     sessionRecovery.setOnRecoveryCompleteCallback(
-      todoContinuationEnforcer.markRecoveryComplete
+      todoContinuationEnforcer.markRecoveryComplete,
     );
   }
 
-  const backgroundNotificationHook = isHookEnabled("background-notification")
+  const backgroundNotificationHook = isHookEnabled(
+    "grid-background-notification",
+  )
     ? createBackgroundNotificationHook(backgroundManager)
     : null;
   const backgroundTools = createBackgroundTools(backgroundManager, ctx.client);
@@ -315,17 +359,18 @@ const RuachPlugin: Plugin = async (ctx) => {
   const callOmoAgent = createCallOmoAgent(ctx, backgroundManager);
   const isMultimodalLookerEnabled = !includesCaseInsensitive(
     pluginConfig.disabled_agents ?? [],
-    "multimodal-looker"
+    "optic-analyst",
   );
   const lookAt = isMultimodalLookerEnabled ? createLookAt(ctx) : null;
-  const browserProvider = pluginConfig.browser_automation_engine?.provider ?? "playwright";
+  const browserProvider =
+    pluginConfig.browser_automation_engine?.provider ?? "playwright";
   const delegateTask = createDelegateTask({
     manager: backgroundManager,
     client: ctx.client,
     directory: ctx.directory,
     userCategories: pluginConfig.categories,
     gitMasterConfig: pluginConfig.git_master,
-    sisyphusJuniorModel: pluginConfig.agents?.["sisyphus-junior"]?.model,
+    cipherJuniorModel: pluginConfig.agents?.["cipher-runner"]?.model,
     browserProvider,
     onSyncSessionCreated: async (event) => {
       log("[index] onSyncSessionCreated callback", {
@@ -347,29 +392,32 @@ const RuachPlugin: Plugin = async (ctx) => {
   });
   const disabledSkills = new Set(pluginConfig.disabled_skills ?? []);
   const systemMcpNames = getSystemMcpServerNames();
-  const builtinSkills = createBuiltinSkills({ browserProvider }).filter((skill) => {
-    if (disabledSkills.has(skill.name as never)) return false;
-    if (skill.mcpConfig) {
-      for (const mcpName of Object.keys(skill.mcpConfig)) {
-        if (systemMcpNames.has(mcpName)) return false;
+  const builtinSkills = createBuiltinSkills({ browserProvider }).filter(
+    (skill) => {
+      if (disabledSkills.has(skill.name as never)) return false;
+      if (skill.mcpConfig) {
+        for (const mcpName of Object.keys(skill.mcpConfig)) {
+          if (systemMcpNames.has(mcpName)) return false;
+        }
       }
-    }
-    return true;
-  });
+      return true;
+    },
+  );
   const includeClaudeSkills = pluginConfig.claude_code?.skills !== false;
-  const [userSkills, globalSkills, projectSkills, opencodeProjectSkills] = await Promise.all([
-    includeClaudeSkills ? discoverUserClaudeSkills() : Promise.resolve([]),
-    discoverOpencodeGlobalSkills(),
-    includeClaudeSkills ? discoverProjectClaudeSkills() : Promise.resolve([]),
-    discoverOpencodeProjectSkills(),
-  ]);
+  const [userSkills, globalSkills, projectSkills, opencodeProjectSkills] =
+    await Promise.all([
+      includeClaudeSkills ? discoverUserClaudeSkills() : Promise.resolve([]),
+      discoverOpencodeGlobalSkills(),
+      includeClaudeSkills ? discoverProjectClaudeSkills() : Promise.resolve([]),
+      discoverOpencodeProjectSkills(),
+    ]);
   const mergedSkills = mergeSkills(
     builtinSkills,
     pluginConfig.skills,
     userSkills,
     globalSkills,
     projectSkills,
-    opencodeProjectSkills
+    opencodeProjectSkills,
   );
   const skillMcpManager = new SkillMcpManager();
   const getSessionIDForMcp = () => getMainSessionID() || "";
@@ -391,7 +439,7 @@ const RuachPlugin: Plugin = async (ctx) => {
     skills: mergedSkills,
   });
 
-  const autoSlashCommand = isHookEnabled("auto-slash-command")
+  const autoSlashCommand = isHookEnabled("grid-auto-slash-command")
     ? createAutoSlashCommandHook({ skills: mergedSkills })
     : null;
 
@@ -405,7 +453,7 @@ const RuachPlugin: Plugin = async (ctx) => {
     tool: {
       ...builtinTools,
       ...backgroundTools,
-      call_omo_agent: callOmoAgent,
+      call_grid_agent: callOmoAgent,
       ...(lookAt ? { look_at: lookAt } : {}),
       delegate_task: delegateTask,
       skill: skillTool,
@@ -419,51 +467,59 @@ const RuachPlugin: Plugin = async (ctx) => {
         setSessionAgent(input.sessionID, input.agent);
       }
 
-      const message = (output as { message: { variant?: string } }).message
+      const message = (output as { message: { variant?: string } }).message;
       if (firstMessageVariantGate.shouldOverride(input.sessionID)) {
-        const variant = input.model && input.agent
-          ? resolveVariantForModel(pluginConfig, input.agent, input.model)
-          : resolveAgentVariant(pluginConfig, input.agent)
+        const variant =
+          input.model && input.agent
+            ? resolveVariantForModel(pluginConfig, input.agent, input.model)
+            : resolveAgentVariant(pluginConfig, input.agent);
         if (variant !== undefined) {
-          message.variant = variant
+          message.variant = variant;
         }
-        firstMessageVariantGate.markApplied(input.sessionID)
+        firstMessageVariantGate.markApplied(input.sessionID);
       } else {
         if (input.model && input.agent && message.variant === undefined) {
-          const variant = resolveVariantForModel(pluginConfig, input.agent, input.model)
+          const variant = resolveVariantForModel(
+            pluginConfig,
+            input.agent,
+            input.model,
+          );
           if (variant !== undefined) {
-            message.variant = variant
+            message.variant = variant;
           }
         } else {
-          applyAgentVariant(pluginConfig, input.agent, message)
+          applyAgentVariant(pluginConfig, input.agent, message);
         }
       }
 
-      await runHook("chat.message", "stop-continuation-guard", () =>
-        stopContinuationGuard?.["chat.message"]?.(input)
+      await runHook("chat.message", "grid-stop-continuation-guard", () =>
+        stopContinuationGuard?.["chat.message"]?.(input),
       );
-      await runHook("chat.message", "keyword-detector", () =>
-        keywordDetector?.["chat.message"]?.(input, output)
+      await runHook("chat.message", "grid-keyword-detector", () =>
+        keywordDetector?.["chat.message"]?.(input, output),
       );
-      await runHook("chat.message", "claude-code-hooks", () =>
-        claudeCodeHooks["chat.message"]?.(input, output)
+      await runHook("chat.message", "grid-claude-code-hooks", () =>
+        claudeCodeHooks["chat.message"]?.(input, output),
       );
-      await runHook("chat.message", "auto-slash-command", () =>
-        autoSlashCommand?.["chat.message"]?.(input, output)
+      await runHook("chat.message", "grid-auto-slash-command", () =>
+        autoSlashCommand?.["chat.message"]?.(input, output),
       );
-      await runHook("chat.message", "start-work", () =>
-        startWork?.["chat.message"]?.(input, output)
+      await runHook("chat.message", "jack-in-work", () =>
+        startWork?.["chat.message"]?.(input, output),
       );
 
       if (!hasConnectedProvidersCache()) {
-        ctx.client.tui.showToast({
-          body: {
-            title: "⚠️ Provider Cache Missing",
-            message: "Model filtering disabled. RESTART OpenCode to enable full functionality.",
-            variant: "warning" as const,
-            duration: 6000,
-          },
-        }).catch(() => {});
+        ctx.client.tui
+          .showToast({
+            body: {
+              title: "⚠️ Provider Cache Missing",
+              message:
+                "Model filtering disabled. RESTART OpenCode to enable full functionality.",
+              variant: "warning" as const,
+              duration: 6000,
+            },
+          })
+          .catch(() => {});
       }
 
       if (ralphLoop) {
@@ -481,12 +537,12 @@ const RuachPlugin: Plugin = async (ctx) => {
           promptText.includes("You are starting a Ralph Loop") &&
           promptText.includes("<user-task>");
         const isCancelRalphTemplate = promptText.includes(
-          "Cancel the currently active Ralph Loop"
+          "Cancel the currently active Ralph Loop",
         );
 
         if (isRalphLoopTemplate) {
           const taskMatch = promptText.match(
-            /<user-task>\s*([\s\S]*?)\s*<\/user-task>/i
+            /<user-task>\s*([\s\S]*?)\s*<\/user-task>/i,
           );
           const rawTask = taskMatch?.[1]?.trim() || "";
 
@@ -498,10 +554,10 @@ const RuachPlugin: Plugin = async (ctx) => {
 
           const maxIterMatch = rawTask.match(/--max-iterations=(\d+)/i);
           const promiseMatch = rawTask.match(
-            /--completion-promise=["']?([^"'\s]+)["']?/i
+            /--completion-promise=["']?([^"'\s]+)["']?/i,
           );
 
-          log("[ralph-loop] Starting loop from chat.message", {
+          log("[overclock-loop] Starting loop from chat.message", {
             sessionID: input.sessionID,
             prompt,
           });
@@ -512,7 +568,7 @@ const RuachPlugin: Plugin = async (ctx) => {
             completionPromise: promiseMatch?.[1],
           });
         } else if (isCancelRalphTemplate) {
-          log("[ralph-loop] Cancelling loop from chat.message", {
+          log("[overclock-loop] Cancelling loop from chat.message", {
             sessionID: input.sessionID,
           });
           ralphLoop.cancelLoop(input.sessionID);
@@ -522,76 +578,121 @@ const RuachPlugin: Plugin = async (ctx) => {
 
     "experimental.chat.messages.transform": async (
       input: Record<string, never>,
-      output: { messages: Array<{ info: unknown; parts: unknown[] }> }
+      output: { messages: Array<{ info: unknown; parts: unknown[] }> },
     ) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await runHook("experimental.chat.messages.transform", "context-injector", () =>
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        contextInjectorMessagesTransform?.["experimental.chat.messages.transform"]?.(input, output as any)
+      await runHook(
+        "experimental.chat.messages.transform",
+        "context-injector",
+        () =>
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          contextInjectorMessagesTransform?.[
+            "experimental.chat.messages.transform"
+          ]?.(input, output as any),
       );
-      await runHook("experimental.chat.messages.transform", "thinking-block-validator", () =>
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        thinkingBlockValidator?.["experimental.chat.messages.transform"]?.(input, output as any)
+      await runHook(
+        "experimental.chat.messages.transform",
+        "grid-thinking-block-validator",
+        () =>
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          thinkingBlockValidator?.["experimental.chat.messages.transform"]?.(
+            input,
+            output as any,
+          ),
       );
-
     },
 
     config: configHandler,
 
     event: async (input) => {
-      await runHook("event", "auto-update-checker", () => autoUpdateChecker?.event(input));
-      await runHook("event", "claude-code-hooks", () => claudeCodeHooks.event(input));
-      await runHook("event", "background-notification", () => backgroundNotificationHook?.event(input));
-      await runHook("event", "session-notification", () => sessionNotification?.(input));
-      await runHook("event", "todo-continuation-enforcer", () => todoContinuationEnforcer?.handler(input));
-      await runHook("event", "context-window-monitor", () => contextWindowMonitor?.event(input));
-      await runHook("event", "directory-agents-injector", () => directoryAgentsInjector?.event(input));
-      await runHook("event", "directory-readme-injector", () => directoryReadmeInjector?.event(input));
-      await runHook("event", "rules-injector", () => rulesInjector?.event(input));
-      await runHook("event", "think-mode", () => thinkMode?.event(input));
-      await runHook("event", "anthropic-context-window-limit-recovery", () =>
-        anthropicContextWindowLimitRecovery?.event(input)
+      await runHook("event", "grid-auto-update-checker", () =>
+        autoUpdateChecker?.event(input),
       );
-      await runHook("event", "agent-usage-reminder", () => agentUsageReminder?.event(input));
-      await runHook("event", "category-skill-reminder", () => categorySkillReminder?.event(input));
-      await runHook("event", "interactive-bash-session", () => interactiveBashSession?.event(input));
-      await runHook("event", "ralph-loop", () => ralphLoop?.event(input));
-      await runHook("event", "stop-continuation-guard", () => stopContinuationGuard?.event(input));
-      await runHook("event", "atlas", () => atlasHook?.handler(input));
+      await runHook("event", "grid-claude-code-hooks", () =>
+        claudeCodeHooks.event(input),
+      );
+      await runHook("event", "grid-background-notification", () =>
+        backgroundNotificationHook?.event(input),
+      );
+      await runHook("event", "grid-session-notification", () =>
+        sessionNotification?.(input),
+      );
+      await runHook("event", "grid-todo-continuation-enforcer", () =>
+        todoContinuationEnforcer?.handler(input),
+      );
+      await runHook("event", "grid-context-window-monitor", () =>
+        contextWindowMonitor?.event(input),
+      );
+      await runHook("event", "grid-directory-agents-injector", () =>
+        directoryAgentsInjector?.event(input),
+      );
+      await runHook("event", "grid-directory-readme-injector", () =>
+        directoryReadmeInjector?.event(input),
+      );
+      await runHook("event", "grid-rules-injector", () =>
+        rulesInjector?.event(input),
+      );
+      await runHook("event", "grid-think-mode", () => thinkMode?.event(input));
+      await runHook(
+        "event",
+        "grid-anthropic-context-window-limit-recovery",
+        () => anthropicContextWindowLimitRecovery?.event(input),
+      );
+      await runHook("event", "grid-agent-usage-reminder", () =>
+        agentUsageReminder?.event(input),
+      );
+      await runHook("event", "grid-category-skill-reminder", () =>
+        categorySkillReminder?.event(input),
+      );
+      await runHook("event", "grid-interactive-bash-session", () =>
+        interactiveBashSession?.event(input),
+      );
+      await runHook("event", "overclock-loop", () => ralphLoop?.event(input));
+      await runHook("event", "grid-stop-continuation-guard", () =>
+        stopContinuationGuard?.event(input),
+      );
+      await runHook("event", "nexus-orchestrator", () =>
+        nexusHook?.handler(input),
+      );
 
       const { event } = input;
       const props = event.properties as Record<string, unknown> | undefined;
 
-       if (event.type === "session.created") {
-         const sessionInfo = props?.info as
-           | { id?: string; title?: string; parentID?: string }
-           | undefined;
-         log("[event] session.created", { sessionInfo, props });
-         if (!sessionInfo?.parentID) {
-           setMainSession(sessionInfo?.id);
-         }
-         firstMessageVariantGate.markSessionCreated(sessionInfo);
-         await tmuxSessionManager.onSessionCreated(
-           event as { type: string; properties?: { info?: { id?: string; parentID?: string; title?: string } } }
-         );
-       }
+      if (event.type === "session.created") {
+        const sessionInfo = props?.info as
+          | { id?: string; title?: string; parentID?: string }
+          | undefined;
+        log("[event] session.created", { sessionInfo, props });
+        if (!sessionInfo?.parentID) {
+          setMainSession(sessionInfo?.id);
+        }
+        firstMessageVariantGate.markSessionCreated(sessionInfo);
+        await tmuxSessionManager.onSessionCreated(
+          event as {
+            type: string;
+            properties?: {
+              info?: { id?: string; parentID?: string; title?: string };
+            };
+          },
+        );
+      }
 
-       if (event.type === "session.deleted") {
-         const sessionInfo = props?.info as { id?: string } | undefined;
-         if (sessionInfo?.id === getMainSessionID()) {
-           setMainSession(undefined);
-         }
-         if (sessionInfo?.id) {
-           clearSessionAgent(sessionInfo.id);
-           resetMessageCursor(sessionInfo.id);
-           firstMessageVariantGate.clear(sessionInfo.id);
-           await skillMcpManager.disconnectSession(sessionInfo.id);
-           await lspManager.cleanupTempDirectoryClients();
-           await tmuxSessionManager.onSessionDeleted({
-             sessionID: sessionInfo.id,
-           });
-         }
-       }
+      if (event.type === "session.deleted") {
+        const sessionInfo = props?.info as { id?: string } | undefined;
+        if (sessionInfo?.id === getMainSessionID()) {
+          setMainSession(undefined);
+        }
+        if (sessionInfo?.id) {
+          clearSessionAgent(sessionInfo.id);
+          resetMessageCursor(sessionInfo.id);
+          firstMessageVariantGate.clear(sessionInfo.id);
+          await skillMcpManager.disconnectSession(sessionInfo.id);
+          await lspManager.cleanupTempDirectoryClients();
+          await tmuxSessionManager.onSessionDeleted({
+            sessionID: sessionInfo.id,
+          });
+        }
+      }
 
       if (event.type === "message.updated") {
         const info = props?.info as Record<string, unknown> | undefined;
@@ -637,51 +738,55 @@ const RuachPlugin: Plugin = async (ctx) => {
 
     "tool.execute.before": async (input, output) => {
       await runHook("tool.execute.before", "subagent-question-blocker", () =>
-        subagentQuestionBlocker["tool.execute.before"]?.(input, output)
+        subagentQuestionBlocker["tool.execute.before"]?.(input, output),
       );
       await runHook("tool.execute.before", "question-label-truncator", () =>
-        questionLabelTruncator["tool.execute.before"]?.(input, output)
+        questionLabelTruncator["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "claude-code-hooks", () =>
-        claudeCodeHooks["tool.execute.before"](input, output)
+      await runHook("tool.execute.before", "grid-claude-code-hooks", () =>
+        claudeCodeHooks["tool.execute.before"](input, output),
       );
-      await runHook("tool.execute.before", "non-interactive-env", () =>
-        nonInteractiveEnv?.["tool.execute.before"](input, output)
+      await runHook("tool.execute.before", "grid-non-interactive-env", () =>
+        nonInteractiveEnv?.["tool.execute.before"](input, output),
       );
-      await runHook("tool.execute.before", "comment-checker", () =>
-        commentChecker?.["tool.execute.before"](input, output)
+      await runHook("tool.execute.before", "grid-comment-checker", () =>
+        commentChecker?.["tool.execute.before"](input, output),
       );
-      await runHook("tool.execute.before", "directory-agents-injector", () =>
-        directoryAgentsInjector?.["tool.execute.before"]?.(input, output)
+      await runHook(
+        "tool.execute.before",
+        "grid-directory-agents-injector",
+        () => directoryAgentsInjector?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "directory-readme-injector", () =>
-        directoryReadmeInjector?.["tool.execute.before"]?.(input, output)
+      await runHook(
+        "tool.execute.before",
+        "grid-directory-readme-injector",
+        () => directoryReadmeInjector?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "rules-injector", () =>
-        rulesInjector?.["tool.execute.before"]?.(input, output)
+      await runHook("tool.execute.before", "grid-rules-injector", () =>
+        rulesInjector?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "prometheus-md-only", () =>
-        prometheusMdOnly?.["tool.execute.before"]?.(input, output)
+      await runHook("tool.execute.before", "augur-planner-md-only", () =>
+        augurMdOnly?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "sisyphus-junior-notepad", () =>
-        sisyphusJuniorNotepad?.["tool.execute.before"]?.(input, output)
+      await runHook("tool.execute.before", "cipher-runner-notepad", () =>
+        cipherJuniorNotepad?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "atlas", () =>
-        atlasHook?.["tool.execute.before"]?.(input, output)
+      await runHook("tool.execute.before", "nexus-orchestrator", () =>
+        nexusHook?.["tool.execute.before"]?.(input, output),
       );
 
       if (input.tool === "task") {
         const args = output.args as Record<string, unknown>;
         const subagentType = args.subagent_type as string;
         const isExploreOrLibrarian = includesCaseInsensitive(
-          ["explore", "librarian"],
-          subagentType ?? ""
+          ["scout-recon", "archive-researcher"],
+          subagentType ?? "",
         );
 
         args.tools = {
           ...(args.tools as Record<string, boolean> | undefined),
           delegate_task: false,
-          ...(isExploreOrLibrarian ? { call_omo_agent: false } : {}),
+          ...(isExploreOrLibrarian ? { call_grid_agent: false } : {}),
         };
       }
 
@@ -690,9 +795,9 @@ const RuachPlugin: Plugin = async (ctx) => {
         const command = args?.command?.replace(/^\//, "").toLowerCase();
         const sessionID = input.sessionID || getMainSessionID();
 
-        if (command === "ralph-loop" && sessionID) {
+        if (command === "overclock-loop" && sessionID) {
           const rawArgs =
-            args?.command?.replace(/^\/?(ralph-loop)\s*/i, "") || "";
+            args?.command?.replace(/^\/?(overclock-loop)\s*/i, "") || "";
           const taskMatch = rawArgs.match(/^["'](.+?)["']/);
           const prompt =
             taskMatch?.[1] ||
@@ -701,7 +806,7 @@ const RuachPlugin: Plugin = async (ctx) => {
 
           const maxIterMatch = rawArgs.match(/--max-iterations=(\d+)/i);
           const promiseMatch = rawArgs.match(
-            /--completion-promise=["']?([^"'\s]+)["']?/i
+            /--completion-promise=["']?([^"'\s]+)["']?/i,
           );
 
           ralphLoop.startLoop(sessionID, prompt, {
@@ -710,30 +815,30 @@ const RuachPlugin: Plugin = async (ctx) => {
               : undefined,
             completionPromise: promiseMatch?.[1],
           });
-         } else if (command === "cancel-ralph" && sessionID) {
-           ralphLoop.cancelLoop(sessionID);
-         } else if (command === "ulw-loop" && sessionID) {
-           const rawArgs =
-             args?.command?.replace(/^\/?(ulw-loop)\s*/i, "") || "";
-           const taskMatch = rawArgs.match(/^["'](.+?)["']/);
-           const prompt =
-             taskMatch?.[1] ||
-             rawArgs.split(/\s+--/)[0]?.trim() ||
-             "Complete the task as instructed";
+        } else if (command === "cancel-overclock" && sessionID) {
+          ralphLoop.cancelLoop(sessionID);
+        } else if (command === "ulw-overclock" && sessionID) {
+          const rawArgs =
+            args?.command?.replace(/^\/?(ulw-overclock)\s*/i, "") || "";
+          const taskMatch = rawArgs.match(/^["'](.+?)["']/);
+          const prompt =
+            taskMatch?.[1] ||
+            rawArgs.split(/\s+--/)[0]?.trim() ||
+            "Complete the task as instructed";
 
-           const maxIterMatch = rawArgs.match(/--max-iterations=(\d+)/i);
-           const promiseMatch = rawArgs.match(
-             /--completion-promise=["']?([^"'\s]+)["']?/i
-           );
+          const maxIterMatch = rawArgs.match(/--max-iterations=(\d+)/i);
+          const promiseMatch = rawArgs.match(
+            /--completion-promise=["']?([^"'\s]+)["']?/i,
+          );
 
-           ralphLoop.startLoop(sessionID, prompt, {
-              ultrawork: true,
-              maxIterations: maxIterMatch
-                ? parseInt(maxIterMatch[1], 10)
-                : undefined,
-              completionPromise: promiseMatch?.[1],
-            });
-         }
+          ralphLoop.startLoop(sessionID, prompt, {
+            ultrawork: true,
+            maxIterations: maxIterMatch
+              ? parseInt(maxIterMatch[1], 10)
+              : undefined,
+            completionPromise: promiseMatch?.[1],
+          });
+        }
       }
 
       if (input.tool === "slashcommand") {
@@ -746,7 +851,9 @@ const RuachPlugin: Plugin = async (ctx) => {
           todoContinuationEnforcer?.cancelAllCountdowns();
           ralphLoop?.cancelLoop(sessionID);
           clearBoulderState(ctx.directory);
-          log("[stop-continuation] All continuation mechanisms stopped", { sessionID });
+          log("[stop-continuation] All continuation mechanisms stopped", {
+            sessionID,
+          });
         }
       }
     },
@@ -756,59 +863,65 @@ const RuachPlugin: Plugin = async (ctx) => {
       if (!output) {
         return;
       }
-      await runHook("tool.execute.after", "claude-code-hooks", () =>
-        claudeCodeHooks["tool.execute.after"](input, output)
+      await runHook("tool.execute.after", "grid-claude-code-hooks", () =>
+        claudeCodeHooks["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "tool-output-truncator", () =>
-        toolOutputTruncator?.["tool.execute.after"](input, output)
+      await runHook("tool.execute.after", "grid-tool-output-truncator", () =>
+        toolOutputTruncator?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "context-window-monitor", () =>
-        contextWindowMonitor?.["tool.execute.after"](input, output)
+      await runHook("tool.execute.after", "grid-context-window-monitor", () =>
+        contextWindowMonitor?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "comment-checker", () =>
-        commentChecker?.["tool.execute.after"](input, output)
+      await runHook("tool.execute.after", "grid-comment-checker", () =>
+        commentChecker?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "directory-agents-injector", () =>
-        directoryAgentsInjector?.["tool.execute.after"](input, output)
+      await runHook(
+        "tool.execute.after",
+        "grid-directory-agents-injector",
+        () => directoryAgentsInjector?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "directory-readme-injector", () =>
-        directoryReadmeInjector?.["tool.execute.after"](input, output)
+      await runHook(
+        "tool.execute.after",
+        "grid-directory-readme-injector",
+        () => directoryReadmeInjector?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "rules-injector", () =>
-        rulesInjector?.["tool.execute.after"](input, output)
+      await runHook("tool.execute.after", "grid-rules-injector", () =>
+        rulesInjector?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "empty-task-response-detector", () =>
-        emptyTaskResponseDetector?.["tool.execute.after"](input, output)
+      await runHook(
+        "tool.execute.after",
+        "grid-empty-task-response-detector",
+        () => emptyTaskResponseDetector?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "agent-usage-reminder", () =>
-        agentUsageReminder?.["tool.execute.after"](input, output)
+      await runHook("tool.execute.after", "grid-agent-usage-reminder", () =>
+        agentUsageReminder?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "category-skill-reminder", () =>
-        categorySkillReminder?.["tool.execute.after"](input, output)
+      await runHook("tool.execute.after", "grid-category-skill-reminder", () =>
+        categorySkillReminder?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "interactive-bash-session", () =>
-        interactiveBashSession?.["tool.execute.after"](input, output)
+      await runHook("tool.execute.after", "grid-interactive-bash-session", () =>
+        interactiveBashSession?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "edit-error-recovery", () =>
-        editErrorRecovery?.["tool.execute.after"](input, output)
+      await runHook("tool.execute.after", "grid-edit-error-recovery", () =>
+        editErrorRecovery?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "delegate-task-retry", () =>
-        delegateTaskRetry?.["tool.execute.after"](input, output)
+      await runHook("tool.execute.after", "grid-delegate-task-retry", () =>
+        delegateTaskRetry?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "atlas", () =>
-        atlasHook?.["tool.execute.after"]?.(input, output)
+      await runHook("tool.execute.after", "nexus-orchestrator", () =>
+        nexusHook?.["tool.execute.after"]?.(input, output),
       );
       await runHook("tool.execute.after", "task-resume-info", () =>
-        taskResumeInfo["tool.execute.after"](input, output)
+        taskResumeInfo["tool.execute.after"](input, output),
       );
     },
   };
 };
 
-export default RuachPlugin;
+export default GhostwirePlugin;
 
 export type {
-  RuachConfig,
+  GhostwireConfig,
   AgentName,
   AgentOverrideConfig,
   AgentOverrides,

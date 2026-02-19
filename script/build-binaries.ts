@@ -14,17 +14,17 @@ interface PlatformTarget {
 }
 
 export const PLATFORMS: PlatformTarget[] = [
-  { dir: "darwin-arm64", target: "bun-darwin-arm64", binary: "ruach", description: "macOS ARM64" },
-  { dir: "darwin-x64", target: "bun-darwin-x64", binary: "ruach", description: "macOS x64" },
-  { dir: "darwin-x64-baseline", target: "bun-darwin-x64-baseline", binary: "ruach", description: "macOS x64 (no AVX2)" },
-  { dir: "linux-x64", target: "bun-linux-x64", binary: "ruach", description: "Linux x64 (glibc)" },
-  { dir: "linux-x64-baseline", target: "bun-linux-x64-baseline", binary: "ruach", description: "Linux x64 (glibc, no AVX2)" },
-  { dir: "linux-arm64", target: "bun-linux-arm64", binary: "ruach", description: "Linux ARM64 (glibc)" },
-  { dir: "linux-x64-musl", target: "bun-linux-x64-musl", binary: "ruach", description: "Linux x64 (musl)" },
-  { dir: "linux-x64-musl-baseline", target: "bun-linux-x64-musl-baseline", binary: "ruach", description: "Linux x64 (musl, no AVX2)" },
-  { dir: "linux-arm64-musl", target: "bun-linux-arm64-musl", binary: "ruach", description: "Linux ARM64 (musl)" },
-  { dir: "windows-x64", target: "bun-windows-x64", binary: "ruach.exe", description: "Windows x64" },
-  { dir: "windows-x64-baseline", target: "bun-windows-x64-baseline", binary: "ruach.exe", description: "Windows x64 (no AVX2)" },
+  { dir: "darwin-arm64", target: "bun-darwin-arm64", binary: "ghostwire", description: "macOS ARM64" },
+  { dir: "darwin-x64", target: "bun-darwin-x64", binary: "ghostwire", description: "macOS x64" },
+  { dir: "darwin-x64-baseline", target: "bun-darwin-x64-baseline", binary: "ghostwire", description: "macOS x64 (no AVX2)" },
+  { dir: "linux-x64", target: "bun-linux-x64", binary: "ghostwire", description: "Linux x64 (glibc)" },
+  { dir: "linux-x64-baseline", target: "bun-linux-x64-baseline", binary: "ghostwire", description: "Linux x64 (glibc, no AVX2)" },
+  { dir: "linux-arm64", target: "bun-linux-arm64", binary: "ghostwire", description: "Linux ARM64 (glibc)" },
+  { dir: "linux-x64-musl", target: "bun-linux-x64-musl", binary: "ghostwire", description: "Linux x64 (musl)" },
+  { dir: "linux-x64-musl-baseline", target: "bun-linux-x64-musl-baseline", binary: "ghostwire", description: "Linux x64 (musl, no AVX2)" },
+  { dir: "linux-arm64-musl", target: "bun-linux-arm64-musl", binary: "ghostwire", description: "Linux ARM64 (musl)" },
+  { dir: "windows-x64", target: "bun-windows-x64", binary: "ghostwire.exe", description: "Windows x64" },
+  { dir: "windows-x64-baseline", target: "bun-windows-x64-baseline", binary: "ghostwire.exe", description: "Windows x64 (no AVX2)" },
 ];
 
 const ENTRY_POINT = "src/cli/index.ts";
@@ -61,7 +61,7 @@ async function buildPlatform(platform: PlatformTarget): Promise<boolean> {
 }
 
 async function main() {
-  console.log("🔨 Building ruach platform binaries");
+  console.log("🔨 Building ghostwire platform binaries");
   console.log(`   Entry point: ${ENTRY_POINT}`);
   console.log(`   Platforms: ${PLATFORMS.length}`);
 

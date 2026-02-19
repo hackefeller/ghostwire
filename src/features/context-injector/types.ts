@@ -3,8 +3,8 @@
  * Each source registers context that will be merged and injected together
  */
 export type ContextSourceType =
-  | "keyword-detector"
-  | "rules-injector"
+  | "grid-keyword-detector"
+  | "grid-rules-injector"
   | "directory-agents"
   | "directory-readme"
   | "custom"

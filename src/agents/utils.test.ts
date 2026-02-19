@@ -8,34 +8,34 @@ import * as modelAvailability from "../shared/model-availability"
 const TEST_DEFAULT_MODEL = "anthropic/claude-opus-4-5"
 
 describe("createBuiltinAgents with model overrides", () => {
-  test("Sisyphus with default model has thinking config", async () => {
+  test("Cipher Operator with default model has thinking config", async () => {
     // #given - no overrides, using systemDefaultModel
 
     // #when
     const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL)
 
     // #then
-    expect(agents.sisyphus.model).toBe("anthropic/claude-opus-4-5")
-    expect(agents.sisyphus.thinking).toEqual({ type: "enabled", budgetTokens: 32000 })
-    expect(agents.sisyphus.reasoningEffort).toBeUndefined()
+    expect(agents["cipher-operator"].model).toBe("anthropic/claude-opus-4-5")
+    expect(agents["cipher-operator"].thinking).toEqual({ type: "enabled", budgetTokens: 32000 })
+    expect(agents["cipher-operator"].reasoningEffort).toBeUndefined()
   })
 
-  test("Sisyphus with GPT model override has reasoningEffort, no thinking", async () => {
+  test("Cipher Operator with GPT model override has reasoningEffort, no thinking", async () => {
     // #given
     const overrides = {
-      sisyphus: { model: "github-copilot/gpt-5.2" },
+      "cipher-operator": { model: "github-copilot/gpt-5.2" },
     }
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL)
 
     // #then
-    expect(agents.sisyphus.model).toBe("github-copilot/gpt-5.2")
-    expect(agents.sisyphus.reasoningEffort).toBe("medium")
-    expect(agents.sisyphus.thinking).toBeUndefined()
+    expect(agents["cipher-operator"].model).toBe("github-copilot/gpt-5.2")
+    expect(agents["cipher-operator"].reasoningEffort).toBe("medium")
+    expect(agents["cipher-operator"].thinking).toBeUndefined()
   })
 
-  test("Sisyphus uses system default when no availableModels provided", async () => {
+  test("Cipher Operator uses system default when no availableModels provided", async () => {
     // #given
     const systemDefaultModel = "anthropic/claude-opus-4-5"
 
@@ -43,96 +43,96 @@ describe("createBuiltinAgents with model overrides", () => {
     const agents = await createBuiltinAgents([], {}, undefined, systemDefaultModel)
 
     // #then - falls back to system default when no availability match
-    expect(agents.sisyphus.model).toBe("anthropic/claude-opus-4-5")
-    expect(agents.sisyphus.thinking).toEqual({ type: "enabled", budgetTokens: 32000 })
-    expect(agents.sisyphus.reasoningEffort).toBeUndefined()
+    expect(agents["cipher-operator"].model).toBe("anthropic/claude-opus-4-5")
+    expect(agents["cipher-operator"].thinking).toEqual({ type: "enabled", budgetTokens: 32000 })
+    expect(agents["cipher-operator"].reasoningEffort).toBeUndefined()
   })
 
-   test("Oracle uses connected provider fallback when availableModels is empty and cache exists", async () => {
-     // #given - connected providers cache has "openai", which matches oracle's first fallback entry
+   test("Seer Advisor uses connected provider fallback when availableModels is empty and cache exists", async () => {
+     // #given - connected providers cache has "openai", which matches seer-advisor's first fallback entry
      const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
 
      // #when
      const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL)
 
-     // #then - oracle resolves via connected cache fallback to openai/gpt-5.2 (not system default)
-     expect(agents.oracle.model).toBe("openai/gpt-5.2")
-     expect(agents.oracle.reasoningEffort).toBe("medium")
-     expect(agents.oracle.thinking).toBeUndefined()
+     // #then - seerAdvisor resolves via connected cache fallback to openai/gpt-5.2 (not system default)
+     expect(agents["seer-advisor"].model).toBe("openai/gpt-5.2")
+     expect(agents["seer-advisor"].reasoningEffort).toBe("medium")
+     expect(agents["seer-advisor"].thinking).toBeUndefined()
      cacheSpy.mockRestore?.()
    })
 
-   test("Oracle created without model field when no cache exists (first run scenario)", async () => {
+   test("Seer Advisor created without model field when no cache exists (first run scenario)", async () => {
      // #given - no cache at all (first run)
      const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(null)
 
      // #when
      const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL)
 
-     // #then - oracle should be created with system default model (fallback to systemDefaultModel)
-     expect(agents.oracle).toBeDefined()
-     expect(agents.oracle.model).toBe(TEST_DEFAULT_MODEL)
+     // #then - seerAdvisor should be created with system default model (fallback to systemDefaultModel)
+     expect(agents["seer-advisor"]).toBeDefined()
+     expect(agents["seer-advisor"].model).toBe(TEST_DEFAULT_MODEL)
      cacheSpy.mockRestore?.()
    })
 
-  test("Oracle with GPT model override has reasoningEffort, no thinking", async () => {
+  test("Seer Advisor with GPT model override has reasoningEffort, no thinking", async () => {
     // #given
     const overrides = {
-      oracle: { model: "openai/gpt-5.2" },
+      "seer-advisor": { model: "openai/gpt-5.2" },
     }
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL)
 
     // #then
-    expect(agents.oracle.model).toBe("openai/gpt-5.2")
-    expect(agents.oracle.reasoningEffort).toBe("medium")
-    expect(agents.oracle.textVerbosity).toBe("high")
-    expect(agents.oracle.thinking).toBeUndefined()
+    expect(agents["seer-advisor"].model).toBe("openai/gpt-5.2")
+    expect(agents["seer-advisor"].reasoningEffort).toBe("medium")
+    expect(agents["seer-advisor"].textVerbosity).toBe("high")
+    expect(agents["seer-advisor"].thinking).toBeUndefined()
   })
 
-  test("Oracle with Claude model override has thinking, no reasoningEffort", async () => {
+  test("Seer Advisor with Claude model override has thinking, no reasoningEffort", async () => {
     // #given
     const overrides = {
-      oracle: { model: "anthropic/claude-sonnet-4" },
+      "seer-advisor": { model: "anthropic/claude-sonnet-4" },
     }
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL)
 
     // #then
-    expect(agents.oracle.model).toBe("anthropic/claude-sonnet-4")
-    expect(agents.oracle.thinking).toEqual({ type: "enabled", budgetTokens: 32000 })
-    expect(agents.oracle.reasoningEffort).toBeUndefined()
-    expect(agents.oracle.textVerbosity).toBeUndefined()
+    expect(agents["seer-advisor"].model).toBe("anthropic/claude-sonnet-4")
+    expect(agents["seer-advisor"].thinking).toEqual({ type: "enabled", budgetTokens: 32000 })
+    expect(agents["seer-advisor"].reasoningEffort).toBeUndefined()
+    expect(agents["seer-advisor"].textVerbosity).toBeUndefined()
   })
 
    test("non-model overrides are still applied after factory rebuild", async () => {
      // #given
      const overrides = {
-       sisyphus: { model: "github-copilot/gpt-5.2", temperature: 0.5 },
+       "cipher-operator": { model: "github-copilot/gpt-5.2", temperature: 0.5 },
      }
 
      // #when
      const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL)
 
      // #then
-     expect(agents.sisyphus.model).toBe("github-copilot/gpt-5.2")
-     expect(agents.sisyphus.temperature).toBe(0.5)
+     expect(agents["cipher-operator"].model).toBe("github-copilot/gpt-5.2")
+     expect(agents["cipher-operator"].temperature).toBe(0.5)
    })
 })
 
 describe("createBuiltinAgents without systemDefaultModel", () => {
    test("agents created via connected cache fallback even without systemDefaultModel", async () => {
-     // #given - connected cache has "openai", which matches oracle's fallback chain
+     // #given - connected cache has "openai", which matches seer-advisor's fallback chain
      const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
 
      // #when
      const agents = await createBuiltinAgents([], {}, undefined, undefined)
 
      // #then - connected cache enables model resolution despite no systemDefaultModel
-     expect(agents.oracle).toBeDefined()
-     expect(agents.oracle.model).toBe("openai/gpt-5.2")
+     expect(agents["seer-advisor"]).toBeDefined()
+     expect(agents["seer-advisor"].model).toBe("openai/gpt-5.2")
      cacheSpy.mockRestore?.()
    })
 
@@ -144,20 +144,20 @@ describe("createBuiltinAgents without systemDefaultModel", () => {
      const agents = await createBuiltinAgents([], {}, undefined, undefined)
 
      // #then
-     expect(agents.oracle).toBeUndefined()
+     expect(agents["seer-advisor"]).toBeUndefined()
      cacheSpy.mockRestore?.()
    })
 
-   test("sisyphus created via connected cache fallback even without systemDefaultModel", async () => {
-     // #given - connected cache has "anthropic", which matches sisyphus's first fallback entry
+   test("cipher-operator created via connected cache fallback even without systemDefaultModel", async () => {
+     // #given - connected cache has "anthropic", which matches cipher-operator's first fallback entry
      const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["anthropic"])
 
      // #when
      const agents = await createBuiltinAgents([], {}, undefined, undefined)
 
      // #then - connected cache enables model resolution despite no systemDefaultModel
-     expect(agents.sisyphus).toBeDefined()
-     expect(agents.sisyphus.model).toBe("anthropic/claude-opus-4-5")
+     expect(agents["cipher-operator"]).toBeDefined()
+     expect(agents["cipher-operator"].model).toBe("anthropic/claude-opus-4-5")
      cacheSpy.mockRestore?.()
    })
 })
@@ -413,30 +413,30 @@ describe("override.category expansion in createBuiltinAgents", () => {
   test("standard agent override with category expands category properties", async () => {
     // #given
     const overrides = {
-      oracle: { category: "ultrabrain" } as any,
+      "seer-advisor": { category: "ultrabrain" } as any,
     }
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL)
 
     // #then - ultrabrain category: model=openai/gpt-5.2-codex, variant=xhigh
-    expect(agents.oracle).toBeDefined()
-    expect(agents.oracle.model).toBe("openai/gpt-5.2-codex")
-    expect(agents.oracle.variant).toBe("xhigh")
+    expect(agents["seer-advisor"]).toBeDefined()
+    expect(agents["seer-advisor"].model).toBe("openai/gpt-5.2-codex")
+    expect(agents["seer-advisor"].variant).toBe("xhigh")
   })
 
   test("standard agent override with category AND direct variant - direct wins", async () => {
     // #given - ultrabrain has variant=xhigh, but direct override says "max"
     const overrides = {
-      oracle: { category: "ultrabrain", variant: "max" } as any,
+      "seer-advisor": { category: "ultrabrain", variant: "max" } as any,
     }
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL)
 
     // #then - direct variant overrides category variant
-    expect(agents.oracle).toBeDefined()
-    expect(agents.oracle.variant).toBe("max")
+    expect(agents["seer-advisor"]).toBeDefined()
+    expect(agents["seer-advisor"].variant).toBe("max")
   })
 
   test("standard agent override with category AND direct reasoningEffort - direct wins", async () => {
@@ -448,15 +448,15 @@ describe("override.category expansion in createBuiltinAgents", () => {
       },
     }
     const overrides = {
-      oracle: { category: "test-cat", reasoningEffort: "low" } as any,
+      "seer-advisor": { category: "test-cat", reasoningEffort: "low" } as any,
     }
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL, categories)
 
     // #then - direct reasoningEffort wins over category
-    expect(agents.oracle).toBeDefined()
-    expect(agents.oracle.reasoningEffort).toBe("low")
+    expect(agents["seer-advisor"]).toBeDefined()
+    expect(agents["seer-advisor"].reasoningEffort).toBe("low")
   })
 
   test("standard agent override with category applies reasoningEffort from category when no direct override", async () => {
@@ -468,60 +468,60 @@ describe("override.category expansion in createBuiltinAgents", () => {
       },
     }
     const overrides = {
-      oracle: { category: "reasoning-cat" } as any,
+      "seer-advisor": { category: "reasoning-cat" } as any,
     }
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL, categories)
 
     // #then - category reasoningEffort is applied
-    expect(agents.oracle).toBeDefined()
-    expect(agents.oracle.reasoningEffort).toBe("high")
+    expect(agents["seer-advisor"]).toBeDefined()
+    expect(agents["seer-advisor"].reasoningEffort).toBe("high")
   })
 
-  test("sisyphus override with category expands category properties", async () => {
+  test("cipher-operator override with category expands category properties", async () => {
     // #given
     const overrides = {
-      sisyphus: { category: "ultrabrain" } as any,
+      "cipher-operator": { category: "ultrabrain" } as any,
     }
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL)
 
     // #then - ultrabrain category: model=openai/gpt-5.2-codex, variant=xhigh
-    expect(agents.sisyphus).toBeDefined()
-    expect(agents.sisyphus.model).toBe("openai/gpt-5.2-codex")
-    expect(agents.sisyphus.variant).toBe("xhigh")
+    expect(agents["cipher-operator"]).toBeDefined()
+    expect(agents["cipher-operator"].model).toBe("openai/gpt-5.2-codex")
+    expect(agents["cipher-operator"].variant).toBe("xhigh")
   })
 
-  test("atlas override with category expands category properties", async () => {
+  test("nexus-orchestrator override with category expands category properties", async () => {
     // #given
     const overrides = {
-      atlas: { category: "ultrabrain" } as any,
+      "nexus-orchestrator": { category: "ultrabrain" } as any,
     }
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL)
 
     // #then - ultrabrain category: model=openai/gpt-5.2-codex, variant=xhigh
-    expect(agents.atlas).toBeDefined()
-    expect(agents.atlas.model).toBe("openai/gpt-5.2-codex")
-    expect(agents.atlas.variant).toBe("xhigh")
+    expect(agents["nexus-orchestrator"]).toBeDefined()
+    expect(agents["nexus-orchestrator"].model).toBe("openai/gpt-5.2-codex")
+    expect(agents["nexus-orchestrator"].variant).toBe("xhigh")
   })
 
   test("override with non-existent category has no effect on config", async () => {
     // #given
     const overrides = {
-      oracle: { category: "non-existent-category" } as any,
+      "seer-advisor": { category: "non-existent-category" } as any,
     }
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL)
 
     // #then - no category-specific variant/reasoningEffort applied from non-existent category
-    expect(agents.oracle).toBeDefined()
+    expect(agents["seer-advisor"]).toBeDefined()
     const agentsWithoutOverride = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL)
-    expect(agents.oracle.model).toBe(agentsWithoutOverride.oracle.model)
+    expect(agents["seer-advisor"].model).toBe(agentsWithoutOverride["seer-advisor"].model)
   })
 })
 

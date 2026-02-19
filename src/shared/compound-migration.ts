@@ -5,7 +5,7 @@ import { log } from "./logger"
  * Compound Engineering Component Migration
  *
  * Handles migration from old compound-engineering plugin imports to unified
- * ruach configuration. Automatically upgrades:
+ * ghostwire configuration. Automatically upgrades:
  * - Old import-based configuration to unified configuration
  * - Legacy component references to namespaced components
  * - Configuration structure updates with validation
@@ -25,67 +25,67 @@ export interface CompoundMigrationResult {
  */
 const COMPOUND_AGENT_MIGRATION_MAP: Record<string, string> = {
   // Review agents
-  "kieran-rails-reviewer": "compound:kieran-rails-reviewer",
-  "kieran-python-reviewer": "compound:kieran-python-reviewer",
-  "kieran-typescript-reviewer": "compound:kieran-typescript-reviewer",
-  "dhh-rails-reviewer": "compound:dhh-rails-reviewer",
-  "code-simplicity-reviewer": "compound:code-simplicity-reviewer",
+  "kieran-rails-reviewer": "grid:kieran-rails-reviewer",
+  "kieran-python-reviewer": "grid:kieran-python-reviewer",
+  "kieran-typescript-reviewer": "grid:kieran-typescript-reviewer",
+  "dhh-rails-reviewer": "grid:dhh-rails-reviewer",
+  "code-simplicity-reviewer": "grid:code-simplicity-reviewer",
 
   // Research agents
-  "framework-docs-researcher": "compound:framework-docs-researcher",
-  "learnings-researcher": "compound:learnings-researcher",
-  "best-practices-researcher": "compound:best-practices-researcher",
-  "git-history-analyzer": "compound:git-history-analyzer",
+  "framework-docs-researcher": "grid:framework-docs-researcher",
+  "learnings-researcher": "grid:learnings-researcher",
+  "best-practices-researcher": "grid:best-practices-researcher",
+  "git-history-analyzer": "grid:git-history-analyzer",
 
   // Design agents
-  "figma-design-sync": "compound:figma-design-sync",
-  "design-implementation-reviewer": "compound:design-implementation-reviewer",
-  "design-iterator": "compound:design-iterator",
-  "frontend-design": "compound:frontend-design",
+  "figma-design-sync": "grid:figma-design-sync",
+  "design-implementation-reviewer": "grid:design-implementation-reviewer",
+  "design-iterator": "grid:design-iterator",
+  "frontend-design": "grid:frontend-design",
 
   // Workflow agents
-  "spec-flow-analyzer": "compound:spec-flow-analyzer",
-  "agent-native-architecture": "compound:agent-native-architecture",
-  "deployment-verification-agent": "compound:deployment-verification-agent",
+  "spec-flow-analyzer": "grid:spec-flow-analyzer",
+  "agent-native-architecture": "grid:agent-native-architecture",
+  "deployment-verification-agent": "grid:deployment-verification-agent",
 
   // Documentation agents
-  "ankane-readme-writer": "compound:ankane-readme-writer",
-  "skill-creator": "compound:skill-creator",
-  "create-agent-skills": "compound:create-agent-skills",
+  "ankane-readme-writer": "grid:ankane-readme-writer",
+  "skill-creator": "grid:skill-creator",
+  "create-agent-skills": "grid:create-agent-skills",
 
   // Existing compound agents (already namespaced)
-  "compound:kieran-rails-reviewer": "compound:kieran-rails-reviewer",
-  "compound:kieran-python-reviewer": "compound:kieran-python-reviewer",
-  "compound:kieran-typescript-reviewer": "compound:kieran-typescript-reviewer",
-  "compound:dhh-rails-reviewer": "compound:dhh-rails-reviewer",
+  "grid:kieran-rails-reviewer": "grid:kieran-rails-reviewer",
+  "grid:kieran-python-reviewer": "grid:kieran-python-reviewer",
+  "grid:kieran-typescript-reviewer": "grid:kieran-typescript-reviewer",
+  "grid:dhh-rails-reviewer": "grid:dhh-rails-reviewer",
 }
 
 const COMPOUND_COMMAND_MIGRATION_MAP: Record<string, string> = {
-  // Old format → new format with compound: prefix
-  "workflows:plan": "compound:workflows:plan",
-  "workflows:create": "compound:workflows:create",
-  "workflows:status": "compound:workflows:status",
-  "workflows:complete": "compound:workflows:complete",
-  "code:refactor": "compound:code:refactor",
-  "code:review": "compound:code:review",
-  "code:optimize": "compound:code:optimize",
-  "code:format": "compound:code:format",
-  "git:smart-commit": "compound:git:smart-commit",
-  "git:branch": "compound:git:branch",
-  "git:merge": "compound:git:merge",
-  "git:cleanup": "compound:git:cleanup",
-  "project:init": "compound:project:init",
-  "project:build": "compound:project:build",
-  "project:deploy": "compound:project:deploy",
-  "project:test": "compound:project:test",
-  "util:clean": "compound:util:clean",
-  "util:backup": "compound:util:backup",
-  "util:restore": "compound:util:restore",
-  "util:doctor": "compound:util:doctor",
-  "docs:deploy-docs": "compound:docs:deploy-docs",
-  "docs:release-docs": "compound:docs:release-docs",
-  "docs:feature-video": "compound:docs:feature-video",
-  "docs:test-browser": "compound:docs:test-browser",
+  // Old format → new format with grid: prefix
+  "workflows:plan": "grid:workflows:plan",
+  "workflows:create": "grid:workflows:create",
+  "workflows:status": "grid:workflows:status",
+  "workflows:complete": "grid:workflows:complete",
+  "code:refactor": "grid:code:refactor",
+  "code:review": "grid:code:review",
+  "code:optimize": "grid:code:optimize",
+  "code:format": "grid:code:format",
+  "git:smart-commit": "grid:git:smart-commit",
+  "git:branch": "grid:git:branch",
+  "git:merge": "grid:git:merge",
+  "git:cleanup": "grid:git:cleanup",
+  "project:init": "grid:project:init",
+  "project:build": "grid:project:build",
+  "project:deploy": "grid:project:deploy",
+  "project:test": "grid:project:test",
+  "util:clean": "grid:util:clean",
+  "util:backup": "grid:util:backup",
+  "util:restore": "grid:util:restore",
+  "util:doctor": "grid:util:doctor",
+  "docs:deploy-docs": "grid:docs:deploy-docs",
+  "docs:release-docs": "grid:docs:release-docs",
+  "docs:feature-video": "grid:docs:feature-video",
+  "docs:test-browser": "grid:docs:test-browser",
 }
 
 const COMPOUND_SKILL_MIGRATION_MAP: Record<string, string> = {

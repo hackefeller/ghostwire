@@ -69,14 +69,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-bun-
 
-      # Build local oh-my-opencode
-      - name: Build oh-my-opencode
+      # Build local ghostwire
+      - name: Build ghostwire
         run: |
           bun install
           bun run build
 
       # Install OpenCode + configure local plugin + auth in single step
-      - name: Setup OpenCode with oh-my-opencode
+      - name: Setup OpenCode with ghostwire
         env:
           OPENCODE_AUTH_JSON: ${{ secrets.OPENCODE_AUTH_JSON }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
@@ -88,7 +88,7 @@ jobs:
           if ! command -v opencode &>/dev/null; then
             echo "Installing OpenCode..."
             curl -fsSL https://opencode.ai/install -o /tmp/opencode-install.sh
-            
+
             # Try default installer first, fallback to re-download if it fails
             if file /tmp/opencode-install.sh | grep -q "shell script\|text"; then
               if ! bash /tmp/opencode-install.sh 2>&1; then
@@ -102,14 +102,14 @@ jobs:
           fi
           opencode --version
 
-          # Run local oh-my-opencode install (uses built dist)
+          # Run local ghostwire install (uses built dist)
           bun run dist/cli/index.js install --no-tui --claude=max20 --openai=no --gemini=no --copilot=no
 
           # Override plugin to use local file reference
           OPENCODE_JSON=~/.config/opencode/opencode.json
           REPO_PATH=$(pwd)
           jq --arg path "file://$REPO_PATH/src/index.ts" '
-            .plugin = [.plugin[] | select(. != "oh-my-opencode")] + [$path]
+            .plugin = [.plugin[] | select(. != "ghostwire")] + [$path]
           ' "$OPENCODE_JSON" > /tmp/oc.json && mv /tmp/oc.json "$OPENCODE_JSON"
 
           OPENCODE_JSON=~/.config/opencode/opencode.json
@@ -190,7 +190,7 @@ jobs:
             }
           ' "$OPENCODE_JSON" > /tmp/oc.json && mv /tmp/oc.json "$OPENCODE_JSON"
 
-          OMO_JSON=~/.config/opencode/oh-my-opencode.json
+          OMO_JSON=~/.config/opencode/ghostwire.json
           PROMPT_APPEND=$(cat << 'PROMPT_EOF'
           <ultrawork-mode>
           [CODE RED] Maximum precision required. Ultrathink before acting.
@@ -282,7 +282,7 @@ jobs:
           ```bash
           # WRONG - backticks disappear:
           gh issue comment 123 --body "text with `code`"
-          
+
           # CORRECT - backticks preserved:
           gh issue comment 123 --body "$(cat <<'EOF'
           text with `code`
@@ -295,18 +295,18 @@ jobs:
           **Code blocks MUST have EXACTLY 3 backticks and language identifier:**
           - CORRECT: ` ```bash ` ... ` ``` `
           - WRONG: ` ``` ` (no language), ` ```` ` (4 backticks), ` `` ` (2 backticks)
-          
+
           **Every opening ` ``` ` MUST have a closing ` ``` ` on its own line:**
           ```
           ```bash
           code here
           ```
           ```
-          
+
           **NO trailing backticks or spaces after closing ` ``` `**
-          
+
           **For inline code, use SINGLE backticks:** `code` not ```code```
-          
+
           **Lists inside code blocks break rendering - avoid them or use plain text**
 
           ### Rules
@@ -386,7 +386,7 @@ jobs:
             --color "fcf2e1" \
             --description "Sisyphus is currently working on this" \
             --force || true
-          
+
           if [[ "${{ steps.context.outputs.type }}" == "pr" ]]; then
             gh pr edit "${{ steps.context.outputs.number }}" \
               --repo "${{ github.repository }}" \
@@ -397,7 +397,7 @@ jobs:
               --add-label "sisyphus: working" || true
           fi
 
-      - name: Run oh-my-opencode
+      - name: Run ghostwire
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           USER_COMMENT: ${{ steps.context.outputs.comment }}
@@ -454,7 +454,7 @@ jobs:
                gh api repos/REPO_PLACEHOLDER/pulls/NUMBER_PLACEHOLDER/comments
                gh api repos/REPO_PLACEHOLDER/pulls/NUMBER_PLACEHOLDER/reviews
                ```
-             
+
              **WHAT TO EXTRACT FROM THE CONVERSATION:**
              - The ORIGINAL issue/PR description (first message) - this is often the TRUE requirement
              - ALL previous attempts and their outcomes
@@ -462,7 +462,7 @@ jobs:
              - ALL feedback, criticism, and rejection reasons
              - ANY linked issues, PRs, or external references
              - The EXACT ask from the user who mentioned you
-             
+
              **FAILURE TO READ EVERYTHING = GUARANTEED FAILURE**
              You WILL make wrong assumptions. You WILL repeat past mistakes. You WILL miss critical context.
 

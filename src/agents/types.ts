@@ -3,8 +3,8 @@ export type AgentConfig = SDKAgentConfig
 
 /**
  * Agent mode determines UI model selection behavior:
- * - "primary": Respects user's UI-selected model (sisyphus, atlas)
- * - "subagent": Uses own fallback chain, ignores UI selection (oracle, explore, etc.)
+ * - "primary": Respects user's UI-selected model (cipherOperator, nexusOrchestrator)
+ * - "subagent": Uses own fallback chain, ignores UI selection (seerAdvisor, scoutRecon, etc.)
  * - "all": Available in both contexts (OpenCode compatibility)
  */
 export type AgentMode = "primary" | "subagent" | "all"
@@ -18,7 +18,7 @@ export type AgentFactory = ((model: string) => AgentConfig) & {
 }
 
 /**
- * Agent category for grouping in Sisyphus prompt sections
+ * Agent category for grouping in Cipher Operator prompt sections
  */
 export type AgentCategory =
   | "exploration"
@@ -43,7 +43,7 @@ export type AgentCost =
   | "HIGH"
 
 /**
- * Delegation trigger for Sisyphus prompt's Delegation Table
+ * Delegation trigger for Cipher Operator prompt's Delegation Table
  */
 export interface DelegationTrigger {
   /** Domain of work (e.g., "Frontend UI/UX") */
@@ -53,8 +53,8 @@ export interface DelegationTrigger {
 }
 
 /**
- * Metadata for generating Sisyphus prompt sections dynamically
- * This allows adding/removing agents without manually updating the Sisyphus prompt
+ * Metadata for generating Cipher Operator prompt sections dynamically
+ * This allows adding/removing agents without manually updating the Cipher Operator prompt
  */
 export interface AgentPromptMetadata {
   /** Category for grouping in prompt sections */
@@ -72,13 +72,13 @@ export interface AgentPromptMetadata {
   /** When NOT to use this agent */
   avoidWhen?: string[]
 
-  /** Optional dedicated prompt section (markdown) - for agents like Oracle that have special sections */
+  /** Optional dedicated prompt section (markdown) - for agents like Seer Advisor that have special sections */
   dedicatedSection?: string
 
-  /** Nickname/alias used in prompt (e.g., "Oracle" instead of "oracle") */
+  /** Nickname/alias used in prompt (e.g., "Seer Advisor" instead of "seer-advisor") */
   promptAlias?: string
 
-  /** Key triggers that should appear in Phase 0 (e.g., "External library mentioned → fire librarian") */
+  /** Key triggers that should appear in Phase 0 (e.g., "External library mentioned → fire archive-researcher") */
   keyTrigger?: string
 }
 
@@ -87,14 +87,14 @@ export function isGptModel(model: string): boolean {
 }
 
 export type BuiltinAgentName =
-  | "sisyphus"
-  | "oracle"
-  | "librarian"
-  | "explore"
-  | "multimodal-looker"
-  | "metis"
-  | "momus"
-  | "atlas"
+  | "cipher-operator"
+  | "seer-advisor"
+  | "archive-researcher"
+  | "scout-recon"
+  | "optic-analyst"
+  | "tactician-strategist"
+  | "glitch-auditor"
+  | "nexus-orchestrator"
 
 export type OverridableAgentName =
   | "build"

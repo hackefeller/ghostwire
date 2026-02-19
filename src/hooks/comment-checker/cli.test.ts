@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, mock } from "bun:test"
 
-describe("comment-checker CLI path resolution", () => {
+describe("grid-comment-checker CLI path resolution", () => {
   describe("lazy initialization", () => {
     // #given module is imported
     // #when COMMENT_CHECKER_CLI_PATH is accessed

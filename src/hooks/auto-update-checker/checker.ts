@@ -167,7 +167,7 @@ export function getCachedVersion(): string | null {
       if (pkg.version) return pkg.version
     }
   } catch (err) {
-    log("[auto-update-checker] Failed to resolve version from current directory:", err)
+    log("[grid-auto-update-checker] Failed to resolve version from current directory:", err)
   }
 
   // Fallback for compiled binaries (npm global install)
@@ -181,7 +181,7 @@ export function getCachedVersion(): string | null {
       if (pkg.version) return pkg.version
     }
   } catch (err) {
-    log("[auto-update-checker] Failed to resolve version from execPath:", err)
+    log("[grid-auto-update-checker] Failed to resolve version from execPath:", err)
   }
 
   return null
@@ -200,7 +200,7 @@ export function updatePinnedVersion(configPath: string, oldEntry: string, newVer
     // Find the "plugin" array region to scope replacement
     const pluginMatch = content.match(/"plugin"\s*:\s*\[/)
     if (!pluginMatch || pluginMatch.index === undefined) {
-      log(`[auto-update-checker] No "plugin" array found in ${configPath}`)
+      log(`[grid-auto-update-checker] No "plugin" array found in ${configPath}`)
       return false
     }
     
@@ -224,7 +224,7 @@ export function updatePinnedVersion(configPath: string, oldEntry: string, newVer
     const regex = new RegExp(`["']${escapedOldEntry}["']`)
     
     if (!regex.test(pluginArrayContent)) {
-      log(`[auto-update-checker] Entry "${oldEntry}" not found in plugin array of ${configPath}`)
+      log(`[grid-auto-update-checker] Entry "${oldEntry}" not found in plugin array of ${configPath}`)
       return false
     }
     
@@ -232,15 +232,15 @@ export function updatePinnedVersion(configPath: string, oldEntry: string, newVer
     const updatedContent = before + updatedPluginArray + after
     
     if (updatedContent === content) {
-      log(`[auto-update-checker] No changes made to ${configPath}`)
+      log(`[grid-auto-update-checker] No changes made to ${configPath}`)
       return false
     }
     
     fs.writeFileSync(configPath, updatedContent, "utf-8")
-    log(`[auto-update-checker] Updated ${configPath}: ${oldEntry} → ${newEntry}`)
+    log(`[grid-auto-update-checker] Updated ${configPath}: ${oldEntry} → ${newEntry}`)
     return true
   } catch (err) {
-    log(`[auto-update-checker] Failed to update config file ${configPath}:`, err)
+    log(`[grid-auto-update-checker] Failed to update config file ${configPath}:`, err)
     return false
   }
 }
@@ -268,19 +268,19 @@ export async function getLatestVersion(channel: string = "latest"): Promise<stri
 
 export async function checkForUpdate(directory: string): Promise<UpdateCheckResult> {
   if (isLocalDevMode(directory)) {
-    log("[auto-update-checker] Local dev mode detected, skipping update check")
+    log("[grid-auto-update-checker] Local dev mode detected, skipping update check")
     return { needsUpdate: false, currentVersion: null, latestVersion: null, isLocalDev: true, isPinned: false }
   }
 
   const pluginInfo = findPluginEntry(directory)
   if (!pluginInfo) {
-    log("[auto-update-checker] Plugin not found in config")
+    log("[grid-auto-update-checker] Plugin not found in config")
     return { needsUpdate: false, currentVersion: null, latestVersion: null, isLocalDev: false, isPinned: false }
   }
 
   const currentVersion = getCachedVersion() ?? pluginInfo.pinnedVersion
   if (!currentVersion) {
-    log("[auto-update-checker] No cached version found")
+    log("[grid-auto-update-checker] No cached version found")
     return { needsUpdate: false, currentVersion: null, latestVersion: null, isLocalDev: false, isPinned: false }
   }
 
@@ -288,11 +288,11 @@ export async function checkForUpdate(directory: string): Promise<UpdateCheckResu
   const channel = extractChannel(pluginInfo.pinnedVersion ?? currentVersion)
   const latestVersion = await getLatestVersion(channel)
   if (!latestVersion) {
-    log("[auto-update-checker] Failed to fetch latest version for channel:", channel)
+    log("[grid-auto-update-checker] Failed to fetch latest version for channel:", channel)
     return { needsUpdate: false, currentVersion, latestVersion: null, isLocalDev: false, isPinned: pluginInfo.isPinned }
   }
 
   const needsUpdate = currentVersion !== latestVersion
-  log(`[auto-update-checker] Current: ${currentVersion}, Latest (${channel}): ${latestVersion}, NeedsUpdate: ${needsUpdate}`)
+  log(`[grid-auto-update-checker] Current: ${currentVersion}, Latest (${channel}): ${latestVersion}, NeedsUpdate: ${needsUpdate}`)
   return { needsUpdate, currentVersion, latestVersion, isLocalDev: false, isPinned: pluginInfo.isPinned }
 }

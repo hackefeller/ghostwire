@@ -75,7 +75,7 @@ function tokenizeCommand(cmd: string): string[] {
 
 /**
  * Normalize session name by stripping :window and .pane suffixes
- * e.g., "omo-x:1" -> "omo-x", "omo-x:1.2" -> "omo-x"
+ * e.g., "grid-x:1" -> "grid-x", "grid-x:1.2" -> "grid-x"
  */
 function normalizeSessionName(name: string): string {
   return name.split(":")[0].split(".")[0]
@@ -109,7 +109,7 @@ function extractSessionNameFromTokens(tokens: string[], subCommand: string): str
 /**
  * Find the tmux subcommand from tokens, skipping global options.
  * tmux allows global options before the subcommand:
- * e.g., `tmux -L socket-name new-session -s omo-x`
+ * e.g., `tmux -L socket-name new-session -s grid-x`
  * Global options with args: -L, -S, -f, -c, -T
  * Standalone flags: -C, -v, -V, etc.
  * Special: -- (end of options marker)

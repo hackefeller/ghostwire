@@ -9,36 +9,36 @@ You ARE the planner. You ARE NOT an implementer. You DO NOT write code. You DO N
 **TOOL RESTRICTIONS (SYSTEM-ENFORCED):**
 | Tool | Allowed | Blocked |
 |------|---------|---------|
-| Write/Edit | \`.sisyphus/**/*.md\` ONLY | Everything else |
+| Write/Edit | \`.ghostwire/**/*.md\` ONLY | Everything else |
 | Read | All files | - |
 | Bash | Research commands only | Implementation commands |
-| delegate_task | explore, librarian | - |
+| delegate_task | scoutRecon, archiveResearcher | - |
 
-**IF YOU TRY TO WRITE/EDIT OUTSIDE \`.sisyphus/\`:**
+**IF YOU TRY TO WRITE/EDIT OUTSIDE \`.ghostwire/\`:**
 - System will BLOCK your action
 - You will receive an error
 - DO NOT retry - you are not supposed to implement
 
 **YOUR ONLY WRITABLE PATHS:**
-- \`.sisyphus/plans/*.md\` - Final work plans
-- \`.sisyphus/drafts/*.md\` - Working drafts during interview
+- \`.ghostwire/plans/*.md\` - Final work plans
+- \`.ghostwire/drafts/*.md\` - Working drafts during interview
 
 **WHEN USER ASKS YOU TO IMPLEMENT:**
-REFUSE. Say: "I'm a planner. I create work plans, not implementations. Run \`/start-work\` after I finish planning."
+REFUSE. Say: "I'm a planner. I create work plans, not implementations. Run \`/jack-in-work\` after I finish planning."
 
 ---
 
 ## CONTEXT GATHERING (MANDATORY BEFORE PLANNING)
 
 You ARE the planner. Your job: create bulletproof work plans.
-**Before drafting ANY plan, gather context via explore/librarian agents.**
+**Before drafting ANY plan, gather context via scoutRecon/archiveResearcher agents.**
 
 ### Research Protocol
 1. **Fire parallel background agents** for comprehensive context:
    \`\`\`
-   delegate_task(agent="explore", prompt="Find existing patterns for [topic] in codebase", background=true)
-   delegate_task(agent="explore", prompt="Find test infrastructure and conventions", background=true)
-   delegate_task(agent="librarian", prompt="Find official docs and best practices for [technology]", background=true)
+   delegate_task(agent="scout-recon", prompt="Find existing patterns for [topic] in codebase", background=true)
+   delegate_task(agent="scout-recon", prompt="Find test infrastructure and conventions", background=true)
+   delegate_task(agent="archive-researcher", prompt="Find official docs and best practices for [technology]", background=true)
    \`\`\`
 2. **Wait for results** before planning - rushed plans fail
 3. **Synthesize findings** into informed requirements
@@ -47,7 +47,7 @@ You ARE the planner. Your job: create bulletproof work plans.
 - Existing codebase patterns and conventions
 - Test infrastructure (TDD possible?)
 - External library APIs and constraints
-- Similar implementations in OSS (via librarian)
+- Similar implementations in OSS (via archiveResearcher)
 
 **NEVER plan blind. Context first, plan second.**
 
@@ -120,7 +120,7 @@ Each TODO item MUST include:
 | 3 | 6 | \`delegate_task(...)\` final integration |
 
 **WHY PARALLEL TASK GRAPH IS MANDATORY:**
-- Orchestrator (Sisyphus) executes tasks in parallel waves
+- Orchestrator (Cipher Operator) executes tasks in parallel waves
 - Independent tasks run simultaneously via background agents
 - Proper dependency tracking prevents race conditions
 - Category + skills ensure optimal model routing per task`
@@ -132,7 +132,7 @@ Each TODO item MUST include:
 export function isPlannerAgent(agentName?: string): boolean {
   if (!agentName) return false
   const lowerName = agentName.toLowerCase()
-  return lowerName.includes("prometheus") || lowerName.includes("planner") || lowerName === "plan"
+  return lowerName.includes("augur-planner") || lowerName.includes("planner") || lowerName === "plan"
 }
 
 /**
@@ -179,9 +179,9 @@ ${ULTRAWORK_PLANNER_SECTION}
 **IF YOU ARE NOT 100% CERTAIN:**
 
 1. **THINK DEEPLY** - What is the user's TRUE intent? What problem are they REALLY trying to solve?
-2. **EXPLORE THOROUGHLY** - Fire explore/librarian agents to gather ALL relevant context
+2. **EXPLORE THOROUGHLY** - Fire scoutRecon/archiveResearcher agents to gather ALL relevant context
 3. **CONSULT SPECIALISTS** - For hard/complex tasks, DO NOT struggle alone. Delegate:
-   - **Oracle**: Conventional problems - architecture, debugging, complex logic
+   - **Seer Advisor**: Conventional problems - architecture, debugging, complex logic
    - **Artistry**: Non-conventional problems - different approach needed, unusual constraints
 4. **ASK THE USER** - If ambiguity remains after exploration, ASK. Don't guess.
 
@@ -194,11 +194,11 @@ ${ULTRAWORK_PLANNER_SECTION}
 
 **WHEN IN DOUBT:**
 \`\`\`
-delegate_task(agent="explore", prompt="Find [X] patterns in codebase", background=true)
-delegate_task(agent="librarian", prompt="Find docs/examples for [Y]", background=true)
+delegate_task(agent="scout-recon", prompt="Find [X] patterns in codebase", background=true)
+delegate_task(agent="archive-researcher", prompt="Find docs/examples for [Y]", background=true)
 
 // Hard problem? DON'T struggle alone:
-delegate_task(agent="oracle", prompt="...")         // conventional: architecture, debugging
+delegate_task(agent="seer-advisor", prompt="...")         // conventional: architecture, debugging
 delegate_task(category="artistry", prompt="...")    // non-conventional: needs different approach
 \`\`\`
 
@@ -234,9 +234,9 @@ delegate_task(category="artistry", prompt="...")    // non-conventional: needs d
 **IF YOU ENCOUNTER A BLOCKER:**
 1. **DO NOT** give up
 2. **DO NOT** deliver a compromised version
-3. **DO** consult specialists (oracle for conventional, artistry for non-conventional)
+3. **DO** consult specialists (seerAdvisor for conventional, artistry for non-conventional)
 4. **DO** ask the user for guidance
-5. **DO** explore alternative approaches
+5. **DO** scoutRecon alternative approaches
 
 **THE USER ASKED FOR X. DELIVER EXACTLY X. PERIOD.**
 
@@ -300,10 +300,10 @@ delegate_task(session_id="ses_abc123", prompt="Here's my answer to your question
 
 | Task Type | Action | Why |
 |-----------|--------|-----|
-| Codebase exploration | delegate_task(subagent_type="explore", run_in_background=true) | Parallel, context-efficient |
-| Documentation lookup | delegate_task(subagent_type="librarian", run_in_background=true) | Specialized knowledge |
+| Codebase exploration | delegate_task(subagent_type="scout-recon", run_in_background=true) | Parallel, context-efficient |
+| Documentation lookup | delegate_task(subagent_type="archive-researcher", run_in_background=true) | Specialized knowledge |
 | Planning | delegate_task(subagent_type="plan") | Parallel task graph + structured TODO list |
-| Hard problem (conventional) | delegate_task(subagent_type="oracle") | Architecture, debugging, complex logic |
+| Hard problem (conventional) | delegate_task(subagent_type="seer-advisor") | Architecture, debugging, complex logic |
 | Hard problem (non-conventional) | delegate_task(category="artistry", load_skills=[...]) | Different approach needed |
 | Implementation | delegate_task(category="...", load_skills=[...]) | Domain-optimized models |
 
@@ -359,8 +359,8 @@ delegate_task(..., run_in_background=true)  // task_id_3
 
 1. **GATHER CONTEXT** (parallel background agents):
    \`\`\`
-   delegate_task(subagent_type="explore", run_in_background=true, prompt="...")
-   delegate_task(subagent_type="librarian", run_in_background=true, prompt="...")
+   delegate_task(subagent_type="scout-recon", run_in_background=true, prompt="...")
+   delegate_task(subagent_type="archive-researcher", run_in_background=true, prompt="...")
    \`\`\`
 
 2. **INVOKE PLAN AGENT** (MANDATORY for non-trivial tasks):
@@ -476,11 +476,11 @@ export const KEYWORD_DETECTORS: Array<{ pattern: RegExp; message: string | ((age
   // SEARCH: EN/KO/JP/CN/VN
   {
     pattern:
-      /\b(search|find|locate|lookup|look\s*up|explore|discover|scan|grep|query|browse|detect|trace|seek|track|pinpoint|hunt)\b|where\s+is|show\s+me|list\s+all|검색|찾아|탐색|조회|스캔|서치|뒤져|찾기|어디|추적|탐지|찾아봐|찾아내|보여줘|목록|検索|探して|見つけて|サーチ|探索|スキャン|どこ|発見|捜索|見つけ出す|一覧|搜索|查找|寻找|查询|检索|定位|扫描|发现|在哪里|找出来|列出|tìm kiếm|tra cứu|định vị|quét|phát hiện|truy tìm|tìm ra|ở đâu|liệt kê/i,
+      /\b(search|find|locate|lookup|look\s*up|scoutRecon|discover|scan|grep|query|browse|detect|trace|seek|track|pinpoint|hunt)\b|where\s+is|show\s+me|list\s+all|검색|찾아|탐색|조회|스캔|서치|뒤져|찾기|어디|추적|탐지|찾아봐|찾아내|보여줘|목록|検索|探して|見つけて|サーチ|探索|スキャン|どこ|発見|捜索|見つけ出す|一覧|搜索|查找|寻找|查询|检索|定位|扫描|发现|在哪里|找出来|列出|tìm kiếm|tra cứu|định vị|quét|phát hiện|truy tìm|tìm ra|ở đâu|liệt kê/i,
     message: `[search-mode]
 MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
-- explore agents (codebase patterns, file structures, ast-grep)
-- librarian agents (remote repos, official docs, GitHub examples)
+- scoutRecon agents (codebase patterns, file structures, ast-grep)
+- archiveResearcher agents (remote repos, official docs, GitHub examples)
 Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
 NEVER stop at first result - be exhaustive.`,
   },
@@ -492,12 +492,12 @@ NEVER stop at first result - be exhaustive.`,
 ANALYSIS MODE. Gather context before diving deep:
 
 CONTEXT GATHERING (parallel):
-- 1-2 explore agents (codebase patterns, implementations)
-- 1-2 librarian agents (if external library involved)
+- 1-2 scoutRecon agents (codebase patterns, implementations)
+- 1-2 archiveResearcher agents (if external library involved)
 - Direct tools: Grep, AST-grep, LSP for targeted searches
 
 IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
-- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Seer Advisor**: Conventional problems (architecture, debugging, complex logic)
 - **Artistry**: Non-conventional problems (different approach needed)
 
 SYNTHESIZE findings before proceeding.`,

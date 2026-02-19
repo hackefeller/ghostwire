@@ -7,7 +7,7 @@
 ```
 shared/
 ├── tmux/                  # Tmux TUI integration (types, utils, constants)
-├── logger.ts              # File-based logging (/tmp/ruach.log)
+├── logger.ts              # File-based logging (/tmp/ghostwire.log)
 ├── dynamic-truncator.ts   # Token-aware context window management (194 lines)
 ├── model-resolver.ts      # 3-step resolution (Override → Fallback → Default)
 ├── model-requirements.ts  # Agent/category model fallback chains (132 lines)
@@ -58,8 +58,8 @@ shared/
 **3-Step Resolution** (Override → Fallback → Default):
 ```typescript
 const model = resolveModelWithFallback({
-  userModel: config.agents.sisyphus.model,
-  fallbackChain: AGENT_MODEL_REQUIREMENTS.sisyphus.fallbackChain,
+  userModel: config.agents.cipher-operator.model,
+  fallbackChain: AGENT_MODEL_REQUIREMENTS.cipher-operator.fallbackChain,
   availableModels: fetchedModels,
 })
 ```

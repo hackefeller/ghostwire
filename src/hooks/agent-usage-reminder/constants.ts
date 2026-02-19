@@ -4,7 +4,7 @@ import { getOpenCodeStorageDir } from "../../shared/data-path";
 export const OPENCODE_STORAGE = getOpenCodeStorageDir();
 export const AGENT_USAGE_REMINDER_STORAGE = join(
   OPENCODE_STORAGE,
-  "agent-usage-reminder",
+  "grid-agent-usage-reminder",
 );
 
 // All tool names normalized to lowercase for case-insensitive matching
@@ -23,7 +23,7 @@ export const TARGET_TOOLS = new Set([
 
 export const AGENT_TOOLS = new Set([
   "task",
-  "call_omo_agent",
+  "call_grid_agent",
   "delegate_task",
 ]);
 
@@ -32,13 +32,13 @@ export const REMINDER_MESSAGE = `
 
 You called a search/fetch tool directly without leveraging specialized agents.
 
-RECOMMENDED: Use delegate_task with explore/librarian agents for better results:
+RECOMMENDED: Use delegate_task with scoutRecon/archiveResearcher agents for better results:
 
 \`\`\`
 // Parallel exploration - fire multiple agents simultaneously
-delegate_task(agent="explore", prompt="Find all files matching pattern X")
-delegate_task(agent="explore", prompt="Search for implementation of Y") 
-delegate_task(agent="librarian", prompt="Lookup documentation for Z")
+delegate_task(agent="scout-recon", prompt="Find all files matching pattern X")
+delegate_task(agent="scout-recon", prompt="Search for implementation of Y") 
+delegate_task(agent="archive-researcher", prompt="Lookup documentation for Z")
 
 // Then continue your work while they run in background
 // System will notify you when each completes

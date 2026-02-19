@@ -584,7 +584,7 @@ describe("fetchAvailableModels with provider-models cache (whitelist-filtered)",
 	})
 
 	function writeProviderModelsCache(data: { models: Record<string, string[]>; connected: string[] }) {
-		const cacheDir = join(tempDir, "ruach")
+		const cacheDir = join(tempDir, "ghostwire")
 		require("fs").mkdirSync(cacheDir, { recursive: true })
 		writeFileSync(join(cacheDir, "provider-models.json"), JSON.stringify({
 			...data,

@@ -86,7 +86,7 @@ export async function checkPluginRegistration(): Promise<CheckResult> {
       status: "fail",
       message: "OpenCode config file not found",
       details: [
-        "Run: bunx ruach install",
+        "Run: bunx ghostwire install",
         `Expected: ${expectedPaths.configJson} or ${expectedPaths.configJsonc}`,
       ],
     }
@@ -98,7 +98,7 @@ export async function checkPluginRegistration(): Promise<CheckResult> {
       status: "fail",
       message: "Plugin not registered in config",
       details: [
-        "Run: bunx ruach install",
+        "Run: bunx ghostwire install",
         `Config: ${info.configPath}`,
       ],
     }

@@ -58,8 +58,8 @@ describe("build-binaries", () => {
       const linuxBaseline = platforms.find((p) => p.target === "bun-linux-x64-baseline");
 
       // then
-      expect(windowsBaseline?.binary).toBe("ruach.exe");
-      expect(linuxBaseline?.binary).toBe("ruach");
+      expect(windowsBaseline?.binary).toBe("ghostwire.exe");
+      expect(linuxBaseline?.binary).toBe("ghostwire");
     });
 
     it("has descriptions mentioning no AVX2 for baseline platforms", async () => {

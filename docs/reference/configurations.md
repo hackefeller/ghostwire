@@ -1,4 +1,4 @@
-# Ruach Configuration
+# Ghostwire Configuration
 
 Highly opinionated, but adjustable to taste.
 
@@ -7,7 +7,7 @@ Highly opinionated, but adjustable to taste.
 **Most users don't need to configure anything manually.** Run the interactive installer:
 
 ```bash
-bunx ruach install
+bunx ghostwire install
 ```
 
 It asks about your providers (Claude, OpenAI, Gemini, etc.) and generates optimal config automatically.
@@ -16,13 +16,13 @@ It asks about your providers (Claude, OpenAI, Gemini, etc.) and generates optima
 
 ```jsonc
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   
   // Override specific agent models
   "agents": {
-    "oracle": { "model": "openai/gpt-5.2" },           // Use GPT for debugging
-    "librarian": { "model": "zai-coding-plan/glm-4.7" }, // Cheap model for research
-    "explore": { "model": "opencode/gpt-5-nano" }        // Free model for grep
+    "seer-advisor": { "model": "openai/gpt-5.2" },           // Use GPT for debugging
+    "archive-researcher": { "model": "zai-coding-plan/glm-4.7" }, // Cheap model for research
+    "scout-recon": { "model": "opencode/gpt-5-nano" }        // Free model for grep
   },
   
   // Override category models (used by delegate_task)
@@ -38,44 +38,44 @@ It asks about your providers (Claude, OpenAI, Gemini, etc.) and generates optima
 ## Config File Locations
 
 Config file locations (priority order):
-1. `.opencode/ruach.json` (project)
+1. `.opencode/ghostwire.json` (project)
 2. User config (platform-specific):
 
 | Platform        | User Config Path                                                                                            |
 | --------------- | ----------------------------------------------------------------------------------------------------------- |
-| **Windows**     | `~/.config/opencode/ruach.json` (preferred) or `%APPDATA%\opencode\ruach.json` (fallback) |
-| **macOS/Linux** | `~/.config/opencode/ruach.json`                                                                    |
+| **Windows**     | `~/.config/opencode/ghostwire.json` (preferred) or `%APPDATA%\opencode\ghostwire.json` (fallback) |
+| **macOS/Linux** | `~/.config/opencode/ghostwire.json`                                                                    |
 
-LSP tooling reads the same ruach config files (`ruach.jsonc`/`ruach.json`) with the same project-over-user precedence.
+LSP tooling reads the same ghostwire config files (`ghostwire.jsonc`/`ghostwire.json`) with the same project-over-user precedence.
 
 Schema autocomplete supported:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json"
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json"
 }
 ```
 
 ## JSONC Support
 
-The `ruach` configuration file supports JSONC (JSON with Comments):
+The `ghostwire` configuration file supports JSONC (JSON with Comments):
 - Line comments: `// comment`
 - Block comments: `/* comment */`
 - Trailing commas: `{ "key": "value", }`
 
-When both `ruach.jsonc` and `ruach.json` files exist, `.jsonc` takes priority.
+When both `ghostwire.jsonc` and `ghostwire.json` files exist, `.jsonc` takes priority.
 
 **Example with comments:**
 
 ```jsonc
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/ruach/master/assets/ruach.schema.json",
+  "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   /* Agent overrides - customize models for specific tasks */
   "agents": {
-    "oracle": {
+    "seer-advisor": {
       "model": "openai/gpt-5.2"  // GPT for strategic reasoning
     },
-    "explore": {
+    "scout-recon": {
       "model": "opencode/gpt-5-nano"  // Free & fast for exploration
     },
   },
@@ -84,7 +84,7 @@ When both `ruach.jsonc` and `ruach.json` files exist, `.jsonc` takes priority.
 
 ## Google Auth
 
-**Recommended**: For Google Gemini authentication, install the [`opencode-antigravity-auth`](https://github.com/NoeFabris/opencode-antigravity-auth) plugin (`@latest`). It provides multi-account load balancing, variant-based thinking levels, dual quota system (Antigravity + Gemini CLI), and active maintenance. See [Installation > Google Gemini](../guide/installation.md#google-gemini-antigravity-oauth).
+**Recommended**: For Google Gemini authentication, install the [`opencode-antigravity-auth`](https://github.com/NoeFabris/opencode-antigravity-auth) plugin (`@latest`). It provides multi-account load balancing, variant-based thinking levels, dual quota system (Antigravity + Gemini CLI), and active maintenance. See [Installation > Google Gemini](../getting-started/installation.md#google-gemini-antigravity-oauth).
 
 ## Ollama Provider
 
@@ -95,7 +95,7 @@ When both `ruach.jsonc` and `ruach.json` files exist, `.jsonc` takes priority.
 ```json
 {
   "agents": {
-    "explore": {
+    "scout-recon": {
       "model": "ollama/qwen3-coder",
       "stream": false
     }
@@ -119,7 +119,7 @@ Ollama returns NDJSON (newline-delimited JSON) when streaming is enabled, but Cl
 
 ### Supported Models
 
-Common Ollama models that work with ruach:
+Common Ollama models that work with ghostwire:
 
 | Model | Best For | Configuration |
 |-------|----------|---------------|
@@ -144,7 +144,7 @@ If you encounter `JSON Parse error: Unexpected EOF`:
 
 The proper long-term fix requires Claude Code SDK to parse NDJSON responses correctly. Until then, use `stream: false` as a workaround.
 
-**Tracking**: https://github.com/code-yeongyu/ruach/issues/1124
+**Tracking**: https://github.com/pontistudios/ghostwire/issues/1124
 
 ## Agents
 
@@ -153,11 +153,11 @@ Override built-in agent settings:
 ```json
 {
   "agents": {
-    "explore": {
+    "scout-recon": {
       "model": "anthropic/claude-haiku-4-5",
       "temperature": 0.5
     },
-    "multimodal-looker": {
+    "optic-analyst": {
       "disable": true
     }
   }
@@ -183,7 +183,7 @@ Each agent supports: `model`, `temperature`, `top_p`, `prompt`, `prompt_append`,
 ```json
 {
   "agents": {
-    "oracle": {
+    "seer-advisor": {
       "thinking": {
         "type": "enabled",
         "budgetTokens": 200000
@@ -203,14 +203,14 @@ Use `prompt_append` to add extra instructions without replacing the default syst
 ```json
 {
   "agents": {
-    "librarian": {
+    "archive-researcher": {
       "prompt_append": "Always use the elisp-dev-mcp for Emacs Lisp documentation lookups."
     }
   }
 }
 ```
 
-You can also override settings for `Sisyphus` (the main orchestrator) and `build` (the default agent) using the same options.
+You can also override settings for `Cipher Operator` (the main orchestrator) and `build` (the default agent) using the same options.
 
 ### Permission Options
 
@@ -219,7 +219,7 @@ Fine-grained control over what agents can do:
 ```json
 {
   "agents": {
-    "explore": {
+    "scout-recon": {
       "permission": {
         "edit": "deny",
         "bash": "ask",
@@ -238,24 +238,24 @@ Fine-grained control over what agents can do:
 | `doom_loop`          | Allow infinite loop detection override | `ask` / `allow` / `deny`                                                    |
 | `external_directory` | Access files outside project root      | `ask` / `allow` / `deny`                                                    |
 
-Or disable via `disabled_agents` in `~/.config/opencode/ruach.json` or `.opencode/ruach.json`:
+Or disable via `disabled_agents` in `~/.config/opencode/ghostwire.json` or `.opencode/ghostwire.json`:
 
 ```json
 {
-  "disabled_agents": ["oracle", "multimodal-looker"]
+  "disabled_agents": ["seer-advisor", "optic-analyst"]
 }
 ```
 
-Available agents: `sisyphus`, `prometheus`, `oracle`, `librarian`, `explore`, `multimodal-looker`, `metis`, `momus`, `atlas`
+Available agents: `cipher-operator`, `augur-planner`, `seer-advisor`, `archive-researcher`, `scout-recon`, `optic-analyst`, `tactician-strategist`, `glitch-auditor`, `nexus-orchestrator`
 
 ## Built-in Skills
 
-Ruach includes built-in skills that provide additional capabilities:
+Ghostwire includes built-in skills that provide additional capabilities:
 
 - **playwright** (default) / **agent-browser**: Browser automation for web scraping, testing, screenshots, and browser interactions. See [Browser Automation](#browser-automation) for switching between providers.
 - **git-master**: Git expert for atomic commits, rebase/squash, and history search (blame, bisect, log -S). STRONGLY RECOMMENDED: Use with `delegate_task(category='quick', load_skills=['git-master'], ...)` to save context.
 
-Disable built-in skills via `disabled_skills` in `~/.config/opencode/ruach.json` or `.opencode/ruach.json`:
+Disable built-in skills via `disabled_skills` in `~/.config/opencode/ghostwire.json` or `.opencode/ghostwire.json`:
 
 ```json
 {
@@ -345,7 +345,7 @@ Define custom skills directly in your config:
 | `subtask`         | `false`  | Whether to run as a subtask                                                           |
 | `argument-hint`   | -       | Hint for how to use the skill                                                        |
 | `license`          | -       | Skill license                                                                       |
-| `compatibility`    | -       | Required ruach version compatibility                                           |
+| `compatibility`    | -       | Required ghostwire version compatibility                                           |
 | `metadata`         | -       | Additional metadata as key-value pairs                                                |
 | `allowed-tools`    | -       | Array of tools this skill is allowed to use                                            |
 
@@ -373,7 +373,7 @@ Choose between two browser automation providers:
 | **playwright** (default) | MCP tools | Playwright MCP server with structured tool calls | Auto-installed via npx |
 | **agent-browser** | Bash CLI | Vercel's CLI with session management, parallel browsers | Requires `bun add -g agent-browser` |
 
-**Switch providers** via `browser_automation_engine` in `ruach.json`:
+**Switch providers** via `browser_automation_engine` in `ghostwire.json`:
 
 ```json
 {
@@ -415,7 +415,7 @@ agent-browser close
 
 Run background subagents in separate tmux panes for **visual multi-agent execution**. See your agents working in parallel, each in their own terminal pane.
 
-**Enable tmux integration** via `tmux` in `ruach.json`:
+**Enable tmux integration** via `tmux` in `ghostwire.json`:
 
 ```json
 {
@@ -558,7 +558,7 @@ oc() {
 **How subagent panes work**:
 
 1. Main OpenCode starts HTTP server on specified port (e.g., `http://localhost:4096`)
-2. When a background agent spawns, Ruach creates a new tmux pane
+2. When a background agent spawns, Ghostwire creates a new tmux pane
 3. The pane runs: `opencode attach http://localhost:4096 --session <session-id>`
 4. Each subagent pane shows real-time streaming output
 5. Panes are automatically closed when the subagent completes
@@ -603,23 +603,23 @@ Configure git-master skill behavior:
 
 | Option                   | Default | Description                                                                      |
 | ------------------------ | ------- | -------------------------------------------------------------------------------- |
-| `commit_footer`          | `true`  | Adds "Ultraworked with Sisyphus" footer to commit messages.                      |
-| `include_co_authored_by` | `true`  | Adds `Co-authored-by: Sisyphus <clio-agent@sisyphuslabs.ai>` trailer to commits. |
+| `commit_footer`          | `true`  | Adds "Ultraworked with Cipher Operator" footer to commit messages.                      |
+| `include_co_authored_by` | `true`  | Adds `Co-authored-by: Cipher Operator <clio-agent@ghostwire.ai>` trailer to commits. |
 
-## Sisyphus Agent
+## Cipher Operator Agent
 
-When enabled (default), Sisyphus provides a powerful orchestrator with optional specialized agents:
+When enabled (default), Cipher Operator provides a powerful orchestrator with optional specialized agents:
 
-- **Sisyphus**: Primary orchestrator agent (Claude Opus 4.5)
+- **Cipher Operator**: Primary orchestrator agent (Claude Opus 4.5)
 - **OpenCode-Builder**: OpenCode's default build agent, renamed due to SDK limitations (disabled by default)
-- **Prometheus (Planner)**: OpenCode's default plan agent with work-planner methodology (enabled by default)
-- **Metis (Plan Consultant)**: Pre-planning analysis agent that identifies hidden requirements and AI failure points
+- **Augur Planner (Planner)**: OpenCode's default plan agent with work-planner methodology (enabled by default)
+- **Tactician Strategist (Plan Consultant)**: Pre-planning analysis agent that identifies hidden requirements and AI failure points
 
 **Configuration Options:**
 
 ```json
 {
-  "sisyphus_agent": {
+  "cipher_agent": {
     "disabled": false,
     "default_builder_enabled": false,
     "planner_enabled": true,
@@ -632,40 +632,40 @@ When enabled (default), Sisyphus provides a powerful orchestrator with optional 
 
 ```json
 {
-  "sisyphus_agent": {
+  "cipher_agent": {
     "default_builder_enabled": true
   }
 }
 ```
 
-This enables OpenCode-Builder agent alongside Sisyphus. The default build agent is always demoted to subagent mode when Sisyphus is enabled.
+This enables OpenCode-Builder agent alongside Cipher Operator. The default build agent is always demoted to subagent mode when Cipher Operator is enabled.
 
-**Example: Disable all Sisyphus orchestration:**
+**Example: Disable all Cipher Operator orchestration:**
 
 ```json
 {
-  "sisyphus_agent": {
+  "cipher_agent": {
     "disabled": true
   }
 }
 ```
 
-You can also customize Sisyphus agents like other agents:
+You can also customize Cipher Operator agents like other agents:
 
 ```json
 {
   "agents": {
-    "Sisyphus": {
+    "Cipher Operator": {
       "model": "anthropic/claude-sonnet-4",
       "temperature": 0.3
     },
     "OpenCode-Builder": {
       "model": "anthropic/claude-opus-4"
     },
-    "Prometheus (Planner)": {
+    "Augur Planner (Planner)": {
       "model": "openai/gpt-5.2"
     },
-    "Metis (Plan Consultant)": {
+    "Tactician Strategist (Plan Consultant)": {
       "model": "anthropic/claude-sonnet-4-5"
     }
   }
@@ -674,10 +674,10 @@ You can also customize Sisyphus agents like other agents:
 
 | Option                    | Default | Description                                                                                                                            |
 | ------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `disabled`                | `false` | When `true`, disables all Sisyphus orchestration and restores original build/plan as primary.                                          |
+| `disabled`                | `false` | When `true`, disables all Cipher Operator orchestration and restores original build/plan as primary.                                          |
 | `default_builder_enabled` | `false` | When `true`, enables OpenCode-Builder agent (same as OpenCode build, renamed due to SDK limitations). Disabled by default.             |
-| `planner_enabled`         | `true`  | When `true`, enables Prometheus (Planner) agent with work-planner methodology. Enabled by default.                                     |
-| `replace_plan`            | `true`  | When `true`, demotes default plan agent to subagent mode. Set to `false` to keep both Prometheus (Planner) and default plan available. |
+| `planner_enabled`         | `true`  | When `true`, enables Augur Planner (Planner) agent with work-planner methodology. Enabled by default.                                     |
+| `replace_plan`            | `true`  | When `true`, demotes default plan agent to subagent mode. Set to `false` to keep both Augur Planner (Planner) and default plan available. |
 
 ## Background Tasks
 
@@ -717,7 +717,7 @@ Configure concurrency limits for background agent tasks. This controls how many 
 
 ## Categories
 
-Categories enable domain-specific task delegation via the `delegate_task` tool. Each category applies runtime presets (model, temperature, prompt additions) when calling the `Sisyphus-Junior` agent.
+Categories enable domain-specific task delegation via the `delegate_task` tool. Each category applies runtime presets (model, temperature, prompt additions) when calling the `Cipher Operator-Junior` agent.
 
 ### Built-in Categories
 
@@ -738,7 +738,7 @@ All 7 categories come with optimal model defaults, but **you must configure them
 **Categories DO NOT use their built-in defaults unless configured.** Model resolution follows this priority:
 
 ```
-1. User-configured model (in ruach.json)
+1. User-configured model (in ghostwire.json)
 2. Category's built-in default (if you add category to config)
 3. System default model (from opencode.json)
 ```
@@ -749,7 +749,7 @@ All 7 categories come with optimal model defaults, but **you must configure them
 // opencode.json
 { "model": "anthropic/claude-sonnet-4-5" }
 
-// ruach.json (empty categories section)
+// ghostwire.json (empty categories section)
 {}
 
 // Result: ALL categories use claude-sonnet-4-5 (wasteful!)
@@ -803,7 +803,7 @@ delegate_task(category="visual-engineering", prompt="Create a responsive dashboa
 delegate_task(category="ultrabrain", prompt="Design the payment processing flow")
 
 // Or target a specific agent directly (bypasses categories)
-delegate_task(agent="oracle", prompt="Review this architecture")
+delegate_task(agent="seer-advisor", prompt="Review this architecture")
 ```
 
 ### Custom Categories
@@ -837,14 +837,14 @@ Each category supports: `model`, `temperature`, `top_p`, `maxTokens`, `thinking`
 
 ## Model Resolution System
 
-At runtime, Ruach uses a 3-step resolution process to determine which model to use for each agent and category. This happens dynamically based on your configuration and available models.
+At runtime, Ghostwire uses a 3-step resolution process to determine which model to use for each agent and category. This happens dynamically based on your configuration and available models.
 
 ### Overview
 
 **Problem**: Users have different provider configurations. The system needs to select the best available model for each task at runtime.
 
 **Solution**: A simple 3-step resolution flow:
-1. **Step 1: User Override** — If you specify a model in `ruach.json`, use exactly that
+1. **Step 1: User Override** — If you specify a model in `ghostwire.json`, use exactly that
 2. **Step 2: Provider Fallback** — Try each provider in the requirement's priority order until one is available
 3. **Step 3: System Default** — Fall back to OpenCode's configured default model
 
@@ -857,7 +857,7 @@ At runtime, Ruach uses a 3-step resolution process to determine which model to u
 │                                                                 │
 │   Step 1: USER OVERRIDE                                         │
 │   ┌─────────────────────────────────────────────────────────┐   │
-│   │ User specified model in ruach.json?            │   │
+│   │ User specified model in ghostwire.json?            │   │
 │   │         YES → Use exactly as specified                  │   │
 │   │         NO  → Continue to Step 2                        │   │
 │   └─────────────────────────────────────────────────────────┘   │
@@ -867,7 +867,7 @@ At runtime, Ruach uses a 3-step resolution process to determine which model to u
 │   ┌─────────────────────────────────────────────────────────┐   │
 │   │ For each provider in requirement.providers order:       │   │
 │   │                                                         │   │
-│   │ Example for Sisyphus:                                   │   │
+│   │ Example for Cipher Operator:                                   │   │
 │   │ anthropic → github-copilot → opencode → antigravity     │   │
 │   │     │            │              │            │          │   │
 │   │     ▼            ▼              ▼            ▼          │   │
@@ -895,15 +895,15 @@ Each agent has a defined provider priority chain. The system tries providers in 
 
 | Agent | Model (no prefix) | Provider Priority Chain |
 |-------|-------------------|-------------------------|
-| **Sisyphus** | `claude-opus-4-5` | anthropic → kimi-for-coding → zai-coding-plan → openai → google |
-| **oracle** | `gpt-5.2` | openai → google → anthropic |
-| **librarian** | `glm-4.7` | zai-coding-plan → opencode → anthropic |
-| **explore** | `claude-haiku-4-5` | anthropic → github-copilot → opencode |
-| **multimodal-looker** | `gemini-3-flash` | google → openai → zai-coding-plan → kimi-for-coding → anthropic → opencode |
-| **Prometheus (Planner)** | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
-| **Metis (Plan Consultant)** | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
-| **Momus (Plan Reviewer)** | `gpt-5.2` | openai → anthropic → google |
-| **Atlas** | `claude-sonnet-4-5` | anthropic → kimi-for-coding → openai → google |
+| **Cipher Operator** | `claude-opus-4-5` | anthropic → kimi-for-coding → zai-coding-plan → openai → google |
+| **seer-advisor** | `gpt-5.2` | openai → google → anthropic |
+| **archive-researcher** | `glm-4.7` | zai-coding-plan → opencode → anthropic |
+| **scout-recon** | `claude-haiku-4-5` | anthropic → github-copilot → opencode |
+| **optic-analyst** | `gemini-3-flash` | google → openai → zai-coding-plan → kimi-for-coding → anthropic → opencode |
+| **Augur Planner (Planner)** | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
+| **Tactician Strategist (Plan Consultant)** | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
+| **Glitch Auditor (Plan Reviewer)** | `gpt-5.2` | openai → anthropic → google |
+| **Nexus Orchestrator** | `claude-sonnet-4-5` | anthropic → kimi-for-coding → openai → google |
 
 ### Category Provider Chains
 
@@ -925,7 +925,7 @@ Categories follow the same resolution logic:
 Use the `doctor` command to see how models resolve with your current configuration:
 
 ```bash
-bunx ruach doctor --verbose
+bunx ghostwire doctor --verbose
 ```
 
 The "Model Resolution" check shows:
@@ -936,15 +936,15 @@ The "Model Resolution" check shows:
 
 ### Manual Override
 
-Override any agent or category model in `ruach.json`:
+Override any agent or category model in `ghostwire.json`:
 
 ```json
 {
   "agents": {
-    "Sisyphus": {
+    "Cipher Operator": {
       "model": "anthropic/claude-sonnet-4-5"
     },
-    "oracle": {
+    "seer-advisor": {
       "model": "openai/o3"
     }
   },
@@ -960,35 +960,35 @@ When you specify a model override, it takes precedence (Step 1) and the provider
 
 ## Hooks
 
-Disable specific built-in hooks via `disabled_hooks` in `~/.config/opencode/ruach.json` or `.opencode/ruach.json`:
+Disable specific built-in hooks via `disabled_hooks` in `~/.config/opencode/ghostwire.json` or `.opencode/ghostwire.json`:
 
 ```json
 {
-  "disabled_hooks": ["comment-checker", "agent-usage-reminder"]
+  "disabled_hooks": ["grid-comment-checker", "grid-agent-usage-reminder"]
 }
 ```
 
-Available hooks: `todo-continuation-enforcer`, `context-window-monitor`, `session-recovery`, `session-notification`, `comment-checker`, `grep-output-truncator`, `tool-output-truncator`, `directory-agents-injector`, `directory-readme-injector`, `empty-task-response-detector`, `think-mode`, `anthropic-context-window-limit-recovery`, `rules-injector`, `background-notification`, `auto-update-checker`, `startup-toast`, `keyword-detector`, `agent-usage-reminder`, `non-interactive-env`, `interactive-bash-session`, `compaction-context-injector`, `thinking-block-validator`, `claude-code-hooks`, `ralph-loop`, `preemptive-compaction`, `auto-slash-command`, `sisyphus-junior-notepad`, `start-work`
+Available hooks: `grid-todo-continuation-enforcer`, `grid-context-window-monitor`, `grid-session-recovery`, `grid-session-notification`, `grid-comment-checker`, `grid-grep-output-truncator`, `grid-tool-output-truncator`, `grid-directory-agents-injector`, `grid-directory-readme-injector`, `grid-empty-task-response-detector`, `grid-think-mode`, `grid-anthropic-context-window-limit-recovery`, `grid-rules-injector`, `grid-background-notification`, `grid-auto-update-checker`, `grid-startup-toast`, `grid-keyword-detector`, `grid-agent-usage-reminder`, `grid-non-interactive-env`, `grid-interactive-bash-session`, `grid-compaction-context-injector`, `grid-thinking-block-validator`, `grid-claude-code-hooks`, `overclock-loop`, `preemptive-compaction`, `grid-auto-slash-command`, `cipher-runner-notepad`, `jack-in-work`
 
-**Note on `directory-agents-injector`**: This hook is **automatically disabled** when running on OpenCode 1.1.37+ because OpenCode now has native support for dynamically resolving AGENTS.md files from subdirectories (PR #10678). This prevents duplicate AGENTS.md injection. For older OpenCode versions, the hook remains active to provide the same functionality.
+**Note on `grid-directory-agents-injector`**: This hook is **automatically disabled** when running on OpenCode 1.1.37+ because OpenCode now has native support for dynamically resolving AGENTS.md files from subdirectories (PR #10678). This prevents duplicate AGENTS.md injection. For older OpenCode versions, the hook remains active to provide the same functionality.
 
-**Note on `auto-update-checker` and `startup-toast`**: The `startup-toast` hook is a sub-feature of `auto-update-checker`. To disable only the startup toast notification while keeping update checking enabled, add `"startup-toast"` to `disabled_hooks`. To disable all update checking features (including the toast), add `"auto-update-checker"` to `disabled_hooks`.
+**Note on `grid-auto-update-checker` and `grid-startup-toast`**: The `grid-startup-toast` hook is a sub-feature of `grid-auto-update-checker`. To disable only the startup toast notification while keeping update checking enabled, add `"grid-startup-toast"` to `disabled_hooks`. To disable all update checking features (including the toast), add `"grid-auto-update-checker"` to `disabled_hooks`.
 
 ## Disabled Commands
 
-Disable specific built-in commands via `disabled_commands` in `~/.config/opencode/ruach.json` or `.opencode/ruach.json`:
+Disable specific built-in commands via `disabled_commands` in `~/.config/opencode/ghostwire.json` or `.opencode/ghostwire.json`:
 
 ```json
 {
-  "disabled_commands": ["init-deep", "start-work"]
+  "disabled_commands": ["init-deep", "jack-in-work"]
 }
 ```
 
-Available commands: `init-deep`, `start-work`
+Available commands: `init-deep`, `jack-in-work`
 
 ## Comment Checker
 
-Configure comment-checker hook behavior. The comment checker warns when excessive comments are added to code.
+Configure grid-comment-checker hook behavior. The comment checker warns when excessive comments are added to code.
 
 ```json
 {
@@ -1016,23 +1016,23 @@ Configure notification behavior for background task completion.
 
 | Option         | Default | Description                                                                                   |
 | -------------- | ------- | ---------------------------------------------------------------------------------------------- |
-| `force_enable` | `false` | Force enable session-notification even if external notification plugins are detected. Default: `false`. |
+| `force_enable` | `false` | Force enable grid-session-notification even if external notification plugins are detected. Default: `false`. |
 
-## Sisyphus Tasks & Swarm
+## Cipher Operator Tasks & Swarm
 
-Configure Sisyphus Tasks and Swarm systems for advanced task management and multi-agent orchestration.
+Configure Cipher Operator Tasks and Swarm systems for advanced task management and multi-agent orchestration.
 
 ```json
 {
-  "sisyphus": {
+  "cipher-operator": {
     "tasks": {
       "enabled": false,
-      "storage_path": ".sisyphus/tasks",
+      "storage_path": ".ghostwire/tasks",
       "claude_code_compat": false
     },
     "swarm": {
       "enabled": false,
-      "storage_path": ".sisyphus/teams",
+      "storage_path": ".ghostwire/teams",
       "ui_mode": "toast"
     }
   }
@@ -1043,16 +1043,16 @@ Configure Sisyphus Tasks and Swarm systems for advanced task management and mult
 
 | Option               | Default            | Description                                                               |
 | -------------------- | ------------------ | ------------------------------------------------------------------------- |
-| `enabled`            | `false`            | Enable Sisyphus Tasks system                                               |
-| `storage_path`       | `.sisyphus/tasks`  | Storage path for tasks (relative to project root)                           |
+| `enabled`            | `false`            | Enable Cipher Operator Tasks system                                               |
+| `storage_path`       | `.ghostwire/tasks`  | Storage path for tasks (relative to project root)                           |
 | `claude_code_compat` | `false`            | Enable Claude Code path compatibility mode                                   |
 
 ### Swarm Configuration
 
 | Option         | Default            | Description                                                    |
 | -------------- | ------------------ | -------------------------------------------------------------- |
-| `enabled`      | `false`            | Enable Sisyphus Swarm system for multi-agent orchestration        |
-| `storage_path` | `.sisyphus/teams`  | Storage path for teams (relative to project root)                |
+| `enabled`      | `false`            | Enable Cipher Operator Swarm system for multi-agent orchestration        |
+| `storage_path` | `.ghostwire/teams`  | Storage path for teams (relative to project root)                |
 | `ui_mode`      | `toast`            | UI mode: `toast` (notifications), `tmux` (panes), or `both`     |
 
 ## MCPs
@@ -1063,7 +1063,7 @@ Exa, Context7 and grep.app MCP enabled by default.
 - **context7**: Fetches up-to-date official documentation for libraries
 - **grep_app**: Ultra-fast code search across millions of public GitHub repositories via [grep.app](https://grep.app)
 
-Don't want them? Disable via `disabled_mcps` in `~/.config/opencode/ruach.json` or `.opencode/ruach.json`:
+Don't want them? Disable via `disabled_mcps` in `~/.config/opencode/ghostwire.json` or `.opencode/ghostwire.json`:
 
 ```json
 {
@@ -1074,10 +1074,10 @@ Don't want them? Disable via `disabled_mcps` in `~/.config/opencode/ruach.json` 
 ## LSP
 
 OpenCode provides LSP tools for analysis.
-Ruach adds refactoring tools (rename, code actions).
-All OpenCode LSP configs and custom settings (from opencode.json) are supported, plus additional Ruach-specific settings.
+Ghostwire adds refactoring tools (rename, code actions).
+All OpenCode LSP configs and custom settings (from opencode.json) are supported, plus additional Ghostwire-specific settings.
 
-Add LSP servers via the `lsp` option in `~/.config/opencode/ruach.json` or `.opencode/ruach.json`:
+Add LSP servers via the `lsp` option in `~/.config/opencode/ghostwire.json` or `.opencode/ghostwire.json`:
 
 ```json
 {

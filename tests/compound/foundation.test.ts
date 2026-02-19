@@ -64,13 +64,13 @@ describe('Compound Engineering - Foundation Tests', () => {
     
     test('namespace isolation prevents conflicts', () => {
       const compoundComponentNames = [
-        'compound:kieran-rails-reviewer',
-        'compound:workflows:plan',
-        'compound:frontend-design'
+        'grid:kieran-rails-reviewer',
+        'grid:workflows:plan',
+        'grid:frontend-design'
       ];
       
       const existingComponentNames = [
-        'sisyphus', 'oracle', 'librarian', 'explore'
+        'cipher-operator', 'seer-advisor', 'archive-researcher', 'scout-recon'
       ];
       
       // Verify no conflicts

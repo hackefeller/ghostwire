@@ -111,7 +111,7 @@ export function createDesignImplementationReviewerAgent(model: string): AgentCon
   }
 }
 
-// Agent metadata for Sisyphus prompt building and task delegation
+// Agent metadata for Cipher Operator prompt building and task delegation
 export const DESIGN_IMPLEMENTATION_REVIEWER_METADATA: AgentPromptMetadata = {
   category: "design", 
   cost: "MODERATE",

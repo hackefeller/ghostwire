@@ -6,7 +6,7 @@ import {
   THINKING_CONFIGS,
 } from "./switcher"
 
-describe("think-mode switcher", () => {
+describe("grid-think-mode switcher", () => {
   describe("GitHub Copilot provider support", () => {
     describe("Claude models via github-copilot", () => {
       it("should resolve github-copilot Claude Opus to anthropic config", () => {

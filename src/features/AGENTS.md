@@ -13,7 +13,7 @@ features/
 │   └── concurrency.ts          # Per-provider limits
 ├── builtin-skills/             # Core skills (1729 lines)
 │   └── skills.ts               # agent-browser, dev-browser, frontend-ui-ux, git-master, typescript-programmer
-├── builtin-commands/           # ralph-loop, refactor, ulw-loop, init-deep, start-work, cancel-ralph
+├── builtin-commands/           # overclock-loop, refactor, ulw-overclock, init-deep, jack-in-work, cancel-overclock
 ├── claude-code-agent-loader/   # ~/.claude/agents/*.md
 ├── claude-code-command-loader/ # ~/.claude/commands/*.md
 ├── claude-code-mcp-loader/     # .mcp.json with ${VAR} expansion

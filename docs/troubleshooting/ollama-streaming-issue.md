@@ -2,13 +2,13 @@
 
 ## Problem
 
-When using Ollama as a provider with ruach agents, you may encounter:
+When using Ollama as a provider with ghostwire agents, you may encounter:
 
 ```
 JSON Parse error: Unexpected EOF
 ```
 
-This occurs when agents attempt tool calls (e.g., `explore` agent using `mcp_grep_search`).
+This occurs when agents attempt tool calls (e.g., `scout-recon` agent using `mcp_grep_search`).
 
 ## Root Cause
 
@@ -25,7 +25,7 @@ Claude Code SDK expects a single JSON object, not multiple NDJSON lines, causing
 
 - **Ollama API**: Returns streaming responses as NDJSON by design
 - **Claude Code SDK**: Doesn't properly handle NDJSON responses for tool calls
-- **ruach**: Passes through the SDK's behavior (can't fix at this layer)
+- **ghostwire**: Passes through the SDK's behavior (can't fix at this layer)
 
 ## Solutions
 
@@ -55,7 +55,7 @@ Configure your Ollama provider to use `stream: false`:
 If you need streaming, avoid agents that use tools:
 
 - ✅ **Safe**: Simple text generation, non-tool tasks
-- ❌ **Problematic**: Any agent with tool calls (explore, librarian, etc.)
+- ❌ **Problematic**: Any agent with tool calls (scout-recon, archive-researcher, etc.)
 
 ### Option 3: Wait for SDK Fix (Long-term)
 
@@ -66,7 +66,7 @@ The proper fix requires Claude Code SDK to:
 3. Merge `tool_calls` from multiple lines
 4. Return a single merged response
 
-**Tracking**: https://github.com/code-yeongyu/ruach/issues/1124
+**Tracking**: https://github.com/pontistudios/ghostwire/issues/1124
 
 ## Workaround Implementation
 
@@ -113,7 +113,7 @@ curl -s http://localhost:11434/api/chat \
 
 ## Related Issues
 
-- **ruach**: https://github.com/code-yeongyu/ruach/issues/1124
+- **ghostwire**: https://github.com/pontistudios/ghostwire/issues/1124
 - **Ollama API Docs**: https://github.com/ollama/ollama/blob/main/docs/api.md
 
 ## Getting Help

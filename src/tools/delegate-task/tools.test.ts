@@ -9,7 +9,7 @@ import * as connectedProvidersCache from "../../shared/connected-providers-cache
 
 const SYSTEM_DEFAULT_MODEL = "anthropic/claude-sonnet-4-5"
 
-describe("sisyphus-task", () => {
+describe("cipher-operator-task", () => {
   let cacheSpy: ReturnType<typeof spyOn>
 
   beforeEach(() => {
@@ -123,9 +123,9 @@ describe("sisyphus-task", () => {
       expect(result).toBe(true)
     })
 
-    test("returns true for 'prometheus'", () => {
+    test("returns true for 'augur-planner'", () => {
       // #given / #when
-      const result = isPlanAgent("prometheus")
+      const result = isPlanAgent("augur-planner")
 
       // #then
       expect(result).toBe(true)
@@ -147,25 +147,25 @@ describe("sisyphus-task", () => {
       expect(result).toBe(true)
     })
 
-    test("returns true for case-insensitive match 'Prometheus'", () => {
+    test("returns true for case-insensitive match 'Augur Planner'", () => {
       // #given / #when
-      const result = isPlanAgent("Prometheus")
+      const result = isPlanAgent("Augur Planner")
 
       // #then
       expect(result).toBe(true)
     })
 
-    test("returns false for 'oracle'", () => {
+    test("returns false for 'seer-advisor'", () => {
       // #given / #when
-      const result = isPlanAgent("oracle")
+      const result = isPlanAgent("seer-advisor")
 
       // #then
       expect(result).toBe(false)
     })
 
-    test("returns false for 'explore'", () => {
+    test("returns false for 'scout-recon'", () => {
       // #given / #when
-      const result = isPlanAgent("explore")
+      const result = isPlanAgent("scout-recon")
 
       // #then
       expect(result).toBe(false)
@@ -190,7 +190,7 @@ describe("sisyphus-task", () => {
     test("PLAN_AGENT_NAMES contains expected values", () => {
       // #given / #when / #then
       expect(PLAN_AGENT_NAMES).toContain("plan")
-      expect(PLAN_AGENT_NAMES).toContain("prometheus")
+      expect(PLAN_AGENT_NAMES).toContain("augur-planner")
       expect(PLAN_AGENT_NAMES).toContain("planner")
     })
   })
@@ -219,7 +219,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -236,7 +236,7 @@ describe("sisyphus-task", () => {
       )
       
       // #then proceeds without error - uses fallback chain
-      expect(result).not.toContain("ruach requires a default model")
+      expect(result).not.toContain("ghostwire requires a default model")
     })
 
     test("returns clear error when no model can be resolved", async () => {
@@ -267,7 +267,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -487,7 +487,7 @@ describe("sisyphus-task", () => {
             id: "task-variant",
             sessionID: "session-variant",
             description: "Variant task",
-            agent: "sisyphus-junior",
+            agent: "cipher-runner",
             status: "running",
           }
         },
@@ -514,7 +514,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
 
@@ -550,7 +550,7 @@ describe("sisyphus-task", () => {
             id: "task-default-variant",
             sessionID: "session-default-variant",
             description: "Default variant task",
-            agent: "sisyphus-junior",
+            agent: "cipher-runner",
             status: "running",
           }
         },
@@ -576,7 +576,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
 
@@ -634,7 +634,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
 
@@ -683,7 +683,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -723,7 +723,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -772,7 +772,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -803,7 +803,7 @@ describe("sisyphus-task", () => {
       id: "task-123",
       sessionID: "ses_continue_test",
       description: "Continued task",
-      agent: "explore",
+      agent: "scout-recon",
       status: "running",
     }
     
@@ -838,7 +838,7 @@ describe("sisyphus-task", () => {
     const toolContext = {
       sessionID: "parent-session",
       messageID: "parent-message",
-      agent: "sisyphus",
+      agent: "cipher-operator",
       abort: new AbortController().signal,
     }
     
@@ -867,7 +867,7 @@ describe("sisyphus-task", () => {
       id: "task-456",
       sessionID: "ses_bg_continue",
       description: "Background continued task",
-      agent: "explore",
+      agent: "scout-recon",
       status: "running",
     }
     
@@ -893,7 +893,7 @@ describe("sisyphus-task", () => {
     const toolContext = {
       sessionID: "parent-session",
       messageID: "parent-message",
-      agent: "sisyphus",
+      agent: "cipher-operator",
       abort: new AbortController().signal,
     }
     
@@ -948,7 +948,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -1008,7 +1008,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -1061,7 +1061,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -1116,7 +1116,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent",
         messageID: "msg",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal
       }
 
@@ -1150,7 +1150,7 @@ describe("sisyphus-task", () => {
             id: "task-unstable",
             sessionID: "ses_unstable_gemini",
             description: "Unstable gemini task",
-            agent: "sisyphus-junior",
+            agent: "cipher-runner",
             status: "running",
           }
         },
@@ -1181,7 +1181,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -1215,7 +1215,7 @@ describe("sisyphus-task", () => {
             id: "task-normal-bg",
             sessionID: "ses_normal_bg",
             description: "Normal background task",
-            agent: "sisyphus-junior",
+            agent: "cipher-runner",
             status: "running",
           }
         },
@@ -1239,7 +1239,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -1300,7 +1300,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -1341,7 +1341,7 @@ describe("sisyphus-task", () => {
             id: "task-artistry",
             sessionID: "ses_artistry_gemini",
             description: "Artistry gemini task",
-            agent: "sisyphus-junior",
+            agent: "cipher-runner",
             status: "running",
           }
         },
@@ -1372,7 +1372,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -1407,7 +1407,7 @@ describe("sisyphus-task", () => {
             id: "task-writing",
             sessionID: "ses_writing_gemini",
             description: "Writing gemini task",
-            agent: "sisyphus-junior",
+            agent: "cipher-runner",
             status: "running",
           }
         },
@@ -1438,7 +1438,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -1472,7 +1472,7 @@ describe("sisyphus-task", () => {
             id: "task-custom-unstable",
             sessionID: "ses_custom_unstable",
             description: "Custom unstable task",
-            agent: "sisyphus-junior",
+            agent: "cipher-runner",
             status: "running",
           }
         },
@@ -1508,7 +1508,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
@@ -1547,7 +1547,7 @@ describe("sisyphus-task", () => {
             id: "task-fallback",
             sessionID: "ses_fallback_test",
             description: "Fallback test task",
-            agent: "sisyphus-junior",
+            agent: "cipher-runner",
             status: "running",
           }
         },
@@ -1564,18 +1564,18 @@ describe("sisyphus-task", () => {
         },
       }
 
-      // NO userCategories override, NO sisyphusJuniorModel
+      // NO userCategories override, NO cipherJuniorModel
       const tool = createDelegateTask({
         manager: mockManager,
         client: mockClient,
         // userCategories: undefined - use DEFAULT_CATEGORIES only
-        // sisyphusJuniorModel: undefined
+        // cipherJuniorModel: undefined
       })
 
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
 
@@ -1632,7 +1632,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
 
@@ -1682,7 +1682,7 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
 
@@ -1769,26 +1769,26 @@ describe("sisyphus-task", () => {
       expect(result).toBe(PLAN_AGENT_SYSTEM_PREPEND)
     })
 
-    test("prepends plan agent system prompt when agentName is 'prometheus'", () => {
+    test("prepends plan agent system prompt when agentName is 'augur-planner'", () => {
       // #given
       const { buildSystemContent } = require("./tools")
       const { PLAN_AGENT_SYSTEM_PREPEND } = require("./constants")
 
       // #when
-      const result = buildSystemContent({ agentName: "prometheus" })
+      const result = buildSystemContent({ agentName: "augur-planner" })
 
       // #then
       expect(result).toContain("<system>")
       expect(result).toBe(PLAN_AGENT_SYSTEM_PREPEND)
     })
 
-    test("prepends plan agent system prompt when agentName is 'Prometheus' (case insensitive)", () => {
+    test("prepends plan agent system prompt when agentName is 'Augur Planner' (case insensitive)", () => {
       // #given
       const { buildSystemContent } = require("./tools")
       const { PLAN_AGENT_SYSTEM_PREPEND } = require("./constants")
 
       // #when
-      const result = buildSystemContent({ agentName: "Prometheus" })
+      const result = buildSystemContent({ agentName: "Augur Planner" })
 
       // #then
       expect(result).toContain("<system>")
@@ -1816,7 +1816,7 @@ describe("sisyphus-task", () => {
       const skillContent = "You are an expert"
 
       // #when
-      const result = buildSystemContent({ skillContent, agentName: "oracle" })
+      const result = buildSystemContent({ skillContent, agentName: "seer-advisor" })
 
       // #then
       expect(result).toBe(skillContent)
@@ -2017,14 +2017,14 @@ describe("sisyphus-task", () => {
     })
   })
 
-  describe("prometheus self-delegation block", () => {
-    test("prometheus cannot delegate to prometheus - returns error with guidance", async () => {
-      // #given - current agent is prometheus
+  describe("augur-planner self-delegation block", () => {
+    test("augur-planner cannot delegate to augur-planner - returns error with guidance", async () => {
+      // #given - current agent is augur-planner
       const { createDelegateTask } = require("./tools")
       
       const mockManager = { launch: async () => ({}) }
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "prometheus", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "augur-planner", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
@@ -2043,43 +2043,43 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "prometheus",
+        agent: "augur-planner",
         abort: new AbortController().signal,
       }
       
-      // #when - prometheus tries to delegate to prometheus
+      // #when - augur-planner tries to delegate to augur-planner
       const result = await tool.execute(
         {
           description: "Test self-delegation block",
           prompt: "Create a plan",
-          subagent_type: "prometheus",
+          subagent_type: "augur-planner",
           run_in_background: false,
           load_skills: [],
         },
         toolContext
       )
       
-      // #then - should return error telling prometheus to create plan directly
-      expect(result).toContain("prometheus")
+      // #then - should return error telling augur-planner to create plan directly
+      expect(result).toContain("augur-planner")
       expect(result).toContain("directly")
     })
 
-    test("non-prometheus agent CAN delegate to prometheus - proceeds normally", async () => {
-      // #given - current agent is sisyphus
+    test("non-augur-planner agent CAN delegate to augur-planner - proceeds normally", async () => {
+      // #given - current agent is cipherOperator
       const { createDelegateTask } = require("./tools")
       
       const mockManager = { launch: async () => ({}) }
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "prometheus", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "augur-planner", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
-          create: async () => ({ data: { id: "ses_prometheus_allowed" } }),
+          create: async () => ({ data: { id: "ses_augur_allowed" } }),
           prompt: async () => ({ data: {} }),
           messages: async () => ({
             data: [{ info: { role: "assistant" }, parts: [{ type: "text", text: "Plan created successfully" }] }]
           }),
-          status: async () => ({ data: { "ses_prometheus_allowed": { type: "idle" } } }),
+          status: async () => ({ data: { "ses_augur_allowed": { type: "idle" } } }),
         },
       }
       
@@ -2091,16 +2091,16 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
-      // #when - sisyphus delegates to prometheus
+      // #when - cipherOperator delegates to augur-planner
       const result = await tool.execute(
         {
-          description: "Test prometheus delegation from non-prometheus agent",
+          description: "Test augur-planner delegation from non-augur-planner agent",
           prompt: "Create a plan",
-          subagent_type: "prometheus",
+          subagent_type: "augur-planner",
           run_in_background: false,
           load_skills: [],
         },
@@ -2112,13 +2112,13 @@ describe("sisyphus-task", () => {
       expect(result).toContain("Plan created successfully")
     }, { timeout: 20000 })
 
-    test("case-insensitive: Prometheus (capitalized) cannot delegate to prometheus", async () => {
-      // #given - current agent is Prometheus (capitalized)
+    test("case-insensitive: Augur Planner (capitalized) cannot delegate to augur-planner", async () => {
+      // #given - current agent is Augur Planner (capitalized)
       const { createDelegateTask } = require("./tools")
       
       const mockManager = { launch: async () => ({}) }
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "prometheus", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "augur-planner", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
@@ -2137,16 +2137,16 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "Prometheus",
+        agent: "Augur Planner",
         abort: new AbortController().signal,
       }
       
-      // #when - Prometheus tries to delegate to prometheus
+      // #when - Augur Planner tries to delegate to augur-planner
       const result = await tool.execute(
         {
           description: "Test case-insensitive block",
           prompt: "Create a plan",
-          subagent_type: "prometheus",
+          subagent_type: "augur-planner",
           run_in_background: false,
           load_skills: [],
         },
@@ -2154,7 +2154,7 @@ describe("sisyphus-task", () => {
       )
       
       // #then - should still return error
-      expect(result).toContain("prometheus")
+      expect(result).toContain("augur-planner")
       expect(result).toContain("directly")
     })
   })
@@ -2169,10 +2169,10 @@ describe("sisyphus-task", () => {
         launch: async (input: any) => {
           launchInput = input
           return {
-            id: "task-explore",
+            id: "task-scout-recon",
             sessionID: "ses_explore_model",
-            description: "Explore task",
-            agent: "explore",
+            description: "Scout Recon task",
+            agent: "scout-recon",
             status: "running",
           }
         },
@@ -2182,7 +2182,7 @@ describe("sisyphus-task", () => {
         app: {
           agents: async () => ({
             data: [
-              { name: "explore", mode: "subagent", model: { providerID: "anthropic", modelID: "claude-haiku-4-5" } },
+              { name: "scout-recon", mode: "subagent", model: { providerID: "anthropic", modelID: "claude-haiku-4-5" } },
             ],
           }),
         },
@@ -2202,16 +2202,16 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
 
-      // #when - delegating to explore agent via subagent_type
+      // #when - delegating to scoutRecon agent via subagent_type
       await tool.execute(
         {
-          description: "Explore codebase",
+          description: "Scout Recon codebase",
           prompt: "Find auth patterns",
-          subagent_type: "explore",
+          subagent_type: "scout-recon",
           run_in_background: true,
           load_skills: [],
         },
@@ -2236,14 +2236,14 @@ describe("sisyphus-task", () => {
         app: {
           agents: async () => ({
             data: [
-              { name: "oracle", mode: "subagent", model: { providerID: "anthropic", modelID: "claude-opus-4-5" } },
+              { name: "seer-advisor", mode: "subagent", model: { providerID: "anthropic", modelID: "claude-opus-4-5" } },
             ],
           }),
         },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
-          create: async () => ({ data: { id: "ses_oracle_model" } }),
+          create: async () => ({ data: { id: "ses_seer_model" } }),
           prompt: async (input: any) => {
             promptBody = input.body
             return { data: {} }
@@ -2251,7 +2251,7 @@ describe("sisyphus-task", () => {
           messages: async () => ({
             data: [{ info: { role: "assistant" }, parts: [{ type: "text", text: "Consultation done" }] }],
           }),
-          status: async () => ({ data: { "ses_oracle_model": { type: "idle" } } }),
+          status: async () => ({ data: { "ses_seer_model": { type: "idle" } } }),
         },
       }
 
@@ -2263,16 +2263,16 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
 
-      // #when - delegating to oracle agent via subagent_type in sync mode
+      // #when - delegating to seerAdvisor agent via subagent_type in sync mode
       await tool.execute(
         {
-          description: "Consult oracle",
+          description: "Consult seer-advisor",
           prompt: "Review architecture",
-          subagent_type: "oracle",
+          subagent_type: "seer-advisor",
           run_in_background: false,
           load_skills: [],
         },
@@ -2297,7 +2297,7 @@ describe("sisyphus-task", () => {
         app: {
           agents: async () => ({
             data: [
-              { name: "explore", mode: "subagent" }, // no model field
+              { name: "scout-recon", mode: "subagent" }, // no model field
             ],
           }),
         },
@@ -2324,16 +2324,16 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
 
       // #when - delegating to agent without model
       await tool.execute(
         {
-          description: "Explore without model",
+          description: "Scout Recon without model",
           prompt: "Find something",
-          subagent_type: "explore",
+          subagent_type: "scout-recon",
           run_in_background: false,
           load_skills: [],
         },
@@ -2345,19 +2345,19 @@ describe("sisyphus-task", () => {
     }, { timeout: 20000 })
   })
 
-  describe("prometheus subagent delegate_task permission", () => {
-    test("prometheus subagent should have delegate_task permission enabled", async () => {
-      // #given - sisyphus delegates to prometheus
+  describe("augur-planner subagent delegate_task permission", () => {
+    test("augur-planner subagent should have delegate_task permission enabled", async () => {
+      // #given - cipherOperator delegates to augur-planner
       const { createDelegateTask } = require("./tools")
       let promptBody: any
       
       const mockManager = { launch: async () => ({}) }
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "prometheus", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "augur-planner", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
-          create: async () => ({ data: { id: "ses_prometheus_delegate" } }),
+          create: async () => ({ data: { id: "ses_augur_delegate" } }),
           prompt: async (input: any) => {
             promptBody = input.body
             return { data: {} }
@@ -2365,7 +2365,7 @@ describe("sisyphus-task", () => {
           messages: async () => ({
             data: [{ info: { role: "assistant" }, parts: [{ type: "text", text: "Plan created" }] }]
           }),
-          status: async () => ({ data: { "ses_prometheus_delegate": { type: "idle" } } }),
+          status: async () => ({ data: { "ses_augur_delegate": { type: "idle" } } }),
         },
       }
       
@@ -2377,38 +2377,38 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
-      // #when - sisyphus delegates to prometheus
+      // #when - cipherOperator delegates to augur-planner
       await tool.execute(
         {
-          description: "Test prometheus delegate_task permission",
+          description: "Test augur-planner delegate_task permission",
           prompt: "Create a plan",
-          subagent_type: "prometheus",
+          subagent_type: "augur-planner",
           run_in_background: false,
           load_skills: [],
         },
         toolContext
       )
       
-      // #then - prometheus should have delegate_task permission
+      // #then - augur-planner should have delegate_task permission
       expect(promptBody.tools.delegate_task).toBe(true)
     }, { timeout: 20000 })
 
-    test("non-prometheus subagent should NOT have delegate_task permission", async () => {
-      // #given - sisyphus delegates to oracle (non-prometheus)
+    test("non-augur-planner subagent should NOT have delegate_task permission", async () => {
+      // #given - cipherOperator delegates to seerAdvisor (non-augur-planner)
       const { createDelegateTask } = require("./tools")
       let promptBody: any
       
       const mockManager = { launch: async () => ({}) }
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "oracle", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "seer-advisor", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
-          create: async () => ({ data: { id: "ses_oracle_no_delegate" } }),
+          create: async () => ({ data: { id: "ses_seer_no_delegate" } }),
           prompt: async (input: any) => {
             promptBody = input.body
             return { data: {} }
@@ -2416,7 +2416,7 @@ describe("sisyphus-task", () => {
           messages: async () => ({
             data: [{ info: { role: "assistant" }, parts: [{ type: "text", text: "Consultation done" }] }]
           }),
-          status: async () => ({ data: { "ses_oracle_no_delegate": { type: "idle" } } }),
+          status: async () => ({ data: { "ses_seer_no_delegate": { type: "idle" } } }),
         },
       }
       
@@ -2428,23 +2428,23 @@ describe("sisyphus-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       }
       
-      // #when - sisyphus delegates to oracle
+      // #when - cipherOperator delegates to seerAdvisor
       await tool.execute(
         {
-          description: "Test oracle no delegate_task permission",
+          description: "Test seerAdvisor no delegate_task permission",
           prompt: "Consult on architecture",
-          subagent_type: "oracle",
+          subagent_type: "seer-advisor",
           run_in_background: false,
           load_skills: [],
         },
         toolContext
       )
       
-      // #then - oracle should NOT have delegate_task permission
+      // #then - seerAdvisor should NOT have delegate_task permission
       expect(promptBody.tools.delegate_task).toBe(false)
     }, { timeout: 20000 })
   })

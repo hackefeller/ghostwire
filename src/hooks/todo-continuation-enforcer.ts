@@ -11,9 +11,9 @@ import {
 import { log } from "../shared/logger"
 import { createSystemDirective, SystemDirectiveTypes } from "../shared/system-directive"
 
-const HOOK_NAME = "todo-continuation-enforcer"
+const HOOK_NAME = "grid-todo-continuation-enforcer"
 
-const DEFAULT_SKIP_AGENTS = ["prometheus", "compaction"]
+const DEFAULT_SKIP_AGENTS = ["augur-planner", "compaction"]
 
 export interface TodoContinuationEnforcerOptions {
   backgroundManager?: BackgroundManager

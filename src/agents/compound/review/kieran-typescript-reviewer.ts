@@ -119,7 +119,7 @@ export function createKieranTypeScriptReviewerAgent(model: string): AgentConfig 
   }
 }
 
-// Agent metadata for Sisyphus prompt building and task delegation
+// Agent metadata for Cipher Operator prompt building and task delegation
 export const KIERAN_TYPESCRIPT_REVIEWER_METADATA: AgentPromptMetadata = {
   category: "review",
   cost: "MODERATE",

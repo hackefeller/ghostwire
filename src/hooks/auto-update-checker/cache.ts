@@ -37,7 +37,7 @@ function removeFromBunLock(packageName: string): boolean {
 
     if (modified) {
       fs.writeFileSync(lockPath, JSON.stringify(lock, null, 2))
-      log(`[auto-update-checker] Removed from bun.lock: ${packageName}`)
+      log(`[grid-auto-update-checker] Removed from bun.lock: ${packageName}`)
     }
 
     return modified
@@ -57,7 +57,7 @@ export function invalidatePackage(packageName: string = PACKAGE_NAME): boolean {
 
     if (fs.existsSync(pkgDir)) {
       fs.rmSync(pkgDir, { recursive: true, force: true })
-      log(`[auto-update-checker] Package removed: ${pkgDir}`)
+      log(`[grid-auto-update-checker] Package removed: ${pkgDir}`)
       packageRemoved = true
     }
 
@@ -67,7 +67,7 @@ export function invalidatePackage(packageName: string = PACKAGE_NAME): boolean {
       if (pkgJson.dependencies?.[packageName]) {
         delete pkgJson.dependencies[packageName]
         fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2))
-        log(`[auto-update-checker] Dependency removed from package.json: ${packageName}`)
+        log(`[grid-auto-update-checker] Dependency removed from package.json: ${packageName}`)
         dependencyRemoved = true
       }
     }
@@ -75,19 +75,19 @@ export function invalidatePackage(packageName: string = PACKAGE_NAME): boolean {
     lockRemoved = removeFromBunLock(packageName)
 
     if (!packageRemoved && !dependencyRemoved && !lockRemoved) {
-      log(`[auto-update-checker] Package not found, nothing to invalidate: ${packageName}`)
+      log(`[grid-auto-update-checker] Package not found, nothing to invalidate: ${packageName}`)
       return false
     }
 
     return true
   } catch (err) {
-    log("[auto-update-checker] Failed to invalidate package:", err)
+    log("[grid-auto-update-checker] Failed to invalidate package:", err)
     return false
   }
 }
 
 /** @deprecated Use invalidatePackage instead - this nukes ALL plugins */
 export function invalidateCache(): boolean {
-  log("[auto-update-checker] WARNING: invalidateCache is deprecated, use invalidatePackage")
+  log("[grid-auto-update-checker] WARNING: invalidateCache is deprecated, use invalidatePackage")
   return invalidatePackage()
 }

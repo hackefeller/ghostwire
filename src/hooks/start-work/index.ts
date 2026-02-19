@@ -3,7 +3,7 @@ import {
   readBoulderState,
   writeBoulderState,
   appendSessionId,
-  findPrometheusPlans,
+  findAugurPlannerPlans,
   getPlanProgress,
   createBoulderState,
   getPlanName,
@@ -12,7 +12,7 @@ import {
 import { log } from "../../shared/logger"
 import { getSessionAgent, updateSessionAgent } from "../../features/claude-code-session-state"
 
-export const HOOK_NAME = "start-work"
+export const HOOK_NAME = "jack-in-work"
 
 const KEYWORD_PATTERN = /\b(ultrawork|ulw)\b/gi
 
@@ -60,18 +60,18 @@ export function createStartWorkHook(ctx: PluginInput) {
         .trim() || ""
 
       // Only trigger on actual command execution (contains <session-context> tag)
-      // NOT on description text like "Start Sisyphus work session from Prometheus plan"
+      // NOT on description text like "Start Cipher Operator work session from Augur Planner plan"
       const isStartWorkCommand = promptText.includes("<session-context>")
 
       if (!isStartWorkCommand) {
         return
       }
 
-      log(`[${HOOK_NAME}] Processing start-work command`, {
+      log(`[${HOOK_NAME}] Processing jack-in-work command`, {
         sessionID: input.sessionID,
       })
 
-      updateSessionAgent(input.sessionID, "atlas") // Always switch: fixes #1298
+      updateSessionAgent(input.sessionID, "nexus-orchestrator") // Always switch: fixes #1298
 
       const existingState = readBoulderState(ctx.directory)
       const sessionId = input.sessionID
@@ -86,7 +86,7 @@ export function createStartWorkHook(ctx: PluginInput) {
           sessionID: input.sessionID,
         })
         
-        const allPlans = findPrometheusPlans(ctx.directory)
+        const allPlans = findAugurPlannerPlans(ctx.directory)
         const matchedPlan = findPlanByName(allPlans, explicitPlanName)
         
         if (matchedPlan) {
@@ -168,7 +168,7 @@ Looking for new plans...`
       }
 
       if ((!existingState && !explicitPlanName) || (existingState && !explicitPlanName && getPlanProgress(existingState.active_plan).isComplete)) {
-        const plans = findPrometheusPlans(ctx.directory)
+        const plans = findAugurPlannerPlans(ctx.directory)
         const incompletePlans = plans.filter(p => !getPlanProgress(p).isComplete)
         
         if (plans.length === 0) {
@@ -176,8 +176,8 @@ Looking for new plans...`
 
 ## No Plans Found
 
-No Prometheus plan files found at .sisyphus/plans/
-Use Prometheus to create a work plan first: /plan "your task"`
+No Augur Planner plan files found at .ghostwire/plans/
+Use Augur Planner to create a work plan first: /plan "your task"`
         } else if (incompletePlans.length === 0) {
           contextInfo += `
 

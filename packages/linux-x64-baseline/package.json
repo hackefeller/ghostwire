@@ -1,11 +1,11 @@
 {
-  "name": "ruach-linux-x64-baseline",
+  "name": "ghostwire-linux-x64-baseline",
   "version": "3.1.1",
-  "description": "Platform-specific binary for ruach (linux-x64-baseline, no AVX2)",
+  "description": "Platform-specific binary for ghostwire (linux-x64-baseline, no AVX2)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/code-yeongyu/ruach"
+    "url": "https://github.com/pontistudios/ghostwire"
   },
   "os": [
     "linux"
@@ -20,6 +20,6 @@
     "bin"
   ],
   "bin": {
-    "ruach": "./bin/ruach"
+    "ghostwire": "./bin/ghostwire"
   }
 }

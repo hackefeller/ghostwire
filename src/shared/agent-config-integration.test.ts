@@ -8,34 +8,34 @@ describe("Agent Config Integration", () => {
     test("migrates old format agent keys to lowercase", () => {
       // #given - config with old format keys
       const oldConfig = {
-        Sisyphus: { model: "anthropic/claude-opus-4-5" },
-        Atlas: { model: "anthropic/claude-opus-4-5" },
-        "Prometheus (Planner)": { model: "anthropic/claude-opus-4-5" },
-        "Metis (Plan Consultant)": { model: "anthropic/claude-sonnet-4-5" },
-        "Momus (Plan Reviewer)": { model: "anthropic/claude-sonnet-4-5" },
+        "Cipher Operator": { model: "anthropic/claude-opus-4-5" },
+        "Nexus Orchestrator": { model: "anthropic/claude-opus-4-5" },
+        "Augur Planner (Planner)": { model: "anthropic/claude-opus-4-5" },
+        "Tactician Strategist (Plan Consultant)": { model: "anthropic/claude-sonnet-4-5" },
+        "Glitch Auditor (Plan Reviewer)": { model: "anthropic/claude-sonnet-4-5" },
       }
 
       // #when - migration is applied
       const result = migrateAgentNames(oldConfig)
 
       // #then - keys are lowercase
-      expect(result.migrated).toHaveProperty("sisyphus")
-      expect(result.migrated).toHaveProperty("atlas")
-      expect(result.migrated).toHaveProperty("prometheus")
-      expect(result.migrated).toHaveProperty("metis")
-      expect(result.migrated).toHaveProperty("momus")
+      expect(result.migrated).toHaveProperty("cipher-operator")
+      expect(result.migrated).toHaveProperty("nexus-orchestrator")
+      expect(result.migrated).toHaveProperty("augur-planner")
+      expect(result.migrated).toHaveProperty("tactician-strategist")
+      expect(result.migrated).toHaveProperty("glitch-auditor")
 
       // #then - old keys are removed
-      expect(result.migrated).not.toHaveProperty("Sisyphus")
-      expect(result.migrated).not.toHaveProperty("Atlas")
-      expect(result.migrated).not.toHaveProperty("Prometheus (Planner)")
-      expect(result.migrated).not.toHaveProperty("Metis (Plan Consultant)")
-      expect(result.migrated).not.toHaveProperty("Momus (Plan Reviewer)")
+      expect(result.migrated).not.toHaveProperty("Cipher Operator")
+      expect(result.migrated).not.toHaveProperty("Nexus Orchestrator")
+      expect(result.migrated).not.toHaveProperty("Augur Planner (Planner)")
+      expect(result.migrated).not.toHaveProperty("Tactician Strategist (Plan Consultant)")
+      expect(result.migrated).not.toHaveProperty("Glitch Auditor (Plan Reviewer)")
 
       // #then - values are preserved
-      expect(result.migrated.sisyphus).toEqual({ model: "anthropic/claude-opus-4-5" })
-      expect(result.migrated.atlas).toEqual({ model: "anthropic/claude-opus-4-5" })
-      expect(result.migrated.prometheus).toEqual({ model: "anthropic/claude-opus-4-5" })
+      expect(result.migrated["cipher-operator"]).toEqual({ model: "anthropic/claude-opus-4-5" })
+      expect(result.migrated["nexus-orchestrator"]).toEqual({ model: "anthropic/claude-opus-4-5" })
+      expect(result.migrated["augur-planner"]).toEqual({ model: "anthropic/claude-opus-4-5" })
       
       // #then - changed flag is true
       expect(result.changed).toBe(true)
@@ -44,9 +44,9 @@ describe("Agent Config Integration", () => {
     test("preserves already lowercase keys", () => {
       // #given - config with lowercase keys
       const config = {
-        sisyphus: { model: "anthropic/claude-opus-4-5" },
-        oracle: { model: "openai/gpt-5.2" },
-        librarian: { model: "opencode/glm-4.7-free" },
+        "cipher-operator": { model: "anthropic/claude-opus-4-5" },
+        "seer-advisor": { model: "openai/gpt-5.2" },
+        "archive-researcher": { model: "opencode/glm-4.7-free" },
       }
 
       // #when - migration is applied
@@ -62,20 +62,20 @@ describe("Agent Config Integration", () => {
     test("handles mixed case config", () => {
       // #given - config with mixed old and new format
       const mixedConfig = {
-        Sisyphus: { model: "anthropic/claude-opus-4-5" },
-        oracle: { model: "openai/gpt-5.2" },
-        "Prometheus (Planner)": { model: "anthropic/claude-opus-4-5" },
-        librarian: { model: "opencode/glm-4.7-free" },
+        "Cipher Operator": { model: "anthropic/claude-opus-4-5" },
+        "seer-advisor": { model: "openai/gpt-5.2" },
+        "Augur Planner (Planner)": { model: "anthropic/claude-opus-4-5" },
+        "archive-researcher": { model: "opencode/glm-4.7-free" },
       }
 
       // #when - migration is applied
       const result = migrateAgentNames(mixedConfig)
 
       // #then - all keys are lowercase
-      expect(result.migrated).toHaveProperty("sisyphus")
-      expect(result.migrated).toHaveProperty("oracle")
-      expect(result.migrated).toHaveProperty("prometheus")
-      expect(result.migrated).toHaveProperty("librarian")
+      expect(result.migrated).toHaveProperty("cipher-operator")
+      expect(result.migrated).toHaveProperty("seer-advisor")
+      expect(result.migrated).toHaveProperty("augur-planner")
+      expect(result.migrated).toHaveProperty("archive-researcher")
       expect(Object.keys(result.migrated).every((key) => key === key.toLowerCase())).toBe(true)
       
       // #then - changed flag is true
@@ -86,37 +86,37 @@ describe("Agent Config Integration", () => {
   describe("Display name resolution", () => {
     test("returns correct display names for all builtin agents", () => {
       // #given - lowercase config keys
-      const agents = ["sisyphus", "atlas", "prometheus", "metis", "momus", "oracle", "librarian", "explore", "multimodal-looker"]
+      const agents = ["cipher-operator", "nexus-orchestrator", "augur-planner", "tactician-strategist", "glitch-auditor", "seer-advisor", "archive-researcher", "scout-recon", "optic-analyst"]
 
       // #when - display names are requested
       const displayNames = agents.map((agent) => getAgentDisplayName(agent))
 
       // #then - display names are correct
-      expect(displayNames).toContain("Sisyphus (Ultraworker)")
-      expect(displayNames).toContain("Atlas (Plan Execution Orchestrator)")
-      expect(displayNames).toContain("Prometheus (Plan Builder)")
-      expect(displayNames).toContain("Metis (Plan Consultant)")
-      expect(displayNames).toContain("Momus (Plan Reviewer)")
-      expect(displayNames).toContain("oracle")
-      expect(displayNames).toContain("librarian")
-      expect(displayNames).toContain("explore")
-      expect(displayNames).toContain("multimodal-looker")
+      expect(displayNames).toContain("Cipher Operator (Ultraworker)")
+      expect(displayNames).toContain("Nexus Orchestrator (Plan Execution Orchestrator)")
+      expect(displayNames).toContain("Augur Planner (Plan Builder)")
+      expect(displayNames).toContain("Tactician Strategist (Plan Consultant)")
+      expect(displayNames).toContain("Glitch Auditor (Plan Reviewer)")
+      expect(displayNames).toContain("seer-advisor")
+      expect(displayNames).toContain("archive-researcher")
+      expect(displayNames).toContain("scout-recon")
+      expect(displayNames).toContain("optic-analyst")
     })
 
     test("handles lowercase keys case-insensitively", () => {
       // #given - various case formats of lowercase keys
-      const keys = ["Sisyphus", "Atlas", "SISYPHUS", "atlas", "prometheus", "PROMETHEUS"]
+      const keys = ["Cipher Operator", "Nexus Orchestrator", "CIPHER-OPERATOR", "nexus-orchestrator", "augur-planner", "AUGUR-PLANNER"]
 
       // #when - display names are requested
       const displayNames = keys.map((key) => getAgentDisplayName(key))
 
       // #then - correct display names are returned
-      expect(displayNames[0]).toBe("Sisyphus (Ultraworker)")
-      expect(displayNames[1]).toBe("Atlas (Plan Execution Orchestrator)")
-      expect(displayNames[2]).toBe("Sisyphus (Ultraworker)")
-      expect(displayNames[3]).toBe("Atlas (Plan Execution Orchestrator)")
-      expect(displayNames[4]).toBe("Prometheus (Plan Builder)")
-      expect(displayNames[5]).toBe("Prometheus (Plan Builder)")
+      expect(displayNames[0]).toBe("Cipher Operator (Ultraworker)")
+      expect(displayNames[1]).toBe("Nexus Orchestrator (Plan Execution Orchestrator)")
+      expect(displayNames[2]).toBe("Cipher Operator (Ultraworker)")
+      expect(displayNames[3]).toBe("Nexus Orchestrator (Plan Execution Orchestrator)")
+      expect(displayNames[4]).toBe("Augur Planner (Plan Builder)")
+      expect(displayNames[5]).toBe("Augur Planner (Plan Builder)")
     })
 
     test("returns original key for unknown agents", () => {
@@ -145,7 +145,7 @@ describe("Agent Config Integration", () => {
 
     test("model requirements include all builtin agents", () => {
       // #given - expected builtin agents
-      const expectedAgents = ["sisyphus", "atlas", "prometheus", "metis", "momus", "oracle", "librarian", "explore", "multimodal-looker"]
+      const expectedAgents = ["cipher-operator", "nexus-orchestrator", "augur-planner", "tactician-strategist", "glitch-auditor", "seer-advisor", "archive-researcher", "scout-recon", "optic-analyst"]
 
       // #when - checking AGENT_MODEL_REQUIREMENTS
       const agentKeys = Object.keys(AGENT_MODEL_REQUIREMENTS)
@@ -172,35 +172,35 @@ describe("Agent Config Integration", () => {
     test("old config migrates and displays correctly", () => {
       // #given - old format config
       const oldConfig = {
-        Sisyphus: { model: "anthropic/claude-opus-4-5", temperature: 0.1 },
-        "Prometheus (Planner)": { model: "anthropic/claude-opus-4-5" },
+        "Cipher Operator": { model: "anthropic/claude-opus-4-5", temperature: 0.1 },
+        "Augur Planner (Planner)": { model: "anthropic/claude-opus-4-5" },
       }
 
       // #when - config is migrated
       const result = migrateAgentNames(oldConfig)
 
       // #then - keys are lowercase
-      expect(result.migrated).toHaveProperty("sisyphus")
-      expect(result.migrated).toHaveProperty("prometheus")
+      expect(result.migrated).toHaveProperty("cipher-operator")
+      expect(result.migrated).toHaveProperty("augur-planner")
 
       // #when - display names are retrieved
-      const sisyphusDisplay = getAgentDisplayName("sisyphus")
-      const prometheusDisplay = getAgentDisplayName("prometheus")
+      const cipherDisplay = getAgentDisplayName("cipher-operator")
+      const augurDisplay = getAgentDisplayName("augur-planner")
 
       // #then - display names are correct
-      expect(sisyphusDisplay).toBe("Sisyphus (Ultraworker)")
-      expect(prometheusDisplay).toBe("Prometheus (Plan Builder)")
+      expect(cipherDisplay).toBe("Cipher Operator (Ultraworker)")
+      expect(augurDisplay).toBe("Augur Planner (Plan Builder)")
 
       // #then - config values are preserved
-      expect(result.migrated.sisyphus).toEqual({ model: "anthropic/claude-opus-4-5", temperature: 0.1 })
-      expect(result.migrated.prometheus).toEqual({ model: "anthropic/claude-opus-4-5" })
+      expect(result.migrated["cipher-operator"]).toEqual({ model: "anthropic/claude-opus-4-5", temperature: 0.1 })
+      expect(result.migrated["augur-planner"]).toEqual({ model: "anthropic/claude-opus-4-5" })
     })
 
     test("new config works without migration", () => {
       // #given - new format config (already lowercase)
       const newConfig = {
-        sisyphus: { model: "anthropic/claude-opus-4-5" },
-        atlas: { model: "anthropic/claude-opus-4-5" },
+        "cipher-operator": { model: "anthropic/claude-opus-4-5" },
+        "nexus-orchestrator": { model: "anthropic/claude-opus-4-5" },
       }
 
       // #when - migration is applied (should be no-op)
@@ -213,12 +213,12 @@ describe("Agent Config Integration", () => {
       expect(result.changed).toBe(false)
 
       // #when - display names are retrieved
-      const sisyphusDisplay = getAgentDisplayName("sisyphus")
-      const atlasDisplay = getAgentDisplayName("atlas")
+      const cipherDisplay = getAgentDisplayName("cipher-operator")
+      const nexusDisplay = getAgentDisplayName("nexus-orchestrator")
 
       // #then - display names are correct
-      expect(sisyphusDisplay).toBe("Sisyphus (Ultraworker)")
-      expect(atlasDisplay).toBe("Atlas (Plan Execution Orchestrator)")
+      expect(cipherDisplay).toBe("Cipher Operator (Ultraworker)")
+      expect(nexusDisplay).toBe("Nexus Orchestrator (Plan Execution Orchestrator)")
     })
   })
 })

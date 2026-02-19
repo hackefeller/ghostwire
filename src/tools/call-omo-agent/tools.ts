@@ -47,7 +47,7 @@ export function createCallOmoAgent(
       prompt: tool.schema.string().describe("The task for the agent to perform"),
       subagent_type: tool.schema
         .string()
-        .describe("The type of specialized agent to use for this task (explore or librarian only)"),
+        .describe("The type of specialized agent to use for this task (scoutRecon or archiveResearcher only)"),
       run_in_background: tool.schema
         .boolean()
         .describe("REQUIRED. true: run asynchronously (use background_output to get results), false: run synchronously and wait for completion"),
@@ -55,9 +55,9 @@ export function createCallOmoAgent(
     },
     async execute(args: CallOmoAgentArgs, toolContext) {
       const toolCtx = toolContext as ToolContextWithMetadata
-      log(`[call_omo_agent] Starting with agent: ${args.subagent_type}, background: ${args.run_in_background}`)
+      log(`[call_grid_agent] Starting with agent: ${args.subagent_type}, background: ${args.run_in_background}`)
 
-      // Case-insensitive agent validation - allows "Explore", "EXPLORE", "explore" etc.
+      // Case-insensitive agent validation - allows "Scout Recon", "EXPLORE", "scout-recon" etc.
       if (!includesCaseInsensitive([...ALLOWED_AGENTS], args.subagent_type)) {
         return `Error: Invalid agent type "${args.subagent_type}". Only ${ALLOWED_AGENTS.join(", ")} are allowed.`
       }
@@ -89,7 +89,7 @@ async function executeBackground(
     const sessionAgent = getSessionAgent(toolContext.sessionID)
     const parentAgent = toolContext.agent ?? sessionAgent ?? firstMessageAgent ?? prevMessage?.agent
     
-    log("[call_omo_agent] parentAgent resolution", {
+    log("[call_grid_agent] parentAgent resolution", {
       sessionID: toolContext.sessionID,
       messageDir,
       ctxAgent: toolContext.agent,
@@ -139,24 +139,24 @@ async function executeSync(
   let sessionID: string
 
   if (args.session_id) {
-    log(`[call_omo_agent] Using existing session: ${args.session_id}`)
+    log(`[call_grid_agent] Using existing session: ${args.session_id}`)
     const sessionResult = await ctx.client.session.get({
       path: { id: args.session_id },
     })
     if (sessionResult.error) {
-      log(`[call_omo_agent] Session get error:`, sessionResult.error)
+      log(`[call_grid_agent] Session get error:`, sessionResult.error)
       return `Error: Failed to get existing session: ${sessionResult.error}`
     }
     sessionID = args.session_id
   } else {
-    log(`[call_omo_agent] Creating new session with parent: ${toolContext.sessionID}`)
+    log(`[call_grid_agent] Creating new session with parent: ${toolContext.sessionID}`)
     const parentSession = await ctx.client.session.get({
       path: { id: toolContext.sessionID },
     }).catch((err) => {
-      log(`[call_omo_agent] Failed to get parent session:`, err)
+      log(`[call_grid_agent] Failed to get parent session:`, err)
       return null
     })
-    log(`[call_omo_agent] Parent session dir: ${parentSession?.data?.directory}, fallback: ${ctx.directory}`)
+    log(`[call_grid_agent] Parent session dir: ${parentSession?.data?.directory}, fallback: ${ctx.directory}`)
     const parentDirectory = parentSession?.data?.directory ?? ctx.directory
 
     const createResult = await ctx.client.session.create({
@@ -173,7 +173,7 @@ async function executeSync(
     })
 
     if (createResult.error) {
-      log(`[call_omo_agent] Session create error:`, createResult.error)
+      log(`[call_grid_agent] Session create error:`, createResult.error)
       const errorStr = String(createResult.error)
       if (errorStr.toLowerCase().includes("unauthorized")) {
         return `Error: Failed to create session (Unauthorized). This may be due to:
@@ -189,7 +189,7 @@ Original error: ${createResult.error}`
     }
 
     sessionID = createResult.data.id
-    log(`[call_omo_agent] Created session: ${sessionID}`)
+    log(`[call_grid_agent] Created session: ${sessionID}`)
   }
 
   toolContext.metadata?.({
@@ -197,8 +197,8 @@ Original error: ${createResult.error}`
     metadata: { sessionId: sessionID },
   })
 
-  log(`[call_omo_agent] Sending prompt to session ${sessionID}`)
-  log(`[call_omo_agent] Prompt text:`, args.prompt.substring(0, 100))
+  log(`[call_grid_agent] Sending prompt to session ${sessionID}`)
+  log(`[call_grid_agent] Prompt text:`, args.prompt.substring(0, 100))
 
   try {
     await ctx.client.session.prompt({
@@ -215,14 +215,14 @@ Original error: ${createResult.error}`
     })
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error)
-    log(`[call_omo_agent] Prompt error:`, errorMessage)
+    log(`[call_grid_agent] Prompt error:`, errorMessage)
     if (errorMessage.includes("agent.name") || errorMessage.includes("undefined")) {
       return `Error: Agent "${args.subagent_type}" not found. Make sure the agent is registered in your opencode.json or provided by a plugin.\n\n<task_metadata>\nsession_id: ${sessionID}\n</task_metadata>`
     }
     return `Error: Failed to send prompt: ${errorMessage}\n\n<task_metadata>\nsession_id: ${sessionID}\n</task_metadata>`
   }
 
-  log(`[call_omo_agent] Prompt sent, polling for completion...`)
+  log(`[call_grid_agent] Prompt sent, polling for completion...`)
 
   // Poll for session completion
   const POLL_INTERVAL_MS = 500
@@ -235,7 +235,7 @@ Original error: ${createResult.error}`
   while (Date.now() - pollStart < MAX_POLL_TIME_MS) {
     // Check if aborted
     if (toolContext.abort?.aborted) {
-      log(`[call_omo_agent] Aborted by user`)
+      log(`[call_grid_agent] Aborted by user`)
       return `Task aborted.\n\n<task_metadata>\nsession_id: ${sessionID}\n</task_metadata>`
     }
 
@@ -261,7 +261,7 @@ Original error: ${createResult.error}`
     if (currentMsgCount > 0 && currentMsgCount === lastMsgCount) {
       stablePolls++
       if (stablePolls >= STABILITY_REQUIRED) {
-        log(`[call_omo_agent] Session complete, ${currentMsgCount} messages`)
+        log(`[call_grid_agent] Session complete, ${currentMsgCount} messages`)
         break
       }
     } else {
@@ -271,7 +271,7 @@ Original error: ${createResult.error}`
   }
 
   if (Date.now() - pollStart >= MAX_POLL_TIME_MS) {
-    log(`[call_omo_agent] Timeout reached`)
+    log(`[call_grid_agent] Timeout reached`)
     return `Error: Agent task timed out after 5 minutes.\n\n<task_metadata>\nsession_id: ${sessionID}\n</task_metadata>`
   }
 
@@ -280,12 +280,12 @@ Original error: ${createResult.error}`
   })
 
   if (messagesResult.error) {
-    log(`[call_omo_agent] Messages error:`, messagesResult.error)
+    log(`[call_grid_agent] Messages error:`, messagesResult.error)
     return `Error: Failed to get messages: ${messagesResult.error}`
   }
 
   const messages = messagesResult.data
-  log(`[call_omo_agent] Got ${messages.length} messages`)
+  log(`[call_grid_agent] Got ${messages.length} messages`)
 
   // Include both assistant messages AND tool messages
   // Tool results (grep, glob, bash output) come from role "tool"
@@ -295,12 +295,12 @@ Original error: ${createResult.error}`
   )
 
   if (relevantMessages.length === 0) {
-    log(`[call_omo_agent] No assistant or tool messages found`)
-    log(`[call_omo_agent] All messages:`, JSON.stringify(messages, null, 2))
+    log(`[call_grid_agent] No assistant or tool messages found`)
+    log(`[call_grid_agent] All messages:`, JSON.stringify(messages, null, 2))
     return `Error: No assistant or tool response found\n\n<task_metadata>\nsession_id: ${sessionID}\n</task_metadata>`
   }
 
-  log(`[call_omo_agent] Found ${relevantMessages.length} relevant messages`)
+  log(`[call_grid_agent] Found ${relevantMessages.length} relevant messages`)
 
   // Sort by time ascending (oldest first) to process messages in order
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -347,7 +347,7 @@ Original error: ${createResult.error}`
     .filter((text) => text.length > 0)
     .join("\n\n")
 
-  log(`[call_omo_agent] Got response, length: ${responseText.length}`)
+  log(`[call_grid_agent] Got response, length: ${responseText.length}`)
 
   const output =
     responseText + "\n\n" + ["<task_metadata>", `session_id: ${sessionID}`, "</task_metadata>"].join("\n")

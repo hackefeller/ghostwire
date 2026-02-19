@@ -115,7 +115,7 @@ export function createSpecFlowAnalyzerAgent(model: string): AgentConfig {
   }
 }
 
-// Agent metadata for Sisyphus prompt building and task delegation
+// Agent metadata for Cipher Operator prompt building and task delegation
 export const SPEC_FLOW_ANALYZER_METADATA: AgentPromptMetadata = {
   category: "workflow",
   cost: "MODERATE",

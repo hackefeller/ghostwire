@@ -120,12 +120,12 @@ describe("createAutoSlashCommandHook", () => {
   })
 
   describe("excluded commands", () => {
-    it("should NOT trigger for ralph-loop command", async () => {
-      // #given ralph-loop command
+    it("should NOT trigger for overclock-loop command", async () => {
+      // #given overclock-loop command
       const hook = createAutoSlashCommandHook()
       const sessionID = `test-session-ralph-${Date.now()}`
       const input = createMockInput(sessionID)
-      const output = createMockOutput("/ralph-loop do something")
+      const output = createMockOutput("/overclock-loop do something")
       const originalText = output.parts[0].text
 
       // #when hook is called
@@ -135,12 +135,12 @@ describe("createAutoSlashCommandHook", () => {
       expect(output.parts[0].text).toBe(originalText)
     })
 
-    it("should NOT trigger for cancel-ralph command", async () => {
-      // #given cancel-ralph command
+    it("should NOT trigger for cancel-overclock command", async () => {
+      // #given cancel-overclock command
       const hook = createAutoSlashCommandHook()
       const sessionID = `test-session-cancel-${Date.now()}`
       const input = createMockInput(sessionID)
-      const output = createMockOutput("/cancel-ralph")
+      const output = createMockOutput("/cancel-overclock")
       const originalText = output.parts[0].text
 
       // #when hook is called
@@ -152,13 +152,13 @@ describe("createAutoSlashCommandHook", () => {
   })
 
   describe("already processed", () => {
-    it("should skip if auto-slash-command tags already present", async () => {
+    it("should skip if grid-auto-slash-command tags already present", async () => {
       // #given text with existing tags
       const hook = createAutoSlashCommandHook()
       const sessionID = `test-session-existing-${Date.now()}`
       const input = createMockInput(sessionID)
       const output = createMockOutput(
-        "<auto-slash-command>/commit</auto-slash-command>"
+        "<grid-auto-slash-command>/commit</grid-auto-slash-command>"
       )
       const originalText = output.parts[0].text
 

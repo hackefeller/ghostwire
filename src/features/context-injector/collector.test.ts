@@ -15,7 +15,7 @@ describe("ContextCollector", () => {
       const sessionID = "ses_test1"
       const options = {
         id: "ulw-context",
-        source: "keyword-detector" as ContextSourceType,
+        source: "grid-keyword-detector" as ContextSourceType,
         content: "Ultrawork mode activated",
       }
 
@@ -36,7 +36,7 @@ describe("ContextCollector", () => {
       // #when
       collector.register(sessionID, {
         id: "test",
-        source: "keyword-detector",
+        source: "grid-keyword-detector",
         content: "test content",
       })
 
@@ -52,7 +52,7 @@ describe("ContextCollector", () => {
       // #when
       collector.register(sessionID, {
         id: "critical-context",
-        source: "keyword-detector",
+        source: "grid-keyword-detector",
         content: "critical content",
         priority: "critical",
       })
@@ -67,7 +67,7 @@ describe("ContextCollector", () => {
       const sessionID = "ses_test4"
       const options = {
         id: "ulw-context",
-        source: "keyword-detector" as ContextSourceType,
+        source: "grid-keyword-detector" as ContextSourceType,
         content: "First content",
       }
 
@@ -88,13 +88,13 @@ describe("ContextCollector", () => {
       // #when
       collector.register(sessionID, {
         id: "context-1",
-        source: "keyword-detector",
-        content: "From keyword-detector",
+        source: "grid-keyword-detector",
+        content: "From grid-keyword-detector",
       })
       collector.register(sessionID, {
         id: "context-1",
-        source: "rules-injector",
-        content: "From rules-injector",
+        source: "grid-rules-injector",
+        content: "From grid-rules-injector",
       })
 
       // #then
@@ -122,12 +122,12 @@ describe("ContextCollector", () => {
       const sessionID = "ses_merge"
       collector.register(sessionID, {
         id: "ctx-1",
-        source: "keyword-detector",
+        source: "grid-keyword-detector",
         content: "First context",
       })
       collector.register(sessionID, {
         id: "ctx-2",
-        source: "rules-injector",
+        source: "grid-rules-injector",
         content: "Second context",
       })
 
@@ -213,7 +213,7 @@ describe("ContextCollector", () => {
       const sessionID = "ses_consume"
       collector.register(sessionID, {
         id: "ctx",
-        source: "keyword-detector",
+        source: "grid-keyword-detector",
         content: "test",
       })
 
@@ -230,7 +230,7 @@ describe("ContextCollector", () => {
       const sessionID = "ses_consume_return"
       collector.register(sessionID, {
         id: "ctx",
-        source: "keyword-detector",
+        source: "grid-keyword-detector",
         content: "test content",
       })
 
@@ -248,12 +248,12 @@ describe("ContextCollector", () => {
       const session2 = "ses_2"
       collector.register(session1, {
         id: "ctx",
-        source: "keyword-detector",
+        source: "grid-keyword-detector",
         content: "session 1",
       })
       collector.register(session2, {
         id: "ctx",
-        source: "keyword-detector",
+        source: "grid-keyword-detector",
         content: "session 2",
       })
 
@@ -272,12 +272,12 @@ describe("ContextCollector", () => {
       const sessionID = "ses_clear"
       collector.register(sessionID, {
         id: "ctx-1",
-        source: "keyword-detector",
+        source: "grid-keyword-detector",
         content: "test 1",
       })
       collector.register(sessionID, {
         id: "ctx-2",
-        source: "rules-injector",
+        source: "grid-rules-injector",
         content: "test 2",
       })
 
@@ -295,7 +295,7 @@ describe("ContextCollector", () => {
       const sessionID = "ses_has"
       collector.register(sessionID, {
         id: "ctx",
-        source: "keyword-detector",
+        source: "grid-keyword-detector",
         content: "test",
       })
 
@@ -316,7 +316,7 @@ describe("ContextCollector", () => {
       const sessionID = "ses_after_consume"
       collector.register(sessionID, {
         id: "ctx",
-        source: "keyword-detector",
+        source: "grid-keyword-detector",
         content: "test",
       })
 

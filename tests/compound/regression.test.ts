@@ -4,19 +4,19 @@ describe("Compound Engineering - Regression Tests", () => {
   describe("No Breaking Changes to Existing Agents", () => {
     test("builtin agents are unaffected", () => {
       //#given
-      const builtinAgents = ["sisyphus", "oracle", "librarian", "explore", "build", "atlas", "prometheus", "metis", "momus"]
+      const builtinAgents = ["cipher-operator", "seer-advisor", "archive-researcher", "scout-recon", "build", "nexus-orchestrator", "augur-planner", "tactician-strategist", "glitch-auditor"]
 
       //#when & #then
       // Verify builtin agents remain as they were
       builtinAgents.forEach((agent) => {
         expect(agent).toBeTruthy()
-        expect(agent).not.toContain("compound:")
+        expect(agent).not.toContain("grid:")
       })
     })
 
     test("builtin agent names are lowercase", () => {
       //#given
-      const builtinAgents = ["sisyphus", "oracle", "librarian", "explore", "build", "atlas"]
+      const builtinAgents = ["cipher-operator", "seer-advisor", "archive-researcher", "scout-recon", "build", "nexus-orchestrator"]
 
       //#when
       const invalidAgents = builtinAgents.filter((agent) => agent !== agent.toLowerCase())
@@ -29,18 +29,18 @@ describe("Compound Engineering - Regression Tests", () => {
   describe("No Breaking Changes to Existing Commands", () => {
     test("builtin commands remain unchanged", () => {
       //#given
-      const builtinCommands = ["init-deep", "ralph-loop", "ulw-loop", "cancel-ralph", "refactor", "start-work", "stop-continuation"]
+      const builtinCommands = ["init-deep", "overclock-loop", "ulw-overclock", "cancel-overclock", "refactor", "jack-in-work", "stop-continuation"]
 
       //#when & #then
       builtinCommands.forEach((cmd) => {
         expect(cmd).toBeTruthy()
-        expect(cmd).not.toContain("compound:")
+        expect(cmd).not.toContain("grid:")
       })
     })
 
     test("builtin command names use consistent pattern", () => {
       //#given
-      const builtinCommands = ["init-deep", "ralph-loop", "ulw-loop", "cancel-ralph", "refactor", "start-work", "stop-continuation"]
+      const builtinCommands = ["init-deep", "overclock-loop", "ulw-overclock", "cancel-overclock", "refactor", "jack-in-work", "stop-continuation"]
 
       //#when
       const invalidCommands = builtinCommands.filter((cmd) => !cmd.match(/^[a-z]+(-[a-z]+)*$/))
@@ -58,7 +58,7 @@ describe("Compound Engineering - Regression Tests", () => {
       //#when & #then
       builtinSkills.forEach((skill) => {
         expect(skill).toBeTruthy()
-        expect(skill).not.toContain("compound:")
+        expect(skill).not.toContain("grid:")
       })
     })
 
@@ -77,12 +77,12 @@ describe("Compound Engineering - Regression Tests", () => {
   describe("Namespace Isolation", () => {
     test("compound agents don't conflict with builtin agents", () => {
       //#given
-      const builtinAgents = new Set(["sisyphus", "oracle", "librarian", "explore", "build", "atlas", "prometheus", "metis", "momus"])
-      const compoundAgents = new Set(["compound:kieran-rails-reviewer", "compound:framework-docs-researcher", "compound:figma-design-sync"])
+      const builtinAgents = new Set(["cipher-operator", "seer-advisor", "archive-researcher", "scout-recon", "build", "nexus-orchestrator", "augur-planner", "tactician-strategist", "glitch-auditor"])
+      const compoundAgents = new Set(["grid:kieran-rails-reviewer", "grid:framework-docs-researcher", "grid:figma-design-sync"])
 
       //#when
       const conflicts = Array.from(compoundAgents).filter((agent) => {
-        const baseName = agent.replace("compound:", "")
+        const baseName = agent.replace("grid:", "")
         return builtinAgents.has(baseName)
       })
 
@@ -94,22 +94,22 @@ describe("Compound Engineering - Regression Tests", () => {
       //#given
       const builtinCommands = new Set([
         "init-deep",
-        "ralph-loop",
-        "ulw-loop",
-        "cancel-ralph",
+        "overclock-loop",
+        "ulw-overclock",
+        "cancel-overclock",
         "refactor",
-        "start-work",
+        "jack-in-work",
         "stop-continuation",
       ])
       const compoundCommands = new Set([
-        "compound:workflows:plan",
-        "compound:code:refactor",
-        "compound:git:smart-commit",
+        "grid:workflows:plan",
+        "grid:code:refactor",
+        "grid:git:smart-commit",
       ])
 
       //#when
       const conflicts = Array.from(compoundCommands).filter((cmd) => {
-        const baseName = cmd.replace("compound:", "")
+        const baseName = cmd.replace("grid:", "")
         return builtinCommands.has(baseName)
       })
 
@@ -122,14 +122,14 @@ describe("Compound Engineering - Regression Tests", () => {
       //#given
       const builtinSkills = new Set(["playwright", "agent-browser", "frontend-ui-ux", "git-master"])
       const compoundSkills = new Set([
-        "compound:typescript-expert",
-        "compound:frontend-design",
-        "compound:docker-expertise",
+        "grid:typescript-expert",
+        "grid:frontend-design",
+        "grid:docker-expertise",
       ])
 
       //#when
       const conflicts = Array.from(compoundSkills).filter((skill) => {
-        const baseName = skill.replace("compound:", "")
+        const baseName = skill.replace("grid:", "")
         return builtinSkills.has(baseName)
       })
 
@@ -143,36 +143,36 @@ describe("Compound Engineering - Regression Tests", () => {
       //#given
       const oldConfig = {
         agents: {
-          sisyphus: {
+          "cipher-operator": {
             model: "anthropic/claude-opus-4-5",
           },
         },
       }
 
       //#when & #then
-      expect(oldConfig.agents.sisyphus).toBeDefined()
-      expect(oldConfig.agents.sisyphus.model).toBe("anthropic/claude-opus-4-5")
+      expect(oldConfig.agents["cipher-operator"]).toBeDefined()
+      expect(oldConfig.agents["cipher-operator"].model).toBe("anthropic/claude-opus-4-5")
     })
 
     test("disabled_agents still works for builtin agents", () => {
       //#given
       const config = {
-        disabled_agents: ["oracle", "librarian"],
+        disabled_agents: ["seer-advisor", "archive-researcher"],
       }
 
       //#when & #then
       expect(Array.isArray(config.disabled_agents)).toBe(true)
-      expect(config.disabled_agents.includes("oracle")).toBe(true)
+      expect(config.disabled_agents.includes("seer-advisor")).toBe(true)
     })
 
     test("mixed builtin and compound agent configuration", () => {
       //#given
       const config = {
         agents: {
-          sisyphus: {
+          "cipher-operator": {
             model: "anthropic/claude-opus-4-5",
           },
-          "compound:kieran-rails-reviewer": {
+          "grid:kieran-rails-reviewer": {
             model: "anthropic/claude-opus-4-5",
           },
         },
@@ -180,8 +180,8 @@ describe("Compound Engineering - Regression Tests", () => {
 
       //#when & #then
       expect(Object.keys(config.agents).length).toBe(2)
-      expect(config.agents.sisyphus).toBeDefined()
-      expect((config.agents as Record<string, unknown>)["compound:kieran-rails-reviewer"]).toBeDefined()
+      expect(config.agents["cipher-operator"]).toBeDefined()
+      expect((config.agents as Record<string, unknown>)["grid:kieran-rails-reviewer"]).toBeDefined()
     })
   })
 
@@ -190,19 +190,19 @@ describe("Compound Engineering - Regression Tests", () => {
       //#given
       const componentNames = [
         // Builtin
-        "sisyphus",
-        "oracle",
+        "cipher-operator",
+        "seer-advisor",
         "agent-browser",
         "git-master",
         // Compound
-        "compound:kieran-rails-reviewer",
-        "compound:code:refactor",
-        "compound:typescript-expert",
+        "grid:kieran-rails-reviewer",
+        "grid:code:refactor",
+        "grid:typescript-expert",
       ]
 
       //#when
-      const compoundCount = componentNames.filter((name) => name.includes("compound:")).length
-      const builtinCount = componentNames.filter((name) => !name.includes("compound:")).length
+      const compoundCount = componentNames.filter((name) => name.includes("grid:")).length
+      const builtinCount = componentNames.filter((name) => !name.includes("grid:")).length
 
       //#then
       expect(compoundCount).toBe(3)
@@ -213,16 +213,16 @@ describe("Compound Engineering - Regression Tests", () => {
     test("all compound components have consistent namespace", () => {
       //#given
       const compoundComponents = [
-        "compound:kieran-rails-reviewer",
-        "compound:framework-docs-researcher",
-        "compound:figma-design-sync",
-        "compound:workflows:plan",
-        "compound:code:refactor",
-        "compound:typescript-expert",
+        "grid:kieran-rails-reviewer",
+        "grid:framework-docs-researcher",
+        "grid:figma-design-sync",
+        "grid:workflows:plan",
+        "grid:code:refactor",
+        "grid:typescript-expert",
       ]
 
       //#when
-      const allPrefixed = compoundComponents.every((name) => name.startsWith("compound:"))
+      const allPrefixed = compoundComponents.every((name) => name.startsWith("grid:"))
 
       //#then
       expect(allPrefixed).toBe(true)
@@ -233,7 +233,7 @@ describe("Compound Engineering - Regression Tests", () => {
     test("compound skills can be disabled like builtin skills", () => {
       //#given
       const config = {
-        disabled_skills: ["compound:typescript-expert", "compound:docker-expertise"],
+        disabled_skills: ["grid:typescript-expert", "grid:docker-expertise"],
       }
 
       //#when & #then
@@ -244,7 +244,7 @@ describe("Compound Engineering - Regression Tests", () => {
     test("compound commands can be disabled like builtin commands", () => {
       //#given
       const config = {
-        disabled_commands: ["compound:code:refactor", "compound:git:smart-commit"],
+        disabled_commands: ["grid:code:refactor", "grid:git:smart-commit"],
       }
 
       //#when & #then

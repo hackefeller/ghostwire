@@ -1,12 +1,12 @@
 {
-  "name": "ruach",
+  "name": "ghostwire",
   "version": "3.1.10",
   "description": "The Best AI Agent Harness - Batteries-Included OpenCode Plugin with Multi-Model Orchestration, Parallel Background Agents, and Crafted LSP/AST Tools",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "bin": {
-    "ruach": "./bin/ruach.js"
+    "ghostwire": "./bin/ghostwire.js"
   },
   "files": [
     "dist",
@@ -18,7 +18,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./schema.json": "./dist/ruach.schema.json"
+    "./schema.json": "./dist/ghostwire.schema.json"
   },
   "scripts": {
     "build": "bun build src/index.ts --outdir dist --target bun --format esm --external @ast-grep/napi && tsc --emitDeclarationOnly && bun build src/cli/index.ts --outdir dist/cli --target bun --format esm --external @ast-grep/napi && bun run build:schema",
@@ -34,8 +34,8 @@
   "keywords": [
     "opencode",
     "plugin",
-    "oracle",
-    "librarian",
+    "seer-advisor",
+    "archive-researcher",
     "agents",
     "ai",
     "llm"
@@ -44,17 +44,17 @@
   "license": "SUL-1.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/code-yeongyu/ruach.git"
+    "url": "git+https://github.com/pontistudios/ghostwire.git"
   },
   "bugs": {
-    "url": "https://github.com/code-yeongyu/ruach/issues"
+    "url": "https://github.com/pontistudios/ghostwire/issues"
   },
-  "homepage": "https://github.com/code-yeongyu/ruach#readme",
+  "homepage": "https://github.com/pontistudios/ghostwire#readme",
   "dependencies": {
     "@ast-grep/cli": "^0.40.0",
     "@ast-grep/napi": "^0.40.0",
     "@clack/prompts": "^0.11.0",
-    "@code-yeongyu/comment-checker": "^0.6.1",
+    "@pontistudios/grid-comment-checker": "^0.6.1",
     "@modelcontextprotocol/sdk": "^1.25.1",
     "@opencode-ai/plugin": "^1.1.19",
     "@opencode-ai/sdk": "^1.1.19",
@@ -75,17 +75,17 @@
     "typescript": "^5.7.3"
   },
   "optionalDependencies": {
-    "ruach-darwin-arm64": "3.1.10",
-    "ruach-darwin-x64": "3.1.10",
-    "ruach-linux-arm64": "3.1.10",
-    "ruach-linux-arm64-musl": "3.1.10",
-    "ruach-linux-x64": "3.1.10",
-    "ruach-linux-x64-musl": "3.1.10",
-    "ruach-windows-x64": "3.1.10"
+    "ghostwire-darwin-arm64": "3.1.10",
+    "ghostwire-darwin-x64": "3.1.10",
+    "ghostwire-linux-arm64": "3.1.10",
+    "ghostwire-linux-arm64-musl": "3.1.10",
+    "ghostwire-linux-x64": "3.1.10",
+    "ghostwire-linux-x64-musl": "3.1.10",
+    "ghostwire-windows-x64": "3.1.10"
   },
   "trustedDependencies": [
     "@ast-grep/cli",
     "@ast-grep/napi",
-    "@code-yeongyu/comment-checker"
+    "@pontistudios/grid-comment-checker"
   ]
 }

@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { findProjectRoot, findRuleFiles } from "./finder";
 
 describe("findRuleFiles", () => {
-  const TEST_DIR = join(tmpdir(), `rules-injector-test-${Date.now()}`);
+  const TEST_DIR = join(tmpdir(), `grid-rules-injector-test-${Date.now()}`);
   const homeDir = join(TEST_DIR, "home");
 
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { createSisyphusJuniorAgentWithOverrides, SISYPHUS_JUNIOR_DEFAULTS } from "./sisyphus-junior"
+import { createSisyphusJuniorAgentWithOverrides, SISYPHUS_JUNIOR_DEFAULTS } from "./cipher-runner"
 
 describe("createSisyphusJuniorAgentWithOverrides", () => {
   describe("honored fields", () => {
@@ -138,14 +138,14 @@ describe("createSisyphusJuniorAgentWithOverrides", () => {
     })
   })
 
-  describe("tool safety (task/delegate_task blocked, call_omo_agent allowed)", () => {
-    test("task and delegate_task remain blocked, call_omo_agent is allowed via tools format", () => {
+  describe("tool safety (task/delegate_task blocked, call_grid_agent allowed)", () => {
+    test("task and delegate_task remain blocked, call_grid_agent is allowed via tools format", () => {
       // #given
       const override = {
         tools: {
           task: true,
           delegate_task: true,
-          call_omo_agent: true,
+          call_grid_agent: true,
           read: true,
         },
       }
@@ -159,15 +159,15 @@ describe("createSisyphusJuniorAgentWithOverrides", () => {
       if (tools) {
         expect(tools.task).toBe(false)
         expect(tools.delegate_task).toBe(false)
-        // call_omo_agent is NOW ALLOWED for subagents to spawn explore/librarian
-        expect(tools.call_omo_agent).toBe(true)
+        // call_grid_agent is NOW ALLOWED for subagents to spawn scoutRecon/archiveResearcher
+        expect(tools.call_grid_agent).toBe(true)
         expect(tools.read).toBe(true)
       }
       if (permission) {
         expect(permission.task).toBe("deny")
         expect(permission.delegate_task).toBe("deny")
-        // call_omo_agent is NOW ALLOWED for subagents to spawn explore/librarian
-        expect(permission.call_omo_agent).toBe("allow")
+        // call_grid_agent is NOW ALLOWED for subagents to spawn scoutRecon/archiveResearcher
+        expect(permission.call_grid_agent).toBe("allow")
       }
     })
 
@@ -177,7 +177,7 @@ describe("createSisyphusJuniorAgentWithOverrides", () => {
         permission: {
           task: "allow",
           delegate_task: "allow",
-          call_omo_agent: "allow",
+          call_grid_agent: "allow",
           read: "allow",
         },
       } as { permission: Record<string, string> }
@@ -185,18 +185,18 @@ describe("createSisyphusJuniorAgentWithOverrides", () => {
       // #when
       const result = createSisyphusJuniorAgentWithOverrides(override as Parameters<typeof createSisyphusJuniorAgentWithOverrides>[0])
 
-      // #then - task/delegate_task blocked, but call_omo_agent allowed for explore/librarian spawning
+      // #then - task/delegate_task blocked, but call_grid_agent allowed for scoutRecon/archiveResearcher spawning
       const tools = result.tools as Record<string, boolean> | undefined
       const permission = result.permission as Record<string, string> | undefined
       if (tools) {
         expect(tools.task).toBe(false)
         expect(tools.delegate_task).toBe(false)
-        expect(tools.call_omo_agent).toBe(true)
+        expect(tools.call_grid_agent).toBe(true)
       }
       if (permission) {
         expect(permission.task).toBe("deny")
         expect(permission.delegate_task).toBe("deny")
-        expect(permission.call_omo_agent).toBe("allow")
+        expect(permission.call_grid_agent).toBe("allow")
       }
     })
   })
@@ -210,7 +210,7 @@ describe("createSisyphusJuniorAgentWithOverrides", () => {
       const result = createSisyphusJuniorAgentWithOverrides(override)
 
       // #then
-      expect(result.prompt).toContain("Sisyphus-Junior")
+      expect(result.prompt).toContain("Cipher Operator-Junior")
       expect(result.prompt).toContain("You work ALONE")
       expect(result.prompt).toContain("BLOCKED ACTIONS")
     })

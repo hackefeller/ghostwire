@@ -3,15 +3,15 @@
 ## Examples
 
 ```bash
-$ bunx ruach doctor
-$ bunx ruach doctor --verbose
-$ bunx ruach doctor --json
-$ bunx ruach doctor --category authentication
+$ bunx ghostwire doctor
+$ bunx ghostwire doctor --verbose
+$ bunx ghostwire doctor --json
+$ bunx ghostwire doctor --category authentication
 ```
 
 ## Categories
 
-- **installation** — Check Ruach and plugin installation
+- **installation** — Check Ghostwire and plugin installation
 - **configuration** — Validate configuration files
 - **authentication** — Check auth provider status
 - **dependencies** — Check external dependencies

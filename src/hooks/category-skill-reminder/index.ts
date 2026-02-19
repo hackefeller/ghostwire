@@ -7,9 +7,9 @@ import { log } from "../../shared"
  * These are orchestrator agents that delegate work to specialized agents.
  */
 const TARGET_AGENTS = new Set([
-  "sisyphus",
-  "sisyphus-junior",
-  "atlas",
+  "cipher-operator",
+  "cipher-runner",
+  "nexus-orchestrator",
 ])
 
 /**
@@ -30,7 +30,7 @@ const DELEGATABLE_WORK_TOOLS = new Set([
  */
 const DELEGATION_TOOLS = new Set([
   "delegate_task",
-  "call_omo_agent",
+  "call_grid_agent",
   "task",
 ])
 
@@ -95,13 +95,19 @@ export function createCategorySkillReminderHook(_ctx: PluginInput) {
     return sessionStates.get(sessionID)!
   }
 
-  function isTargetAgent(sessionID: string, inputAgent?: string): boolean {
+function isTargetAgent(sessionID: string, inputAgent?: string): boolean {
     const agent = getSessionAgent(sessionID) ?? inputAgent
     if (!agent) return false
-    const agentLower = agent.toLowerCase()
+    const agentLower = agent
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/_+/g, "-")
+    const canonical = agentLower.replace(/\(.*?\)/g, "").trim()
     return TARGET_AGENTS.has(agentLower) || 
-           agentLower.includes("sisyphus") || 
-           agentLower.includes("atlas")
+           TARGET_AGENTS.has(canonical) ||
+           canonical.includes("cipher-operator") || 
+           canonical.includes("nexus-orchestrator") ||
+           canonical.includes("cipher-runner")
   }
 
   const toolExecuteAfter = async (
@@ -119,7 +125,7 @@ export function createCategorySkillReminderHook(_ctx: PluginInput) {
 
     if (DELEGATION_TOOLS.has(toolLower)) {
       state.delegationUsed = true
-      log("[category-skill-reminder] Delegation tool used", { sessionID, tool })
+      log("[grid-category-skill-reminder] Delegation tool used", { sessionID, tool })
       return
     }
 
@@ -132,7 +138,7 @@ export function createCategorySkillReminderHook(_ctx: PluginInput) {
     if (state.toolCallCount >= 3 && !state.delegationUsed && !state.reminderShown) {
       output.output += REMINDER_MESSAGE
       state.reminderShown = true
-      log("[category-skill-reminder] Reminder injected", { 
+      log("[grid-category-skill-reminder] Reminder injected", { 
         sessionID, 
         toolCallCount: state.toolCallCount 
       })

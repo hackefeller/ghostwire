@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, afterEach } from "bun:test"
 import { createNonInteractiveEnvHook, NON_INTERACTIVE_ENV } from "./index"
 
-describe("non-interactive-env hook", () => {
+describe("grid-non-interactive-env hook", () => {
   const mockCtx = {} as Parameters<typeof createNonInteractiveEnvHook>[0]
 
   let originalPlatform: NodeJS.Platform

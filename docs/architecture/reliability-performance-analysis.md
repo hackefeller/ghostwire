@@ -39,7 +39,7 @@ All hook execution is explicit and sequenced via `await` chains in `src/index.ts
 
 - **Hook-order coupling**: behavior depends on fixed order in sequential `await` pipelines; reordering can create regressions.
 - **State coupling across subsystems**: session-state, boulder-state, and background-task state interact through shared identifiers.
-- **Large orchestrator surfaces**: Atlas/background/delegate-task are high-complexity modules with high blast radius.
+- **Large orchestrator surfaces**: Nexus Orchestrator/background/delegate-task are high-complexity modules with high blast radius.
 - **Implicit policy in prompt injection**: orchestration guarantees rely partly on textual directives rather than hard capability boundaries.
 
 ## Performance Assessment

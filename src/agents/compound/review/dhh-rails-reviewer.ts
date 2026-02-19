@@ -56,7 +56,7 @@ export function createDHHRailsReviewerAgent(model: string): AgentConfig {
   }
 }
 
-// Agent metadata for Sisyphus prompt building and task delegation
+// Agent metadata for Cipher Operator prompt building and task delegation
 export const DHH_RAILS_REVIEWER_METADATA: AgentPromptMetadata = {
   category: "review",
   cost: "MODERATE",

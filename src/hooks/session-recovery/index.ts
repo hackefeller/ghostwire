@@ -415,7 +415,7 @@ export function createSessionRecoveryHook(ctx: PluginInput, options?: SessionRec
 
       return success
   } catch (err) {
-    log("[session-recovery] Recovery failed:", err)
+    log("[grid-session-recovery] Recovery failed:", err)
     return false
   } finally {
     processingErrors.delete(assistantMsgID)

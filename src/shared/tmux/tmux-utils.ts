@@ -138,7 +138,7 @@ export async function spawnTmuxPane(
     return { success: false }
   }
 
-  const title = `omo-subagent-${description.slice(0, 20)}`
+  const title = `grid-subagent-${description.slice(0, 20)}`
   spawn([tmux, "select-pane", "-t", paneId, "-T", title], {
     stdout: "ignore",
     stderr: "ignore",
@@ -216,7 +216,7 @@ export async function replaceTmuxPane(
     return { success: false }
   }
 
-  const title = `omo-subagent-${description.slice(0, 20)}`
+  const title = `grid-subagent-${description.slice(0, 20)}`
   spawn([tmux, "select-pane", "-t", paneId, "-T", title], {
     stdout: "ignore",
     stderr: "ignore",

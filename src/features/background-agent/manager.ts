@@ -299,7 +299,7 @@ export class BackgroundManager {
     })
 
     // Use prompt() instead of promptAsync() to properly initialize agent loop (fire-and-forget)
-    // Include model if caller provided one (e.g., from Sisyphus category configs)
+    // Include model if caller provided one (e.g., from Cipher Operator category configs)
     // IMPORTANT: variant must be a top-level field in the body, NOT nested inside model
     // OpenCode's PromptInput schema expects: { model: { providerID, modelID }, variant: "max" }
     const launchModel = input.model
@@ -318,7 +318,7 @@ export class BackgroundManager {
           ...getAgentToolRestrictions(input.agent),
           task: false,
           delegate_task: false,
-          call_omo_agent: true,
+          call_grid_agent: true,
           question: false,
         },
         parts: [{ type: "text", text: input.prompt }],
@@ -572,7 +572,7 @@ export class BackgroundManager {
           ...getAgentToolRestrictions(existingTask.agent),
           task: false,
           delegate_task: false,
-          call_omo_agent: true,
+          call_grid_agent: true,
           question: false,
         },
         parts: [{ type: "text", text: input.prompt }],

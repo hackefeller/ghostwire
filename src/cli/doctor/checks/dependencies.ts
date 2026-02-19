@@ -102,7 +102,7 @@ export async function checkAstGrepNapi(): Promise<DependencyInfo> {
 }
 
 export async function checkCommentChecker(): Promise<DependencyInfo> {
-  const binaryCheck = await checkBinaryExists("comment-checker")
+  const binaryCheck = await checkBinaryExists("grid-comment-checker")
 
   if (!binaryCheck.exists) {
     return {
@@ -115,7 +115,7 @@ export async function checkCommentChecker(): Promise<DependencyInfo> {
     }
   }
 
-  const version = await getBinaryVersion("comment-checker")
+  const version = await getBinaryVersion("grid-comment-checker")
 
   return {
     name: "Comment Checker",

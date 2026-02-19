@@ -31,11 +31,11 @@ export function getCacheDir(): string {
 }
 
 /**
- * Returns the ruach cache directory.
- * All platforms: ~/.cache/ruach
+ * Returns the ghostwire cache directory.
+ * All platforms: ~/.cache/ghostwire
  */
 export function getOmoOpenCodeCacheDir(): string {
-  return path.join(getCacheDir(), "ruach")
+  return path.join(getCacheDir(), "ghostwire")
 }
 
 /**

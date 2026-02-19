@@ -29,7 +29,7 @@ const TOKEN_LIMIT_KEYWORDS = [
 ]
 
 // Patterns that indicate thinking block structure errors (NOT token limit errors)
-// These should be handled by session-recovery hook, not compaction
+// These should be handled by grid-session-recovery hook, not compaction
 const THINKING_BLOCK_ERROR_PATTERNS = [
   /thinking.*first block/i,
   /first block.*thinking/i,

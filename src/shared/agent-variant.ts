@@ -1,58 +1,71 @@
-import type { RuachConfig } from "../config"
-import { findCaseInsensitive } from "./case-insensitive"
-import { AGENT_MODEL_REQUIREMENTS, CATEGORY_MODEL_REQUIREMENTS } from "./model-requirements"
+import type { GhostwireConfig } from "../config";
+import { findCaseInsensitive } from "./case-insensitive";
+import {
+  AGENT_MODEL_REQUIREMENTS,
+  CATEGORY_MODEL_REQUIREMENTS,
+} from "./model-requirements";
 
 export function resolveAgentVariant(
-  config: RuachConfig,
-  agentName?: string
+  config: GhostwireConfig,
+  agentName?: string,
 ): string | undefined {
   if (!agentName) {
-    return undefined
+    return undefined;
   }
 
   const agentOverrides = config.agents as
     | Record<string, { variant?: string; category?: string }>
-    | undefined
-  const agentOverride = agentOverrides ? findCaseInsensitive(agentOverrides, agentName) : undefined
+    | undefined;
+  const agentOverride = agentOverrides
+    ? findCaseInsensitive(agentOverrides, agentName)
+    : undefined;
   if (!agentOverride) {
-    return undefined
+    return undefined;
   }
 
   if (agentOverride.variant) {
-    return agentOverride.variant
+    return agentOverride.variant;
   }
 
-  const categoryName = agentOverride.category
+  const categoryName = agentOverride.category;
   if (!categoryName) {
-    return undefined
+    return undefined;
   }
 
-  return config.categories?.[categoryName]?.variant
+  return config.categories?.[categoryName]?.variant;
 }
 
 export function resolveVariantForModel(
-  config: RuachConfig,
+  config: GhostwireConfig,
   agentName: string,
   currentModel: { providerID: string; modelID: string },
 ): string | undefined {
-  const agentRequirement = AGENT_MODEL_REQUIREMENTS[agentName]
+  const agentRequirement = AGENT_MODEL_REQUIREMENTS[agentName];
   if (agentRequirement) {
-    return findVariantInChain(agentRequirement.fallbackChain, currentModel.providerID)
+    return findVariantInChain(
+      agentRequirement.fallbackChain,
+      currentModel.providerID,
+    );
   }
 
   const agentOverrides = config.agents as
     | Record<string, { category?: string }>
-    | undefined
-  const agentOverride = agentOverrides ? findCaseInsensitive(agentOverrides, agentName) : undefined
-  const categoryName = agentOverride?.category
+    | undefined;
+  const agentOverride = agentOverrides
+    ? findCaseInsensitive(agentOverrides, agentName)
+    : undefined;
+  const categoryName = agentOverride?.category;
   if (categoryName) {
-    const categoryRequirement = CATEGORY_MODEL_REQUIREMENTS[categoryName]
+    const categoryRequirement = CATEGORY_MODEL_REQUIREMENTS[categoryName];
     if (categoryRequirement) {
-      return findVariantInChain(categoryRequirement.fallbackChain, currentModel.providerID)
+      return findVariantInChain(
+        categoryRequirement.fallbackChain,
+        currentModel.providerID,
+      );
     }
   }
 
-  return undefined
+  return undefined;
 }
 
 function findVariantInChain(
@@ -61,19 +74,19 @@ function findVariantInChain(
 ): string | undefined {
   for (const entry of fallbackChain) {
     if (entry.providers.includes(providerID)) {
-      return entry.variant
+      return entry.variant;
     }
   }
-  return undefined
+  return undefined;
 }
 
 export function applyAgentVariant(
-  config: RuachConfig,
+  config: GhostwireConfig,
   agentName: string | undefined,
-  message: { variant?: string }
+  message: { variant?: string },
 ): void {
-  const variant = resolveAgentVariant(config, agentName)
+  const variant = resolveAgentVariant(config, agentName);
   if (variant !== undefined && message.variant === undefined) {
-    message.variant = variant
+    message.variant = variant;
   }
 }

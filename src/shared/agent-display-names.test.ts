@@ -3,25 +3,25 @@ import { AGENT_DISPLAY_NAMES, getAgentDisplayName } from "./agent-display-names"
 
 describe("getAgentDisplayName", () => {
   it("returns display name for lowercase config key (new format)", () => {
-    // #given config key "sisyphus"
-    const configKey = "sisyphus"
+    // #given config key "cipher-operator"
+    const configKey = "cipher-operator"
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // #then returns "Sisyphus (Ultraworker)"
-    expect(result).toBe("Sisyphus (Ultraworker)")
+    // #then returns "Cipher Operator (Ultraworker)"
+    expect(result).toBe("Cipher Operator (Ultraworker)")
   })
 
   it("returns display name for uppercase config key (old format - case-insensitive)", () => {
-    // #given config key "Sisyphus" (old format)
-    const configKey = "Sisyphus"
+    // #given config key "Cipher Operator" (old format)
+    const configKey = "Cipher Operator"
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // #then returns "Sisyphus (Ultraworker)" (case-insensitive lookup)
-    expect(result).toBe("Sisyphus (Ultraworker)")
+    // #then returns "Cipher Operator (Ultraworker)" (case-insensitive lookup)
+    expect(result).toBe("Cipher Operator (Ultraworker)")
   })
 
   it("returns original key for unknown agents (fallback)", () => {
@@ -35,103 +35,103 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("custom-agent")
   })
 
-  it("returns display name for atlas", () => {
-    // #given config key "atlas"
-    const configKey = "atlas"
+  it("returns display name for nexus-orchestrator", () => {
+    // #given config key "nexus-orchestrator"
+    const configKey = "nexus-orchestrator"
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // #then returns "Atlas (Plan Execution Orchestrator)"
-    expect(result).toBe("Atlas (Plan Execution Orchestrator)")
+    // #then returns "Nexus Orchestrator (Plan Execution Orchestrator)"
+    expect(result).toBe("Nexus Orchestrator (Plan Execution Orchestrator)")
   })
 
-  it("returns display name for prometheus", () => {
-    // #given config key "prometheus"
-    const configKey = "prometheus"
+  it("returns display name for augur-planner", () => {
+    // #given config key "augur-planner"
+    const configKey = "augur-planner"
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // #then returns "Prometheus (Plan Builder)"
-    expect(result).toBe("Prometheus (Plan Builder)")
+    // #then returns "Augur Planner (Plan Builder)"
+    expect(result).toBe("Augur Planner (Plan Builder)")
   })
 
-  it("returns display name for sisyphus-junior", () => {
-    // #given config key "sisyphus-junior"
-    const configKey = "sisyphus-junior"
+  it("returns display name for cipher-runner", () => {
+    // #given config key "cipher-runner"
+    const configKey = "cipher-runner"
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // #then returns "Sisyphus-Junior"
-    expect(result).toBe("Sisyphus-Junior")
+    // #then returns "Cipher Operator-Junior"
+    expect(result).toBe("Cipher Operator-Junior")
   })
 
-  it("returns display name for metis", () => {
-    // #given config key "metis"
-    const configKey = "metis"
+  it("returns display name for tactician-strategist", () => {
+    // #given config key "tactician-strategist"
+    const configKey = "tactician-strategist"
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // #then returns "Metis (Plan Consultant)"
-    expect(result).toBe("Metis (Plan Consultant)")
+    // #then returns "Tactician Strategist (Plan Consultant)"
+    expect(result).toBe("Tactician Strategist (Plan Consultant)")
   })
 
-  it("returns display name for momus", () => {
-    // #given config key "momus"
-    const configKey = "momus"
+  it("returns display name for glitch-auditor", () => {
+    // #given config key "glitch-auditor"
+    const configKey = "glitch-auditor"
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // #then returns "Momus (Plan Reviewer)"
-    expect(result).toBe("Momus (Plan Reviewer)")
+    // #then returns "Glitch Auditor (Plan Reviewer)"
+    expect(result).toBe("Glitch Auditor (Plan Reviewer)")
   })
 
-  it("returns display name for oracle", () => {
-    // #given config key "oracle"
-    const configKey = "oracle"
+  it("returns display name for seer-advisor", () => {
+    // #given config key "seer-advisor"
+    const configKey = "seer-advisor"
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // #then returns "oracle"
-    expect(result).toBe("oracle")
+    // #then returns "seer-advisor"
+    expect(result).toBe("seer-advisor")
   })
 
-  it("returns display name for librarian", () => {
-    // #given config key "librarian"
-    const configKey = "librarian"
+  it("returns display name for archive-researcher", () => {
+    // #given config key "archive-researcher"
+    const configKey = "archive-researcher"
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // #then returns "librarian"
-    expect(result).toBe("librarian")
+    // #then returns "archive-researcher"
+    expect(result).toBe("archive-researcher")
   })
 
-  it("returns display name for explore", () => {
-    // #given config key "explore"
-    const configKey = "explore"
+  it("returns display name for scout-recon", () => {
+    // #given config key "scout-recon"
+    const configKey = "scout-recon"
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // #then returns "explore"
-    expect(result).toBe("explore")
+    // #then returns "scout-recon"
+    expect(result).toBe("scout-recon")
   })
 
-  it("returns display name for multimodal-looker", () => {
-    // #given config key "multimodal-looker"
-    const configKey = "multimodal-looker"
+  it("returns display name for optic-analyst", () => {
+    // #given config key "optic-analyst"
+    const configKey = "optic-analyst"
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // #then returns "multimodal-looker"
-    expect(result).toBe("multimodal-looker")
+    // #then returns "optic-analyst"
+    expect(result).toBe("optic-analyst")
   })
 })
 
@@ -139,16 +139,16 @@ describe("AGENT_DISPLAY_NAMES", () => {
   it("contains all expected agent mappings", () => {
     // #given expected mappings
     const expectedMappings = {
-      sisyphus: "Sisyphus (Ultraworker)",
-      atlas: "Atlas (Plan Execution Orchestrator)",
-      prometheus: "Prometheus (Plan Builder)",
-      "sisyphus-junior": "Sisyphus-Junior",
-      metis: "Metis (Plan Consultant)",
-      momus: "Momus (Plan Reviewer)",
-      oracle: "oracle",
-      librarian: "librarian",
-      explore: "explore",
-      "multimodal-looker": "multimodal-looker",
+      "cipher-operator": "Cipher Operator (Ultraworker)",
+      "nexus-orchestrator": "Nexus Orchestrator (Plan Execution Orchestrator)",
+      "augur-planner": "Augur Planner (Plan Builder)",
+      "cipher-runner": "Cipher Operator-Junior",
+      "tactician-strategist": "Tactician Strategist (Plan Consultant)",
+      "glitch-auditor": "Glitch Auditor (Plan Reviewer)",
+      "seer-advisor": "seer-advisor",
+      "archive-researcher": "archive-researcher",
+      "scout-recon": "scout-recon",
+      "optic-analyst": "optic-analyst",
     }
 
     // #when checking the constant

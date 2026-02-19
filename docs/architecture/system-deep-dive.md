@@ -1,12 +1,12 @@
-# Ruach System Deep Dive
+# Ghostwire System Deep Dive
 
 This document explains what this repository implements, how it executes at runtime, and how data flows through its major subsystems.
 
 ## 1) System Identity and Primary Function
 
-Ruach is an OpenCode plugin + CLI wrapper that turns OpenCode into a multi-agent orchestration runtime.
+Ghostwire is an OpenCode plugin + CLI wrapper that turns OpenCode into a multi-agent orchestration runtime.
 
-At a systems level, Ruach provides:
+At a systems level, Ghostwire provides:
 - A plugin bootstrap that registers tools, hooks, and config handlers (`src/index.ts`)
 - A control plane for agent/model/permission configuration (`src/plugin-config.ts`, `src/config/schema.ts`, `src/plugin-handlers/config-handler.ts`)
 - An execution plane for orchestration, background delegation, and tooling (`src/hooks/`, `src/tools/`, `src/features/background-agent/`)
@@ -24,21 +24,21 @@ The plugin path is the core runtime. The CLI path is primarily for installation,
 
 ```mermaid
 flowchart TD
-    U["User / OpenCode"] --> P["Ruach Plugin (`src/index.ts`)"]
+    U["User / OpenCode"] --> P["Ghostwire Plugin (`src/index.ts`)"]
     P --> C["Config Load + Validation (`src/plugin-config.ts`, `src/config/schema.ts`)"]
     P --> H["Hook Pipeline (`src/hooks/*`)"]
     P --> T["Tool Registry (`src/tools/*`)"]
     P --> A["Agent Resolution (`src/plugin-handlers/config-handler.ts`)"]
     A --> M["Model Fallback + Category/Skill Expansion"]
     T --> B["Background Manager (`src/features/background-agent/manager.ts`)"]
-    H --> O["Orchestration Hooks (Prometheus/Atlas/Start-Work)"]
+    H --> O["Orchestration Hooks (Augur Planner/Nexus Orchestrator/Start-Work)"]
     P --> MCP["MCP Composition (`src/mcp/index.ts` + loaders)"]
 ```
 
 ## 4) Control Flow: Plugin Startup
 
-At plugin initialization (`src/index.ts`), Ruach:
-1. Loads user/project ruach config (`loadPluginConfig`)
+At plugin initialization (`src/index.ts`), Ghostwire:
+1. Loads user/project ghostwire config (`loadPluginConfig`)
 2. Materializes hook enablement state (`disabled_hooks`)
 3. Instantiates managers (background, tmux, skill MCP, model cache)
 4. Registers static + factory tools
@@ -79,32 +79,32 @@ This forms a deterministic startup graph: configuration first, then runtime capa
 
 ## Tools
 - Static tool set (`builtinTools`) + dynamic factories:
-  - `delegate_task`, `call_omo_agent`, background tools, skill tools, slashcommand tool
+  - `delegate_task`, `call_grid_agent`, background tools, skill tools, slashcommand tool
 - LSP, grep/glob, session-manager, AST-grep, and interactive bash are first-class operational tools
 
 ## 7) Orchestration and Plan Execution
 
-Ruach separates planning and execution:
-- Planning phase centered on Prometheus workflow
-- Execution phase centered on Atlas workflow
+Ghostwire separates planning and execution:
+- Planning phase centered on Augur Planner workflow
+- Execution phase centered on Nexus Orchestrator workflow
 
-`/start-work` integration (`src/hooks/start-work/index.ts`) creates/updates boulder state, then Atlas hooks use that state to enforce plan continuation and delegation discipline.
+`/jack-in-work` integration (`src/hooks/jack-in-work/index.ts`) creates/updates boulder state, then Nexus Orchestrator hooks use that state to enforce plan continuation and delegation discipline.
 
 In practice:
-- Plan state is persisted in project-local control files (`.sisyphus/*`)
-- Atlas post-tool behavior injects verification/delegation reminders and progress continuity signals
+- Plan state is persisted in project-local control files (`.ghostwire/*`)
+- Nexus Orchestrator post-tool behavior injects verification/delegation reminders and progress continuity signals
 
 ## 8) Configuration and Precedence Model
 
 ### Runtime config
-- Project: `.opencode/ruach.jsonc` then `.opencode/ruach.json`
-- User: `<opencode-config-dir>/ruach.jsonc` then `<opencode-config-dir>/ruach.json`
+- Project: `.opencode/ghostwire.jsonc` then `.opencode/ghostwire.json`
+- User: `<opencode-config-dir>/ghostwire.jsonc` then `<opencode-config-dir>/ghostwire.json`
 - Merge behavior: project overrides user for overlapping fields (`mergeConfigs`)
 
 ### LSP config
-LSP now follows ruach naming and precedence logic:
-- Project ruach files first
-- User ruach files second
+LSP now follows ghostwire naming and precedence logic:
+- Project ghostwire files first
+- User ghostwire files second
 - OpenCode base config as lower-priority source (`opencode.json`)
 
 Merge order is `project > user > opencode`, with tolerant parsing (invalid JSON/JSONC is ignored per file).
@@ -115,7 +115,7 @@ CLI surface (`src/cli/index.ts`):
 - `install`, `run`, `doctor`, `get-local-version`, `version`
 
 Operationally:
-- Installer writes OpenCode plugin registration and ruach config
+- Installer writes OpenCode plugin registration and ghostwire config
 - Doctor performs dependency/auth/config/model/LSP diagnostics
 - Build pipeline emits ESM plugin/CLI artifacts plus schema and platform binaries
 
@@ -134,7 +134,7 @@ Implemented but not currently integrated into the main runtime bootstrap:
 Areas with higher architectural complexity:
 - `src/index.ts` (global runtime composition)
 - `src/features/background-agent/manager.ts` (task lifecycle/concurrency)
-- `src/hooks/atlas/index.ts` (orchestration governance)
+- `src/hooks/nexus-orchestrator/index.ts` (orchestration governance)
 - `src/tools/delegate-task/tools.ts` (delegation policy and execution shaping)
 
 Primary failure modes to monitor:

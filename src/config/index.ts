@@ -1,5 +1,5 @@
 export {
-  RuachConfigSchema,
+  GhostwireConfigSchema,
   AgentOverrideConfigSchema,
   AgentOverridesSchema,
   McpNameSchema,
@@ -11,10 +11,10 @@ export {
   RalphLoopConfigSchema,
   TmuxConfigSchema,
   TmuxLayoutSchema,
-} from "./schema"
+} from "./schema";
 
 export type {
-  RuachConfig,
+  GhostwireConfig,
   AgentOverrideConfig,
   AgentOverrides,
   McpName,
@@ -27,4 +27,4 @@ export type {
   RalphLoopConfig,
   TmuxConfig,
   TmuxLayout,
-} from "./schema"
+} from "./schema";

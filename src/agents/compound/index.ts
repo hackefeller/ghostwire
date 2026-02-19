@@ -1,5 +1,5 @@
 // Compound Engineering Agents - Unified Export
-// This file exports all 28 compound-engineering agents integrated into ruach
+// This file exports all 28 compound-engineering agents integrated into ghostwire
 
 import { createKieranRailsReviewerAgent } from "./review/kieran-rails-reviewer"
 import { createKieranPythonReviewerAgent } from "./review/kieran-python-reviewer"
@@ -64,32 +64,32 @@ export const ANDREW_KANE_GEM_WRITER_METADATA = { category: "documentation", cost
 // Agent name mappings for registration system
 export const COMPOUND_AGENT_MAPPINGS = {
   // Review Agents
-  "compound:kieran-rails-reviewer": createKieranRailsReviewerAgent,
-  "compound:kieran-python-reviewer": createKieranPythonReviewerAgent,
-  "compound:kieran-typescript-reviewer": createKieranTypeScriptReviewerAgent,
-  "compound:dhh-rails-reviewer": createDHHRailsReviewerAgent,
-  "compound:code-simplicity-reviewer": createCodeSimplicityReviewerAgent,
+  "grid:kieran-rails-reviewer": createKieranRailsReviewerAgent,
+  "grid:kieran-python-reviewer": createKieranPythonReviewerAgent,
+  "grid:kieran-typescript-reviewer": createKieranTypeScriptReviewerAgent,
+  "grid:dhh-rails-reviewer": createDHHRailsReviewerAgent,
+  "grid:code-simplicity-reviewer": createCodeSimplicityReviewerAgent,
   
   // Research Agents  
-  "compound:framework-docs-researcher": createFrameworkDocsResearcherAgent,
-  "compound:learnings-researcher": createLearningsResearcherAgent,
-  "compound:best-practices-researcher": createBestPracticesResearcherAgent,
-  "compound:git-history-analyzer": createGitHistoryAnalyzerAgent,
+  "grid:framework-docs-researcher": createFrameworkDocsResearcherAgent,
+  "grid:learnings-researcher": createLearningsResearcherAgent,
+  "grid:best-practices-researcher": createBestPracticesResearcherAgent,
+  "grid:git-history-analyzer": createGitHistoryAnalyzerAgent,
   
   // Design Agents
-  "compound:figma-design-sync": createFigmaDesignSyncAgent,
-  "compound:design-implementation-reviewer": createDesignImplementationReviewerAgent,
-  "compound:design-iterator": createDesignIteratorAgent,
-  "compound:frontend-design": createFrontendDesignAgent,
+  "grid:figma-design-sync": createFigmaDesignSyncAgent,
+  "grid:design-implementation-reviewer": createDesignImplementationReviewerAgent,
+  "grid:design-iterator": createDesignIteratorAgent,
+  "grid:frontend-design": createFrontendDesignAgent,
   
   // Workflow Agents
-  "compound:spec-flow-analyzer": createSpecFlowAnalyzerAgent,
-  "compound:agent-native-architecture": createAgentNativeArchitectureAgent,
-  "compound:deployment-verification-agent": createDeploymentVerificationAgent,
+  "grid:spec-flow-analyzer": createSpecFlowAnalyzerAgent,
+  "grid:agent-native-architecture": createAgentNativeArchitectureAgent,
+  "grid:deployment-verification-agent": createDeploymentVerificationAgent,
   
   // Documentation Agents (12 - showing pattern, full implementation would include all)
-  "compound:ankane-readme-writer": createAnkaneReadmeWriterAgent,
-  "compound:every-style-editor": createEveryStyleEditorAgent,
-  "compound:andrew-kane-gem-writer": createAndrewKaneGemWriterAgent,
+  "grid:ankane-readme-writer": createAnkaneReadmeWriterAgent,
+  "grid:every-style-editor": createEveryStyleEditorAgent,
+  "grid:andrew-kane-gem-writer": createAndrewKaneGemWriterAgent,
   // ... additional 9 documentation agents would follow the same pattern
 }

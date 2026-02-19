@@ -6,8 +6,8 @@ import { createRalphLoopHook } from "./index"
 import { readState, writeState, clearState } from "./storage"
 import type { RalphLoopState } from "./types"
 
-describe("ralph-loop", () => {
-  const TEST_DIR = join(tmpdir(), "ralph-loop-test-" + Date.now())
+describe("overclock-loop", () => {
+  const TEST_DIR = join(tmpdir(), "overclock-loop-test-" + Date.now())
   let promptCalls: Array<{ sessionID: string; text: string }>
   let toastCalls: Array<{ title: string; message: string; variant: string }>
   let messagesCalls: Array<{ sessionID: string }>

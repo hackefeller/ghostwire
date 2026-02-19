@@ -27,7 +27,7 @@ export function createKeywordDetectorHook(ctx: PluginInput, collector?: ContextC
       const promptText = extractPromptText(output.parts)
 
       if (isSystemDirective(promptText)) {
-        log(`[keyword-detector] Skipping system directive message`, { sessionID: input.sessionID })
+        log(`[grid-keyword-detector] Skipping system directive message`, { sessionID: input.sessionID })
         return
       }
 
@@ -46,7 +46,7 @@ export function createKeywordDetectorHook(ctx: PluginInput, collector?: ContextC
       }
 
       // Skip keyword detection for background task sessions to prevent mode injection
-      // (e.g., [analyze-mode]) which incorrectly triggers Prometheus restrictions
+      // (e.g., [analyze-mode]) which incorrectly triggers Augur Planner restrictions
       const isBackgroundTaskSession = subagentSessions.has(input.sessionID)
       if (isBackgroundTaskSession) {
         return
@@ -58,7 +58,7 @@ export function createKeywordDetectorHook(ctx: PluginInput, collector?: ContextC
       if (isNonMainSession) {
         detectedKeywords = detectedKeywords.filter((k) => k.type === "ultrawork")
         if (detectedKeywords.length === 0) {
-          log(`[keyword-detector] Skipping non-ultrawork keywords in non-main session`, {
+          log(`[grid-keyword-detector] Skipping non-ultrawork keywords in non-main session`, {
             sessionID: input.sessionID,
             mainSessionID,
           })
@@ -68,7 +68,7 @@ export function createKeywordDetectorHook(ctx: PluginInput, collector?: ContextC
 
       const hasUltrawork = detectedKeywords.some((k) => k.type === "ultrawork")
       if (hasUltrawork) {
-        log(`[keyword-detector] Ultrawork mode activated`, { sessionID: input.sessionID })
+        log(`[grid-keyword-detector] Ultrawork mode activated`, { sessionID: input.sessionID })
 
         if (output.message.variant === undefined) {
           output.message.variant = "max"
@@ -84,13 +84,13 @@ export function createKeywordDetectorHook(ctx: PluginInput, collector?: ContextC
             },
           })
           .catch((err) =>
-            log(`[keyword-detector] Failed to show toast`, { error: err, sessionID: input.sessionID })
+            log(`[grid-keyword-detector] Failed to show toast`, { error: err, sessionID: input.sessionID })
           )
       }
 
       const textPartIndex = output.parts.findIndex((p) => p.type === "text" && p.text !== undefined)
       if (textPartIndex === -1) {
-        log(`[keyword-detector] No text part found, skipping injection`, { sessionID: input.sessionID })
+        log(`[grid-keyword-detector] No text part found, skipping injection`, { sessionID: input.sessionID })
         return
       }
 
@@ -99,7 +99,7 @@ export function createKeywordDetectorHook(ctx: PluginInput, collector?: ContextC
 
       output.parts[textPartIndex].text = `${allMessages}\n\n---\n\n${originalText}`
 
-      log(`[keyword-detector] Detected ${detectedKeywords.length} keywords`, {
+      log(`[grid-keyword-detector] Detected ${detectedKeywords.length} keywords`, {
         sessionID: input.sessionID,
         types: detectedKeywords.map((k) => k.type),
       })

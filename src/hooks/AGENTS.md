@@ -6,37 +6,37 @@
 ## STRUCTURE
 ```
 hooks/
-├── atlas/                      # Main orchestration (752 lines)
-├── anthropic-context-window-limit-recovery/ # Auto-summarize
-├── todo-continuation-enforcer.ts # Force TODO completion (16k lines)
-├── ralph-loop/                 # Self-referential dev loop
-├── claude-code-hooks/          # settings.json compat layer - see AGENTS.md
-├── comment-checker/            # Prevents AI slop
-├── auto-slash-command/         # Detects /command patterns
-├── rules-injector/             # Conditional rules
-├── directory-agents-injector/  # Auto-injects AGENTS.md
-├── directory-readme-injector/  # Auto-injects README.md
-├── edit-error-recovery/        # Recovers from failures
-├── thinking-block-validator/   # Ensures valid <thinking>
-├── context-window-monitor.ts   # Reminds of headroom
-├── session-recovery/           # Auto-recovers from crashes
-├── think-mode/                 # Dynamic thinking budget
-├── keyword-detector/           # ultrawork/search/analyze modes
-├── background-notification/    # OS notification
-├── prometheus-md-only/         # Planner read-only mode
-├── agent-usage-reminder/       # Specialized agent hints
-├── auto-update-checker/        # Plugin update check
-├── tool-output-truncator.ts    # Prevents context bloat
-├── compaction-context-injector/ # Injects context on compaction
-├── delegate-task-retry/        # Retries failed delegations
-├── interactive-bash-session/   # Tmux session management
-├── non-interactive-env/        # Non-TTY environment handling
-├── start-work/                 # Sisyphus work session starter
+├── nexus-orchestrator/                      # Main orchestration (752 lines)
+├── grid-anthropic-context-window-limit-recovery/ # Auto-summarize
+├── grid-todo-continuation-enforcer.ts # Force TODO completion (16k lines)
+├── overclock-loop/                 # Self-referential dev loop
+├── grid-claude-code-hooks/          # settings.json compat layer - see AGENTS.md
+├── grid-comment-checker/            # Prevents AI slop
+├── grid-auto-slash-command/         # Detects /command patterns
+├── grid-rules-injector/             # Conditional rules
+├── grid-directory-agents-injector/  # Auto-injects AGENTS.md
+├── grid-directory-readme-injector/  # Auto-injects README.md
+├── grid-edit-error-recovery/        # Recovers from failures
+├── grid-thinking-block-validator/   # Ensures valid <thinking>
+├── grid-context-window-monitor.ts   # Reminds of headroom
+├── grid-session-recovery/           # Auto-recovers from crashes
+├── grid-think-mode/                 # Dynamic thinking budget
+├── grid-keyword-detector/           # ultrawork/search/analyze modes
+├── grid-background-notification/    # OS notification
+├── augur-planner-md-only/         # Planner read-only mode
+├── grid-agent-usage-reminder/       # Specialized agent hints
+├── grid-auto-update-checker/        # Plugin update check
+├── grid-tool-output-truncator.ts    # Prevents context bloat
+├── grid-compaction-context-injector/ # Injects context on compaction
+├── grid-delegate-task-retry/        # Retries failed delegations
+├── grid-interactive-bash-session/   # Tmux session management
+├── grid-non-interactive-env/        # Non-TTY environment handling
+├── jack-in-work/                 # Cipher Operator work session starter
 ├── task-resume-info/           # Resume info for cancelled tasks
 ├── question-label-truncator/   # Auto-truncates question labels
-├── category-skill-reminder/    # Reminds of category skills
-├── empty-task-response-detector.ts # Detects empty responses
-├── sisyphus-junior-notepad/    # Sisyphus Junior notepad
+├── grid-category-skill-reminder/    # Reminds of category skills
+├── grid-empty-task-response-detector.ts # Detects empty responses
+├── cipher-runner-notepad/    # Cipher Operator Junior notepad
 └── index.ts                    # Hook aggregation + registration
 ```
 
@@ -51,8 +51,8 @@ hooks/
 
 ## EXECUTION ORDER
 - **UserPromptSubmit**: keywordDetector → claudeCodeHooks → autoSlashCommand → startWork
-- **PreToolUse**: questionLabelTruncator → claudeCodeHooks → nonInteractiveEnv → commentChecker → directoryAgentsInjector → directoryReadmeInjector → rulesInjector → prometheusMdOnly → sisyphusJuniorNotepad → atlasHook
-- **PostToolUse**: claudeCodeHooks → toolOutputTruncator → contextWindowMonitor → commentChecker → directoryAgentsInjector → directoryReadmeInjector → rulesInjector → emptyTaskResponseDetector → agentUsageReminder → interactiveBashSession → editErrorRecovery → delegateTaskRetry → atlasHook → taskResumeInfo
+- **PreToolUse**: questionLabelTruncator → claudeCodeHooks → nonInteractiveEnv → commentChecker → directoryAgentsInjector → directoryReadmeInjector → rulesInjector → augurMdOnly → cipherJuniorNotepad → nexusHook
+- **PostToolUse**: claudeCodeHooks → toolOutputTruncator → contextWindowMonitor → commentChecker → directoryAgentsInjector → directoryReadmeInjector → rulesInjector → emptyTaskResponseDetector → agentUsageReminder → interactiveBashSession → editErrorRecovery → delegateTaskRetry → nexusHook → taskResumeInfo
 
 ## HOW TO ADD
 1. Create `src/hooks/name/` with `index.ts` exporting `createMyHook(ctx)`

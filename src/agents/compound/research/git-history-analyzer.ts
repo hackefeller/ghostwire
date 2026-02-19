@@ -95,7 +95,7 @@ export function createGitHistoryAnalyzerAgent(model: string): AgentConfig {
   }
 }
 
-// Agent metadata for Sisyphus prompt building and task delegation
+// Agent metadata for Cipher Operator prompt building and task delegation
 export const GIT_HISTORY_ANALYZER_METADATA: AgentPromptMetadata = {
   category: "research",
   cost: "LOW", // Fast git operations on local repository

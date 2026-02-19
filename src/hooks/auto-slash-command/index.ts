@@ -56,7 +56,7 @@ export function createAutoSlashCommandHook(options?: AutoSlashCommandHookOptions
       }
       sessionProcessedCommands.add(commandKey)
 
-      log(`[auto-slash-command] Detected: /${parsed.command}`, {
+      log(`[grid-auto-slash-command] Detected: /${parsed.command}`, {
         sessionID: input.sessionID,
         args: parsed.args,
       })
@@ -69,7 +69,7 @@ export function createAutoSlashCommandHook(options?: AutoSlashCommandHookOptions
       }
 
       if (!result.success || !result.replacementText) {
-        log(`[auto-slash-command] Command not found, skipping`, {
+        log(`[grid-auto-slash-command] Command not found, skipping`, {
           sessionID: input.sessionID,
           command: parsed.command,
           error: result.error,
@@ -80,7 +80,7 @@ export function createAutoSlashCommandHook(options?: AutoSlashCommandHookOptions
       const taggedContent = `${AUTO_SLASH_COMMAND_TAG_OPEN}\n${result.replacementText}\n${AUTO_SLASH_COMMAND_TAG_CLOSE}`
       output.parts[idx].text = taggedContent
 
-      log(`[auto-slash-command] Replaced message with command template`, {
+      log(`[grid-auto-slash-command] Replaced message with command template`, {
         sessionID: input.sessionID,
         command: parsed.command,
       })

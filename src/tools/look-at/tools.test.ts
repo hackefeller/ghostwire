@@ -96,7 +96,7 @@ describe("look-at tool", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       } as unknown as ToolContext
 
@@ -107,7 +107,7 @@ describe("look-at tool", () => {
 
       expect(result).toContain("Error: Failed to analyze file")
       expect(result).toContain("malformed response")
-      expect(result).toContain("multimodal-looker")
+      expect(result).toContain("optic-analyst")
       expect(result).toContain("image/png")
     })
 
@@ -134,7 +134,7 @@ describe("look-at tool", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       } as unknown as ToolContext
 
@@ -149,10 +149,10 @@ describe("look-at tool", () => {
   })
 
   describe("createLookAt model passthrough", () => {
-    // #given multimodal-looker agent has resolved model info
+    // #given optic-analyst agent has resolved model info
     // #when LookAt 도구 실행
     // #then session.prompt에 model 정보가 전달되어야 함
-    test("passes multimodal-looker model to session.prompt when available", async () => {
+    test("passes optic-analyst model to session.prompt when available", async () => {
       let promptBody: any
 
       const mockClient = {
@@ -160,7 +160,7 @@ describe("look-at tool", () => {
           agents: async () => ({
             data: [
               {
-                name: "multimodal-looker",
+                name: "optic-analyst",
                 mode: "subagent",
                 model: { providerID: "google", modelID: "gemini-3-flash" },
               },
@@ -190,7 +190,7 @@ describe("look-at tool", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "sisyphus",
+        agent: "cipher-operator",
         abort: new AbortController().signal,
       } as unknown as ToolContext
 

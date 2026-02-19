@@ -20,10 +20,10 @@ describe("findCaseInsensitive", () => {
 
   test("finds exact match first", () => {
     // #given - object with exact key
-    const obj = { Oracle: "value1", oracle: "value2" }
+    const obj = { "Seer Advisor": "value1", "seer-advisor": "value2" }
     
     // #when - lookup with exact case
-    const result = findCaseInsensitive(obj, "Oracle")
+    const result = findCaseInsensitive(obj, "Seer Advisor")
     
     // #then - returns exact match
     expect(result).toBe("value1")
@@ -31,10 +31,10 @@ describe("findCaseInsensitive", () => {
 
   test("finds case-insensitive match when no exact match", () => {
     // #given - object with lowercase key
-    const obj = { oracle: "value" }
+    const obj = { "seer-advisor": "value" }
     
     // #when - lookup with uppercase
-    const result = findCaseInsensitive(obj, "ORACLE")
+    const result = findCaseInsensitive(obj, "SEER-ADVISOR")
     
     // #then - returns case-insensitive match
     expect(result).toBe("value")
@@ -45,7 +45,7 @@ describe("findCaseInsensitive", () => {
     const obj = { other: "value" }
     
     // #when - lookup missing key
-    const result = findCaseInsensitive(obj, "oracle")
+    const result = findCaseInsensitive(obj, "seer-advisor")
     
     // #then - returns undefined
     expect(result).toBeUndefined()
@@ -55,10 +55,10 @@ describe("findCaseInsensitive", () => {
 describe("includesCaseInsensitive", () => {
   test("returns true for exact match", () => {
     // #given - array with exact value
-    const arr = ["explore", "librarian"]
+    const arr = ["scout-recon", "archive-researcher"]
     
     // #when - check exact match
-    const result = includesCaseInsensitive(arr, "explore")
+    const result = includesCaseInsensitive(arr, "scout-recon")
     
     // #then - returns true
     expect(result).toBe(true)
@@ -66,10 +66,10 @@ describe("includesCaseInsensitive", () => {
 
   test("returns true for case-insensitive match", () => {
     // #given - array with lowercase values
-    const arr = ["explore", "librarian"]
+    const arr = ["scout-recon", "archive-researcher"]
     
     // #when - check uppercase value
-    const result = includesCaseInsensitive(arr, "EXPLORE")
+    const result = includesCaseInsensitive(arr, "SCOUT-RECON")
     
     // #then - returns true
     expect(result).toBe(true)
@@ -77,10 +77,10 @@ describe("includesCaseInsensitive", () => {
 
   test("returns true for mixed case match", () => {
     // #given - array with mixed case values
-    const arr = ["Oracle", "Sisyphus"]
+    const arr = ["Seer-Advisor", "Cipher-Operator"]
     
     // #when - check different case
-    const result = includesCaseInsensitive(arr, "oracle")
+    const result = includesCaseInsensitive(arr, "SEER-ADVISOR")
     
     // #then - returns true
     expect(result).toBe(true)
@@ -88,10 +88,10 @@ describe("includesCaseInsensitive", () => {
 
   test("returns false when value not found", () => {
     // #given - array without target value
-    const arr = ["explore", "librarian"]
+    const arr = ["scout-recon", "archive-researcher"]
     
     // #when - check missing value
-    const result = includesCaseInsensitive(arr, "oracle")
+    const result = includesCaseInsensitive(arr, "seer-advisor")
     
     // #then - returns false
     expect(result).toBe(false)
@@ -102,7 +102,7 @@ describe("includesCaseInsensitive", () => {
     const arr: string[] = []
     
     // #when - check any value
-    const result = includesCaseInsensitive(arr, "explore")
+    const result = includesCaseInsensitive(arr, "scout-recon")
     
     // #then - returns false
     expect(result).toBe(false)
@@ -112,32 +112,32 @@ describe("includesCaseInsensitive", () => {
 describe("findByNameCaseInsensitive", () => {
   test("finds element by exact name", () => {
     // #given - array with named objects
-    const arr = [{ name: "Oracle", value: 1 }, { name: "explore", value: 2 }]
+    const arr = [{ name: "Seer-Advisor", value: 1 }, { name: "scout-recon", value: 2 }]
     
     // #when - find by exact name
-    const result = findByNameCaseInsensitive(arr, "Oracle")
+    const result = findByNameCaseInsensitive(arr, "Seer-Advisor")
     
     // #then - returns matching element
-    expect(result).toEqual({ name: "Oracle", value: 1 })
+    expect(result).toEqual({ name: "Seer-Advisor", value: 1 })
   })
 
   test("finds element by case-insensitive name", () => {
     // #given - array with named objects
-    const arr = [{ name: "Oracle", value: 1 }, { name: "explore", value: 2 }]
+    const arr = [{ name: "Seer-Advisor", value: 1 }, { name: "scout-recon", value: 2 }]
     
     // #when - find by different case
-    const result = findByNameCaseInsensitive(arr, "oracle")
+    const result = findByNameCaseInsensitive(arr, "seer-advisor")
     
     // #then - returns matching element
-    expect(result).toEqual({ name: "Oracle", value: 1 })
+    expect(result).toEqual({ name: "Seer-Advisor", value: 1 })
   })
 
   test("returns undefined when name not found", () => {
     // #given - array without target name
-    const arr = [{ name: "Oracle", value: 1 }]
+    const arr = [{ name: "Seer-Advisor", value: 1 }]
     
     // #when - find missing name
-    const result = findByNameCaseInsensitive(arr, "librarian")
+    const result = findByNameCaseInsensitive(arr, "archive-researcher")
     
     // #then - returns undefined
     expect(result).toBeUndefined()
@@ -149,21 +149,21 @@ describe("equalsIgnoreCase", () => {
     // #given - same strings
     // #when - compare
     // #then - returns true
-    expect(equalsIgnoreCase("oracle", "oracle")).toBe(true)
+    expect(equalsIgnoreCase("seer-advisor", "seer-advisor")).toBe(true)
   })
 
   test("returns true for different case", () => {
     // #given - strings with different case
     // #when - compare
     // #then - returns true
-    expect(equalsIgnoreCase("Oracle", "ORACLE")).toBe(true)
-    expect(equalsIgnoreCase("Sisyphus-Junior", "sisyphus-junior")).toBe(true)
+    expect(equalsIgnoreCase("Seer-Advisor", "SEER-ADVISOR")).toBe(true)
+    expect(equalsIgnoreCase("Cipher-Runner", "cipher-runner")).toBe(true)
   })
 
   test("returns false for different strings", () => {
     // #given - different strings
     // #when - compare
     // #then - returns false
-    expect(equalsIgnoreCase("oracle", "explore")).toBe(false)
+    expect(equalsIgnoreCase("seer-advisor", "scout-recon")).toBe(false)
   })
 })

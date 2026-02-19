@@ -40,12 +40,12 @@ export function getCacheDir(): string {
   if (process.platform === "win32") {
     const localAppData = process.env.LOCALAPPDATA || process.env.APPDATA
     const base = localAppData || join(homedir(), "AppData", "Local")
-    return join(base, "ruach", "bin")
+    return join(base, "ghostwire", "bin")
   }
 
   const xdgCache = process.env.XDG_CACHE_HOME
   const base = xdgCache || join(homedir(), ".cache")
-  return join(base, "ruach", "bin")
+  return join(base, "ghostwire", "bin")
 }
 
 export function getBinaryName(): string {
@@ -64,7 +64,7 @@ export async function downloadAstGrep(version: string = DEFAULT_VERSION): Promis
   const platformInfo = PLATFORM_MAP[platformKey]
 
   if (!platformInfo) {
-    log(`[ruach] Unsupported platform for ast-grep: ${platformKey}`)
+    log(`[ghostwire] Unsupported platform for ast-grep: ${platformKey}`)
     return null
   }
 
@@ -80,7 +80,7 @@ export async function downloadAstGrep(version: string = DEFAULT_VERSION): Promis
   const assetName = `app-${arch}-${os}.zip`
   const downloadUrl = `https://github.com/${REPO}/releases/download/${version}/${assetName}`
 
-  log(`[ruach] Downloading ast-grep binary...`)
+  log(`[ghostwire] Downloading ast-grep binary...`)
 
   try {
     if (!existsSync(cacheDir)) {
@@ -107,12 +107,12 @@ export async function downloadAstGrep(version: string = DEFAULT_VERSION): Promis
       chmodSync(binaryPath, 0o755)
     }
 
-    log(`[ruach] ast-grep binary ready.`)
+    log(`[ghostwire] ast-grep binary ready.`)
 
     return binaryPath
   } catch (err) {
     log(
-      `[ruach] Failed to download ast-grep: ${err instanceof Error ? err.message : err}`
+      `[ghostwire] Failed to download ast-grep: ${err instanceof Error ? err.message : err}`
     )
     return null
   }

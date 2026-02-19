@@ -106,7 +106,7 @@ export function getOpenCodeConfigPaths(options: OpenCodeConfigDirOptions): OpenC
     configJson: join(configDir, "opencode.json"),
     configJsonc: join(configDir, "opencode.jsonc"),
     packageJson: join(configDir, "package.json"),
-    omoConfig: join(configDir, "ruach.json"),
+    omoConfig: join(configDir, "ghostwire.json"),
   }
 }
 

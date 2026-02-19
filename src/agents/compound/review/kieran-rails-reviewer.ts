@@ -97,7 +97,7 @@ export function createKieranRailsReviewerAgent(model: string): AgentConfig {
   }
 }
 
-// Agent metadata for Sisyphus prompt building and task delegation
+// Agent metadata for Cipher Operator prompt building and task delegation
 export const KIERAN_RAILS_REVIEWER_METADATA: AgentPromptMetadata = {
   category: "specialist",
   cost: "EXPENSIVE",

@@ -2,7 +2,7 @@
 
 ## OVERVIEW
 
-CLI entry: `bunx ruach`. Interactive installer, doctor diagnostics. Commander.js + @clack/prompts.
+CLI entry: `bunx ghostwire`. Interactive installer, doctor diagnostics. Commander.js + @clack/prompts.
 
 ## STRUCTURE
 
@@ -50,7 +50,7 @@ cli/
 | installation | opencode, plugin |
 | configuration | config validity, Zod, model-resolution |
 | authentication | anthropic, openai, google |
-| dependencies | ast-grep, comment-checker, gh-cli |
+| dependencies | ast-grep, grid-comment-checker, gh-cli |
 | tools | LSP, MCP |
 | updates | version comparison |
 

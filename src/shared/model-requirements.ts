@@ -11,7 +11,7 @@ export type ModelRequirement = {
 }
 
 export const AGENT_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
-  sisyphus: {
+  "cipher-operator": {
     fallbackChain: [
       { providers: ["anthropic", "github-copilot", "opencode"], model: "claude-opus-4-5", variant: "max" },
       { providers: ["kimi-for-coding"], model: "k2p5" },
@@ -21,28 +21,28 @@ export const AGENT_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
       { providers: ["google", "github-copilot", "opencode"], model: "gemini-3-pro" },
     ],
   },
-  oracle: {
+  "seer-advisor": {
     fallbackChain: [
       { providers: ["openai", "github-copilot", "opencode"], model: "gpt-5.2", variant: "high" },
       { providers: ["google", "github-copilot", "opencode"], model: "gemini-3-pro", variant: "max" },
       { providers: ["anthropic", "github-copilot", "opencode"], model: "claude-opus-4-5", variant: "max" },
     ],
   },
-   librarian: {
+   "archive-researcher": {
      fallbackChain: [
        { providers: ["zai-coding-plan"], model: "glm-4.7" },
        { providers: ["opencode"], model: "glm-4.7-free" },
        { providers: ["anthropic", "github-copilot", "opencode"], model: "claude-sonnet-4-5" },
      ],
    },
-  explore: {
+  "scout-recon": {
     fallbackChain: [
       { providers: ["anthropic", "opencode"], model: "claude-haiku-4-5" },
       { providers: ["github-copilot"], model: "gpt-5-mini" },
       { providers: ["opencode"], model: "gpt-5-nano" },
     ],
   },
-  "multimodal-looker": {
+  "optic-analyst": {
     fallbackChain: [
       { providers: ["google", "github-copilot", "opencode"], model: "gemini-3-flash" },
       { providers: ["openai", "github-copilot", "opencode"], model: "gpt-5.2" },
@@ -53,7 +53,7 @@ export const AGENT_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
       { providers: ["opencode"], model: "gpt-5-nano" },
     ],
   },
-  prometheus: {
+  "augur-planner": {
     fallbackChain: [
       { providers: ["anthropic", "github-copilot", "opencode"], model: "claude-opus-4-5", variant: "max" },
       { providers: ["kimi-for-coding"], model: "k2p5" },
@@ -62,7 +62,7 @@ export const AGENT_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
       { providers: ["google", "github-copilot", "opencode"], model: "gemini-3-pro" },
     ],
   },
-  metis: {
+  "tactician-strategist": {
     fallbackChain: [
       { providers: ["anthropic", "github-copilot", "opencode"], model: "claude-opus-4-5", variant: "max" },
       { providers: ["kimi-for-coding"], model: "k2p5" },
@@ -71,14 +71,14 @@ export const AGENT_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
       { providers: ["google", "github-copilot", "opencode"], model: "gemini-3-pro", variant: "max" },
     ],
   },
-  momus: {
+  "glitch-auditor": {
     fallbackChain: [
       { providers: ["openai", "github-copilot", "opencode"], model: "gpt-5.2", variant: "medium" },
       { providers: ["anthropic", "github-copilot", "opencode"], model: "claude-opus-4-5", variant: "max" },
       { providers: ["google", "github-copilot", "opencode"], model: "gemini-3-pro", variant: "max" },
     ],
   },
-  atlas: {
+  "nexus-orchestrator": {
     fallbackChain: [
       { providers: ["kimi-for-coding"], model: "k2p5" },
       { providers: ["opencode"], model: "kimi-k2.5-free" },

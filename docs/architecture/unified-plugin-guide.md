@@ -2,10 +2,10 @@
 
 ## Overview
 
-This guide documents the current unified OpenCode plugin architecture used by Ruach.
+This guide documents the current unified OpenCode plugin architecture used by Ghostwire.
 
 As of v3.2.x:
-- Compound-engineering components are integrated directly into core runtime under the `compound:` namespace.
+- Compound-engineering components are integrated directly into core runtime under the `grid:` namespace.
 - Claude import/translation utilities exist as library code for migration/testing workflows.
 - Feature bundle infrastructure has been removed to keep runtime deterministic and reduce maintenance surface.
 
@@ -40,12 +40,12 @@ Key files:
 ## Config Scope and Precedence
 
 Runtime config scope:
-- Project: `.opencode/ruach.jsonc` then `.opencode/ruach.json`
-- User: `<opencode-config-dir>/ruach.jsonc` then `<opencode-config-dir>/ruach.json`
+- Project: `.opencode/ghostwire.jsonc` then `.opencode/ghostwire.json`
+- User: `<opencode-config-dir>/ghostwire.jsonc` then `<opencode-config-dir>/ghostwire.json`
 
 LSP scope (same naming model + tolerant parsing):
-- Project ruach files
-- User ruach files
+- Project ghostwire files
+- User ghostwire files
 - OpenCode base config (`opencode.json`)
 
 Effective merge priority remains: `project > user > opencode`.

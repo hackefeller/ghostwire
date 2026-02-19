@@ -389,7 +389,7 @@ describe("resolveModelWithFallback", () => {
       expect(result!.source).toBe("provider-fallback")
     })
 
-    test("cross-provider fuzzy match when preferred provider unavailable (librarian scenario)", () => {
+    test("cross-provider fuzzy match when preferred provider unavailable (archiveResearcher scenario)", () => {
       // #given - glm-4.7 is defined for zai-coding-plan, but only opencode has it
       const input: ExtendedModelResolutionInput = {
         fallbackChain: [
@@ -605,7 +605,7 @@ describe("resolveModelWithFallback", () => {
   })
 
   describe("Multi-entry fallbackChain", () => {
-    test("resolves to claude-opus when OpenAI unavailable but Anthropic available (oracle scenario)", () => {
+    test("resolves to claude-opus when OpenAI unavailable but Anthropic available (seerAdvisor scenario)", () => {
       // #given
       const availableModels = new Set(["anthropic/claude-opus-4-5"])
 

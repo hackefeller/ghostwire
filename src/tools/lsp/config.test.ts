@@ -168,12 +168,12 @@ describe("LSP config source precedence", () => {
     rmSync(tempDir, { recursive: true, force: true })
   })
 
-  test("project_ruach_jsonc_takes_precedence_over_project_ruach_json", () => {
-    writeJson(join(projectDir, ".opencode", "ruach.json"), {
+  test("project_ghostwire_jsonc_takes_precedence_over_project_ghostwire_json", () => {
+    writeJson(join(projectDir, ".opencode", "ghostwire.json"), {
       lsp: { fromProjectJson: { command: ["bun"], extensions: [".prio-a"] } },
     })
     writeRaw(
-      join(projectDir, ".opencode", "ruach.jsonc"),
+      join(projectDir, ".opencode", "ghostwire.jsonc"),
       `{
         // higher priority
         "lsp": { "fromProjectJsonc": { "command": ["bun"], "extensions": [".prio-a"] } }
@@ -187,24 +187,24 @@ describe("LSP config source precedence", () => {
     }
   })
 
-  test("project_ruach_json_is_used_when_jsonc_missing", () => {
-    writeJson(join(projectDir, ".opencode", "ruach.json"), {
-      lsp: { ruachProject: { command: ["bun"], extensions: [".prio-b"] } },
+  test("project_ghostwire_json_is_used_when_jsonc_missing", () => {
+    writeJson(join(projectDir, ".opencode", "ghostwire.json"), {
+      lsp: { ghostwireProject: { command: ["bun"], extensions: [".prio-b"] } },
     })
 
     const result = findServerForExtension(".prio-b")
     expect(result.status).toBe("found")
     if (result.status === "found") {
-      expect(result.server.id).toBe("ruachProject")
+      expect(result.server.id).toBe("ghostwireProject")
     }
   })
 
-  test("user_ruach_jsonc_takes_precedence_over_user_ruach_json", () => {
-    writeJson(join(configDir, "ruach.json"), {
+  test("user_ghostwire_jsonc_takes_precedence_over_user_ghostwire_json", () => {
+    writeJson(join(configDir, "ghostwire.json"), {
       lsp: { fromUserJson: { command: ["bun"], extensions: [".prio-c"] } },
     })
     writeRaw(
-      join(configDir, "ruach.jsonc"),
+      join(configDir, "ghostwire.jsonc"),
       `{
         "lsp": { "fromUserJsonc": { "command": ["bun"], "extensions": [".prio-c"] } }
       }`
@@ -217,15 +217,15 @@ describe("LSP config source precedence", () => {
     }
   })
 
-  test("user_ruach_json_is_used_when_jsonc_missing", () => {
-    writeJson(join(configDir, "ruach.json"), {
-      lsp: { ruachUser: { command: ["bun"], extensions: [".prio-d"] } },
+  test("user_ghostwire_json_is_used_when_jsonc_missing", () => {
+    writeJson(join(configDir, "ghostwire.json"), {
+      lsp: { ghostwireUser: { command: ["bun"], extensions: [".prio-d"] } },
     })
 
     const result = findServerForExtension(".prio-d")
     expect(result.status).toBe("found")
     if (result.status === "found") {
-      expect(result.server.id).toBe("ruachUser")
+      expect(result.server.id).toBe("ghostwireUser")
     }
   })
 
@@ -233,10 +233,10 @@ describe("LSP config source precedence", () => {
     writeJson(join(configDir, "opencode.json"), {
       lsp: { sameServer: { command: ["bun"], extensions: [".prio-e"] } },
     })
-    writeJson(join(configDir, "ruach.json"), {
+    writeJson(join(configDir, "ghostwire.json"), {
       lsp: { sameServer: { command: ["bun"], extensions: [".prio-e"], priority: 10 } },
     })
-    writeJson(join(projectDir, ".opencode", "ruach.json"), {
+    writeJson(join(projectDir, ".opencode", "ghostwire.json"), {
       lsp: { sameServer: { command: ["bun"], extensions: [".prio-e"], priority: 20 } },
     })
 
@@ -248,8 +248,8 @@ describe("LSP config source precedence", () => {
   })
 
   test("invalid_high_priority_file_falls_back_to_next_candidate", () => {
-    writeRaw(join(projectDir, ".opencode", "ruach.jsonc"), `{ invalid`)
-    writeJson(join(projectDir, ".opencode", "ruach.json"), {
+    writeRaw(join(projectDir, ".opencode", "ghostwire.jsonc"), `{ invalid`)
+    writeJson(join(projectDir, ".opencode", "ghostwire.json"), {
       lsp: { fallbackProject: { command: ["bun"], extensions: [".prio-f"] } },
     })
 
@@ -261,10 +261,10 @@ describe("LSP config source precedence", () => {
   })
 
   test("disabled_lsp_entries_are_respected_across_sources", () => {
-    writeJson(join(projectDir, ".opencode", "ruach.json"), {
+    writeJson(join(projectDir, ".opencode", "ghostwire.json"), {
       lsp: { blocked: { disabled: true } },
     })
-    writeJson(join(configDir, "ruach.json"), {
+    writeJson(join(configDir, "ghostwire.json"), {
       lsp: { blocked: { command: ["bun"], extensions: [".prio-g"] } },
     })
 

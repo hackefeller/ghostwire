@@ -89,7 +89,7 @@ export function createFrameworkDocsResearcherAgent(model: string): AgentConfig {
   }
 }
 
-// Agent metadata for Sisyphus prompt building and task delegation
+// Agent metadata for Cipher Operator prompt building and task delegation
 export const FRAMEWORK_DOCS_RESEARCHER_METADATA: AgentPromptMetadata = {
   category: "research",
   cost: "MODERATE",

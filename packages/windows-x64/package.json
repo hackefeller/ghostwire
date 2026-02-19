@@ -1,11 +1,11 @@
 {
-  "name": "ruach-windows-x64",
+  "name": "ghostwire-windows-x64",
   "version": "3.1.10",
-  "description": "Platform-specific binary for ruach (windows-x64)",
+  "description": "Platform-specific binary for ghostwire (windows-x64)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/code-yeongyu/ruach"
+    "url": "https://github.com/pontistudios/ghostwire"
   },
   "os": [
     "win32"
@@ -17,6 +17,6 @@
     "bin"
   ],
   "bin": {
-    "ruach": "./bin/ruach.exe"
+    "ghostwire": "./bin/ghostwire.exe"
   }
 }

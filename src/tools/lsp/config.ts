@@ -41,12 +41,12 @@ function getConfigPaths(): {
   const configDir = getOpenCodeConfigDir({ binary: "opencode" })
   return {
     project: [
-      join(cwd, ".opencode", "ruach.jsonc"),
-      join(cwd, ".opencode", "ruach.json"),
+      join(cwd, ".opencode", "ghostwire.jsonc"),
+      join(cwd, ".opencode", "ghostwire.json"),
     ],
     user: [
-      join(configDir, "ruach.jsonc"),
-      join(configDir, "ruach.json"),
+      join(configDir, "ghostwire.jsonc"),
+      join(configDir, "ghostwire.json"),
     ],
     opencode: join(configDir, "opencode.json"),
   }

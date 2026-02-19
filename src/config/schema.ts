@@ -1,12 +1,12 @@
-import { z } from "zod"
-import { AnyMcpNameSchema, McpNameSchema } from "../mcp/types"
+import { z } from "zod";
+import { AnyMcpNameSchema, McpNameSchema } from "../mcp/types";
 
-const PermissionValue = z.enum(["ask", "allow", "deny"])
+const PermissionValue = z.enum(["ask", "allow", "deny"]);
 
 const BashPermission = z.union([
   PermissionValue,
   z.record(z.string(), PermissionValue),
-])
+]);
 
 const AgentPermissionSchema = z.object({
   edit: PermissionValue.optional(),
@@ -14,53 +14,53 @@ const AgentPermissionSchema = z.object({
   webfetch: PermissionValue.optional(),
   doom_loop: PermissionValue.optional(),
   external_directory: PermissionValue.optional(),
-})
+});
 
 export const BuiltinAgentNameSchema = z.enum([
-  "sisyphus",
-  "prometheus",
-  "oracle",
-  "librarian",
-  "explore",
-  "multimodal-looker",
-  "metis",
-  "momus",
-  "atlas",
+  "cipher-operator",
+  "augur-planner",
+  "seer-advisor",
+  "archive-researcher",
+  "scout-recon",
+  "optic-analyst",
+  "tactician-strategist",
+  "glitch-auditor",
+  "nexus-orchestrator",
   // Compound Engineering Agents (28 total)
   // Review Agents (5)
-  "compound:kieran-rails-reviewer",
-  "compound:kieran-python-reviewer", 
-  "compound:kieran-typescript-reviewer",
-  "compound:dhh-rails-reviewer",
-  "compound:code-simplicity-reviewer",
+  "grid:kieran-rails-reviewer",
+  "grid:kieran-python-reviewer",
+  "grid:kieran-typescript-reviewer",
+  "grid:dhh-rails-reviewer",
+  "grid:code-simplicity-reviewer",
   // Research Agents (4)
-  "compound:framework-docs-researcher",
-  "compound:learnings-researcher",
-  "compound:best-practices-researcher", 
-  "compound:git-history-analyzer",
+  "grid:framework-docs-researcher",
+  "grid:learnings-researcher",
+  "grid:best-practices-researcher",
+  "grid:git-history-analyzer",
   // Design Agents (4)
-  "compound:figma-design-sync",
-  "compound:design-implementation-reviewer",
-  "compound:design-iterator",
-  "compound:frontend-design",
+  "grid:figma-design-sync",
+  "grid:design-implementation-reviewer",
+  "grid:design-iterator",
+  "grid:frontend-design",
   // Workflow Agents (3)
-  "compound:spec-flow-analyzer",
-  "compound:agent-native-architecture", 
-  "compound:deployment-verification-agent",
+  "grid:spec-flow-analyzer",
+  "grid:agent-native-architecture",
+  "grid:deployment-verification-agent",
   // Documentation Agents (12) - showing pattern, full list would include all
-  "compound:ankane-readme-writer",
-  "compound:every-style-editor",
-  "compound:andrew-kane-gem-writer",
-  "compound:brainstorming",
-  "compound:creating-agent-skills",
-  "compound:skill-creator",
-  "compound:compound-docs",
-  "compound:file-todos",
-  "compound:agent-browser",
-  "compound:rclone",
-  "compound:git-worktree",
-  "compound:agent-native-audit",
-])
+  "grid:ankane-readme-writer",
+  "grid:every-style-editor",
+  "grid:andrew-kane-gem-writer",
+  "grid:brainstorming",
+  "grid:creating-agent-skills",
+  "grid:skill-creator",
+  "grid:compound-docs",
+  "grid:file-todos",
+  "grid:agent-browser",
+  "grid:rclone",
+  "grid:git-worktree",
+  "grid:agent-native-audit",
+]);
 
 export const BuiltinSkillNameSchema = z.enum([
   // Built-in skills
@@ -69,175 +69,175 @@ export const BuiltinSkillNameSchema = z.enum([
   "frontend-ui-ux",
   "git-master",
   // Compound development skills
-  "compound:typescript-expert",
-  "compound:python-expert",
-  "compound:ruby-expert",
-  "compound:go-expert",
-  "compound:rust-expert",
-  "compound:react-expert",
-  "compound:vue-expert",
-  "compound:next-expert",
-  "compound:node-expert",
-  "compound:database-expert",
-  "compound:api-design-expert",
-  "compound:testing-expert",
-  "compound:security-expert",
-  "compound:performance-expert",
-  "compound:refactoring-expert",
-  "compound:documentation-code",
-  "compound:dependency-management",
-  "compound:architecture-design",
-  "compound:code-review",
-  "compound:cli-development",
-  "compound:web-scraping",
-  "compound:integration-expertise",
-  "compound:monorepo-management",
-  "compound:type-system-expert",
-  "compound:algorithm-expert",
+  "grid:typescript-expert",
+  "grid:python-expert",
+  "grid:ruby-expert",
+  "grid:go-expert",
+  "grid:rust-expert",
+  "grid:react-expert",
+  "grid:vue-expert",
+  "grid:next-expert",
+  "grid:node-expert",
+  "grid:database-expert",
+  "grid:api-design-expert",
+  "grid:testing-expert",
+  "grid:security-expert",
+  "grid:performance-expert",
+  "grid:refactoring-expert",
+  "grid:documentation-code",
+  "grid:dependency-management",
+  "grid:architecture-design",
+  "grid:code-review",
+  "grid:cli-development",
+  "grid:web-scraping",
+  "grid:integration-expertise",
+  "grid:monorepo-management",
+  "grid:type-system-expert",
+  "grid:algorithm-expert",
   // Compound design skills
-  "compound:frontend-design",
-  "compound:figma-expertise",
-  "compound:design-system",
-  "compound:accessibility-expert",
-  "compound:responsive-design",
-  "compound:animation-expertise",
-  "compound:color-typography",
-  "compound:interaction-design",
-  "compound:visual-design",
-  "compound:dark-mode-design",
-  "compound:design-documentation",
-  "compound:user-research",
-  "compound:branding-expertise",
-  "compound:icon-design",
-  "compound:illustration-expertise",
-  "compound:css-expertise",
-  "compound:tailwind-mastery",
-  "compound:component-design",
+  "grid:frontend-design",
+  "grid:figma-expertise",
+  "grid:design-system",
+  "grid:accessibility-expert",
+  "grid:responsive-design",
+  "grid:animation-expertise",
+  "grid:color-typography",
+  "grid:interaction-design",
+  "grid:visual-design",
+  "grid:dark-mode-design",
+  "grid:design-documentation",
+  "grid:user-research",
+  "grid:branding-expertise",
+  "grid:icon-design",
+  "grid:illustration-expertise",
+  "grid:css-expertise",
+  "grid:tailwind-mastery",
+  "grid:component-design",
   // Compound devops skills
-  "compound:docker-expertise",
-  "compound:kubernetes-expert",
-  "compound:ci-cd-expert",
-  "compound:terraform-expertise",
-  "compound:aws-expert",
-  "compound:gcp-expertise",
-  "compound:monitoring-expert",
-  "compound:security-infrastructure",
-  "compound:database-ops",
-  "compound:networking-devops",
-  "compound:scaling-expertise",
-  "compound:disaster-recovery",
+  "grid:docker-expertise",
+  "grid:kubernetes-expert",
+  "grid:ci-cd-expert",
+  "grid:terraform-expertise",
+  "grid:aws-expert",
+  "grid:gcp-expertise",
+  "grid:monitoring-expert",
+  "grid:security-infrastructure",
+  "grid:database-ops",
+  "grid:networking-devops",
+  "grid:scaling-expertise",
+  "grid:disaster-recovery",
   // Compound documentation skills
-  "compound:api-documentation",
-  "compound:technical-writing",
-  "compound:readme-expertise",
-  "compound:tutorial-creation",
-  "compound:changelog-expertise",
-  "compound:documentation-site",
-  "compound:architecture-documentation",
-  "compound:video-documentation",
-  "compound:contributing-guides",
-  "compound:knowledge-base",
+  "grid:api-documentation",
+  "grid:technical-writing",
+  "grid:readme-expertise",
+  "grid:tutorial-creation",
+  "grid:changelog-expertise",
+  "grid:documentation-site",
+  "grid:architecture-documentation",
+  "grid:video-documentation",
+  "grid:contributing-guides",
+  "grid:knowledge-base",
   // Compound analysis skills
-  "compound:code-analysis",
-  "compound:performance-analysis",
-  "compound:security-analysis",
-  "compound:git-analysis",
-  "compound:dependency-analysis",
-  "compound:data-analysis",
-  "compound:trend-analysis",
-  "compound:cost-analysis",
-])
+  "grid:code-analysis",
+  "grid:performance-analysis",
+  "grid:security-analysis",
+  "grid:git-analysis",
+  "grid:dependency-analysis",
+  "grid:data-analysis",
+  "grid:trend-analysis",
+  "grid:cost-analysis",
+]);
 
 export const OverridableAgentNameSchema = z.enum([
   "build",
   "plan",
-  "sisyphus",
-  "sisyphus-junior",
+  "cipher-operator",
+  "cipher-runner",
   "OpenCode-Builder",
-  "prometheus",
-  "metis",
-  "momus",
-  "oracle",
-  "librarian",
-  "explore",
-  "multimodal-looker",
-  "atlas",
-])
+  "augur-planner",
+  "tactician-strategist",
+  "glitch-auditor",
+  "seer-advisor",
+  "archive-researcher",
+  "scout-recon",
+  "optic-analyst",
+  "nexus-orchestrator",
+]);
 
-export const AgentNameSchema = BuiltinAgentNameSchema
+export const AgentNameSchema = BuiltinAgentNameSchema;
 
 export const HookNameSchema = z.enum([
-  "todo-continuation-enforcer",
-  "context-window-monitor",
-  "session-recovery",
-  "session-notification",
-  "comment-checker",
-  "grep-output-truncator",
-  "tool-output-truncator",
-  "directory-agents-injector",
-  "directory-readme-injector",
-  "empty-task-response-detector",
-  "think-mode",
-  "anthropic-context-window-limit-recovery",
-  "rules-injector",
-  "background-notification",
-  "auto-update-checker",
-  "startup-toast",
-  "keyword-detector",
-  "agent-usage-reminder",
-  "non-interactive-env",
-  "interactive-bash-session",
+  "grid-todo-continuation-enforcer",
+  "grid-context-window-monitor",
+  "grid-session-recovery",
+  "grid-session-notification",
+  "grid-comment-checker",
+  "grid-grep-output-truncator",
+  "grid-tool-output-truncator",
+  "grid-directory-agents-injector",
+  "grid-directory-readme-injector",
+  "grid-empty-task-response-detector",
+  "grid-think-mode",
+  "grid-anthropic-context-window-limit-recovery",
+  "grid-rules-injector",
+  "grid-background-notification",
+  "grid-auto-update-checker",
+  "grid-startup-toast",
+  "grid-keyword-detector",
+  "grid-agent-usage-reminder",
+  "grid-non-interactive-env",
+  "grid-interactive-bash-session",
 
-  "thinking-block-validator",
-  "ralph-loop",
-  "category-skill-reminder",
+  "grid-thinking-block-validator",
+  "overclock-loop",
+  "grid-category-skill-reminder",
 
-  "compaction-context-injector",
-  "claude-code-hooks",
-  "auto-slash-command",
-  "edit-error-recovery",
-  "delegate-task-retry",
-  "prometheus-md-only",
-  "sisyphus-junior-notepad",
-  "start-work",
-  "atlas",
-  "stop-continuation-guard",
-])
+  "grid-compaction-context-injector",
+  "grid-claude-code-hooks",
+  "grid-auto-slash-command",
+  "grid-edit-error-recovery",
+  "grid-delegate-task-retry",
+  "augur-planner-md-only",
+  "cipher-runner-notepad",
+  "jack-in-work",
+  "nexus-orchestrator",
+  "grid-stop-continuation-guard",
+]);
 
 export const BuiltinCommandNameSchema = z.enum([
   "init-deep",
-  "start-work",
+  "jack-in-work",
   // Compound workflows commands
-  "compound:workflows:plan",
-  "compound:workflows:create",
-  "compound:workflows:status",
-  "compound:workflows:complete",
+  "grid:workflows:plan",
+  "grid:workflows:create",
+  "grid:workflows:status",
+  "grid:workflows:complete",
   // Compound code commands
-  "compound:code:refactor",
-  "compound:code:review",
-  "compound:code:optimize",
-  "compound:code:format",
+  "grid:code:refactor",
+  "grid:code:review",
+  "grid:code:optimize",
+  "grid:code:format",
   // Compound git commands
-  "compound:git:smart-commit",
-  "compound:git:branch",
-  "compound:git:merge",
-  "compound:git:cleanup",
+  "grid:git:smart-commit",
+  "grid:git:branch",
+  "grid:git:merge",
+  "grid:git:cleanup",
   // Compound project commands
-  "compound:project:init",
-  "compound:project:build",
-  "compound:project:deploy",
-  "compound:project:test",
+  "grid:project:init",
+  "grid:project:build",
+  "grid:project:deploy",
+  "grid:project:test",
   // Compound utility commands
-  "compound:util:clean",
-  "compound:util:backup",
-  "compound:util:restore",
-  "compound:util:doctor",
+  "grid:util:clean",
+  "grid:util:backup",
+  "grid:util:restore",
+  "grid:util:doctor",
   // Compound documentation commands
-  "compound:docs:deploy-docs",
-  "compound:docs:release-docs",
-  "compound:docs:feature-video",
-  "compound:docs:test-browser",
-])
+  "grid:docs:deploy-docs",
+  "grid:docs:release-docs",
+  "grid:docs:feature-video",
+  "grid:docs:test-browser",
+]);
 
 export const AgentOverrideConfigSchema = z.object({
   /** @deprecated Use `category` instead. Model is inherited from category defaults. */
@@ -263,33 +263,35 @@ export const AgentOverrideConfigSchema = z.object({
   /** Maximum tokens for response. Passed directly to OpenCode SDK. */
   maxTokens: z.number().optional(),
   /** Extended thinking configuration (Anthropic). Overrides category and default settings. */
-  thinking: z.object({
-    type: z.enum(["enabled", "disabled"]),
-    budgetTokens: z.number().optional(),
-  }).optional(),
+  thinking: z
+    .object({
+      type: z.enum(["enabled", "disabled"]),
+      budgetTokens: z.number().optional(),
+    })
+    .optional(),
   /** Reasoning effort level (OpenAI). Overrides category and default settings. */
   reasoningEffort: z.enum(["low", "medium", "high", "xhigh"]).optional(),
   /** Text verbosity level. */
   textVerbosity: z.enum(["low", "medium", "high"]).optional(),
   /** Provider-specific options. Passed directly to OpenCode SDK. */
   providerOptions: z.record(z.string(), z.unknown()).optional(),
-})
+});
 
 export const AgentOverridesSchema = z.object({
   build: AgentOverrideConfigSchema.optional(),
   plan: AgentOverrideConfigSchema.optional(),
-  sisyphus: AgentOverrideConfigSchema.optional(),
-  "sisyphus-junior": AgentOverrideConfigSchema.optional(),
+  "cipher-operator": AgentOverrideConfigSchema.optional(),
+  "cipher-runner": AgentOverrideConfigSchema.optional(),
   "OpenCode-Builder": AgentOverrideConfigSchema.optional(),
-  prometheus: AgentOverrideConfigSchema.optional(),
-  metis: AgentOverrideConfigSchema.optional(),
-  momus: AgentOverrideConfigSchema.optional(),
-  oracle: AgentOverrideConfigSchema.optional(),
-  librarian: AgentOverrideConfigSchema.optional(),
-  explore: AgentOverrideConfigSchema.optional(),
-  "multimodal-looker": AgentOverrideConfigSchema.optional(),
-  atlas: AgentOverrideConfigSchema.optional(),
-})
+  "augur-planner": AgentOverrideConfigSchema.optional(),
+  "tactician-strategist": AgentOverrideConfigSchema.optional(),
+  "glitch-auditor": AgentOverrideConfigSchema.optional(),
+  "seer-advisor": AgentOverrideConfigSchema.optional(),
+  "archive-researcher": AgentOverrideConfigSchema.optional(),
+  "scout-recon": AgentOverrideConfigSchema.optional(),
+  "optic-analyst": AgentOverrideConfigSchema.optional(),
+  "nexus-orchestrator": AgentOverrideConfigSchema.optional(),
+});
 
 export const ClaudeCodeConfigSchema = z.object({
   mcp: z.boolean().optional(),
@@ -299,7 +301,7 @@ export const ClaudeCodeConfigSchema = z.object({
   hooks: z.boolean().optional(),
   plugins: z.boolean().optional(),
   plugins_override: z.record(z.string(), z.boolean()).optional(),
-})
+});
 
 export const ClaudeImportConfigSchema = z.object({
   enabled: z.boolean().optional(),
@@ -312,29 +314,29 @@ export const ClaudeImportConfigSchema = z.object({
   namespace_overrides: z.record(z.string(), z.string()).optional(),
   include: z.array(z.string()).optional(),
   exclude: z.array(z.string()).optional(),
-})
+});
 
 export const CompoundEngineeringConfigSchema = z.object({
   enabled: z.boolean().optional(),
   source: z.enum(["local"]).optional(),
   path: z.string().optional(),
   plugin_name: z.string().optional(),
-})
+});
 
 export const ImportsConfigSchema = z.object({
   claude: ClaudeImportConfigSchema.optional(),
-})
+});
 
 export const FeaturesConfigSchema = z.object({
   compound_engineering: CompoundEngineeringConfigSchema.optional(),
-})
+});
 
 export const SisyphusAgentConfigSchema = z.object({
   disabled: z.boolean().optional(),
   default_builder_enabled: z.boolean().optional(),
   planner_enabled: z.boolean().optional(),
   replace_plan: z.boolean().optional(),
-})
+});
 
 export const CategoryConfigSchema = z.object({
   /** Human-readable description of the category's purpose. Shown in delegate_task prompt. */
@@ -344,17 +346,19 @@ export const CategoryConfigSchema = z.object({
   temperature: z.number().min(0).max(2).optional(),
   top_p: z.number().min(0).max(1).optional(),
   maxTokens: z.number().optional(),
-  thinking: z.object({
-    type: z.enum(["enabled", "disabled"]),
-    budgetTokens: z.number().optional(),
-  }).optional(),
+  thinking: z
+    .object({
+      type: z.enum(["enabled", "disabled"]),
+      budgetTokens: z.number().optional(),
+    })
+    .optional(),
   reasoningEffort: z.enum(["low", "medium", "high", "xhigh"]).optional(),
   textVerbosity: z.enum(["low", "medium", "high"]).optional(),
   tools: z.record(z.string(), z.boolean()).optional(),
   prompt_append: z.string().optional(),
   /** Mark agent as unstable - forces background mode for monitoring. Auto-enabled for gemini models. */
   is_unstable_agent: z.boolean().optional(),
-})
+});
 
 export const BuiltinCategoryNameSchema = z.enum([
   "visual-engineering",
@@ -365,14 +369,17 @@ export const BuiltinCategoryNameSchema = z.enum([
   "unspecified-low",
   "unspecified-high",
   "writing",
-])
+]);
 
-export const CategoriesConfigSchema = z.record(z.string(), CategoryConfigSchema)
+export const CategoriesConfigSchema = z.record(
+  z.string(),
+  CategoryConfigSchema,
+);
 
 export const CommentCheckerConfigSchema = z.object({
   /** Custom prompt to replace the default warning message. Use {{comments}} placeholder for detected comments XML. */
   custom_prompt: z.string().optional(),
-})
+});
 
 export const DynamicContextPruningConfigSchema = z.object({
   /** Enable dynamic context pruning (default: false) */
@@ -380,35 +387,51 @@ export const DynamicContextPruningConfigSchema = z.object({
   /** Notification level: off, minimal, or detailed (default: detailed) */
   notification: z.enum(["off", "minimal", "detailed"]).default("detailed"),
   /** Turn protection - prevent pruning recent tool outputs */
-  turn_protection: z.object({
-    enabled: z.boolean().default(true),
-    turns: z.number().min(1).max(10).default(3),
-  }).optional(),
+  turn_protection: z
+    .object({
+      enabled: z.boolean().default(true),
+      turns: z.number().min(1).max(10).default(3),
+    })
+    .optional(),
   /** Tools that should never be pruned */
-  protected_tools: z.array(z.string()).default([
-    "task", "todowrite", "todoread",
-    "lsp_rename",
-    "session_read", "session_write", "session_search",
-  ]),
+  protected_tools: z
+    .array(z.string())
+    .default([
+      "task",
+      "todowrite",
+      "todoread",
+      "lsp_rename",
+      "session_read",
+      "session_write",
+      "session_search",
+    ]),
   /** Pruning strategies configuration */
-  strategies: z.object({
-    /** Remove duplicate tool calls (same tool + same args) */
-    deduplication: z.object({
-      enabled: z.boolean().default(true),
-    }).optional(),
-    /** Prune write inputs when file subsequently read */
-    supersede_writes: z.object({
-      enabled: z.boolean().default(true),
-      /** Aggressive mode: prune any write if ANY subsequent read */
-      aggressive: z.boolean().default(false),
-    }).optional(),
-    /** Prune errored tool inputs after N turns */
-    purge_errors: z.object({
-      enabled: z.boolean().default(true),
-      turns: z.number().min(1).max(20).default(5),
-    }).optional(),
-  }).optional(),
-})
+  strategies: z
+    .object({
+      /** Remove duplicate tool calls (same tool + same args) */
+      deduplication: z
+        .object({
+          enabled: z.boolean().default(true),
+        })
+        .optional(),
+      /** Prune write inputs when file subsequently read */
+      supersede_writes: z
+        .object({
+          enabled: z.boolean().default(true),
+          /** Aggressive mode: prune any write if ANY subsequent read */
+          aggressive: z.boolean().default(false),
+        })
+        .optional(),
+      /** Prune errored tool inputs after N turns */
+      purge_errors: z
+        .object({
+          enabled: z.boolean().default(true),
+          turns: z.number().min(1).max(20).default(5),
+        })
+        .optional(),
+    })
+    .optional(),
+});
 
 export const ExperimentalConfigSchema = z.object({
   aggressive_truncation: z.boolean().optional(),
@@ -417,7 +440,7 @@ export const ExperimentalConfigSchema = z.object({
   truncate_all_tool_outputs: z.boolean().optional(),
   /** Dynamic context pruning configuration */
   dynamic_context_pruning: DynamicContextPruningConfigSchema.optional(),
-})
+});
 
 export const SkillSourceSchema = z.union([
   z.string(),
@@ -426,7 +449,7 @@ export const SkillSourceSchema = z.union([
     recursive: z.boolean().optional(),
     glob: z.string().optional(),
   }),
-])
+]);
 
 export const SkillDefinitionSchema = z.object({
   description: z.string().optional(),
@@ -441,21 +464,22 @@ export const SkillDefinitionSchema = z.object({
   metadata: z.record(z.string(), z.unknown()).optional(),
   "allowed-tools": z.array(z.string()).optional(),
   disable: z.boolean().optional(),
-})
+});
 
-export const SkillEntrySchema = z.union([
-  z.boolean(),
-  SkillDefinitionSchema,
-])
+export const SkillEntrySchema = z.union([z.boolean(), SkillDefinitionSchema]);
 
 export const SkillsConfigSchema = z.union([
   z.array(z.string()),
-  z.record(z.string(), SkillEntrySchema).and(z.object({
-    sources: z.array(SkillSourceSchema).optional(),
-    enable: z.array(z.string()).optional(),
-    disable: z.array(z.string()).optional(),
-  }).partial()),
-])
+  z.record(z.string(), SkillEntrySchema).and(
+    z
+      .object({
+        sources: z.array(SkillSourceSchema).optional(),
+        enable: z.array(z.string()).optional(),
+        disable: z.array(z.string()).optional(),
+      })
+      .partial(),
+  ),
+]);
 
 export const RalphLoopConfigSchema = z.object({
   /** Enable ralph loop functionality (default: false - opt-in feature) */
@@ -464,7 +488,7 @@ export const RalphLoopConfigSchema = z.object({
   default_max_iterations: z.number().min(1).max(1000).default(100),
   /** Custom state file directory relative to project root (default: .opencode/) */
   state_dir: z.string().optional(),
-})
+});
 
 export const BackgroundTaskConfigSchema = z.object({
   defaultConcurrency: z.number().min(1).optional(),
@@ -472,21 +496,25 @@ export const BackgroundTaskConfigSchema = z.object({
   modelConcurrency: z.record(z.string(), z.number().min(0)).optional(),
   /** Stale timeout in milliseconds - interrupt tasks with no activity for this duration (default: 180000 = 3 minutes, minimum: 60000 = 1 minute) */
   staleTimeoutMs: z.number().min(60000).optional(),
-})
+});
 
 export const NotificationConfigSchema = z.object({
-  /** Force enable session-notification even if external notification plugins are detected (default: false) */
+  /** Force enable grid-session-notification even if external notification plugins are detected (default: false) */
   force_enable: z.boolean().optional(),
-})
+});
 
 export const GitMasterConfigSchema = z.object({
-  /** Add "Ultraworked with Sisyphus" footer to commit messages (default: true) */
+  /** Add "Ultraworked with Cipher Operator" footer to commit messages (default: true) */
   commit_footer: z.boolean().default(true),
-  /** Add "Co-authored-by: Sisyphus" trailer to commit messages (default: true) */
+  /** Add "Co-authored-by: Cipher Operator" trailer to commit messages (default: true) */
   include_co_authored_by: z.boolean().default(true),
-})
+});
 
-export const BrowserAutomationProviderSchema = z.enum(["playwright", "agent-browser", "dev-browser"])
+export const BrowserAutomationProviderSchema = z.enum([
+  "playwright",
+  "agent-browser",
+  "dev-browser",
+]);
 
 export const BrowserAutomationConfigSchema = z.object({
   /**
@@ -496,47 +524,47 @@ export const BrowserAutomationConfigSchema = z.object({
    * - "dev-browser": Uses dev-browser skill with persistent browser state
    */
   provider: BrowserAutomationProviderSchema.default("playwright"),
-})
+});
 
 export const TmuxLayoutSchema = z.enum([
-  'main-horizontal',  // main pane top, agent panes bottom stack
-  'main-vertical',    // main pane left, agent panes right stack (default)
-  'tiled',            // all panes same size grid
-  'even-horizontal',  // all panes horizontal row
-  'even-vertical',    // all panes vertical stack
-])
+  "main-horizontal", // main pane top, agent panes bottom stack
+  "main-vertical", // main pane left, agent panes right stack (default)
+  "tiled", // all panes same size grid
+  "even-horizontal", // all panes horizontal row
+  "even-vertical", // all panes vertical stack
+]);
 
 export const TmuxConfigSchema = z.object({
   enabled: z.boolean().default(false),
-  layout: TmuxLayoutSchema.default('main-vertical'),
+  layout: TmuxLayoutSchema.default("main-vertical"),
   main_pane_size: z.number().min(20).max(80).default(60),
   main_pane_min_width: z.number().min(40).default(120),
   agent_pane_min_width: z.number().min(20).default(40),
-})
+});
 
 export const SisyphusTasksConfigSchema = z.object({
-  /** Enable Sisyphus Tasks system (default: false) */
+  /** Enable Cipher Operator Tasks system (default: false) */
   enabled: z.boolean().default(false),
-  /** Storage path for tasks (default: .sisyphus/tasks) */
-  storage_path: z.string().default(".sisyphus/tasks"),
+  /** Storage path for tasks (default: .ghostwire/tasks) */
+  storage_path: z.string().default(".ghostwire/tasks"),
   /** Enable Claude Code path compatibility mode */
   claude_code_compat: z.boolean().default(false),
-})
+});
 
 export const SisyphusSwarmConfigSchema = z.object({
-  /** Enable Sisyphus Swarm system (default: false) */
+  /** Enable Cipher Operator Swarm system (default: false) */
   enabled: z.boolean().default(false),
-  /** Storage path for teams (default: .sisyphus/teams) */
-  storage_path: z.string().default(".sisyphus/teams"),
+  /** Storage path for teams (default: .ghostwire/teams) */
+  storage_path: z.string().default(".ghostwire/teams"),
   /** UI mode: toast notifications, tmux panes, or both */
   ui_mode: z.enum(["toast", "tmux", "both"]).default("toast"),
-})
+});
 
 export const SisyphusConfigSchema = z.object({
   tasks: SisyphusTasksConfigSchema.optional(),
   swarm: SisyphusSwarmConfigSchema.optional(),
-})
-export const RuachConfigSchema = z.object({
+});
+export const GhostwireConfigSchema = z.object({
   $schema: z.string().optional(),
   disabled_mcps: z.array(AnyMcpNameSchema).optional(),
   disabled_agents: z.array(BuiltinAgentNameSchema).optional(),
@@ -548,7 +576,7 @@ export const RuachConfigSchema = z.object({
   claude_code: ClaudeCodeConfigSchema.optional(),
   imports: ImportsConfigSchema.optional(),
   features: FeaturesConfigSchema.optional(),
-  sisyphus_agent: SisyphusAgentConfigSchema.optional(),
+  cipher_agent: SisyphusAgentConfigSchema.optional(),
   comment_checker: CommentCheckerConfigSchema.optional(),
   experimental: ExperimentalConfigSchema.optional(),
   auto_update: z.boolean().optional(),
@@ -559,35 +587,46 @@ export const RuachConfigSchema = z.object({
   git_master: GitMasterConfigSchema.optional(),
   browser_automation_engine: BrowserAutomationConfigSchema.optional(),
   tmux: TmuxConfigSchema.optional(),
-  sisyphus: SisyphusConfigSchema.optional(),
-})
+  "cipher-operator": SisyphusConfigSchema.optional(),
+});
 
-export type RuachConfig = z.infer<typeof RuachConfigSchema>
-export type AgentOverrideConfig = z.infer<typeof AgentOverrideConfigSchema>
-export type AgentOverrides = z.infer<typeof AgentOverridesSchema>
-export type BackgroundTaskConfig = z.infer<typeof BackgroundTaskConfigSchema>
-export type AgentName = z.infer<typeof AgentNameSchema>
-export type HookName = z.infer<typeof HookNameSchema>
-export type BuiltinCommandName = z.infer<typeof BuiltinCommandNameSchema>
-export type BuiltinSkillName = z.infer<typeof BuiltinSkillNameSchema>
-export type SisyphusAgentConfig = z.infer<typeof SisyphusAgentConfigSchema>
-export type CommentCheckerConfig = z.infer<typeof CommentCheckerConfigSchema>
-export type ExperimentalConfig = z.infer<typeof ExperimentalConfigSchema>
-export type DynamicContextPruningConfig = z.infer<typeof DynamicContextPruningConfigSchema>
-export type SkillsConfig = z.infer<typeof SkillsConfigSchema>
-export type SkillDefinition = z.infer<typeof SkillDefinitionSchema>
-export type RalphLoopConfig = z.infer<typeof RalphLoopConfigSchema>
-export type NotificationConfig = z.infer<typeof NotificationConfigSchema>
-export type CategoryConfig = z.infer<typeof CategoryConfigSchema>
-export type CategoriesConfig = z.infer<typeof CategoriesConfigSchema>
-export type BuiltinCategoryName = z.infer<typeof BuiltinCategoryNameSchema>
-export type GitMasterConfig = z.infer<typeof GitMasterConfigSchema>
-export type BrowserAutomationProvider = z.infer<typeof BrowserAutomationProviderSchema>
-export type BrowserAutomationConfig = z.infer<typeof BrowserAutomationConfigSchema>
-export type TmuxConfig = z.infer<typeof TmuxConfigSchema>
-export type TmuxLayout = z.infer<typeof TmuxLayoutSchema>
-export type SisyphusTasksConfig = z.infer<typeof SisyphusTasksConfigSchema>
-export type SisyphusSwarmConfig = z.infer<typeof SisyphusSwarmConfigSchema>
-export type SisyphusConfig = z.infer<typeof SisyphusConfigSchema>
+export type GhostwireConfig = z.infer<typeof GhostwireConfigSchema>;
+export type AgentOverrideConfig = z.infer<typeof AgentOverrideConfigSchema>;
+export type AgentOverrides = z.infer<typeof AgentOverridesSchema>;
+export type BackgroundTaskConfig = z.infer<typeof BackgroundTaskConfigSchema>;
+export type AgentName = z.infer<typeof AgentNameSchema>;
+export type HookName = z.infer<typeof HookNameSchema>;
+export type BuiltinCommandName = z.infer<typeof BuiltinCommandNameSchema>;
+export type BuiltinSkillName = z.infer<typeof BuiltinSkillNameSchema>;
+export type SisyphusAgentConfig = z.infer<typeof SisyphusAgentConfigSchema>;
+export type CommentCheckerConfig = z.infer<typeof CommentCheckerConfigSchema>;
+export type ExperimentalConfig = z.infer<typeof ExperimentalConfigSchema>;
+export type DynamicContextPruningConfig = z.infer<
+  typeof DynamicContextPruningConfigSchema
+>;
+export type SkillsConfig = z.infer<typeof SkillsConfigSchema>;
+export type SkillDefinition = z.infer<typeof SkillDefinitionSchema>;
+export type RalphLoopConfig = z.infer<typeof RalphLoopConfigSchema>;
+export type NotificationConfig = z.infer<typeof NotificationConfigSchema>;
+export type CategoryConfig = z.infer<typeof CategoryConfigSchema>;
+export type CategoriesConfig = z.infer<typeof CategoriesConfigSchema>;
+export type BuiltinCategoryName = z.infer<typeof BuiltinCategoryNameSchema>;
+export type GitMasterConfig = z.infer<typeof GitMasterConfigSchema>;
+export type BrowserAutomationProvider = z.infer<
+  typeof BrowserAutomationProviderSchema
+>;
+export type BrowserAutomationConfig = z.infer<
+  typeof BrowserAutomationConfigSchema
+>;
+export type TmuxConfig = z.infer<typeof TmuxConfigSchema>;
+export type TmuxLayout = z.infer<typeof TmuxLayoutSchema>;
+export type SisyphusTasksConfig = z.infer<typeof SisyphusTasksConfigSchema>;
+export type SisyphusSwarmConfig = z.infer<typeof SisyphusSwarmConfigSchema>;
+export type SisyphusConfig = z.infer<typeof SisyphusConfigSchema>;
 
-export { AnyMcpNameSchema, type AnyMcpName, McpNameSchema, type McpName } from "../mcp/types"
+export {
+  AnyMcpNameSchema,
+  type AnyMcpName,
+  McpNameSchema,
+  type McpName,
+} from "../mcp/types";

@@ -1,5 +1,5 @@
 /**
- * Detects external plugins that may conflict with ruach features.
+ * Detects external plugins that may conflict with ghostwire features.
  * Used to prevent crashes from concurrent notification plugins.
  */
 
@@ -14,7 +14,7 @@ interface OpencodeConfig {
 }
 
 /**
- * Known notification plugins that conflict with ruach's session-notification.
+ * Known notification plugins that conflict with ghostwire's grid-session-notification.
  * Both plugins listen to session.idle and send notifications simultaneously,
  * which can cause crashes on Windows due to resource contention.
  */
@@ -124,14 +124,14 @@ export function detectExternalNotificationPlugin(directory: string): ExternalNot
  * Generate a warning message for users with conflicting notification plugins.
  */
 export function getNotificationConflictWarning(pluginName: string): string {
-  return `[ruach] External notification plugin detected: ${pluginName}
+  return `[ghostwire] External notification plugin detected: ${pluginName}
 
-Both ruach and ${pluginName} listen to session.idle events.
+Both ghostwire and ${pluginName} listen to session.idle events.
    Running both simultaneously can cause crashes on Windows.
 
-   ruach's session-notification has been auto-disabled.
+   ghostwire's grid-session-notification has been auto-disabled.
 
-   To use ruach's notifications instead, either:
+   To use ghostwire's notifications instead, either:
    1. Remove ${pluginName} from your opencode.json plugins
-   2. Or set "notification": { "force_enable": true } in ruach.json`
+   2. Or set "notification": { "force_enable": true } in ghostwire.json`
 }

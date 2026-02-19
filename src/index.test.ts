@@ -9,30 +9,30 @@ import { includesCaseInsensitive } from "./shared"
  */
 describe("look_at tool conditional registration", () => {
   describe("isMultimodalLookerEnabled logic", () => {
-    // #given multimodal-looker is in disabled_agents
+    // #given opticAnalyst is in disabled_agents
     // #when checking if agent is enabled
     // #then should return false (disabled)
-    it("returns false when multimodal-looker is disabled (exact case)", () => {
-      const disabledAgents = ["multimodal-looker"]
-      const isEnabled = !includesCaseInsensitive(disabledAgents, "multimodal-looker")
+    it("returns false when opticAnalyst is disabled (exact case)", () => {
+      const disabledAgents = ["optic-analyst"]
+      const isEnabled = !includesCaseInsensitive(disabledAgents, "optic-analyst")
       expect(isEnabled).toBe(false)
     })
 
-    // #given multimodal-looker is in disabled_agents with different case
+    // #given opticAnalyst is in disabled_agents with different case
     // #when checking if agent is enabled
     // #then should return false (case-insensitive match)
-    it("returns false when multimodal-looker is disabled (case-insensitive)", () => {
-      const disabledAgents = ["Multimodal-Looker"]
-      const isEnabled = !includesCaseInsensitive(disabledAgents, "multimodal-looker")
+    it("returns false when opticAnalyst is disabled (case-insensitive)", () => {
+      const disabledAgents = ["Optic-Analyst"]
+      const isEnabled = !includesCaseInsensitive(disabledAgents, "optic-analyst")
       expect(isEnabled).toBe(false)
     })
 
-    // #given multimodal-looker is NOT in disabled_agents
+    // #given opticAnalyst is NOT in disabled_agents
     // #when checking if agent is enabled
     // #then should return true (enabled)
-    it("returns true when multimodal-looker is not disabled", () => {
-      const disabledAgents = ["oracle", "librarian"]
-      const isEnabled = !includesCaseInsensitive(disabledAgents, "multimodal-looker")
+    it("returns true when opticAnalyst is not disabled", () => {
+      const disabledAgents = ["seer-advisor", "archive-researcher"]
+      const isEnabled = !includesCaseInsensitive(disabledAgents, "optic-analyst")
       expect(isEnabled).toBe(true)
     })
 
@@ -41,7 +41,7 @@ describe("look_at tool conditional registration", () => {
     // #then should return true (enabled by default)
     it("returns true when disabled_agents is empty", () => {
       const disabledAgents: string[] = []
-      const isEnabled = !includesCaseInsensitive(disabledAgents, "multimodal-looker")
+      const isEnabled = !includesCaseInsensitive(disabledAgents, "optic-analyst")
       expect(isEnabled).toBe(true)
     })
 
@@ -50,7 +50,7 @@ describe("look_at tool conditional registration", () => {
     // #then should return true (enabled by default)
     it("returns true when disabled_agents is undefined (fallback to empty)", () => {
       const disabledAgents = undefined
-      const isEnabled = !includesCaseInsensitive(disabledAgents ?? [], "multimodal-looker")
+      const isEnabled = !includesCaseInsensitive(disabledAgents ?? [], "optic-analyst")
       expect(isEnabled).toBe(true)
     })
   })

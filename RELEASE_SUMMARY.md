@@ -1,4 +1,4 @@
-# ruach v3.2.0 - Release Summary
+# ghostwire v3.2.0 - Release Summary
 
 **Compound Engineering True Merge - Complete Implementation**
 
@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-Successfully completed the **true merge** of compound-engineering plugin into ruach v3.2.0.
+Successfully completed the **true merge** of compound-engineering plugin into ghostwire v3.2.0.
 
 - ✅ **125 Components** integrated and production-ready
 - ✅ **59/59 Tests** passing (100% pass rate)
@@ -82,12 +82,12 @@ src/agents/compound/
 
 ### Namespace Convention
 
-All components use `compound:` prefix:
+All components use `grid:` prefix:
 
 ```
-Agents:   compound:{agent-name}
-Commands: compound:{category}:{action}
-Skills:   compound:{skill-name}
+Agents:   grid:{agent-name}
+Commands: grid:{category}:{action}
+Skills:   grid:{skill-name}
 ```
 
 ### Integration Points
@@ -267,7 +267,7 @@ Skills:   compound:{skill-name}
 ### Test Execution
 ```bash
 # Compound tests
-cd ruach
+cd ghostwire
 npm run test -- tests/compound/
 # Result: 59 pass, 0 fail ✅
 
@@ -364,9 +364,9 @@ The compound engineering true merge is **complete and production-ready**.
 ## Contact & Support
 
 For questions or issues:
-- **GitHub Issues**: https://github.com/code-yeongyu/ruach/issues
+- **GitHub Issues**: https://github.com/pontistudios/ghostwire/issues
 - **Documentation**: https://opencode.ai/docs
-- **Discussions**: https://github.com/code-yeongyu/ruach/discussions
+- **Discussions**: https://github.com/pontistudios/ghostwire/discussions
 
 ---
 
@@ -374,4 +374,4 @@ For questions or issues:
 **Version**: v3.2.0
 **Status**: ✅ Production Ready
 
-🎉 **ruach is now equipped with 125 advanced components!**
+🎉 **ghostwire is now equipped with 125 advanced components!**

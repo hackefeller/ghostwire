@@ -5,7 +5,7 @@ Full Claude Code `settings.json` hook compatibility layer. Intercepts OpenCode e
 
 ## STRUCTURE
 ```
-claude-code-hooks/
+grid-claude-code-hooks/
 ├── index.ts              # Main factory (401 lines)
 ├── config.ts             # Loads ~/.claude/settings.json
 ├── config-loader.ts      # Extended config (disabledHooks)

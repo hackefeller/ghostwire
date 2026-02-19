@@ -2,7 +2,7 @@
 
 ## OVERVIEW
 
-20+ tools: LSP (6), AST-Grep (2), Search (2), Session (7), Agent delegation (4), System (2), Skill (3).
+20+ tools: LSP (6), AST-Grep (2), Search (2), Session (7), Todo (4), Agent delegation (4), System (2), Skill (3).
 
 ## STRUCTURE
 
@@ -17,6 +17,7 @@ tools/
 ├── ast-grep/         # 2 tools: search, replace (25 languages)
 ├── delegate-task/    # Category-based routing (1070 lines)
 ├── session-manager/  # 7 tools: list, read, search, info, create, update, delete
+├── todo-manager/     # 4 tools: create, list, update, delete
 ├── grep/             # Custom grep with timeout (60s, 10MB)
 ├── glob/             # 60s timeout, 100 file limit
 ├── interactive-bash/ # Tmux session management
@@ -35,6 +36,7 @@ tools/
 | LSP | lsp_goto_definition, lsp_find_references, lsp_symbols, lsp_diagnostics, lsp_prepare_rename, lsp_rename | Direct |
 | Search | ast_grep_search, ast_grep_replace, grep, glob | Direct |
 | Session | session_list, session_read, session_search, session_info, session_create, session_update, session_delete | Direct |
+| Todo | todo_create, todo_list, todo_update, todo_delete | Direct |
 | Agent | delegate_task, call_grid_agent | Factory |
 | Background | background_output, background_cancel | Factory |
 | System | interactive_bash, look_at | Mixed |
@@ -140,6 +142,70 @@ onSessionEvent((event) => {
 ```
 
 Event types: `session.created`, `session.updated`, `session.deleted`, `session.archived`
+
+## TODO CRUD OPERATIONS
+
+Ghostwire provides full CRUD operations for managing todo items within sessions. Todos track work items and integrate with the todo-continuation-enforcer hook.
+
+### Todo Create
+
+Creates a new todo item:
+
+```typescript
+const result = await todo_create({
+  content: "Review authentication module",
+  priority: "high",
+  note: "Check for SQL injection vulnerabilities",
+})
+```
+
+### Todo List
+
+Lists todos with optional filtering:
+
+```typescript
+const result = await todo_list({
+  status: "pending",
+  priority: "high",
+})
+```
+
+### Todo Update
+
+Updates todo status, priority, or content:
+
+```typescript
+const result = await todo_update({
+  todo_id: "todo_123",
+  status: "completed",
+  note: "Fixed the issue",
+})
+```
+
+### Todo Delete
+
+Deletes a todo (use with caution):
+
+```typescript
+const result = await todo_delete({
+  todo_id: "todo_123",
+  force: true,  // Required for in-progress todos
+})
+```
+
+### Priority Levels
+
+- `critical` - 🔴 Critical
+- `high` - 🟠 High  
+- `medium` - 🟡 Medium (default)
+- `low` - 🟢 Low
+
+### Status Values
+
+- `pending` - Not started
+- `in_progress` - Currently being worked on
+- `completed` - Finished
+- `cancelled` - Cancelled/abandoned
 
 ## ANTI-PATTERNS
 

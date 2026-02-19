@@ -1,9 +1,24 @@
 /**
  * Agent config keys to display names mapping.
- * Config keys are lowercase (e.g., "cipher-operator", "nexus-orchestrator").
+ * Config keys are lowercase (e.g., "void-runner", "grid-sync").
  * Display names include suffixes for UI/logs (e.g., "Cipher Operator (Ultraworker)").
+ * 
+ * For backward compatibility, also includes legacy agent name aliases.
  */
 export const AGENT_DISPLAY_NAMES: Record<string, string> = {
+  // Current agent names
+  "void-runner": "Cipher Operator (Ultraworker)",
+  "grid-sync": "Nexus Orchestrator (Plan Execution Orchestrator)",
+  "zen-planner": "Augur Planner (Plan Builder)",
+  "dark-runner": "Cipher Operator-Junior",
+  "war-mind": "Tactician Strategist (Plan Consultant)",
+  "null-audit": "Glitch Auditor (Plan Reviewer)",
+  "eye-ops": "eye-ops",
+  "data-dive": "data-dive",
+  "scan-ops": "scan-ops",
+  "eye-scan": "eye-scan",
+
+  // Legacy aliases for backward compatibility
   "cipher-operator": "Cipher Operator (Ultraworker)",
   "nexus-orchestrator": "Nexus Orchestrator (Plan Execution Orchestrator)",
   "augur-planner": "Augur Planner (Plan Builder)",
@@ -29,7 +44,7 @@ export function getAgentDisplayName(configKey: string): string {
   // Fall back to case-insensitive + normalized search
   const lowerKey = configKey.toLowerCase()
   const normalizedKey = lowerKey.replace(/\s+/g, "-")
-  const aliasKey = normalizedKey === "cipher-operator-junior" ? "cipher-runner" : normalizedKey
+  const aliasKey = normalizedKey === "void-runner-junior" ? "dark-runner" : normalizedKey
   for (const [k, v] of Object.entries(AGENT_DISPLAY_NAMES)) {
     const lowerMapKey = k.toLowerCase()
     if (lowerMapKey === lowerKey || lowerMapKey === normalizedKey || lowerMapKey === aliasKey) {

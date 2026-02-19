@@ -7,9 +7,9 @@ import { log } from "../../shared"
  * These are orchestrator agents that delegate work to specialized agents.
  */
 const TARGET_AGENTS = new Set([
-  "cipher-operator",
-  "cipher-runner",
-  "nexus-orchestrator",
+  "void-runner",
+  "dark-runner",
+  "grid-sync",
 ])
 
 /**
@@ -105,9 +105,9 @@ function isTargetAgent(sessionID: string, inputAgent?: string): boolean {
     const canonical = agentLower.replace(/\(.*?\)/g, "").trim()
     return TARGET_AGENTS.has(agentLower) || 
            TARGET_AGENTS.has(canonical) ||
-           canonical.includes("cipher-operator") || 
-           canonical.includes("nexus-orchestrator") ||
-           canonical.includes("cipher-runner")
+           canonical.includes("void-runner") || 
+           canonical.includes("grid-sync") ||
+           canonical.includes("dark-runner")
   }
 
   const toolExecuteAfter = async (

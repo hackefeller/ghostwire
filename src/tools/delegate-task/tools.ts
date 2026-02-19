@@ -53,7 +53,7 @@ import { CATEGORY_MODEL_REQUIREMENTS } from "../../agents/model-requirements";
 
 type OpencodeClient = PluginInput["client"];
 
-const SISYPHUS_JUNIOR_AGENT = "cipher-runner";
+const SISYPHUS_JUNIOR_AGENT = "dark-runner";
 
 function parseModelString(
   model: string,
@@ -302,7 +302,7 @@ MUTUALLY EXCLUSIVE: Provide EITHER category OR subagent_type, not both (unless c
 - category: Use predefined category → Spawns Cipher Operator-Junior with category config
   Available categories:
 ${categoryList}
-- subagent_type: Use specific agent directly (e.g., "seer-advisor", "scout-recon")
+- subagent_type: Use specific agent directly (e.g., "eye-ops", "scan-ops")
 - run_in_background: true=async (returns task_id), false=sync (waits for result). Default: false. Use background=true ONLY for parallel exploration with 5+ independent queries.
 - session_id: Existing Task session to continue (from previous task output). Continues agent with FULL CONTEXT PRESERVED - saves tokens, maintains continuity.
 - command: The command that triggered this task (optional, for slash command tracking).
@@ -343,7 +343,7 @@ Prompts MUST be in English.`;
         .string()
         .optional()
         .describe(
-          "Agent name (e.g., 'seer-advisor', 'scout-recon'). Mutually exclusive with category.",
+          "Agent name (e.g., 'eye-ops', 'scan-ops'). Mutually exclusive with category.",
         ),
       session_id: tool.schema
         .string()
@@ -1002,7 +1002,7 @@ Cipher Operator-Junior is spawned automatically when you specify a category. Pic
         }
 
         if (isPlanAgent(agentName) && isPlanAgent(parentAgent)) {
-          return `You are augur-planner. You cannot delegate to augur-planner via delegate_task.
+          return `You are zen-planner. You cannot delegate to zen-planner via delegate_task.
 
 Create the work plan directly - that's your job as the planning agent.`;
         }
@@ -1010,7 +1010,7 @@ Create the work plan directly - that's your job as the planning agent.`;
         agentToUse = agentName;
 
         // Validate agent exists and is callable (not a primary agent)
-        // Uses case-insensitive matching to allow "Seer Advisor", "seer-advisor", "ORACLE" etc.
+        // Uses case-insensitive matching to allow "Seer Advisor", "eye-ops", "ORACLE" etc.
         try {
           const agentsResult = await client.app.agents();
           type AgentInfo = {

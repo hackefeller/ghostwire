@@ -3,7 +3,6 @@ import color from "picocolors";
 import type {
   InstallArgs,
   InstallConfig,
-  ClaudeSubscription,
   BooleanArg,
   DetectedConfig,
 } from "./types";
@@ -49,12 +48,6 @@ function formatConfigSummary(config: InstallConfig): string {
   lines.push(color.bold(color.white("Configuration Summary")));
   lines.push("");
 
-  const claudeDetail = config.hasClaude
-    ? config.isMax20
-      ? "max20"
-      : "standard"
-    : undefined;
-  lines.push(formatProvider("Claude", config.hasClaude, claudeDetail));
   lines.push(
     formatProvider(
       "OpenAI/ChatGPT",
@@ -165,14 +158,6 @@ function validateNonTuiArgs(args: InstallArgs): {
 } {
   const errors: string[] = [];
 
-  if (args.claude === undefined) {
-    errors.push("--claude is required (values: no, yes, max20)");
-  } else if (!["no", "yes", "max20"].includes(args.claude)) {
-    errors.push(
-      `Invalid --claude value: ${args.claude} (expected: no, yes, max20)`,
-    );
-  }
-
   if (args.gemini === undefined) {
     errors.push("--gemini is required (values: no, yes)");
   } else if (!["no", "yes"].includes(args.gemini)) {
@@ -221,8 +206,6 @@ function validateNonTuiArgs(args: InstallArgs): {
 
 function argsToConfig(args: InstallArgs): InstallConfig {
   return {
-    hasClaude: args.claude !== "no",
-    isMax20: args.claude === "max20",
     hasOpenAI: args.openai === "yes",
     hasGemini: args.gemini === "yes",
     hasCopilot: args.copilot === "yes",
@@ -233,21 +216,14 @@ function argsToConfig(args: InstallArgs): InstallConfig {
 }
 
 function detectedToInitialValues(detected: DetectedConfig): {
-  claude: ClaudeSubscription;
-  openai: BooleanArg;
-  gemini: BooleanArg;
-  copilot: BooleanArg;
-  opencodeZen: BooleanArg;
-  zaiCodingPlan: BooleanArg;
-  kimiForCoding: BooleanArg;
+  openai: BooleanArg
+  gemini: BooleanArg
+  copilot: BooleanArg
+  opencodeZen: BooleanArg
+  zaiCodingPlan: BooleanArg
+  kimiForCoding: BooleanArg
 } {
-  let claude: ClaudeSubscription = "no";
-  if (detected.hasClaude) {
-    claude = detected.isMax20 ? "max20" : "yes";
-  }
-
   return {
-    claude,
     openai: detected.hasOpenAI ? "yes" : "no",
     gemini: detected.hasGemini ? "yes" : "no",
     copilot: detected.hasCopilot ? "yes" : "no",
@@ -261,33 +237,6 @@ async function runTuiMode(
   detected: DetectedConfig,
 ): Promise<InstallConfig | null> {
   const initial = detectedToInitialValues(detected);
-
-  const claude = await p.select({
-    message: "Do you have a Claude Pro/Max subscription?",
-    options: [
-      {
-        value: "no" as const,
-        label: "No",
-        hint: "Will use opencode/glm-4.7-free as fallback",
-      },
-      {
-        value: "yes" as const,
-        label: "Yes (standard)",
-        hint: "Claude Opus 4.5 for orchestration",
-      },
-      {
-        value: "max20" as const,
-        label: "Yes (max20 mode)",
-        hint: "Full power with Claude Sonnet 4.5 for Archive Researcher",
-      },
-    ],
-    initialValue: initial.claude,
-  });
-
-  if (p.isCancel(claude)) {
-    p.cancel("Installation cancelled.");
-    return null;
-  }
 
   const openai = await p.select({
     message: "Do you have an OpenAI/ChatGPT Plus subscription?",
@@ -422,8 +371,6 @@ async function runTuiMode(
   }
 
   return {
-    hasClaude: claude !== "no",
-    isMax20: claude === "max20",
     hasOpenAI: openai === "yes",
     hasGemini: gemini === "yes",
     hasCopilot: copilot === "yes",
@@ -472,7 +419,7 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
   if (isUpdate) {
     const initial = detectedToInitialValues(detected);
     printInfo(
-      `Current config: Claude=${initial.claude}, Gemini=${initial.gemini}`,
+      `Current config: OpenAI=${initial.openai}, Gemini=${initial.gemini}`,
     );
   }
 
@@ -539,36 +486,7 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
     isUpdate ? "Updated Configuration" : "Installation Complete",
   );
 
-  if (!config.hasClaude) {
-    console.log();
-    console.log(color.bgRed(color.white(color.bold(" CRITICAL WARNING "))));
-    console.log();
-    console.log(
-      color.red(
-        color.bold(
-          "  Cipher Operator agent is STRONGLY optimized for Claude Opus 4.5.",
-        ),
-      ),
-    );
-    console.log(
-      color.red(
-        "  Without Claude, you may experience significantly degraded performance:",
-      ),
-    );
-    console.log(color.dim("    • Reduced orchestration quality"));
-    console.log(color.dim("    • Weaker tool selection and delegation"));
-    console.log(color.dim("    • Less reliable task completion"));
-    console.log();
-    console.log(
-      color.yellow(
-        "  Consider subscribing to Claude Pro/Max for the best experience.",
-      ),
-    );
-    console.log();
-  }
-
   if (
-    !config.hasClaude &&
     !config.hasOpenAI &&
     !config.hasGemini &&
     !config.hasCopilot &&
@@ -603,14 +521,11 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
   console.log();
 
   if (
-    (config.hasClaude || config.hasGemini || config.hasCopilot) &&
+    (config.hasGemini || config.hasCopilot) &&
     !args.skipAuth
   ) {
     printBox(
       `Run ${color.cyan("opencode auth login")} and select your provider:\n` +
-        (config.hasClaude
-          ? `  ${SYMBOLS.bullet} Anthropic ${color.gray("→ Claude Pro/Max")}\n`
-          : "") +
         (config.hasGemini
           ? `  ${SYMBOLS.bullet} Google ${color.gray("→ OAuth with Antigravity")}\n`
           : "") +
@@ -641,7 +556,7 @@ export async function install(args: InstallArgs): Promise<number> {
   if (isUpdate) {
     const initial = detectedToInitialValues(detected);
     p.log.info(
-      `Existing configuration detected: Claude=${initial.claude}, Gemini=${initial.gemini}`,
+      `Existing configuration detected: OpenAI=${initial.openai}, Gemini=${initial.gemini}`,
     );
   }
 
@@ -704,36 +619,7 @@ export async function install(args: InstallArgs): Promise<number> {
   }
   s.stop(`Config written to ${color.cyan(omoResult.configPath)}`);
 
-  if (!config.hasClaude) {
-    console.log();
-    console.log(color.bgRed(color.white(color.bold(" CRITICAL WARNING "))));
-    console.log();
-    console.log(
-      color.red(
-        color.bold(
-          "  Cipher Operator agent is STRONGLY optimized for Claude Opus 4.5.",
-        ),
-      ),
-    );
-    console.log(
-      color.red(
-        "  Without Claude, you may experience significantly degraded performance:",
-      ),
-    );
-    console.log(color.dim("    • Reduced orchestration quality"));
-    console.log(color.dim("    • Weaker tool selection and delegation"));
-    console.log(color.dim("    • Less reliable task completion"));
-    console.log();
-    console.log(
-      color.yellow(
-        "  Consider subscribing to Claude Pro/Max for the best experience.",
-      ),
-    );
-    console.log();
-  }
-
   if (
-    !config.hasClaude &&
     !config.hasOpenAI &&
     !config.hasGemini &&
     !config.hasCopilot &&
@@ -771,12 +657,10 @@ export async function install(args: InstallArgs): Promise<number> {
   p.outro(color.green("oMoMoMoMo... Enjoy!"));
 
   if (
-    (config.hasClaude || config.hasGemini || config.hasCopilot) &&
+    (config.hasGemini || config.hasCopilot) &&
     !args.skipAuth
   ) {
     const providers: string[] = [];
-    if (config.hasClaude)
-      providers.push(`Anthropic ${color.gray("→ Claude Pro/Max")}`);
     if (config.hasGemini)
       providers.push(`Google ${color.gray("→ OAuth with Antigravity")}`);
     if (config.hasCopilot) providers.push(`GitHub ${color.gray("→ Copilot")}`);

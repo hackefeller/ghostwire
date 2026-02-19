@@ -9,7 +9,7 @@ import * as connectedProvidersCache from "../../platform/opencode/connected-prov
 
 const SYSTEM_DEFAULT_MODEL = "anthropic/claude-sonnet-4-5"
 
-describe("cipher-operator-task", () => {
+describe("void-runner-task", () => {
   let cacheSpy: ReturnType<typeof spyOn>
 
   beforeEach(() => {
@@ -123,9 +123,9 @@ describe("cipher-operator-task", () => {
       expect(result).toBe(true)
     })
 
-    test("returns true for 'augur-planner'", () => {
+    test("returns true for 'zen-planner'", () => {
       // #given / #when
-      const result = isPlanAgent("augur-planner")
+      const result = isPlanAgent("zen-planner")
 
       // #then
       expect(result).toBe(true)
@@ -155,17 +155,17 @@ describe("cipher-operator-task", () => {
       expect(result).toBe(true)
     })
 
-    test("returns false for 'seer-advisor'", () => {
+    test("returns false for 'eye-ops'", () => {
       // #given / #when
-      const result = isPlanAgent("seer-advisor")
+      const result = isPlanAgent("eye-ops")
 
       // #then
       expect(result).toBe(false)
     })
 
-    test("returns false for 'scout-recon'", () => {
+    test("returns false for 'scan-ops'", () => {
       // #given / #when
-      const result = isPlanAgent("scout-recon")
+      const result = isPlanAgent("scan-ops")
 
       // #then
       expect(result).toBe(false)
@@ -190,7 +190,7 @@ describe("cipher-operator-task", () => {
     test("PLAN_AGENT_NAMES contains expected values", () => {
       // #given / #when / #then
       expect(PLAN_AGENT_NAMES).toContain("plan")
-      expect(PLAN_AGENT_NAMES).toContain("augur-planner")
+      expect(PLAN_AGENT_NAMES).toContain("zen-planner")
       expect(PLAN_AGENT_NAMES).toContain("planner")
     })
   })
@@ -219,7 +219,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -267,7 +267,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -487,7 +487,7 @@ describe("cipher-operator-task", () => {
             id: "task-variant",
             sessionID: "session-variant",
             description: "Variant task",
-            agent: "cipher-runner",
+            agent: "dark-runner",
             status: "running",
           }
         },
@@ -514,7 +514,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
 
@@ -550,7 +550,7 @@ describe("cipher-operator-task", () => {
             id: "task-default-variant",
             sessionID: "session-default-variant",
             description: "Default variant task",
-            agent: "cipher-runner",
+            agent: "dark-runner",
             status: "running",
           }
         },
@@ -576,7 +576,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
 
@@ -634,7 +634,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
 
@@ -683,7 +683,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -723,7 +723,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -772,7 +772,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -803,7 +803,7 @@ describe("cipher-operator-task", () => {
       id: "task-123",
       sessionID: "ses_continue_test",
       description: "Continued task",
-      agent: "scout-recon",
+      agent: "scan-ops",
       status: "running",
     }
     
@@ -838,7 +838,7 @@ describe("cipher-operator-task", () => {
     const toolContext = {
       sessionID: "parent-session",
       messageID: "parent-message",
-      agent: "cipher-operator",
+      agent: "void-runner",
       abort: new AbortController().signal,
     }
     
@@ -867,7 +867,7 @@ describe("cipher-operator-task", () => {
       id: "task-456",
       sessionID: "ses_bg_continue",
       description: "Background continued task",
-      agent: "scout-recon",
+      agent: "scan-ops",
       status: "running",
     }
     
@@ -893,7 +893,7 @@ describe("cipher-operator-task", () => {
     const toolContext = {
       sessionID: "parent-session",
       messageID: "parent-message",
-      agent: "cipher-operator",
+      agent: "void-runner",
       abort: new AbortController().signal,
     }
     
@@ -948,7 +948,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -1008,7 +1008,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -1061,7 +1061,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -1116,7 +1116,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent",
         messageID: "msg",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal
       }
 
@@ -1150,7 +1150,7 @@ describe("cipher-operator-task", () => {
             id: "task-unstable",
             sessionID: "ses_unstable_gemini",
             description: "Unstable gemini task",
-            agent: "cipher-runner",
+            agent: "dark-runner",
             status: "running",
           }
         },
@@ -1181,7 +1181,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -1215,7 +1215,7 @@ describe("cipher-operator-task", () => {
             id: "task-normal-bg",
             sessionID: "ses_normal_bg",
             description: "Normal background task",
-            agent: "cipher-runner",
+            agent: "dark-runner",
             status: "running",
           }
         },
@@ -1239,7 +1239,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -1300,7 +1300,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -1341,7 +1341,7 @@ describe("cipher-operator-task", () => {
             id: "task-artistry",
             sessionID: "ses_artistry_gemini",
             description: "Artistry gemini task",
-            agent: "cipher-runner",
+            agent: "dark-runner",
             status: "running",
           }
         },
@@ -1372,7 +1372,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -1407,7 +1407,7 @@ describe("cipher-operator-task", () => {
             id: "task-writing",
             sessionID: "ses_writing_gemini",
             description: "Writing gemini task",
-            agent: "cipher-runner",
+            agent: "dark-runner",
             status: "running",
           }
         },
@@ -1438,7 +1438,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -1472,7 +1472,7 @@ describe("cipher-operator-task", () => {
             id: "task-custom-unstable",
             sessionID: "ses_custom_unstable",
             description: "Custom unstable task",
-            agent: "cipher-runner",
+            agent: "dark-runner",
             status: "running",
           }
         },
@@ -1508,7 +1508,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -1547,7 +1547,7 @@ describe("cipher-operator-task", () => {
             id: "task-fallback",
             sessionID: "ses_fallback_test",
             description: "Fallback test task",
-            agent: "cipher-runner",
+            agent: "dark-runner",
             status: "running",
           }
         },
@@ -1575,7 +1575,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
 
@@ -1632,7 +1632,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
 
@@ -1682,7 +1682,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
 
@@ -1769,13 +1769,13 @@ describe("cipher-operator-task", () => {
       expect(result).toBe(PLAN_AGENT_SYSTEM_PREPEND)
     })
 
-    test("prepends plan agent system prompt when agentName is 'augur-planner'", () => {
+    test("prepends plan agent system prompt when agentName is 'zen-planner'", () => {
       // #given
       const { buildSystemContent } = require("./tools")
       const { PLAN_AGENT_SYSTEM_PREPEND } = require("./constants")
 
       // #when
-      const result = buildSystemContent({ agentName: "augur-planner" })
+      const result = buildSystemContent({ agentName: "zen-planner" })
 
       // #then
       expect(result).toContain("<system>")
@@ -1816,7 +1816,7 @@ describe("cipher-operator-task", () => {
       const skillContent = "You are an expert"
 
       // #when
-      const result = buildSystemContent({ skillContent, agentName: "seer-advisor" })
+      const result = buildSystemContent({ skillContent, agentName: "eye-ops" })
 
       // #then
       expect(result).toBe(skillContent)
@@ -2017,14 +2017,14 @@ describe("cipher-operator-task", () => {
     })
   })
 
-  describe("augur-planner self-delegation block", () => {
-    test("augur-planner cannot delegate to augur-planner - returns error with guidance", async () => {
-      // #given - current agent is augur-planner
+  describe("zen-planner self-delegation block", () => {
+    test("zen-planner cannot delegate to zen-planner - returns error with guidance", async () => {
+      // #given - current agent is zen-planner
       const { createDelegateTask } = require("./tools")
       
       const mockManager = { launch: async () => ({}) }
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "augur-planner", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "zen-planner", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
@@ -2043,34 +2043,34 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "augur-planner",
+        agent: "zen-planner",
         abort: new AbortController().signal,
       }
       
-      // #when - augur-planner tries to delegate to augur-planner
+      // #when - zen-planner tries to delegate to zen-planner
       const result = await tool.execute(
         {
           description: "Test self-delegation block",
           prompt: "Create a plan",
-          subagent_type: "augur-planner",
+          subagent_type: "zen-planner",
           run_in_background: false,
           load_skills: [],
         },
         toolContext
       )
       
-      // #then - should return error telling augur-planner to create plan directly
-      expect(result).toContain("augur-planner")
+      // #then - should return error telling zen-planner to create plan directly
+      expect(result).toContain("zen-planner")
       expect(result).toContain("directly")
     })
 
-    test("non-augur-planner agent CAN delegate to augur-planner - proceeds normally", async () => {
+    test("non-zen-planner agent CAN delegate to zen-planner - proceeds normally", async () => {
       // #given - current agent is cipherOperator
       const { createDelegateTask } = require("./tools")
       
       const mockManager = { launch: async () => ({}) }
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "augur-planner", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "zen-planner", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
@@ -2091,16 +2091,16 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
-      // #when - cipherOperator delegates to augur-planner
+      // #when - cipherOperator delegates to zen-planner
       const result = await tool.execute(
         {
-          description: "Test augur-planner delegation from non-augur-planner agent",
+          description: "Test zen-planner delegation from non-zen-planner agent",
           prompt: "Create a plan",
-          subagent_type: "augur-planner",
+          subagent_type: "zen-planner",
           run_in_background: false,
           load_skills: [],
         },
@@ -2112,13 +2112,13 @@ describe("cipher-operator-task", () => {
       expect(result).toContain("Plan created successfully")
     }, { timeout: 20000 })
 
-    test("case-insensitive: Augur Planner (capitalized) cannot delegate to augur-planner", async () => {
+    test("case-insensitive: Augur Planner (capitalized) cannot delegate to zen-planner", async () => {
       // #given - current agent is Augur Planner (capitalized)
       const { createDelegateTask } = require("./tools")
       
       const mockManager = { launch: async () => ({}) }
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "augur-planner", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "zen-planner", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
@@ -2141,12 +2141,12 @@ describe("cipher-operator-task", () => {
         abort: new AbortController().signal,
       }
       
-      // #when - Augur Planner tries to delegate to augur-planner
+      // #when - Augur Planner tries to delegate to zen-planner
       const result = await tool.execute(
         {
           description: "Test case-insensitive block",
           prompt: "Create a plan",
-          subagent_type: "augur-planner",
+          subagent_type: "zen-planner",
           run_in_background: false,
           load_skills: [],
         },
@@ -2154,7 +2154,7 @@ describe("cipher-operator-task", () => {
       )
       
       // #then - should still return error
-      expect(result).toContain("augur-planner")
+      expect(result).toContain("zen-planner")
       expect(result).toContain("directly")
     })
   })
@@ -2169,10 +2169,10 @@ describe("cipher-operator-task", () => {
         launch: async (input: any) => {
           launchInput = input
           return {
-            id: "task-scout-recon",
+            id: "task-scan-ops",
             sessionID: "ses_explore_model",
             description: "Scout Recon task",
-            agent: "scout-recon",
+            agent: "scan-ops",
             status: "running",
           }
         },
@@ -2182,7 +2182,7 @@ describe("cipher-operator-task", () => {
         app: {
           agents: async () => ({
             data: [
-              { name: "scout-recon", mode: "subagent", model: { providerID: "anthropic", modelID: "claude-haiku-4-5" } },
+              { name: "scan-ops", mode: "subagent", model: { providerID: "anthropic", modelID: "claude-haiku-4-5" } },
             ],
           }),
         },
@@ -2202,7 +2202,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
 
@@ -2211,7 +2211,7 @@ describe("cipher-operator-task", () => {
         {
           description: "Scout Recon codebase",
           prompt: "Find auth patterns",
-          subagent_type: "scout-recon",
+          subagent_type: "scan-ops",
           run_in_background: true,
           load_skills: [],
         },
@@ -2236,7 +2236,7 @@ describe("cipher-operator-task", () => {
         app: {
           agents: async () => ({
             data: [
-              { name: "seer-advisor", mode: "subagent", model: { providerID: "anthropic", modelID: "claude-opus-4-5" } },
+              { name: "eye-ops", mode: "subagent", model: { providerID: "anthropic", modelID: "claude-opus-4-5" } },
             ],
           }),
         },
@@ -2263,16 +2263,16 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
 
       // #when - delegating to seerAdvisor agent via subagent_type in sync mode
       await tool.execute(
         {
-          description: "Consult seer-advisor",
+          description: "Consult eye-ops",
           prompt: "Review architecture",
-          subagent_type: "seer-advisor",
+          subagent_type: "eye-ops",
           run_in_background: false,
           load_skills: [],
         },
@@ -2297,7 +2297,7 @@ describe("cipher-operator-task", () => {
         app: {
           agents: async () => ({
             data: [
-              { name: "scout-recon", mode: "subagent" }, // no model field
+              { name: "scan-ops", mode: "subagent" }, // no model field
             ],
           }),
         },
@@ -2324,7 +2324,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
 
@@ -2333,7 +2333,7 @@ describe("cipher-operator-task", () => {
         {
           description: "Scout Recon without model",
           prompt: "Find something",
-          subagent_type: "scout-recon",
+          subagent_type: "scan-ops",
           run_in_background: false,
           load_skills: [],
         },
@@ -2345,15 +2345,15 @@ describe("cipher-operator-task", () => {
     }, { timeout: 20000 })
   })
 
-  describe("augur-planner subagent delegate_task permission", () => {
-    test("augur-planner subagent should have delegate_task permission enabled", async () => {
-      // #given - cipherOperator delegates to augur-planner
+  describe("zen-planner subagent delegate_task permission", () => {
+    test("zen-planner subagent should have delegate_task permission enabled", async () => {
+      // #given - cipherOperator delegates to zen-planner
       const { createDelegateTask } = require("./tools")
       let promptBody: any
       
       const mockManager = { launch: async () => ({}) }
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "augur-planner", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "zen-planner", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
@@ -2377,34 +2377,34 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
-      // #when - cipherOperator delegates to augur-planner
+      // #when - cipherOperator delegates to zen-planner
       await tool.execute(
         {
-          description: "Test augur-planner delegate_task permission",
+          description: "Test zen-planner delegate_task permission",
           prompt: "Create a plan",
-          subagent_type: "augur-planner",
+          subagent_type: "zen-planner",
           run_in_background: false,
           load_skills: [],
         },
         toolContext
       )
       
-      // #then - augur-planner should have delegate_task permission
+      // #then - zen-planner should have delegate_task permission
       expect(promptBody.tools.delegate_task).toBe(true)
     }, { timeout: 20000 })
 
-    test("non-augur-planner subagent should NOT have delegate_task permission", async () => {
-      // #given - cipherOperator delegates to seerAdvisor (non-augur-planner)
+    test("non-zen-planner subagent should NOT have delegate_task permission", async () => {
+      // #given - cipherOperator delegates to seerAdvisor (non-zen-planner)
       const { createDelegateTask } = require("./tools")
       let promptBody: any
       
       const mockManager = { launch: async () => ({}) }
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "seer-advisor", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "eye-ops", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
@@ -2428,7 +2428,7 @@ describe("cipher-operator-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "cipher-operator",
+        agent: "void-runner",
         abort: new AbortController().signal,
       }
       
@@ -2437,7 +2437,7 @@ describe("cipher-operator-task", () => {
         {
           description: "Test seerAdvisor no delegate_task permission",
           prompt: "Consult on architecture",
-          subagent_type: "seer-advisor",
+          subagent_type: "eye-ops",
           run_in_background: false,
           load_skills: [],
         },

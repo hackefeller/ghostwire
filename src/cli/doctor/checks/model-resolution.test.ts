@@ -12,7 +12,7 @@ describe("model-resolution check", () => {
       const info = getModelResolutionInfo()
 
       // #then: Should have agent entries
-      const cipherOperator = info.agents.find((a) => a.name === "cipher-operator")
+      const cipherOperator = info.agents.find((a) => a.name === "void-runner")
       expect(cipherOperator).toBeDefined()
       expect(cipherOperator!.requirement.fallbackChain[0]?.model).toBe("claude-opus-4-5")
       expect(cipherOperator!.requirement.fallbackChain[0]?.providers).toContain("anthropic")
@@ -43,14 +43,14 @@ describe("model-resolution check", () => {
       // #given: User has override for seerAdvisor agent
       const mockConfig = {
         agents: {
-          "seer-advisor": { model: "anthropic/claude-opus-4-5" },
+          "eye-ops": { model: "anthropic/claude-opus-4-5" },
         },
       }
 
       const info = getModelResolutionInfoWithOverrides(mockConfig)
 
       // #then: Seer Advisor should show the override
-      const seerAdvisor = info.agents.find((a) => a.name === "seer-advisor")
+      const seerAdvisor = info.agents.find((a) => a.name === "eye-ops")
       expect(seerAdvisor).toBeDefined()
       expect(seerAdvisor!.userOverride).toBe("anthropic/claude-opus-4-5")
       expect(seerAdvisor!.effectiveResolution).toBe("User override: anthropic/claude-opus-4-5")
@@ -84,7 +84,7 @@ describe("model-resolution check", () => {
       const info = getModelResolutionInfoWithOverrides(mockConfig)
 
       // #then: Should show provider fallback chain
-      const cipherOperator = info.agents.find((a) => a.name === "cipher-operator")
+      const cipherOperator = info.agents.find((a) => a.name === "void-runner")
       expect(cipherOperator).toBeDefined()
       expect(cipherOperator!.userOverride).toBeUndefined()
       expect(cipherOperator!.effectiveResolution).toContain("Provider fallback:")

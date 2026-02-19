@@ -390,12 +390,12 @@ describe("jack-in-work hook", () => {
 
       // #when
       await hook["chat.message"](
-        { sessionID: "ses-augur-planner-to-cipher-operator" },
+        { sessionID: "ses-zen-planner-to-void-runner" },
         output
       )
 
       // #then
-      expect(updateSpy).toHaveBeenCalledWith("ses-augur-planner-to-cipher-operator", "nexus-orchestrator")
+      expect(updateSpy).toHaveBeenCalledWith("ses-zen-planner-to-void-runner", "grid-sync")
       updateSpy.mockRestore()
     })
   })

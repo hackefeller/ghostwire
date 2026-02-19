@@ -36,9 +36,9 @@ RECOMMENDED: Use delegate_task with scoutRecon/archiveResearcher agents for bett
 
 \`\`\`
 // Parallel exploration - fire multiple agents simultaneously
-delegate_task(agent="scout-recon", prompt="Find all files matching pattern X")
-delegate_task(agent="scout-recon", prompt="Search for implementation of Y") 
-delegate_task(agent="archive-researcher", prompt="Lookup documentation for Z")
+delegate_task(agent="scan-ops", prompt="Find all files matching pattern X")
+delegate_task(agent="scan-ops", prompt="Search for implementation of Y") 
+delegate_task(agent="data-dive", prompt="Lookup documentation for Z")
 
 // Then continue your work while they run in background
 // System will notify you when each completes

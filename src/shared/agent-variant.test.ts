@@ -22,12 +22,12 @@ describe("resolveAgentVariant", () => {
     // #given
     const config = {
       agents: {
-        "cipher-operator": { variant: "low" },
+        "void-runner": { variant: "low" },
       },
     } as GhostwireConfig;
 
     // #when
-    const variant = resolveAgentVariant(config, "cipher-operator");
+    const variant = resolveAgentVariant(config, "void-runner");
 
     // #then
     expect(variant).toBe("low");
@@ -37,7 +37,7 @@ describe("resolveAgentVariant", () => {
     // #given
     const config = {
       agents: {
-        "cipher-operator": { category: "ultrabrain" },
+        "void-runner": { category: "ultrabrain" },
       },
       categories: {
         ultrabrain: { model: "openai/gpt-5.2", variant: "xhigh" },
@@ -45,7 +45,7 @@ describe("resolveAgentVariant", () => {
     } as GhostwireConfig;
 
     // #when
-    const variant = resolveAgentVariant(config, "cipher-operator");
+    const variant = resolveAgentVariant(config, "void-runner");
 
     // #then
     expect(variant).toBe("xhigh");
@@ -57,13 +57,13 @@ describe("applyAgentVariant", () => {
     // #given
     const config = {
       agents: {
-        "cipher-operator": { variant: "low" },
+        "void-runner": { variant: "low" },
       },
     } as GhostwireConfig;
     const message: { variant?: string } = {};
 
     // #when
-    applyAgentVariant(config, "cipher-operator", message);
+    applyAgentVariant(config, "void-runner", message);
 
     // #then
     expect(message.variant).toBe("low");
@@ -73,13 +73,13 @@ describe("applyAgentVariant", () => {
     // #given
     const config = {
       agents: {
-        "cipher-operator": { variant: "low" },
+        "void-runner": { variant: "low" },
       },
     } as GhostwireConfig;
     const message = { variant: "max" };
 
     // #when
-    applyAgentVariant(config, "cipher-operator", message);
+    applyAgentVariant(config, "void-runner", message);
 
     // #then
     expect(message.variant).toBe("max");
@@ -93,7 +93,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "anthropic", modelID: "claude-opus-4-5" };
 
     // #when
-    const variant = resolveVariantForModel(config, "cipher-operator", model);
+    const variant = resolveVariantForModel(config, "void-runner", model);
 
     // #then
     expect(variant).toBe("max");
@@ -105,7 +105,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "openai", modelID: "gpt-5.2" };
 
     // #when
-    const variant = resolveVariantForModel(config, "cipher-operator", model);
+    const variant = resolveVariantForModel(config, "void-runner", model);
 
     // #then
     expect(variant).toBe("medium");
@@ -117,7 +117,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "google", modelID: "gemini-3-pro" };
 
     // #when
-    const variant = resolveVariantForModel(config, "cipher-operator", model);
+    const variant = resolveVariantForModel(config, "void-runner", model);
 
     // #then
     expect(variant).toBeUndefined();
@@ -129,7 +129,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "unknown-provider", modelID: "some-model" };
 
     // #when
-    const variant = resolveVariantForModel(config, "cipher-operator", model);
+    const variant = resolveVariantForModel(config, "void-runner", model);
 
     // #then
     expect(variant).toBeUndefined();
@@ -153,7 +153,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "zai-coding-plan", modelID: "glm-4.7" };
 
     // #when
-    const variant = resolveVariantForModel(config, "cipher-operator", model);
+    const variant = resolveVariantForModel(config, "void-runner", model);
 
     // #then
     expect(variant).toBeUndefined();
@@ -181,7 +181,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "openai", modelID: "gpt-5.2" };
 
     // #when
-    const variant = resolveVariantForModel(config, "seer-advisor", model);
+    const variant = resolveVariantForModel(config, "eye-ops", model);
 
     // #then
     expect(variant).toBe("high");
@@ -193,7 +193,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "anthropic", modelID: "claude-opus-4-5" };
 
     // #when
-    const variant = resolveVariantForModel(config, "seer-advisor", model);
+    const variant = resolveVariantForModel(config, "eye-ops", model);
 
     // #then
     expect(variant).toBe("max");

@@ -7,7 +7,6 @@ import type { InstallConfig } from "./types";
 
 interface ProviderAvailability {
   native: {
-    claude: boolean;
     openai: boolean;
     gemini: boolean;
   };
@@ -15,7 +14,6 @@ interface ProviderAvailability {
   copilot: boolean;
   zai: boolean;
   kimiForCoding: boolean;
-  isMaxPlan: boolean;
 }
 
 interface AgentConfig {
@@ -44,7 +42,6 @@ const SCHEMA_URL =
 function toProviderAvailability(config: InstallConfig): ProviderAvailability {
   return {
     native: {
-      claude: config.hasClaude,
       openai: config.hasOpenAI,
       gemini: config.hasGemini,
     },
@@ -52,7 +49,6 @@ function toProviderAvailability(config: InstallConfig): ProviderAvailability {
     copilot: config.hasCopilot,
     zai: config.hasZaiCodingPlan,
     kimiForCoding: config.hasKimiForCoding,
-    isMaxPlan: config.isMax20,
   };
 }
 
@@ -61,7 +57,6 @@ function isProviderAvailable(
   avail: ProviderAvailability,
 ): boolean {
   const mapping: Record<string, boolean> = {
-    anthropic: avail.native.claude,
     openai: avail.native.openai,
     google: avail.native.gemini,
     "github-copilot": avail.copilot,
@@ -104,35 +99,9 @@ function resolveModelFromChain(
   return null;
 }
 
-function getSisyphusFallbackChain(isMaxPlan: boolean): FallbackEntry[] {
-  // Cipher Operator uses opus when isMaxPlan, sonnet otherwise
-  if (isMaxPlan) {
-    return AGENT_MODEL_REQUIREMENTS["cipher-operator"].fallbackChain;
-  }
-  // For non-max plan, use sonnet instead of opus
-  return [
-    {
-      providers: ["anthropic", "github-copilot", "opencode"],
-      model: "claude-sonnet-4-5",
-    },
-    { providers: ["kimi-for-coding"], model: "k2p5" },
-    { providers: ["opencode"], model: "kimi-k2.5-free" },
-    {
-      providers: ["openai", "github-copilot", "opencode"],
-      model: "gpt-5.2",
-      variant: "high",
-    },
-    {
-      providers: ["google", "github-copilot", "opencode"],
-      model: "gemini-3-pro",
-    },
-  ];
-}
-
 export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
   const avail = toProviderAvailability(config);
   const hasAnyProvider =
-    avail.native.claude ||
     avail.native.openai ||
     avail.native.gemini ||
     avail.opencodeZen ||
@@ -163,16 +132,14 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
 
   for (const [role, req] of Object.entries(AGENT_MODEL_REQUIREMENTS)) {
     // Special case: archiveResearcher always uses ZAI first if available
-    if (role === "archive-researcher" && avail.zai) {
+    if (role === "data-dive" && avail.zai) {
       agents[role] = { model: ZAI_MODEL };
       continue;
     }
 
-    // Special case: scoutRecon uses Claude haiku → GitHub Copilot gpt-5-mini → OpenCode gpt-5-nano
-    if (role === "scout-recon") {
-      if (avail.native.claude) {
-        agents[role] = { model: "anthropic/claude-haiku-4-5" };
-      } else if (avail.opencodeZen) {
+    // Special case: scoutRecon uses OpenCode claude-haiku → GitHub Copilot gpt-5-mini → OpenCode gpt-5-nano
+    if (role === "scan-ops") {
+      if (avail.opencodeZen) {
         agents[role] = { model: "opencode/claude-haiku-4-5" };
       } else if (avail.copilot) {
         agents[role] = { model: "github-copilot/gpt-5-mini" };
@@ -182,11 +149,8 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
       continue;
     }
 
-    // Special case: Cipher Operator uses different fallbackChain based on isMaxPlan
-    const fallbackChain =
-      role === "cipher-operator"
-        ? getSisyphusFallbackChain(avail.isMaxPlan)
-        : req.fallbackChain;
+    // Special case: Cipher Operator uses the standard fallback chain
+    const fallbackChain = req.fallbackChain;
 
     const resolved = resolveModelFromChain(fallbackChain, avail);
     if (resolved) {
@@ -200,11 +164,8 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
   }
 
   for (const [cat, req] of Object.entries(CATEGORY_MODEL_REQUIREMENTS)) {
-    // Special case: unspecified-high downgrades to unspecified-low when not isMaxPlan
-    const fallbackChain =
-      cat === "unspecified-high" && !avail.isMaxPlan
-        ? CATEGORY_MODEL_REQUIREMENTS["unspecified-low"].fallbackChain
-        : req.fallbackChain;
+    // Use the standard fallback chain
+    const fallbackChain = req.fallbackChain;
 
     const resolved = resolveModelFromChain(fallbackChain, avail);
     if (resolved) {
@@ -225,5 +186,5 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
 }
 
 export function shouldShowChatGPTOnlyWarning(config: InstallConfig): boolean {
-  return !config.hasClaude && !config.hasGemini && config.hasOpenAI;
+  return !config.hasGemini && config.hasOpenAI;
 }

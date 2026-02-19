@@ -2,15 +2,15 @@
  * Unified system directive prefix for ghostwire internal messages.
  * All system-generated messages should use this prefix for consistent filtering.
  *
- * Format: [SYSTEM DIRECTIVE: RUACH - {TYPE}]
+ * Format: [SYSTEM DIRECTIVE: GHOSTWIRE - {TYPE}]
  */
 
-export const SYSTEM_DIRECTIVE_PREFIX = "[SYSTEM DIRECTIVE: RUACH"
+export const SYSTEM_DIRECTIVE_PREFIX = "[SYSTEM DIRECTIVE: GHOSTWIRE"
 
 /**
  * Creates a system directive header with the given type.
  * @param type - The directive type (e.g., "TODO CONTINUATION", "RALPH LOOP")
- * @returns Formatted directive string like "[SYSTEM DIRECTIVE: RUACH - TODO CONTINUATION]"
+ * @returns Formatted directive string like "[SYSTEM DIRECTIVE: GHOSTWIRE - TODO CONTINUATION]"
  */
 export function createSystemDirective(type: string): string {
   return `${SYSTEM_DIRECTIVE_PREFIX} - ${type}]`

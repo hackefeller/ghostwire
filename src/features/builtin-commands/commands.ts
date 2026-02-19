@@ -92,7 +92,7 @@ ${REFACTOR_TEMPLATE}
   },
   "jack-in-work": {
     description: "(builtin) Start Cipher Operator work session from Augur Planner plan",
-    agent: "nexus-orchestrator",
+    agent: "grid-sync",
     template: `<command-instruction>
 ${START_WORK_TEMPLATE}
 </command-instruction>

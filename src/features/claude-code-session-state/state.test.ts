@@ -39,7 +39,7 @@ describe("claude-code-session-state", () => {
       setSessionAgent(sessionID, "Augur Planner (Planner)")
 
       // #when - try to overwrite
-      setSessionAgent(sessionID, "cipher-operator")
+      setSessionAgent(sessionID, "void-runner")
 
       // #then - first agent preserved
       expect(getSessionAgent(sessionID)).toBe("Augur Planner (Planner)")
@@ -60,10 +60,10 @@ describe("claude-code-session-state", () => {
       setSessionAgent(sessionID, "Augur Planner (Planner)")
 
       // #when - force update
-      updateSessionAgent(sessionID, "cipher-operator")
+      updateSessionAgent(sessionID, "void-runner")
 
       // #then
-      expect(getSessionAgent(sessionID)).toBe("cipher-operator")
+      expect(getSessionAgent(sessionID)).toBe("void-runner")
     })
   })
 
@@ -102,7 +102,7 @@ describe("claude-code-session-state", () => {
     })
   })
 
-  describe("augur-planner-md-only integration scenario", () => {
+  describe("zen-planner-md-only integration scenario", () => {
     test("should correctly identify Augur Planner agent for permission checks", () => {
       // #given - Augur Planner session
       const sessionID = "test-augurPlanner-session"
@@ -131,7 +131,7 @@ describe("claude-code-session-state", () => {
       // #given - user switches to custom agent "MyCustomAgent"
       const sessionID = "test-session-custom"
       const customAgent = "MyCustomAgent"
-      const defaultAgent = "cipher-operator"
+      const defaultAgent = "void-runner"
 
       // User switches to custom agent (via UI)
       setSessionAgent(sessionID, customAgent)

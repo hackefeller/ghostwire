@@ -281,11 +281,11 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     ? createStartWorkHook(ctx)
     : null;
 
-  const augurMdOnly = isHookEnabled("augur-planner-md-only")
+  const augurMdOnly = isHookEnabled("zen-planner-md-only")
     ? createAugurPlannerMdOnlyHook(ctx)
     : null;
 
-  const cipherJuniorNotepad = isHookEnabled("cipher-runner-notepad")
+  const cipherJuniorNotepad = isHookEnabled("dark-runner-notepad")
     ? createSisyphusJuniorNotepadHook(ctx)
     : null;
 
@@ -327,7 +327,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     },
   );
 
-  const nexusHook = isHookEnabled("nexus-orchestrator")
+  const nexusHook = isHookEnabled("grid-sync")
     ? createAtlasHook(ctx, { directory: ctx.directory, backgroundManager })
     : null;
 
@@ -363,7 +363,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
   const callOmoAgent = createCallOmoAgent(ctx, backgroundManager);
   const isMultimodalLookerEnabled = !includesCaseInsensitive(
     pluginConfig.disabled_agents ?? [],
-    "optic-analyst",
+    "eye-scan",
   );
   const lookAt = isMultimodalLookerEnabled ? createLookAt(ctx) : null;
   const browserProvider =
@@ -374,7 +374,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     directory: ctx.directory,
     userCategories: pluginConfig.categories,
     gitMasterConfig: pluginConfig.git_master,
-    cipherJuniorModel: pluginConfig.agents?.["cipher-runner"]?.model,
+    cipherJuniorModel: pluginConfig.agents?.["dark-runner"]?.model,
     browserProvider,
     onSyncSessionCreated: async (event) => {
       log("[index] onSyncSessionCreated callback", {
@@ -655,7 +655,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("event", "grid-stop-continuation-guard", () =>
         stopContinuationGuard?.event(input),
       );
-      await runHook("event", "nexus-orchestrator", () =>
+      await runHook("event", "grid-sync", () =>
         nexusHook?.handler(input),
       );
 
@@ -769,13 +769,13 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("tool.execute.before", "grid-rules-injector", () =>
         rulesInjector?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "augur-planner-md-only", () =>
+      await runHook("tool.execute.before", "zen-planner-md-only", () =>
         augurMdOnly?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "cipher-runner-notepad", () =>
+      await runHook("tool.execute.before", "dark-runner-notepad", () =>
         cipherJuniorNotepad?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "nexus-orchestrator", () =>
+      await runHook("tool.execute.before", "grid-sync", () =>
         nexusHook?.["tool.execute.before"]?.(input, output),
       );
 
@@ -783,7 +783,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
         const args = output.args as Record<string, unknown>;
         const subagentType = args.subagent_type as string;
         const isExploreOrLibrarian = includesCaseInsensitive(
-          ["scout-recon", "archive-researcher"],
+          ["scan-ops", "data-dive"],
           subagentType ?? "",
         );
 
@@ -912,7 +912,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("tool.execute.after", "grid-delegate-task-retry", () =>
         delegateTaskRetry?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "nexus-orchestrator", () =>
+      await runHook("tool.execute.after", "grid-sync", () =>
         nexusHook?.["tool.execute.after"]?.(input, output),
       );
       await runHook("tool.execute.after", "task-resume-info", () =>

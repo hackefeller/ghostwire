@@ -13,8 +13,8 @@ describe("look_at tool conditional registration", () => {
     // #when checking if agent is enabled
     // #then should return false (disabled)
     it("returns false when opticAnalyst is disabled (exact case)", () => {
-      const disabledAgents = ["optic-analyst"]
-      const isEnabled = !includesCaseInsensitive(disabledAgents, "optic-analyst")
+      const disabledAgents = ["eye-scan"]
+      const isEnabled = !includesCaseInsensitive(disabledAgents, "eye-scan")
       expect(isEnabled).toBe(false)
     })
 
@@ -22,8 +22,8 @@ describe("look_at tool conditional registration", () => {
     // #when checking if agent is enabled
     // #then should return false (case-insensitive match)
     it("returns false when opticAnalyst is disabled (case-insensitive)", () => {
-      const disabledAgents = ["Optic-Analyst"]
-      const isEnabled = !includesCaseInsensitive(disabledAgents, "optic-analyst")
+      const disabledAgents = ["EYE-SCAN"]
+      const isEnabled = !includesCaseInsensitive(disabledAgents, "eye-scan")
       expect(isEnabled).toBe(false)
     })
 
@@ -31,8 +31,8 @@ describe("look_at tool conditional registration", () => {
     // #when checking if agent is enabled
     // #then should return true (enabled)
     it("returns true when opticAnalyst is not disabled", () => {
-      const disabledAgents = ["seer-advisor", "archive-researcher"]
-      const isEnabled = !includesCaseInsensitive(disabledAgents, "optic-analyst")
+      const disabledAgents = ["eye-ops", "data-dive"]
+      const isEnabled = !includesCaseInsensitive(disabledAgents, "eye-scan")
       expect(isEnabled).toBe(true)
     })
 
@@ -41,7 +41,7 @@ describe("look_at tool conditional registration", () => {
     // #then should return true (enabled by default)
     it("returns true when disabled_agents is empty", () => {
       const disabledAgents: string[] = []
-      const isEnabled = !includesCaseInsensitive(disabledAgents, "optic-analyst")
+      const isEnabled = !includesCaseInsensitive(disabledAgents, "eye-scan")
       expect(isEnabled).toBe(true)
     })
 
@@ -50,7 +50,7 @@ describe("look_at tool conditional registration", () => {
     // #then should return true (enabled by default)
     it("returns true when disabled_agents is undefined (fallback to empty)", () => {
       const disabledAgents = undefined
-      const isEnabled = !includesCaseInsensitive(disabledAgents ?? [], "optic-analyst")
+      const isEnabled = !includesCaseInsensitive(disabledAgents ?? [], "eye-scan")
       expect(isEnabled).toBe(true)
     })
   })

@@ -76,7 +76,7 @@ describe("config check", () => {
         path: "/home/user/.config/opencode/ghostwire.json",
         format: "json",
         valid: false,
-        errors: ['agents."seer-advisor": Invalid model format'],
+        errors: ['agents."eye-ops": Invalid model format'],
       })
 
       // #when checking validity

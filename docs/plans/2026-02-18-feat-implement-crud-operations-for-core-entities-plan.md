@@ -638,7 +638,7 @@ describe('background_task_update', () => {
      - [ ] Factory functions registered
 
 3. **Add Documentation**
-   - Update `src/tools/AGENTS.md`
+   - Update `AGENTS.md` (root)
    - Add CRUD tool reference
    - Create usage examples
    - **Acceptance Criteria**:
@@ -1007,7 +1007,7 @@ Trust all agents and don't implement authorization.
 
 ### Files to Update
 
-1. **src/tools/AGENTS.md**
+1. **AGENTS.md (root)**
    - Add CRUD tools reference section
    - Document authorization model
    - Provide usage examples

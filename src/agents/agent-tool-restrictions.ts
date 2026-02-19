@@ -15,22 +15,22 @@ const EXPLORATION_AGENT_DENYLIST: Record<string, boolean> = {
 }
 
 const AGENT_RESTRICTIONS: Record<string, Record<string, boolean>> = {
-  "scout-recon": EXPLORATION_AGENT_DENYLIST,
+  "scan-ops": EXPLORATION_AGENT_DENYLIST,
 
-  "archive-researcher": EXPLORATION_AGENT_DENYLIST,
+  "data-dive": EXPLORATION_AGENT_DENYLIST,
 
-  "seer-advisor": {
+  "eye-ops": {
     write: false,
     edit: false,
     task: false,
     delegate_task: false,
   },
 
-  "optic-analyst": {
+  "eye-scan": {
     read: true,
   },
 
-  "cipher-runner": {
+  "dark-runner": {
     task: false,
     delegate_task: false,
   },

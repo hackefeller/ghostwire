@@ -1,4 +1,4 @@
-export const ALLOWED_AGENTS = ["scout-recon", "archive-researcher"] as const
+export const ALLOWED_AGENTS = ["scan-ops", "data-dive"] as const
 
 export const CALL_OMO_AGENT_DESCRIPTION = `Spawn scoutRecon/archiveResearcher agent. run_in_background REQUIRED (true=async with task_id, false=sync).
 

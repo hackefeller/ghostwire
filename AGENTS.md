@@ -20,18 +20,27 @@
 
 OpenCode plugin: multi-model agent orchestration (Claude Opus 4.5, GPT-5.2, Gemini 3 Flash, Grok Code). 32 lifecycle hooks, 20+ tools (LSP, AST-Grep, delegation), 10 specialized agents, full Claude Code compatibility. "oh-my-zsh" for OpenCode.
 
+## SINGLE SOURCE OF TRUTH (AGENT METADATA)
+
+Agent metadata (names, models, purposes, fallbacks) lives in `agents.yml`. Do not duplicate or re-document agent tables elsewhere—link to `agents.yml` instead.
+
+Directory maps (for navigation and audits) live here:
+- Hooks: `hooks.yml`
+- Tools: `tools.yml`
+- Features: `features.yml`
+
 ## STRUCTURE
 
 ```
 ghostwire/
 ├── src/
-│   ├── agents/        # 10 AI agents - see src/agents/AGENTS.md
-│   ├── hooks/         # 32 lifecycle hooks - see src/hooks/AGENTS.md
-│   ├── tools/         # 20+ tools - see src/tools/AGENTS.md
-│   ├── features/      # Background agents, Claude Code compat - see src/features/AGENTS.md
-│   ├── shared/        # 55 cross-cutting utilities - see src/shared/AGENTS.md
-│   ├── cli/           # CLI installer, doctor - see src/cli/AGENTS.md
-│   ├── mcp/           # Built-in MCPs - see src/mcp/AGENTS.md
+│   ├── agents/        # 10 AI agents
+│   ├── hooks/         # 32 lifecycle hooks
+│   ├── tools/         # 20+ tools
+│   ├── features/      # Background agents, Claude Code compat
+│   ├── shared/        # 55 cross-cutting utilities
+│   ├── cli/           # CLI installer, doctor
+│   ├── mcp/           # Built-in MCPs
 │   ├── config/        # Zod schema, TypeScript types
 │   └── index.ts       # Main plugin entry (672 lines)
 ├── script/            # build-schema.ts, build-binaries.ts
@@ -96,15 +105,8 @@ ghostwire/
 
 ## AGENT MODELS
 
-| Agent | Model | Purpose |
-|-------|-------|---------|
-| Cipher Operator | anthropic/claude-opus-4-5 | Primary orchestrator (fallback: kimi-k2.5 → glm-4.7 → gpt-5.2-codex → gemini-3-pro) |
-| Nexus Orchestrator | anthropic/claude-sonnet-4-5 | Master orchestrator (fallback: kimi-k2.5 → gpt-5.2) |
-| seer-advisor | openai/gpt-5.2 | Consultation, debugging |
-| archive-researcher | zai-coding-plan/glm-4.7 | Docs, GitHub search (fallback: glm-4.7-free) |
-| scout-recon | anthropic/claude-haiku-4-5 | Fast codebase grep (fallback: gpt-5-mini → gpt-5-nano) |
-| optic-analyst | google/gemini-3-flash | PDF/image analysis |
-| Augur Planner | anthropic/claude-opus-4-5 | Strategic planning (fallback: kimi-k2.5 → gpt-5.2) |
+**Source of truth:** `agents.yml`  
+This table is intentionally maintained in `agents.yml` to avoid drift. Please refer there for current agent names, models, purposes, and fallbacks.
 
 ## COMMANDS
 

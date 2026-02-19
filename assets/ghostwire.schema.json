@@ -20,43 +20,42 @@
       "items": {
         "type": "string",
         "enum": [
-          "cipher-operator",
-          "augur-planner",
-          "seer-advisor",
-          "archive-researcher",
-          "scout-recon",
-          "optic-analyst",
-          "tactician-strategist",
-          "glitch-auditor",
-          "nexus-orchestrator",
-          "grid:kieran-rails-reviewer",
-          "grid:kieran-python-reviewer",
-          "grid:kieran-typescript-reviewer",
-          "grid:dhh-rails-reviewer",
-          "grid:code-simplicity-reviewer",
-          "grid:framework-docs-researcher",
-          "grid:learnings-researcher",
-          "grid:best-practices-researcher",
-          "grid:git-history-analyzer",
-          "grid:figma-design-sync",
-          "grid:design-implementation-reviewer",
-          "grid:design-iterator",
-          "grid:frontend-design",
-          "grid:spec-flow-analyzer",
-          "grid:agent-native-architecture",
-          "grid:deployment-verification-agent",
-          "grid:ankane-readme-writer",
-          "grid:every-style-editor",
-          "grid:andrew-kane-gem-writer",
-          "grid:brainstorming",
-          "grid:creating-agent-skills",
-          "grid:skill-creator",
-          "grid:compound-docs",
-          "grid:file-todos",
+          "void-runner",
+          "zen-planner",
+          "eye-ops",
+          "data-dive",
+          "scan-ops",
+          "eye-scan",
+          "war-mind",
+          "null-audit",
+          "grid-sync",
+          "void.review-rails",
+          "void.review-python",
+          "void.review-ts",
+          "zen.review-rails",
+          "mono.review",
+          "docs.scan",
+          "learnings.scan",
+          "best-practices.scan",
+          "git.scan",
+          "figma.sync",
+          "design.check",
+          "design.loop",
+          "ui.build",
+          "flow.check",
+          "agent.arch",
+          "deploy.check",
+          "docs.write-readme",
+          "docs.edit-style",
+          "docs.write-gem",
+          "grid:brainstorm",
+          "grid:skill-make",
+          "grid:doc-compound",
+          "grid:todo-file",
           "grid:agent-browser",
-          "grid:rclone",
-          "grid:git-worktree",
-          "grid:agent-native-audit"
+          "grid:rclone-sync",
+          "grid:git-work",
+          "grid:agent-audit"
         ]
       }
     },
@@ -178,11 +177,11 @@
           "grid-auto-slash-command",
           "grid-edit-error-recovery",
           "grid-delegate-task-retry",
-          "augur-planner-md-only",
-          "cipher-runner-notepad",
+          "zen-planner-md-only",
+          "dark-runner-notepad",
           "jack-in-work",
-          "nexus-orchestrator",
-          "grid-stop-continuation-guard"
+          "grid-stop-continuation-guard",
+          "grid-sync"
         ]
       }
     },
@@ -565,7 +564,7 @@
             }
           }
         },
-        "cipher-operator": {
+        "void-runner": {
           "type": "object",
           "properties": {
             "model": {
@@ -736,7 +735,7 @@
             }
           }
         },
-        "cipher-runner": {
+        "dark-runner": {
           "type": "object",
           "properties": {
             "model": {
@@ -1078,7 +1077,7 @@
             }
           }
         },
-        "augur-planner": {
+        "zen-planner": {
           "type": "object",
           "properties": {
             "model": {
@@ -1249,7 +1248,7 @@
             }
           }
         },
-        "tactician-strategist": {
+        "war-mind": {
           "type": "object",
           "properties": {
             "model": {
@@ -1420,7 +1419,7 @@
             }
           }
         },
-        "glitch-auditor": {
+        "null-audit": {
           "type": "object",
           "properties": {
             "model": {
@@ -1591,7 +1590,7 @@
             }
           }
         },
-        "seer-advisor": {
+        "eye-ops": {
           "type": "object",
           "properties": {
             "model": {
@@ -1762,7 +1761,7 @@
             }
           }
         },
-        "archive-researcher": {
+        "data-dive": {
           "type": "object",
           "properties": {
             "model": {
@@ -1933,7 +1932,7 @@
             }
           }
         },
-        "scout-recon": {
+        "scan-ops": {
           "type": "object",
           "properties": {
             "model": {
@@ -2104,7 +2103,7 @@
             }
           }
         },
-        "optic-analyst": {
+        "eye-scan": {
           "type": "object",
           "properties": {
             "model": {
@@ -2275,7 +2274,7 @@
             }
           }
         },
-        "nexus-orchestrator": {
+        "grid-sync": {
           "type": "object",
           "properties": {
             "model": {
@@ -3013,7 +3012,7 @@
         }
       }
     },
-    "cipher-operator": {
+    "void-runner": {
       "type": "object",
       "properties": {
         "tasks": {

@@ -16,7 +16,7 @@ import type { BoulderState } from "./types"
 
 describe("boulder-state", () => {
   const TEST_DIR = join(tmpdir(), "boulder-state-test-" + Date.now())
-  const SISYPHUS_DIR = join(TEST_DIR, ".cipher-operator")
+  const SISYPHUS_DIR = join(TEST_DIR, ".void-runner")
 
   beforeEach(() => {
     if (!existsSync(TEST_DIR)) {

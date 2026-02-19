@@ -1,0 +1,80 @@
+version: 1
+source: agents/features.yml
+description: Map of feature directories under src/features.
+
+features:
+  - id: background-agent
+    path: src/features/background-agent
+    description: Background agents lifecycle manager
+
+  - id: boulder-state
+    path: src/features/boulder-state
+    description: State management for internal flows
+
+  - id: builtin-commands
+    path: src/features/builtin-commands
+    description: Built-in slash commands and templates
+
+  - id: builtin-skills
+    path: src/features/builtin-skills
+    description: Built-in skills and definitions
+
+  - id: claude-code-agent-loader
+    path: src/features/claude-code-agent-loader
+    description: Claude Code compatible agent loader
+
+  - id: claude-code-command-loader
+    path: src/features/claude-code-command-loader
+    description: Claude Code compatible command loader
+
+  - id: claude-code-mcp-loader
+    path: src/features/claude-code-mcp-loader
+    description: Claude Code compatible MCP loader
+
+  - id: claude-code-plugin-loader
+    path: src/features/claude-code-plugin-loader
+    description: Claude Code compatible plugin loader
+
+  - id: claude-code-session-state
+    path: src/features/claude-code-session-state
+    description: Claude Code session state support
+
+  - id: context-injector
+    path: src/features/context-injector
+    description: Context injection pipeline
+
+  - id: hook-message-injector
+    path: src/features/hook-message-injector
+    description: Hook message injection utilities
+
+  - id: imports
+    path: src/features/imports
+    description: Import system (legacy / planned removal)
+
+  - id: mcp-oauth
+    path: src/features/mcp-oauth
+    description: MCP OAuth integration
+
+  - id: opencode-skill-loader
+    path: src/features/opencode-skill-loader
+    description: Skill loader for OpenCode format
+
+  - id: sisyphus-swarm
+    path: src/features/sisyphus-swarm
+    description: Sisyphus swarm coordination
+
+  - id: sisyphus-tasks
+    path: src/features/sisyphus-tasks
+    description: Sisyphus task orchestration
+
+  - id: skill-mcp-manager
+    path: src/features/skill-mcp-manager
+    description: MCP manager for skills
+
+  - id: task-toast-manager
+    path: src/features/task-toast-manager
+    description: Task completion toast notifications
+
+  - id: tmux-subagent
+    path: src/features/tmux-subagent
+    description: Tmux subagent integration

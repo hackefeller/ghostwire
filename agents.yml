@@ -1,0 +1,68 @@
+version: 1
+source: agents/agents.yml
+description: Source of truth for agent metadata used by AGENTS.md and docs.
+
+metadata:
+  generated: false
+  commit: 9d66b807
+  branch: dev
+  notes:
+    - Keep this file updated when agent names, models, or fallbacks change.
+    - AGENTS.md should link here instead of duplicating full tables.
+
+agents:
+  - id: cipher-operator
+    display_name: Cipher Operator
+    model: anthropic/claude-opus-4-5
+    purpose: Primary orchestrator
+    fallbacks:
+      - kimi-k2.5
+      - glm-4.7
+      - gpt-5.2-codex
+      - gemini-3-pro
+
+  - id: nexus-orchestrator
+    display_name: Nexus Orchestrator
+    model: anthropic/claude-sonnet-4-5
+    purpose: Master orchestrator
+    fallbacks:
+      - kimi-k2.5
+      - gpt-5.2
+
+  - id: seer-advisor
+    display_name: seer-advisor
+    model: openai/gpt-5.2
+    purpose: Consultation, debugging
+    fallbacks: []
+
+  - id: archive-researcher
+    display_name: archive-researcher
+    model: zai-coding-plan/glm-4.7
+    purpose: Docs, GitHub search
+    fallbacks:
+      - glm-4.7-free
+
+  - id: scout-recon
+    display_name: scout-recon
+    model: anthropic/claude-haiku-4-5
+    purpose: Fast codebase grep
+    fallbacks:
+      - gpt-5-mini
+      - gpt-5-nano
+
+  - id: optic-analyst
+    display_name: optic-analyst
+    model: google/gemini-3-flash
+    purpose: PDF/image analysis
+    fallbacks: []
+
+  - id: augur-planner
+    display_name: Augur Planner
+    model: anthropic/claude-opus-4-5
+    purpose: Strategic planning
+    fallbacks:
+      - kimi-k2.5
+      - gpt-5.2
+
+notes:
+  - Add new agents here first, then update docs to reference this file.

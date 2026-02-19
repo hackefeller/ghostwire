@@ -702,8 +702,6 @@ function detectProvidersFromOmoConfig(): { hasOpenAI: boolean; hasOpencodeZen: b
 export function detectCurrentConfig(): DetectedConfig {
   const result: DetectedConfig = {
     isInstalled: false,
-    hasClaude: true,
-    isMax20: true,
     hasOpenAI: true,
     hasGemini: false,
     hasCopilot: false,

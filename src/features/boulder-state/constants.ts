@@ -2,7 +2,7 @@
  * Boulder State Constants
  */
 
-export const BOULDER_DIR = ".cipher-operator"
+export const BOULDER_DIR = ".void-runner"
 export const BOULDER_FILE = "boulder.json"
 export const BOULDER_STATE_PATH = `${BOULDER_DIR}/${BOULDER_FILE}`
 

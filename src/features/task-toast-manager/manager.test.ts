@@ -30,7 +30,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_1",
         description: "Test task",
-        agent: "cipher-runner",
+        agent: "dark-runner",
         isBackground: true,
         skills: ["playwright", "git-master"],
       }
@@ -50,7 +50,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_2",
         description: "Test task without skills",
-        agent: "scout-recon",
+        agent: "scan-ops",
         isBackground: true,
       }
 
@@ -70,13 +70,13 @@ describe("TaskToastManager", () => {
       toastManager.addTask({
         id: "task_1",
         description: "First task",
-        agent: "scout-recon",
+        agent: "scan-ops",
         isBackground: true,
       })
       toastManager.addTask({
         id: "task_2",
         description: "Second task",
-        agent: "archive-researcher",
+        agent: "data-dive",
         isBackground: true,
       })
 
@@ -84,7 +84,7 @@ describe("TaskToastManager", () => {
       toastManager.addTask({
         id: "task_3",
         description: "Third task",
-        agent: "scout-recon",
+        agent: "scan-ops",
         isBackground: true,
       })
 
@@ -110,7 +110,7 @@ describe("TaskToastManager", () => {
       managerWithConcurrency.addTask({
         id: "task_1",
         description: "Test task",
-        agent: "scout-recon",
+        agent: "scan-ops",
         isBackground: true,
       })
 
@@ -127,7 +127,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_1",
         description: "Full info task",
-        agent: "cipher-runner",
+        agent: "dark-runner",
         isBackground: true,
         skills: ["frontend-ui-ux"],
       }
@@ -149,7 +149,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_1",
         description: "Task with category default model",
-        agent: "cipher-runner",
+        agent: "dark-runner",
         isBackground: false,
         modelInfo: { model: "google/gemini-3-pro", type: "category-default" as const },
       }
@@ -169,7 +169,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_1b",
         description: "Task with system default model",
-        agent: "cipher-runner",
+        agent: "dark-runner",
         isBackground: false,
         modelInfo: { model: "anthropic/claude-sonnet-4-5", type: "system-default" as const },
       }
@@ -190,7 +190,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_2",
         description: "Task with inherited model",
-        agent: "cipher-runner",
+        agent: "dark-runner",
         isBackground: false,
         modelInfo: { model: "cliproxy/claude-opus-4-5", type: "inherited" as const },
       }
@@ -211,7 +211,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_3",
         description: "Task with user model",
-        agent: "cipher-runner",
+        agent: "dark-runner",
         isBackground: false,
         modelInfo: { model: "my-provider/my-model", type: "user-defined" as const },
       }
@@ -233,7 +233,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_4",
         description: "Task without model info",
-        agent: "scout-recon",
+        agent: "scan-ops",
         isBackground: true,
       }
 

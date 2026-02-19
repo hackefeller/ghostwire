@@ -11,20 +11,20 @@ import type {
   CategoryConfig,
   GitMasterConfig,
 } from "../config/schema";
-import { createSisyphusAgent } from "./cipher-operator";
-import { createOracleAgent, ORACLE_PROMPT_METADATA } from "./seer-advisor";
+import { createSisyphusAgent } from "./void-runner";
+import { createOracleAgent, ORACLE_PROMPT_METADATA } from "./eye-ops";
 import {
   createLibrarianAgent,
   LIBRARIAN_PROMPT_METADATA,
-} from "./archive-researcher";
-import { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./scout-recon";
+} from "./data-dive";
+import { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./scan-ops";
 import {
   createMultimodalLookerAgent,
   MULTIMODAL_LOOKER_PROMPT_METADATA,
-} from "./optic-analyst";
-import { createMetisAgent } from "./tactician-strategist";
-import { createAtlasAgent } from "./nexus-orchestrator";
-import { createMomusAgent } from "./glitch-auditor";
+} from "./eye-scan";
+import { createMetisAgent } from "./war-mind";
+import { createAtlasAgent } from "./grid-sync";
+import { createMomusAgent } from "./null-audit";
 import { COMPOUND_AGENT_MAPPINGS } from "./compound";
 import type {
   AvailableAgent,
@@ -62,17 +62,17 @@ export {
 type AgentSource = AgentFactory | AgentConfig;
 
 const agentSources: Record<BuiltinAgentName, AgentSource> = {
-  "cipher-operator": createSisyphusAgent,
-  "seer-advisor": createOracleAgent,
-  "archive-researcher": createLibrarianAgent,
-  "scout-recon": createExploreAgent,
-  "optic-analyst": createMultimodalLookerAgent,
-  "tactician-strategist": createMetisAgent,
-  "glitch-auditor": createMomusAgent,
-  // Note: Nexus Orchestrator is handled specially in createBuiltinAgents()
+  "void-runner": createSisyphusAgent,
+  "eye-ops": createOracleAgent,
+  "data-dive": createLibrarianAgent,
+  "scan-ops": createExploreAgent,
+  "eye-scan": createMultimodalLookerAgent,
+  "war-mind": createMetisAgent,
+  "null-audit": createMomusAgent,
+  // Note: grid-sync is handled specially in createBuiltinAgents()
   // because it needs OrchestratorContext, not just a model string
-  "nexus-orchestrator": createAtlasAgent as unknown as AgentFactory,
-  // Compound Engineering Agents (28 total)
+  "grid-sync": createAtlasAgent as unknown as AgentFactory,
+  // Compound Agents (28 total)
   ...COMPOUND_AGENT_MAPPINGS,
 };
 
@@ -81,10 +81,10 @@ const agentSources: Record<BuiltinAgentName, AgentSource> = {
  * (Delegation Table, Tool Selection, Key Triggers, etc.)
  */
 const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
-  "seer-advisor": ORACLE_PROMPT_METADATA,
-  "archive-researcher": LIBRARIAN_PROMPT_METADATA,
-  "scout-recon": EXPLORE_PROMPT_METADATA,
-  "optic-analyst": MULTIMODAL_LOOKER_PROMPT_METADATA,
+  "eye-ops": ORACLE_PROMPT_METADATA,
+  "data-dive": LIBRARIAN_PROMPT_METADATA,
+  "scan-ops": EXPLORE_PROMPT_METADATA,
+  "eye-scan": MULTIMODAL_LOOKER_PROMPT_METADATA,
 };
 
 function isFactory(source: AgentSource): source is AgentFactory {
@@ -289,8 +289,8 @@ export async function createBuiltinAgents(
   for (const [name, source] of Object.entries(agentSources)) {
     const agentName = name as BuiltinAgentName;
 
-    if (agentName === "cipher-operator") continue;
-    if (agentName === "nexus-orchestrator") continue;
+    if (agentName === "void-runner") continue;
+    if (agentName === "grid-sync") continue;
     if (includesCaseInsensitive(disabledAgents, agentName)) continue;
 
     const override = findCaseInsensitive(agentOverrides, agentName);
@@ -339,7 +339,7 @@ export async function createBuiltinAgents(
       );
     }
 
-    if (agentName === "archive-researcher" && directory && config.prompt) {
+    if (agentName === "data-dive" && directory && config.prompt) {
       const envContext = createEnvContext();
       config = { ...config, prompt: config.prompt + envContext };
     }
@@ -361,9 +361,9 @@ export async function createBuiltinAgents(
     }
   }
 
-  if (!disabledAgents.includes("cipher-operator")) {
-    const cipherOverride = agentOverrides["cipher-operator"];
-    const cipherRequirement = AGENT_MODEL_REQUIREMENTS["cipher-operator"];
+  if (!disabledAgents.includes("void-runner")) {
+    const cipherOverride = agentOverrides["void-runner"];
+    const cipherRequirement = AGENT_MODEL_REQUIREMENTS["void-runner"];
 
     const cipherResolution = resolveModelWithFallback({
       uiSelectedModel,
@@ -412,16 +412,16 @@ export async function createBuiltinAgents(
         cipherConfig = mergeAgentConfig(cipherConfig, cipherOverride);
       }
 
-      result["cipher-operator"] = cipherConfig;
+      result["void-runner"] = cipherConfig;
     }
   }
 
-  if (!disabledAgents.includes("nexus-orchestrator")) {
-    const orchestratorOverride = agentOverrides["nexus-orchestrator"];
-    const nexusRequirement = AGENT_MODEL_REQUIREMENTS["nexus-orchestrator"];
+  if (!disabledAgents.includes("grid-sync")) {
+    const orchestratorOverride = agentOverrides["grid-sync"];
+    const nexusRequirement = AGENT_MODEL_REQUIREMENTS["grid-sync"];
 
     const nexusResolution = resolveModelWithFallback({
-      // NOTE: Nexus Orchestrator does NOT use uiSelectedModel - respects its own fallbackChain (k2p5 primary)
+      // NOTE: grid-sync does NOT use uiSelectedModel - respects its own fallbackChain (k2p5 primary)
       userModel: orchestratorOverride?.model,
       fallbackChain: nexusRequirement?.fallbackChain,
       availableModels,
@@ -464,7 +464,7 @@ export async function createBuiltinAgents(
         );
       }
 
-      result["nexus-orchestrator"] = orchestratorConfig;
+      result["grid-sync"] = orchestratorConfig;
     }
   }
 

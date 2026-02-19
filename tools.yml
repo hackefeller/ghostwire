@@ -1,0 +1,50 @@
+version: 1
+source: agents/tools.yml
+description: Map of tool directories and their purposes.
+
+tools:
+  - id: ast-grep
+    path: src/tools/ast-grep
+    purpose: AST-based search and refactoring helpers
+  - id: background-task
+    path: src/tools/background-task
+    purpose: Manage background tasks (list/update/info)
+  - id: call-omo-agent
+    path: src/tools/call-omo-agent
+    purpose: Call OmO agents
+  - id: delegate-task
+    path: src/tools/delegate-task
+    purpose: Delegate tasks to subagents with categories/skills
+  - id: glob
+    path: src/tools/glob
+    purpose: File path globbing
+  - id: grep
+    path: src/tools/grep
+    purpose: Content search across files
+  - id: interactive-bash
+    path: src/tools/interactive-bash
+    purpose: Interactive shell tool
+  - id: look-at
+    path: src/tools/look-at
+    purpose: Multimodal analysis (images/PDFs)
+  - id: lsp
+    path: src/tools/lsp
+    purpose: Language Server Protocol helpers
+  - id: session-manager
+    path: src/tools/session-manager
+    purpose: Session CRUD and metadata tools
+  - id: skill
+    path: src/tools/skill
+    purpose: Skill loading and management
+  - id: skill-mcp
+    path: src/tools/skill-mcp
+    purpose: MCP-backed skills integration
+  - id: slashcommand
+    path: src/tools/slashcommand
+    purpose: Slash command tooling
+  - id: todo-manager
+    path: src/tools/todo-manager
+    purpose: Todo CRUD tools
+
+notes:
+  - Keep this file in sync with src/tools directory changes.

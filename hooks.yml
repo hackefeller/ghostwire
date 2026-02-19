@@ -1,0 +1,51 @@
+version: 1
+source: agents/hooks.yml
+description: Map of hook directories and files. Update when hooks are added, renamed, or removed.
+
+hooks:
+  directories:
+    - agent-usage-reminder
+    - anthropic-context-window-limit-recovery
+    - auto-slash-command
+    - auto-update-checker
+    - background-notification
+    - category-skill-reminder
+    - claude-code-hooks
+    - comment-checker
+    - compaction-context-injector
+    - dark-runner-notepad
+    - delegate-task-retry
+    - directory-agents-injector
+    - directory-readme-injector
+    - edit-error-recovery
+    - grid-sync
+    - interactive-bash-session
+    - keyword-detector
+    - non-interactive-env
+    - question-label-truncator
+    - ralph-loop
+    - rules-injector
+    - session-recovery
+    - start-work
+    - stop-continuation-guard
+    - subagent-question-blocker
+    - task-resume-info
+    - think-mode
+    - thinking-block-validator
+    - zen-planner-md-only
+
+  files:
+    - context-window-monitor.ts
+    - empty-task-response-detector.ts
+    - index.ts
+    - session-notification-utils.ts
+    - session-notification.test.ts
+    - session-notification.ts
+    - todo-continuation-enforcer.test.ts
+    - todo-continuation-enforcer.ts
+    - tool-output-truncator.test.ts
+    - tool-output-truncator.ts
+
+notes:
+  - This map reflects agents/src/hooks contents.
+  - Keep in sync with directory structure.

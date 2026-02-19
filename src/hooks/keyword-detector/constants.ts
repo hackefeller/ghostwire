@@ -36,9 +36,9 @@ You ARE the planner. Your job: create bulletproof work plans.
 ### Research Protocol
 1. **Fire parallel background agents** for comprehensive context:
    \`\`\`
-   delegate_task(agent="scout-recon", prompt="Find existing patterns for [topic] in codebase", background=true)
-   delegate_task(agent="scout-recon", prompt="Find test infrastructure and conventions", background=true)
-   delegate_task(agent="archive-researcher", prompt="Find official docs and best practices for [technology]", background=true)
+   delegate_task(agent="scan-ops", prompt="Find existing patterns for [topic] in codebase", background=true)
+   delegate_task(agent="scan-ops", prompt="Find test infrastructure and conventions", background=true)
+   delegate_task(agent="data-dive", prompt="Find official docs and best practices for [technology]", background=true)
    \`\`\`
 2. **Wait for results** before planning - rushed plans fail
 3. **Synthesize findings** into informed requirements
@@ -132,7 +132,7 @@ Each TODO item MUST include:
 export function isPlannerAgent(agentName?: string): boolean {
   if (!agentName) return false
   const lowerName = agentName.toLowerCase()
-  return lowerName.includes("augur-planner") || lowerName.includes("planner") || lowerName === "plan"
+  return lowerName.includes("zen-planner") || lowerName.includes("planner") || lowerName === "plan"
 }
 
 /**
@@ -194,11 +194,11 @@ ${ULTRAWORK_PLANNER_SECTION}
 
 **WHEN IN DOUBT:**
 \`\`\`
-delegate_task(agent="scout-recon", prompt="Find [X] patterns in codebase", background=true)
-delegate_task(agent="archive-researcher", prompt="Find docs/examples for [Y]", background=true)
+delegate_task(agent="scan-ops", prompt="Find [X] patterns in codebase", background=true)
+delegate_task(agent="data-dive", prompt="Find docs/examples for [Y]", background=true)
 
 // Hard problem? DON'T struggle alone:
-delegate_task(agent="seer-advisor", prompt="...")         // conventional: architecture, debugging
+delegate_task(agent="eye-ops", prompt="...")         // conventional: architecture, debugging
 delegate_task(category="artistry", prompt="...")    // non-conventional: needs different approach
 \`\`\`
 
@@ -300,10 +300,10 @@ delegate_task(session_id="ses_abc123", prompt="Here's my answer to your question
 
 | Task Type | Action | Why |
 |-----------|--------|-----|
-| Codebase exploration | delegate_task(subagent_type="scout-recon", run_in_background=true) | Parallel, context-efficient |
-| Documentation lookup | delegate_task(subagent_type="archive-researcher", run_in_background=true) | Specialized knowledge |
+| Codebase exploration | delegate_task(subagent_type="scan-ops", run_in_background=true) | Parallel, context-efficient |
+| Documentation lookup | delegate_task(subagent_type="data-dive", run_in_background=true) | Specialized knowledge |
 | Planning | delegate_task(subagent_type="plan") | Parallel task graph + structured TODO list |
-| Hard problem (conventional) | delegate_task(subagent_type="seer-advisor") | Architecture, debugging, complex logic |
+| Hard problem (conventional) | delegate_task(subagent_type="eye-ops") | Architecture, debugging, complex logic |
 | Hard problem (non-conventional) | delegate_task(category="artistry", load_skills=[...]) | Different approach needed |
 | Implementation | delegate_task(category="...", load_skills=[...]) | Domain-optimized models |
 
@@ -359,8 +359,8 @@ delegate_task(..., run_in_background=true)  // task_id_3
 
 1. **GATHER CONTEXT** (parallel background agents):
    \`\`\`
-   delegate_task(subagent_type="scout-recon", run_in_background=true, prompt="...")
-   delegate_task(subagent_type="archive-researcher", run_in_background=true, prompt="...")
+   delegate_task(subagent_type="scan-ops", run_in_background=true, prompt="...")
+   delegate_task(subagent_type="data-dive", run_in_background=true, prompt="...")
    \`\`\`
 
 2. **INVOKE PLAN AGENT** (MANDATORY for non-trivial tasks):

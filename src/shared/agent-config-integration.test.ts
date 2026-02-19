@@ -19,11 +19,11 @@ describe("Agent Config Integration", () => {
       const result = migrateAgentNames(oldConfig)
 
       // #then - keys are lowercase
-      expect(result.migrated).toHaveProperty("cipher-operator")
-      expect(result.migrated).toHaveProperty("nexus-orchestrator")
-      expect(result.migrated).toHaveProperty("augur-planner")
-      expect(result.migrated).toHaveProperty("tactician-strategist")
-      expect(result.migrated).toHaveProperty("glitch-auditor")
+      expect(result.migrated).toHaveProperty("void-runner")
+      expect(result.migrated).toHaveProperty("grid-sync")
+      expect(result.migrated).toHaveProperty("zen-planner")
+      expect(result.migrated).toHaveProperty("war-mind")
+      expect(result.migrated).toHaveProperty("null-audit")
 
       // #then - old keys are removed
       expect(result.migrated).not.toHaveProperty("Cipher Operator")
@@ -33,9 +33,9 @@ describe("Agent Config Integration", () => {
       expect(result.migrated).not.toHaveProperty("Glitch Auditor (Plan Reviewer)")
 
       // #then - values are preserved
-      expect(result.migrated["cipher-operator"]).toEqual({ model: "anthropic/claude-opus-4-5" })
-      expect(result.migrated["nexus-orchestrator"]).toEqual({ model: "anthropic/claude-opus-4-5" })
-      expect(result.migrated["augur-planner"]).toEqual({ model: "anthropic/claude-opus-4-5" })
+      expect(result.migrated["void-runner"]).toEqual({ model: "anthropic/claude-opus-4-5" })
+      expect(result.migrated["grid-sync"]).toEqual({ model: "anthropic/claude-opus-4-5" })
+      expect(result.migrated["zen-planner"]).toEqual({ model: "anthropic/claude-opus-4-5" })
       
       // #then - changed flag is true
       expect(result.changed).toBe(true)
@@ -44,9 +44,9 @@ describe("Agent Config Integration", () => {
     test("preserves already lowercase keys", () => {
       // #given - config with lowercase keys
       const config = {
-        "cipher-operator": { model: "anthropic/claude-opus-4-5" },
-        "seer-advisor": { model: "openai/gpt-5.2" },
-        "archive-researcher": { model: "opencode/glm-4.7-free" },
+        "void-runner": { model: "anthropic/claude-opus-4-5" },
+        "eye-ops": { model: "openai/gpt-5.2" },
+        "data-dive": { model: "opencode/glm-4.7-free" },
       }
 
       // #when - migration is applied
@@ -63,19 +63,19 @@ describe("Agent Config Integration", () => {
       // #given - config with mixed old and new format
       const mixedConfig = {
         "Cipher Operator": { model: "anthropic/claude-opus-4-5" },
-        "seer-advisor": { model: "openai/gpt-5.2" },
+        "eye-ops": { model: "openai/gpt-5.2" },
         "Augur Planner (Planner)": { model: "anthropic/claude-opus-4-5" },
-        "archive-researcher": { model: "opencode/glm-4.7-free" },
+        "data-dive": { model: "opencode/glm-4.7-free" },
       }
 
       // #when - migration is applied
       const result = migrateAgentNames(mixedConfig)
 
       // #then - all keys are lowercase
-      expect(result.migrated).toHaveProperty("cipher-operator")
-      expect(result.migrated).toHaveProperty("seer-advisor")
-      expect(result.migrated).toHaveProperty("augur-planner")
-      expect(result.migrated).toHaveProperty("archive-researcher")
+      expect(result.migrated).toHaveProperty("void-runner")
+      expect(result.migrated).toHaveProperty("eye-ops")
+      expect(result.migrated).toHaveProperty("zen-planner")
+      expect(result.migrated).toHaveProperty("data-dive")
       expect(Object.keys(result.migrated).every((key) => key === key.toLowerCase())).toBe(true)
       
       // #then - changed flag is true
@@ -86,7 +86,7 @@ describe("Agent Config Integration", () => {
   describe("Display name resolution", () => {
     test("returns correct display names for all builtin agents", () => {
       // #given - lowercase config keys
-      const agents = ["cipher-operator", "nexus-orchestrator", "augur-planner", "tactician-strategist", "glitch-auditor", "seer-advisor", "archive-researcher", "scout-recon", "optic-analyst"]
+      const agents = ["void-runner", "grid-sync", "zen-planner", "war-mind", "null-audit", "eye-ops", "data-dive", "scan-ops", "eye-scan"]
 
       // #when - display names are requested
       const displayNames = agents.map((agent) => getAgentDisplayName(agent))
@@ -97,15 +97,15 @@ describe("Agent Config Integration", () => {
       expect(displayNames).toContain("Augur Planner (Plan Builder)")
       expect(displayNames).toContain("Tactician Strategist (Plan Consultant)")
       expect(displayNames).toContain("Glitch Auditor (Plan Reviewer)")
-      expect(displayNames).toContain("seer-advisor")
-      expect(displayNames).toContain("archive-researcher")
-      expect(displayNames).toContain("scout-recon")
-      expect(displayNames).toContain("optic-analyst")
+      expect(displayNames).toContain("eye-ops")
+      expect(displayNames).toContain("data-dive")
+      expect(displayNames).toContain("scan-ops")
+      expect(displayNames).toContain("eye-scan")
     })
 
     test("handles lowercase keys case-insensitively", () => {
       // #given - various case formats of lowercase keys
-      const keys = ["Cipher Operator", "Nexus Orchestrator", "CIPHER-OPERATOR", "nexus-orchestrator", "augur-planner", "AUGUR-PLANNER"]
+      const keys = ["Cipher Operator", "Nexus Orchestrator", "CIPHER-OPERATOR", "grid-sync", "zen-planner", "AUGUR-PLANNER"]
 
       // #when - display names are requested
       const displayNames = keys.map((key) => getAgentDisplayName(key))
@@ -145,7 +145,7 @@ describe("Agent Config Integration", () => {
 
     test("model requirements include all builtin agents", () => {
       // #given - expected builtin agents
-      const expectedAgents = ["cipher-operator", "nexus-orchestrator", "augur-planner", "tactician-strategist", "glitch-auditor", "seer-advisor", "archive-researcher", "scout-recon", "optic-analyst"]
+      const expectedAgents = ["void-runner", "grid-sync", "zen-planner", "war-mind", "null-audit", "eye-ops", "data-dive", "scan-ops", "eye-scan"]
 
       // #when - checking AGENT_MODEL_REQUIREMENTS
       const agentKeys = Object.keys(AGENT_MODEL_REQUIREMENTS)
@@ -180,27 +180,27 @@ describe("Agent Config Integration", () => {
       const result = migrateAgentNames(oldConfig)
 
       // #then - keys are lowercase
-      expect(result.migrated).toHaveProperty("cipher-operator")
-      expect(result.migrated).toHaveProperty("augur-planner")
+      expect(result.migrated).toHaveProperty("void-runner")
+      expect(result.migrated).toHaveProperty("zen-planner")
 
       // #when - display names are retrieved
-      const cipherDisplay = getAgentDisplayName("cipher-operator")
-      const augurDisplay = getAgentDisplayName("augur-planner")
+      const cipherDisplay = getAgentDisplayName("void-runner")
+      const augurDisplay = getAgentDisplayName("zen-planner")
 
       // #then - display names are correct
       expect(cipherDisplay).toBe("Cipher Operator (Ultraworker)")
       expect(augurDisplay).toBe("Augur Planner (Plan Builder)")
 
       // #then - config values are preserved
-      expect(result.migrated["cipher-operator"]).toEqual({ model: "anthropic/claude-opus-4-5", temperature: 0.1 })
-      expect(result.migrated["augur-planner"]).toEqual({ model: "anthropic/claude-opus-4-5" })
+      expect(result.migrated["void-runner"]).toEqual({ model: "anthropic/claude-opus-4-5", temperature: 0.1 })
+      expect(result.migrated["zen-planner"]).toEqual({ model: "anthropic/claude-opus-4-5" })
     })
 
     test("new config works without migration", () => {
       // #given - new format config (already lowercase)
       const newConfig = {
-        "cipher-operator": { model: "anthropic/claude-opus-4-5" },
-        "nexus-orchestrator": { model: "anthropic/claude-opus-4-5" },
+        "void-runner": { model: "anthropic/claude-opus-4-5" },
+        "grid-sync": { model: "anthropic/claude-opus-4-5" },
       }
 
       // #when - migration is applied (should be no-op)
@@ -213,8 +213,8 @@ describe("Agent Config Integration", () => {
       expect(result.changed).toBe(false)
 
       // #when - display names are retrieved
-      const cipherDisplay = getAgentDisplayName("cipher-operator")
-      const nexusDisplay = getAgentDisplayName("nexus-orchestrator")
+      const cipherDisplay = getAgentDisplayName("void-runner")
+      const nexusDisplay = getAgentDisplayName("grid-sync")
 
       // #then - display names are correct
       expect(cipherDisplay).toBe("Cipher Operator (Ultraworker)")

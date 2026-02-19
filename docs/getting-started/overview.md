@@ -163,13 +163,13 @@ For detailed configuration options including per-agent settings, category custom
 
 ### Core Documentation
 - [Installation Guide](./installation.md) - Detailed installation instructions
-- [Architecture](../guides/architecture.md) - Deep dive into Augur Planner → Orchestrator → Junior workflow
-- [Ultrawork Manifesto](../guides/ultrawork-manifesto.md) - Philosophy and principles behind Ghostwire
+- [Architecture](../concepts/orchestration.md) - Deep dive into Augur Planner → Orchestrator → Junior workflow
+- [Philosophy](../concepts/philosophy.md) - Principles behind Ghostwire
 
 ### Reference Documentation
 - [Configuration Guide](../reference/configurations.md) - Customize agents, models, and behaviors
 - [Features Reference](../reference/features.md) - Skills, commands, MCPs, and compatibility
-- [Category & Skill Guide](../guides/category-skills.md) - Delegation system and combinations
+- [Category & Skill Guide](../how-to/category-skills.md) - Delegation system and combinations
 
 ### Component Reference
 - [Agents](../reference/agents.md) - AI agents and capabilities

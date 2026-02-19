@@ -5,8 +5,6 @@ import type { InstallConfig } from "./types";
 
 function createConfig(overrides: Partial<InstallConfig> = {}): InstallConfig {
   return {
-    hasClaude: false,
-    isMax20: false,
     hasOpenAI: false,
     hasGemini: false,
     hasCopilot: false,
@@ -32,28 +30,6 @@ describe("generateModelConfig", () => {
   });
 
   describe("single native provider", () => {
-    test("uses Claude models when only Claude is available", () => {
-      // #given only Claude is available
-      const config = createConfig({ hasClaude: true });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then should use Claude models per NATIVE_FALLBACK_CHAINS
-      expect(result).toMatchSnapshot();
-    });
-
-    test("uses Claude models with isMax20 flag", () => {
-      // #given Claude is available with Max 20 plan
-      const config = createConfig({ hasClaude: true, isMax20: true });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then should use higher capability models for Cipher Operator
-      expect(result).toMatchSnapshot();
-    });
-
     test("uses OpenAI models when only OpenAI is available", () => {
       // #given only OpenAI is available
       const config = createConfig({ hasOpenAI: true });
@@ -62,17 +38,6 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then should use OpenAI models
-      expect(result).toMatchSnapshot();
-    });
-
-    test("uses OpenAI models with isMax20 flag", () => {
-      // #given OpenAI is available with Max 20 plan
-      const config = createConfig({ hasOpenAI: true, isMax20: true });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then should use higher capability models
       expect(result).toMatchSnapshot();
     });
 
@@ -86,24 +51,12 @@ describe("generateModelConfig", () => {
       // #then should use Gemini models
       expect(result).toMatchSnapshot();
     });
-
-    test("uses Gemini models with isMax20 flag", () => {
-      // #given Gemini is available with Max 20 plan
-      const config = createConfig({ hasGemini: true, isMax20: true });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then should use higher capability models
-      expect(result).toMatchSnapshot();
-    });
   });
 
   describe("all native providers", () => {
     test("uses preferred models from fallback chains when all natives available", () => {
       // #given all native providers are available
       const config = createConfig({
-        hasClaude: true,
         hasOpenAI: true,
         hasGemini: true,
       });
@@ -112,22 +65,6 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then should use first provider in each fallback chain
-      expect(result).toMatchSnapshot();
-    });
-
-    test("uses preferred models with isMax20 flag when all natives available", () => {
-      // #given all native providers are available with Max 20 plan
-      const config = createConfig({
-        hasClaude: true,
-        hasOpenAI: true,
-        hasGemini: true,
-        isMax20: true,
-      });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then should use higher capability models
       expect(result).toMatchSnapshot();
     });
   });
@@ -144,17 +81,6 @@ describe("generateModelConfig", () => {
       expect(result).toMatchSnapshot();
     });
 
-    test("uses OpenCode Zen models with isMax20 flag", () => {
-      // #given OpenCode Zen is available with Max 20 plan
-      const config = createConfig({ hasOpencodeZen: true, isMax20: true });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then should use higher capability models
-      expect(result).toMatchSnapshot();
-    });
-
     test("uses GitHub Copilot models when only Copilot is available", () => {
       // #given only GitHub Copilot is available
       const config = createConfig({ hasCopilot: true });
@@ -163,17 +89,6 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then should use GITHUB_COPILOT_MODELS
-      expect(result).toMatchSnapshot();
-    });
-
-    test("uses GitHub Copilot models with isMax20 flag", () => {
-      // #given GitHub Copilot is available with Max 20 plan
-      const config = createConfig({ hasCopilot: true, isMax20: true });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then should use higher capability models
       expect(result).toMatchSnapshot();
     });
 
@@ -187,34 +102,9 @@ describe("generateModelConfig", () => {
       // #then should use ZAI_MODEL for archiveResearcher
       expect(result).toMatchSnapshot();
     });
-
-    test("uses ZAI model for archiveResearcher with isMax20 flag", () => {
-      // #given ZAI is available with Max 20 plan
-      const config = createConfig({ hasZaiCodingPlan: true, isMax20: true });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then should use ZAI_MODEL for archiveResearcher
-      expect(result).toMatchSnapshot();
-    });
   });
 
   describe("mixed provider scenarios", () => {
-    test("uses Claude + OpenCode Zen combination", () => {
-      // #given Claude and OpenCode Zen are available
-      const config = createConfig({
-        hasClaude: true,
-        hasOpencodeZen: true,
-      });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then should prefer Claude (native) over OpenCode Zen
-      expect(result).toMatchSnapshot();
-    });
-
     test("uses OpenAI + Copilot combination", () => {
       // #given OpenAI and Copilot are available
       const config = createConfig({
@@ -225,35 +115,21 @@ describe("generateModelConfig", () => {
       // #when generateModelConfig is called
       const result = generateModelConfig(config);
 
-      // #then should prefer OpenAI (native) over Copilot
+      // #then should prefer Openai (native) over Copilot
       expect(result).toMatchSnapshot();
     });
 
-    test("uses Claude + ZAI combination (archiveResearcher uses ZAI)", () => {
-      // #given Claude and ZAI are available
+    test("uses ZAI combination (archiveResearcher uses ZAI)", () => {
+      // #given OpenAI and ZAI are available
       const config = createConfig({
-        hasClaude: true,
+        hasOpenAI: true,
         hasZaiCodingPlan: true,
       });
 
       // #when generateModelConfig is called
       const result = generateModelConfig(config);
 
-      // #then archiveResearcher should use ZAI, others use Claude
-      expect(result).toMatchSnapshot();
-    });
-
-    test("uses Gemini + Claude combination (scoutRecon uses Gemini)", () => {
-      // #given Gemini and Claude are available
-      const config = createConfig({
-        hasGemini: true,
-        hasClaude: true,
-      });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then scoutRecon should use Gemini flash
+      // #then archiveResearcher should use ZAI
       expect(result).toMatchSnapshot();
     });
 
@@ -275,7 +151,6 @@ describe("generateModelConfig", () => {
     test("uses all providers together", () => {
       // #given all providers are available
       const config = createConfig({
-        hasClaude: true,
         hasOpenAI: true,
         hasGemini: true,
         hasOpencodeZen: true,
@@ -289,66 +164,34 @@ describe("generateModelConfig", () => {
       // #then should prefer native providers, archiveResearcher uses ZAI
       expect(result).toMatchSnapshot();
     });
-
-    test("uses all providers with isMax20 flag", () => {
-      // #given all providers are available with Max 20 plan
-      const config = createConfig({
-        hasClaude: true,
-        hasOpenAI: true,
-        hasGemini: true,
-        hasOpencodeZen: true,
-        hasCopilot: true,
-        hasZaiCodingPlan: true,
-        isMax20: true,
-      });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then should use higher capability models
-      expect(result).toMatchSnapshot();
-    });
   });
 
-  describe("scout-recon agent special cases", () => {
-    test("scout-recon uses gpt-5-nano when only Gemini available (no Claude)", () => {
-      // #given only Gemini is available (no Claude)
+  describe("scan-ops agent special cases", () => {
+    test("scan-ops uses gpt-5-nano when only Gemini available", () => {
+      // #given only Gemini is available
       const config = createConfig({ hasGemini: true });
 
       // #when generateModelConfig is called
       const result = generateModelConfig(config);
 
-      // #then scoutRecon should use gpt-5-nano (Claude haiku not available)
-      expect(result.agents?.["scout-recon"]?.model).toBe("opencode/gpt-5-nano");
+      // #then scoutRecon should use gpt-5-nano (fallback)
+      expect(result.agents?.["scan-ops"]?.model).toBe("opencode/gpt-5-nano");
     });
 
-    test("scout-recon uses Claude haiku when Claude available", () => {
-      // #given Claude is available
-      const config = createConfig({ hasClaude: true, isMax20: true });
+    test("scan-ops uses OpenCode claude-haiku when OpenCode Zen available", () => {
+      // #given OpenCode Zen is available
+      const config = createConfig({ hasOpencodeZen: true });
 
       // #when generateModelConfig is called
       const result = generateModelConfig(config);
 
-      // #then scoutRecon should use claude-haiku-4-5
-      expect(result.agents?.["scout-recon"]?.model).toBe(
-        "anthropic/claude-haiku-4-5",
+      // #then scoutRecon should use opencode/claude-haiku-4-5
+      expect(result.agents?.["scan-ops"]?.model).toBe(
+        "opencode/claude-haiku-4-5",
       );
     });
 
-    test("scout-recon uses Claude haiku regardless of isMax20 flag", () => {
-      // #given Claude is available without Max 20 plan
-      const config = createConfig({ hasClaude: true, isMax20: false });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then scoutRecon should use claude-haiku-4-5 (isMax20 doesn't affect scoutRecon)
-      expect(result.agents?.["scout-recon"]?.model).toBe(
-        "anthropic/claude-haiku-4-5",
-      );
-    });
-
-    test("scout-recon uses gpt-5-nano when only OpenAI available", () => {
+    test("scan-ops uses gpt-5-nano when only OpenAI available", () => {
       // #given only OpenAI is available
       const config = createConfig({ hasOpenAI: true });
 
@@ -356,10 +199,10 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then scoutRecon should use gpt-5-nano (fallback)
-      expect(result.agents?.["scout-recon"]?.model).toBe("opencode/gpt-5-nano");
+      expect(result.agents?.["scan-ops"]?.model).toBe("opencode/gpt-5-nano");
     });
 
-    test("scout-recon uses gpt-5-mini when only Copilot available", () => {
+    test("scan-ops uses gpt-5-mini when only Copilot available", () => {
       // #given only Copilot is available
       const config = createConfig({ hasCopilot: true });
 
@@ -367,45 +210,17 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then scoutRecon should use gpt-5-mini (Copilot fallback)
-      expect(result.agents?.["scout-recon"]?.model).toBe(
+      expect(result.agents?.["scan-ops"]?.model).toBe(
         "github-copilot/gpt-5-mini",
       );
     });
   });
 
-  describe("Cipher Operator agent special cases", () => {
-    test("Cipher Operator uses cipherOperator-high capability when isMax20 is true", () => {
-      // #given Claude is available with Max 20 plan
-      const config = createConfig({ hasClaude: true, isMax20: true });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then Cipher Operator should use opus (cipherOperator-high)
-      expect(result.agents?.["cipher-operator"]?.model).toBe(
-        "anthropic/claude-opus-4-5",
-      );
-    });
-
-    test("Cipher Operator uses cipherOperator-low capability when isMax20 is false", () => {
-      // #given Claude is available without Max 20 plan
-      const config = createConfig({ hasClaude: true, isMax20: false });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then Cipher Operator should use sonnet (cipherOperator-low)
-      expect(result.agents?.["cipher-operator"]?.model).toBe(
-        "anthropic/claude-sonnet-4-5",
-      );
-    });
-  });
-
-  describe("archive-researcher agent special cases", () => {
-    test("archive-researcher uses ZAI when ZAI is available regardless of other providers", () => {
-      // #given ZAI and Claude are available
+  describe("data-dive agent special cases", () => {
+    test("data-dive uses ZAI when ZAI is available regardless of other providers", () => {
+      // #given ZAI and OpenAI are available
       const config = createConfig({
-        hasClaude: true,
+        hasOpenAI: true,
         hasZaiCodingPlan: true,
       });
 
@@ -413,21 +228,8 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then archiveResearcher should use ZAI_MODEL
-      expect(result.agents?.["archive-researcher"]?.model).toBe(
+      expect(result.agents?.["data-dive"]?.model).toBe(
         "zai-coding-plan/glm-4.7",
-      );
-    });
-
-    test("archive-researcher uses claude-sonnet when ZAI not available but Claude is", () => {
-      // #given only Claude is available (no ZAI)
-      const config = createConfig({ hasClaude: true });
-
-      // #when generateModelConfig is called
-      const result = generateModelConfig(config);
-
-      // #then archiveResearcher should use claude-sonnet-4-5 (third in fallback chain after ZAI and opencode/glm)
-      expect(result.agents?.["archive-researcher"]?.model).toBe(
-        "anthropic/claude-sonnet-4-5",
       );
     });
   });

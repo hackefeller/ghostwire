@@ -152,7 +152,7 @@ Original error: ${createResult.error}`
           }
         }
       } catch (error) {
-        log("[look_at] Failed to resolve optic-analyst model info", error)
+        log("[look_at] Failed to resolve eye-scan model info", error)
       }
 
       log(`[look_at] Sending prompt with file passthrough to session ${sessionID}`)
@@ -181,10 +181,10 @@ Original error: ${createResult.error}`
 
         const isJsonParseError = errorMessage.includes("JSON") && (errorMessage.includes("EOF") || errorMessage.includes("parse"))
         if (isJsonParseError) {
-          return `Error: Failed to analyze file - received malformed response from optic-analyst agent.
+          return `Error: Failed to analyze file - received malformed response from eye-scan agent.
 
 This typically occurs when:
-1. The optic-analyst model is not available or not connected
+1. The eye-scan model is not available or not connected
 2. The model does not support this file type (${mimeType})
 3. The API returned an empty or truncated response
 
@@ -199,7 +199,7 @@ Try:
 Original error: ${errorMessage}`
         }
 
-        return `Error: Failed to send prompt to optic-analyst agent: ${errorMessage}`
+        return `Error: Failed to send prompt to eye-scan agent: ${errorMessage}`
       }
 
       log(`[look_at] Prompt sent, fetching messages...`)
@@ -223,7 +223,7 @@ Original error: ${errorMessage}`
 
       if (!lastAssistantMessage) {
         log(`[look_at] No assistant message found`)
-        return `Error: No response from optic-analyst agent`
+        return `Error: No response from eye-scan agent`
       }
 
       log(`[look_at] Found assistant message with ${lastAssistantMessage.parts.length} parts`)

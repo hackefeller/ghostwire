@@ -5,7 +5,7 @@ import {
   buildRetryGuidance,
 } from "./index"
 
-describe("cipher-operator-task-retry", () => {
+describe("void-runner-task-retry", () => {
   describe("DELEGATE_TASK_ERROR_PATTERNS", () => {
     // #given error patterns are defined
     // #then should include all known delegate_task error types
@@ -62,7 +62,7 @@ describe("cipher-operator-task-retry", () => {
     })
 
     it("should detect unknown agent error", () => {
-      const output = '[ERROR] Unknown agent: "fake-agent". Available agents: scoutRecon, archiveResearcher, seer-advisor'
+      const output = '[ERROR] Unknown agent: "fake-agent". Available agents: scoutRecon, archiveResearcher, eye-ops'
       
       const result = detectDelegateTaskError(output)
       
@@ -107,13 +107,13 @@ describe("cipher-operator-task-retry", () => {
     it("should provide fix for unknown agent with available list", () => {
       const errorInfo = { 
         errorType: "unknown_agent", 
-        originalOutput: '[ERROR] Unknown agent: "fake". Available agents: scoutRecon, seer-advisor' 
+        originalOutput: '[ERROR] Unknown agent: "fake". Available agents: scoutRecon, eye-ops' 
       }
       
       const guidance = buildRetryGuidance(errorInfo)
       
-      expect(guidance).toContain("scout-recon")
-      expect(guidance).toContain("seer-advisor")
+      expect(guidance).toContain("scan-ops")
+      expect(guidance).toContain("eye-ops")
     })
   })
 })

@@ -680,7 +680,7 @@ export const UnifiedCompoundEngineeringConfigSchema = z.object({
 ### **External References**
 
 - **Integrated Components**: src/agents/compound/, src/features/builtin-commands/, src/features/builtin-skills/
-- **Oh-my-opencode Architecture**: README.md, AGENTS.md, src/features/AGENTS.md
+- **Oh-my-opencode Architecture**: README.md, AGENTS.md, agents.yml
 - **TypeScript Factory Patterns**: [TypeScript Handbook - Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
 - **Zod Schema Validation**: [Zod Documentation](https://zod.dev/)
 

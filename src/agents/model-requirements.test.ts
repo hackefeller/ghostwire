@@ -7,9 +7,9 @@ import {
 } from "./model-requirements"
 
 describe("AGENT_MODEL_REQUIREMENTS", () => {
-  test("seer-advisor has valid fallbackChain with gpt-5.2 as primary", () => {
+  test("eye-ops has valid fallbackChain with gpt-5.2 as primary", () => {
     // #given - seerAdvisor agent requirement
-    const seerAdvisor = AGENT_MODEL_REQUIREMENTS["seer-advisor"]
+    const seerAdvisor = AGENT_MODEL_REQUIREMENTS["eye-ops"]
 
     // #when - accessing seerAdvisor requirement
     // #then - fallbackChain exists with gpt-5.2 as first entry
@@ -23,9 +23,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.variant).toBe("high")
   })
 
-  test("cipher-operator has valid fallbackChain with claude-opus-4-5 as primary", () => {
+  test("void-runner has valid fallbackChain with claude-opus-4-5 as primary", () => {
     // #given - cipherOperator agent requirement
-    const cipherOperator = AGENT_MODEL_REQUIREMENTS["cipher-operator"]
+    const cipherOperator = AGENT_MODEL_REQUIREMENTS["void-runner"]
 
     // #when - accessing Cipher Operator requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
@@ -39,9 +39,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.variant).toBe("max")
   })
 
-  test("archive-researcher has valid fallbackChain with glm-4.7 as primary", () => {
+  test("data-dive has valid fallbackChain with glm-4.7 as primary", () => {
     // #given - archiveResearcher agent requirement
-    const archiveResearcher = AGENT_MODEL_REQUIREMENTS["archive-researcher"]
+    const archiveResearcher = AGENT_MODEL_REQUIREMENTS["data-dive"]
 
     // #when - accessing archiveResearcher requirement
     // #then - fallbackChain exists with glm-4.7 as first entry
@@ -54,9 +54,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.model).toBe("glm-4.7")
   })
 
-  test("scout-recon has valid fallbackChain with claude-haiku-4-5 as primary", () => {
+  test("scan-ops has valid fallbackChain with claude-haiku-4-5 as primary", () => {
     // #given - scoutRecon agent requirement
-    const scoutRecon = AGENT_MODEL_REQUIREMENTS["scout-recon"]
+    const scoutRecon = AGENT_MODEL_REQUIREMENTS["scan-ops"]
 
     // #when - accessing scoutRecon requirement
     // #then - fallbackChain exists with claude-haiku-4-5 as first entry, gpt-5-mini as second, gpt-5-nano as third
@@ -78,9 +78,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(tertiary.model).toBe("gpt-5-nano")
   })
 
-  test("optic-analyst has valid fallbackChain with gemini-3-flash as primary", () => {
+  test("eye-scan has valid fallbackChain with gemini-3-flash as primary", () => {
     // #given - opticAnalyst agent requirement
-    const multimodalLooker = AGENT_MODEL_REQUIREMENTS["optic-analyst"]
+    const multimodalLooker = AGENT_MODEL_REQUIREMENTS["eye-scan"]
 
     // #when - accessing opticAnalyst requirement
     // #then - fallbackChain exists with gemini-3-flash as first entry
@@ -93,9 +93,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.model).toBe("gemini-3-flash")
   })
 
-  test("augur-planner has valid fallbackChain with claude-opus-4-5 as primary", () => {
+  test("zen-planner has valid fallbackChain with claude-opus-4-5 as primary", () => {
     // #given - augurPlanner agent requirement
-    const augurPlanner = AGENT_MODEL_REQUIREMENTS["augur-planner"]
+    const augurPlanner = AGENT_MODEL_REQUIREMENTS["zen-planner"]
 
     // #when - accessing Augur Planner requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
@@ -109,9 +109,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.variant).toBe("max")
   })
 
-  test("tactician-strategist has valid fallbackChain with claude-opus-4-5 as primary", () => {
+  test("war-mind has valid fallbackChain with claude-opus-4-5 as primary", () => {
     // #given - tacticianStrategist agent requirement
-    const tacticianStrategist = AGENT_MODEL_REQUIREMENTS["tactician-strategist"]
+    const tacticianStrategist = AGENT_MODEL_REQUIREMENTS["war-mind"]
 
     // #when - accessing Tactician Strategist requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
@@ -125,9 +125,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.variant).toBe("max")
   })
 
-  test("glitch-auditor has valid fallbackChain with gpt-5.2 as primary", () => {
+  test("null-audit has valid fallbackChain with gpt-5.2 as primary", () => {
     // #given - glitchAuditor agent requirement
-    const glitchAuditor = AGENT_MODEL_REQUIREMENTS["glitch-auditor"]
+    const glitchAuditor = AGENT_MODEL_REQUIREMENTS["null-audit"]
 
     // #when - accessing Glitch Auditor requirement
     // #then - fallbackChain exists with gpt-5.2 as first entry, variant medium
@@ -141,9 +141,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.providers[0]).toBe("openai")
   })
 
-  test("nexus-orchestrator has valid fallbackChain with k2p5 as primary (kimi-for-coding prioritized)", () => {
+  test("grid-sync has valid fallbackChain with k2p5 as primary (kimi-for-coding prioritized)", () => {
     // #given - nexusOrchestrator agent requirement
-    const nexusOrchestrator = AGENT_MODEL_REQUIREMENTS["nexus-orchestrator"]
+    const nexusOrchestrator = AGENT_MODEL_REQUIREMENTS["grid-sync"]
 
     // #when - accessing Nexus Orchestrator requirement
     // #then - fallbackChain exists with k2p5 as first entry (kimi-for-coding prioritized)
@@ -159,15 +159,15 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
   test("all 9 builtin agents have valid fallbackChain arrays", () => {
     // #given - list of 9 agent names
     const expectedAgents = [
-      "cipher-operator",
-      "seer-advisor",
-      "archive-researcher",
-      "scout-recon",
-      "optic-analyst",
-      "augur-planner",
-      "tactician-strategist",
-      "glitch-auditor",
-      "nexus-orchestrator",
+      "void-runner",
+      "eye-ops",
+      "data-dive",
+      "scan-ops",
+      "eye-scan",
+      "zen-planner",
+      "war-mind",
+      "null-audit",
+      "grid-sync",
     ]
 
     // #when - checking AGENT_MODEL_REQUIREMENTS

@@ -71,7 +71,7 @@ export function createStartWorkHook(ctx: PluginInput) {
         sessionID: input.sessionID,
       })
 
-      updateSessionAgent(input.sessionID, "nexus-orchestrator") // Always switch: fixes #1298
+      updateSessionAgent(input.sessionID, "grid-sync") // Always switch: fixes #1298
 
       const existingState = readBoulderState(ctx.directory)
       const sessionId = input.sessionID

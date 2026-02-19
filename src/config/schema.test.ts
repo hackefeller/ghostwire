@@ -412,7 +412,7 @@ describe("Cipher Operator-Junior agent override", () => {
     // #given
     const config = {
       agents: {
-        "cipher-runner": {
+        "dark-runner": {
           model: "openai/gpt-5.2",
           temperature: 0.2,
         },
@@ -425,11 +425,11 @@ describe("Cipher Operator-Junior agent override", () => {
     // #then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.agents?.["cipher-runner"]).toBeDefined();
-      expect(result.data.agents?.["cipher-runner"]?.model).toBe(
+      expect(result.data.agents?.["dark-runner"]).toBeDefined();
+      expect(result.data.agents?.["dark-runner"]?.model).toBe(
         "openai/gpt-5.2",
       );
-      expect(result.data.agents?.["cipher-runner"]?.temperature).toBe(0.2);
+      expect(result.data.agents?.["dark-runner"]?.temperature).toBe(0.2);
     }
   });
 
@@ -437,8 +437,8 @@ describe("Cipher Operator-Junior agent override", () => {
     // #given
     const config = {
       agents: {
-        "cipher-runner": {
-          prompt_append: "Additional instructions for cipher-runner",
+        "dark-runner": {
+          prompt_append: "Additional instructions for dark-runner",
         },
       },
     };
@@ -449,8 +449,8 @@ describe("Cipher Operator-Junior agent override", () => {
     // #then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.agents?.["cipher-runner"]?.prompt_append).toBe(
-        "Additional instructions for cipher-runner",
+      expect(result.data.agents?.["dark-runner"]?.prompt_append).toBe(
+        "Additional instructions for dark-runner",
       );
     }
   });
@@ -459,7 +459,7 @@ describe("Cipher Operator-Junior agent override", () => {
     // #given
     const config = {
       agents: {
-        "cipher-runner": {
+        "dark-runner": {
           tools: {
             read: true,
             write: false,
@@ -474,7 +474,7 @@ describe("Cipher Operator-Junior agent override", () => {
     // #then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.agents?.["cipher-runner"]?.tools).toEqual({
+      expect(result.data.agents?.["dark-runner"]?.tools).toEqual({
         read: true,
         write: false,
       });
@@ -485,13 +485,13 @@ describe("Cipher Operator-Junior agent override", () => {
     // #given
     const config = {
       agents: {
-        "cipher-operator": {
+        "void-runner": {
           temperature: 0.1,
         },
-        "nexus-orchestrator": {
+        "grid-sync": {
           temperature: 0.2,
         },
-        "augur-planner": {
+        "zen-planner": {
           temperature: 0.3,
         },
       },
@@ -503,9 +503,9 @@ describe("Cipher Operator-Junior agent override", () => {
     // #then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.agents?.["cipher-operator"]?.temperature).toBe(0.1);
-      expect(result.data.agents?.["nexus-orchestrator"]?.temperature).toBe(0.2);
-      expect(result.data.agents?.["augur-planner"]?.temperature).toBe(0.3);
+      expect(result.data.agents?.["void-runner"]?.temperature).toBe(0.1);
+      expect(result.data.agents?.["grid-sync"]?.temperature).toBe(0.2);
+      expect(result.data.agents?.["zen-planner"]?.temperature).toBe(0.3);
     }
   });
 
@@ -513,10 +513,10 @@ describe("Cipher Operator-Junior agent override", () => {
     // #given
     const config = {
       agents: {
-        "tactician-strategist": {
+        "war-mind": {
           category: "ultrabrain",
         },
-        "glitch-auditor": {
+        "null-audit": {
           category: "quick",
         },
       },
@@ -528,10 +528,10 @@ describe("Cipher Operator-Junior agent override", () => {
     // #then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.agents?.["tactician-strategist"]?.category).toBe(
+      expect(result.data.agents?.["war-mind"]?.category).toBe(
         "ultrabrain",
       );
-      expect(result.data.agents?.["glitch-auditor"]?.category).toBe("quick");
+      expect(result.data.agents?.["null-audit"]?.category).toBe("quick");
     }
   });
 });

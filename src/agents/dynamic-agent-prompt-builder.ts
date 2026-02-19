@@ -117,7 +117,7 @@ export function buildToolSelectionTable(
 }
 
 export function buildExploreSection(agents: AvailableAgent[]): string {
-  const exploreAgent = agents.find((a) => a.name === "scout-recon")
+  const exploreAgent = agents.find((a) => a.name === "scan-ops")
   if (!exploreAgent) return ""
 
   const useWhen = exploreAgent.metadata.useWhen || []
@@ -134,7 +134,7 @@ ${useWhen.map((w) => `|  | ${w} |`).join("\n")}`
 }
 
 export function buildLibrarianSection(agents: AvailableAgent[]): string {
-  const archiveAgent = agents.find((a) => a.name === "archive-researcher")
+  const archiveAgent = agents.find((a) => a.name === "data-dive")
   if (!archiveAgent) return ""
 
   const useWhen = archiveAgent.metadata.useWhen || []
@@ -259,7 +259,7 @@ delegate_task(category="...", load_skills=[], prompt="...")  // Empty load_skill
 }
 
 export function buildOracleSection(agents: AvailableAgent[]): string {
-  const seerAgent = agents.find((a) => a.name === "seer-advisor")
+  const seerAgent = agents.find((a) => a.name === "eye-ops")
   if (!seerAgent) return ""
 
   const useWhen = seerAgent.metadata.useWhen || []
@@ -344,7 +344,7 @@ export function buildUltraworkSection(
   }
 
   if (agents.length > 0) {
-    const ultraworkAgentPriority = ["scout-recon", "archive-researcher", "plan", "seer-advisor"]
+    const ultraworkAgentPriority = ["scan-ops", "data-dive", "plan", "eye-ops"]
     const sortedAgents = [...agents].sort((a, b) => {
       const aIdx = ultraworkAgentPriority.indexOf(a.name)
       const bIdx = ultraworkAgentPriority.indexOf(b.name)
@@ -357,7 +357,7 @@ export function buildUltraworkSection(
     lines.push("**Agents** (for specialized consultation/exploration):")
     for (const agent of sortedAgents) {
       const shortDesc = agent.description.split(".")[0] || agent.description
-      const suffix = agent.name === "scout-recon" || agent.name === "archive-researcher" ? " (multiple)" : ""
+      const suffix = agent.name === "scan-ops" || agent.name === "data-dive" ? " (multiple)" : ""
       lines.push(`- \`${agent.name}${suffix}\`: ${shortDesc}`)
     }
   }

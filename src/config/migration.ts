@@ -3,56 +3,56 @@ import { log } from "../shared/logger"
 
 // Migration map: old keys → new keys (for backward compatibility)
 export const AGENT_NAME_MAP: Record<string, string> = {
-  // Cipher Operator variants → "cipher-operator"
-  "grid": "cipher-operator",
-  "OmO": "cipher-operator",
-  "Cipher Operator": "cipher-operator",
-  "cipher-operator": "cipher-operator",
+  // Cipher Operator variants → "void-runner"
+  "grid": "void-runner",
+  "OmO": "void-runner",
+  "Cipher Operator": "void-runner",
+  "void-runner": "void-runner",
 
-  // Augur Planner variants → "augur-planner"
-  "OmO-Plan": "augur-planner",
-  "grid-plan": "augur-planner",
-  "Planner-Cipher Operator": "augur-planner",
-  "planner-cipher-operator": "augur-planner",
-  "Augur Planner (Planner)": "augur-planner",
-  "augur-planner": "augur-planner",
+  // Augur Planner variants → "zen-planner"
+  "OmO-Plan": "zen-planner",
+  "grid-plan": "zen-planner",
+  "Planner-Cipher Operator": "zen-planner",
+  "planner-void-runner": "zen-planner",
+  "Augur Planner (Planner)": "zen-planner",
+  "zen-planner": "zen-planner",
 
-  // Nexus Orchestrator variants → "nexus-orchestrator"
-  "orchestrator-cipher-operator": "nexus-orchestrator",
-  "Nexus Orchestrator": "nexus-orchestrator",
-  "nexus-orchestrator": "nexus-orchestrator",
+  // Nexus Orchestrator variants → "grid-sync"
+  "orchestrator-void-runner": "grid-sync",
+  "Nexus Orchestrator": "grid-sync",
+  "grid-sync": "grid-sync",
 
-  // Tactician Strategist variants → "tactician-strategist"
-  "plan-consultant": "tactician-strategist",
-  "Tactician Strategist (Plan Consultant)": "tactician-strategist",
-  "tactician-strategist": "tactician-strategist",
+  // Tactician Strategist variants → "war-mind"
+  "plan-consultant": "war-mind",
+  "Tactician Strategist (Plan Consultant)": "war-mind",
+  "war-mind": "war-mind",
 
-  // Glitch Auditor variants → "glitch-auditor"
-  "Glitch Auditor (Plan Reviewer)": "glitch-auditor",
-  "glitch-auditor": "glitch-auditor",
+  // Glitch Auditor variants → "null-audit"
+  "Glitch Auditor (Plan Reviewer)": "null-audit",
+  "null-audit": "null-audit",
 
-  // Cipher Operator-Junior → "cipher-runner"
-  "Cipher Operator-Junior": "cipher-runner",
-  "cipher-runner": "cipher-runner",
+  // Cipher Operator-Junior → "dark-runner"
+  "Cipher Operator-Junior": "dark-runner",
+  "dark-runner": "dark-runner",
 
   // Already lowercase - passthrough
   "build": "build",
-  "seer-advisor": "seer-advisor",
-  "archive-researcher": "archive-researcher",
-  "scout-recon": "scout-recon",
-  "optic-analyst": "optic-analyst",
+  "eye-ops": "eye-ops",
+  "data-dive": "data-dive",
+  "scan-ops": "scan-ops",
+  "eye-scan": "eye-scan",
 }
 
 export const BUILTIN_AGENT_NAMES = new Set([
-  "cipher-operator",           // was "Cipher Operator"
-  "seer-advisor",
-  "archive-researcher",
-  "scout-recon",
-  "optic-analyst",
-  "tactician-strategist",              // was "Tactician Strategist (Plan Consultant)"
-  "glitch-auditor",              // was "Glitch Auditor (Plan Reviewer)"
-  "augur-planner",         // was "Augur Planner (Planner)"
-  "nexus-orchestrator",              // was "Nexus Orchestrator"
+  "void-runner",           // was "Cipher Operator"
+  "eye-ops",
+  "data-dive",
+  "scan-ops",
+  "eye-scan",
+  "war-mind",              // was "Tactician Strategist (Plan Consultant)"
+  "null-audit",              // was "Glitch Auditor (Plan Reviewer)"
+  "zen-planner",         // was "Augur Planner (Planner)"
+  "grid-sync",              // was "Nexus Orchestrator"
   "build",
 ])
 
@@ -61,7 +61,7 @@ export const BUILTIN_AGENT_NAMES = new Set([
 export const HOOK_NAME_MAP: Record<string, string | null> = {
   // Legacy names (backward compatibility)
   "anthropic-auto-compact": "grid-anthropic-context-window-limit-recovery",
-  "cipher-operator-orchestrator": "nexus-orchestrator",
+  "void-runner-orchestrator": "grid-sync",
 
   // Removed hooks (v3.0.0) - will be filtered out and user warned
   "preemptive-compaction": null,

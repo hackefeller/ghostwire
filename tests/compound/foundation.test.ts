@@ -2,41 +2,33 @@ import { describe, test, expect } from 'bun:test'
 
 describe('Compound Engineering - Foundation Tests', () => {
   describe('Directory Structure', () => {
-    test('creates all required compound directories', () => {
-      // Verify directory structure exists
+    test('verifies flat agent directory structure', () => {
+      // Verify agent files exist in flat structure
       const fs = require('fs');
-      const path = require('path');
-      
-      const agentDirs = [
-        'src/agents/compound/review',
-        'src/agents/compound/research', 
-        'src/agents/compound/design',
-        'src/agents/compound/workflow',
-        'src/agents/compound/docs'
+
+      const agentFiles = [
+        'src/agents/void-review-rails.ts',
+        'src/agents/void-review-python.ts',
+        'src/agents/void-review-ts.ts',
+        'src/agents/zen-review-rails.ts',
+        'src/agents/mono-review.ts',
+        'src/agents/docs-scan.ts',
+        'src/agents/learnings-scan.ts',
+        'src/agents/best-practices-scan.ts',
+        'src/agents/git-scan.ts',
+        'src/agents/figma-sync.ts',
+        'src/agents/design-check.ts',
+        'src/agents/design-loop.ts',
+        'src/agents/ui-build.ts',
+        'src/agents/flow-check.ts',
+        'src/agents/agent-arch.ts',
+        'src/agents/deploy-check.ts',
+        'src/agents/docs-write-readme.ts'
       ];
-      
-      const commandDirs = [
-        'src/features/builtin-commands/compound/workflows',
-        'src/features/builtin-commands/compound/code',
-        'src/features/builtin-commands/compound/git',
-        'src/features/builtin-commands/compound/project',
-        'src/features/builtin-commands/compound/util',
-        'src/features/builtin-commands/compound/docs'
-      ];
-      
-      const skillDirs = [
-        'src/features/builtin-skills/compound/development',
-        'src/features/builtin-skills/compound/design',
-        'src/features/builtin-skills/compound/devops',
-        'src/features/builtin-skills/compound/documentation',
-        'src/features/builtin-skills/compound/analysis'
-      ];
-      
-      const allDirs = [...agentDirs, ...commandDirs, ...skillDirs];
-      
-      allDirs.forEach(dir => {
-        expect(fs.existsSync(dir)).toBe(true);
-        expect(fs.statSync(dir).isDirectory()).toBe(true);
+
+      agentFiles.forEach(file => {
+        expect(fs.existsSync(file)).toBe(true);
+        expect(fs.statSync(file).isFile()).toBe(true);
       });
     });
   });

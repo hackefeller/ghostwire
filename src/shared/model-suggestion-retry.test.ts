@@ -247,7 +247,7 @@ describe("promptWithModelSuggestionRetry", () => {
     await promptWithModelSuggestionRetry(client as any, {
       path: { id: "session-1" },
       body: {
-        agent: "scout-recon",
+        agent: "scan-ops",
         parts: [{ type: "text", text: "hello" }],
         model: { providerID: "anthropic", modelID: "claude-sonet-4" },
       },
@@ -332,7 +332,7 @@ describe("promptWithModelSuggestionRetry", () => {
     await promptWithModelSuggestionRetry(client as any, {
       path: { id: "session-1" },
       body: {
-        agent: "scout-recon",
+        agent: "scan-ops",
         system: "You are a helpful agent",
         tools: { task: false },
         parts: [{ type: "text", text: "hello" }],
@@ -343,7 +343,7 @@ describe("promptWithModelSuggestionRetry", () => {
 
     //#then retry call should preserve all fields except corrected model
     const retryCall = promptMock.mock.calls[1][0]
-    expect(retryCall.body.agent).toBe("scout-recon")
+    expect(retryCall.body.agent).toBe("scan-ops")
     expect(retryCall.body.system).toBe("You are a helpful agent")
     expect(retryCall.body.tools).toEqual({ task: false })
     expect(retryCall.body.variant).toBe("max")

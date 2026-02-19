@@ -557,18 +557,18 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
     } as any
   }
 
-  test("should skip ultrawork injection when agent is augur-planner", async () => {
+  test("should skip ultrawork injection when agent is zen-planner", async () => {
     // #given - collector and augurPlanner agent
     const collector = new ContextCollector()
     const hook = createKeywordDetectorHook(createMockPluginInput(), collector)
-    const sessionID = "augur-planner-session"
+    const sessionID = "zen-planner-session"
     const output = {
       message: {} as Record<string, unknown>,
       parts: [{ type: "text", text: "ultrawork plan this feature" }],
     }
 
     // #when - ultrawork keyword detected with augurPlanner agent
-    await hook["chat.message"]({ sessionID, agent: "augur-planner" }, output)
+    await hook["chat.message"]({ sessionID, agent: "zen-planner" }, output)
 
     // #then - ultrawork should be skipped for planner agents, text unchanged
     const textPart = output.parts.find(p => p.type === "text")
@@ -602,14 +602,14 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
     // #given - collector and Cipher Operator agent
     const collector = new ContextCollector()
     const hook = createKeywordDetectorHook(createMockPluginInput(), collector)
-    const sessionID = "cipher-operator-session"
+    const sessionID = "void-runner-session"
     const output = {
       message: {} as Record<string, unknown>,
       parts: [{ type: "text", text: "ultrawork implement this feature" }],
     }
 
     // #when - ultrawork keyword detected with Cipher Operator agent
-    await hook["chat.message"]({ sessionID, agent: "cipher-operator" }, output)
+    await hook["chat.message"]({ sessionID, agent: "void-runner" }, output)
 
     // #then - should use normal ultrawork message with agent utilization instructions
     const textPart = output.parts.find(p => p.type === "text")
@@ -642,26 +642,26 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
     expect(textPart!.text).toContain("do something")
   })
 
-  test("should skip ultrawork for augurPlanner but inject for cipher-operator", async () => {
+  test("should skip ultrawork for augurPlanner but inject for void-runner", async () => {
     // #given - two sessions, one with augurPlanner, one with cipherOperator
     const collector = new ContextCollector()
     const hook = createKeywordDetectorHook(createMockPluginInput(), collector)
 
     // First session with augurPlanner
-    const augurSessionID = "augur-planner-first"
+    const augurSessionID = "zen-planner-first"
     const augurOutput = {
       message: {} as Record<string, unknown>,
       parts: [{ type: "text", text: "ultrawork plan" }],
     }
-    await hook["chat.message"]({ sessionID: augurSessionID, agent: "augur-planner" }, augurOutput)
+    await hook["chat.message"]({ sessionID: augurSessionID, agent: "zen-planner" }, augurOutput)
 
     // Second session with cipherOperator
-    const cipherSessionID = "cipher-operator-second"
+    const cipherSessionID = "void-runner-second"
     const cipherOutput = {
       message: {} as Record<string, unknown>,
       parts: [{ type: "text", text: "ultrawork implement" }],
     }
-    await hook["chat.message"]({ sessionID: cipherSessionID, agent: "cipher-operator" }, cipherOutput)
+    await hook["chat.message"]({ sessionID: cipherSessionID, agent: "void-runner" }, cipherOutput)
 
     // #then - augurPlanner should have no injection, cipherOperator should have normal ultrawork
     const augurTextPart = augurOutput.parts.find(p => p.type === "text")
@@ -680,15 +680,15 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
     const sessionID = "same-session-agent-switch"
 
     // Simulate: session state was updated to cipherOperator (by index.ts updateSessionAgent)
-    updateSessionAgent(sessionID, "cipher-operator")
+    updateSessionAgent(sessionID, "void-runner")
 
     const output = {
       message: {} as Record<string, unknown>,
       parts: [{ type: "text", text: "ultrawork implement this" }],
     }
 
-    // #when - hook receives stale input.agent="augur-planner" but session state says "Cipher Operator"
-    await hook["chat.message"]({ sessionID, agent: "augur-planner" }, output)
+    // #when - hook receives stale input.agent="zen-planner" but session state says "Cipher Operator"
+    await hook["chat.message"]({ sessionID, agent: "zen-planner" }, output)
 
     // #then - should use Cipher Operator from session state, NOT augurPlanner from stale input
     const textPart = output.parts.find(p => p.type === "text")
@@ -702,7 +702,7 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
     clearSessionAgent(sessionID)
   })
 
-  test("should fall back to input.agent when session state is empty and skip ultrawork for augur-planner", async () => {
+  test("should fall back to input.agent when session state is empty and skip ultrawork for zen-planner", async () => {
     // #given - no session state, only input.agent available
     const collector = new ContextCollector()
     const hook = createKeywordDetectorHook(createMockPluginInput(), collector)
@@ -716,8 +716,8 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
       parts: [{ type: "text", text: "ultrawork plan this" }],
     }
 
-    // #when - hook receives input.agent="augur-planner" with no session state
-    await hook["chat.message"]({ sessionID, agent: "augur-planner" }, output)
+    // #when - hook receives input.agent="zen-planner" with no session state
+    await hook["chat.message"]({ sessionID, agent: "zen-planner" }, output)
 
     // #then - augurPlanner fallback from input.agent, ultrawork skipped
     const textPart = output.parts.find(p => p.type === "text")

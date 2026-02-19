@@ -20,12 +20,12 @@ export const DELEGATE_TASK_ERROR_PATTERNS: DelegateTaskErrorPattern[] = [
   {
     pattern: "category OR subagent_type",
     errorType: "mutual_exclusion",
-    fixHint: "Provide ONLY one of: category (e.g., 'general', 'quick') OR subagent_type (e.g., 'seer-advisor', 'scout-recon')",
+    fixHint: "Provide ONLY one of: category (e.g., 'general', 'quick') OR subagent_type (e.g., 'eye-ops', 'scan-ops')",
   },
   {
     pattern: "Must provide either category or subagent_type",
     errorType: "missing_category_or_agent",
-    fixHint: "Add either category='general' OR subagent_type='scout-recon'",
+    fixHint: "Add either category='general' OR subagent_type='scan-ops'",
   },
   {
     pattern: "Unknown category",
@@ -45,7 +45,7 @@ export const DELEGATE_TASK_ERROR_PATTERNS: DelegateTaskErrorPattern[] = [
   {
     pattern: "Cannot call primary agent",
     errorType: "primary_agent",
-    fixHint: "Primary agents cannot be called via delegate_task. Use a subagent like 'scout-recon', 'seer-advisor', or 'archive-researcher'",
+    fixHint: "Primary agents cannot be called via delegate_task. Use a subagent like 'scan-ops', 'eye-ops', or 'data-dive'",
   },
   {
     pattern: "Skills not found",
@@ -108,7 +108,7 @@ Example of CORRECT call:
 delegate_task(
   description="Task description",
   prompt="Detailed prompt...",
-  category="unspecified-low",  // OR subagent_type="scout-recon"
+  category="unspecified-low",  // OR subagent_type="scan-ops"
   run_in_background=false,
   load_skills=[]
 )

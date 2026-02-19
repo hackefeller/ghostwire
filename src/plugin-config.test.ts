@@ -83,22 +83,22 @@ describe("mergeConfigs", () => {
     it("should deep merge agents", () => {
       const base: GhostwireConfig = {
         agents: {
-          "seer-advisor": { model: "openai/gpt-5.2" },
+          "eye-ops": { model: "openai/gpt-5.2" },
         },
       };
 
       const override: GhostwireConfig = {
         agents: {
-          "seer-advisor": { temperature: 0.5 },
-          "scout-recon": { model: "anthropic/claude-haiku-4-5" },
+          "eye-ops": { temperature: 0.5 },
+          "scan-ops": { model: "anthropic/claude-haiku-4-5" },
         },
       };
 
       const result = mergeConfigs(base, override);
 
-      expect(result.agents?.["seer-advisor"]?.model).toBe("openai/gpt-5.2");
-      expect(result.agents?.["seer-advisor"]?.temperature).toBe(0.5);
-      expect(result.agents?.["scout-recon"]?.model).toBe(
+      expect(result.agents?.["eye-ops"]?.model).toBe("openai/gpt-5.2");
+      expect(result.agents?.["eye-ops"]?.temperature).toBe(0.5);
+      expect(result.agents?.["scan-ops"]?.model).toBe(
         "anthropic/claude-haiku-4-5",
       );
     });

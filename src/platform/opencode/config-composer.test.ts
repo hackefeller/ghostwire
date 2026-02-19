@@ -4,7 +4,7 @@ import type { CategoryConfig } from "../../config/schema";
 import type { GhostwireConfig } from "../../config";
 
 import * as agents from "../../agents";
-import * as cipherJunior from "../../agents/cipher-runner";
+import * as cipherJunior from "../../agents/dark-runner";
 import * as commandLoader from "../../features/claude-code-command-loader";
 import * as builtinCommands from "../../features/builtin-commands";
 import * as skillLoader from "../../features/opencode-skill-loader";
@@ -21,19 +21,19 @@ import * as modelResolver from "../../agents/model-resolver";
 
 beforeEach(() => {
   spyOn(agents, "createBuiltinAgents" as any).mockResolvedValue({
-    "cipher-operator": {
-      name: "cipher-operator",
+    "void-runner": {
+      name: "void-runner",
       prompt: "test",
       mode: "primary",
     },
-    "seer-advisor": { name: "seer-advisor", prompt: "test", mode: "subagent" },
+    "eye-ops": { name: "eye-ops", prompt: "test", mode: "subagent" },
   });
 
   spyOn(
     cipherJunior,
     "createSisyphusJuniorAgentWithOverrides" as any,
   ).mockReturnValue({
-    name: "cipher-runner",
+    name: "dark-runner",
     prompt: "test",
     mode: "subagent",
   });
@@ -173,7 +173,7 @@ describe("Plan agent demote behavior", () => {
     expect(agents.plan.name).toBe("plan");
   });
 
-  test("augur-planner should have mode 'all' to be callable via delegate_task", async () => {
+  test("zen-planner should have mode 'all' to be callable via delegate_task", async () => {
     // #given
     const pluginConfig: GhostwireConfig = {
       cipher_agent: {
@@ -198,8 +198,8 @@ describe("Plan agent demote behavior", () => {
 
     // #then
     const agents = config.agent as Record<string, { mode?: string }>;
-    expect(agents["augur-planner"]).toBeDefined();
-    expect(agents["augur-planner"].mode).toBe("all");
+    expect(agents["zen-planner"]).toBeDefined();
+    expect(agents["zen-planner"].mode).toBe("all");
   });
 });
 
@@ -317,7 +317,7 @@ describe("Augur Planner direct override priority over category", () => {
         },
       },
       agents: {
-        "augur-planner": {
+        "zen-planner": {
           category: "test-planning",
           reasoningEffort: "low",
         },
@@ -341,8 +341,8 @@ describe("Augur Planner direct override priority over category", () => {
 
     // #then - direct override's reasoningEffort wins
     const agents = config.agent as Record<string, { reasoningEffort?: string }>;
-    expect(agents["augur-planner"]).toBeDefined();
-    expect(agents["augur-planner"].reasoningEffort).toBe("low");
+    expect(agents["zen-planner"]).toBeDefined();
+    expect(agents["zen-planner"].reasoningEffort).toBe("low");
   });
 
   test("category reasoningEffort applied when no direct override", async () => {
@@ -358,7 +358,7 @@ describe("Augur Planner direct override priority over category", () => {
         },
       },
       agents: {
-        "augur-planner": {
+        "zen-planner": {
           category: "reasoning-cat",
         },
       },
@@ -381,8 +381,8 @@ describe("Augur Planner direct override priority over category", () => {
 
     // #then - category's reasoningEffort is applied
     const agents = config.agent as Record<string, { reasoningEffort?: string }>;
-    expect(agents["augur-planner"]).toBeDefined();
-    expect(agents["augur-planner"].reasoningEffort).toBe("high");
+    expect(agents["zen-planner"]).toBeDefined();
+    expect(agents["zen-planner"].reasoningEffort).toBe("high");
   });
 
   test("direct temperature takes priority over category temperature", async () => {
@@ -398,7 +398,7 @@ describe("Augur Planner direct override priority over category", () => {
         },
       },
       agents: {
-        "augur-planner": {
+        "zen-planner": {
           category: "temp-cat",
           temperature: 0.1,
         },
@@ -422,8 +422,8 @@ describe("Augur Planner direct override priority over category", () => {
 
     // #then - direct temperature wins over category
     const agents = config.agent as Record<string, { temperature?: number }>;
-    expect(agents["augur-planner"]).toBeDefined();
-    expect(agents["augur-planner"].temperature).toBe(0.1);
+    expect(agents["zen-planner"]).toBeDefined();
+    expect(agents["zen-planner"].temperature).toBe(0.1);
   });
 });
 

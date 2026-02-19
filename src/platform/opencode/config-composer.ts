@@ -1,5 +1,5 @@
 import { createBuiltinAgents } from "../../agents";
-import { createSisyphusJuniorAgentWithOverrides } from "../../agents/cipher-runner";
+import { createSisyphusJuniorAgentWithOverrides } from "../../agents/dark-runner";
 import {
   loadUserCommands,
   loadProjectCommands,
@@ -40,7 +40,7 @@ import { AGENT_MODEL_REQUIREMENTS } from "../../agents/model-requirements";
 import {
   AUGUR_PLANNER_SYSTEM_PROMPT,
   AUGUR_PLANNER_PERMISSION,
-} from "../../agents/augur-planner-prompt";
+} from "../../agents/zen-planner";
 import { DEFAULT_CATEGORIES } from "../../tools/delegate-task/constants";
 import type { ModelCacheState } from "../../plugin-state";
 import type { CategoryConfig } from "../../config/schema";
@@ -197,21 +197,21 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       plan?: Record<string, unknown>;
       scoutRecon?: { tools?: Record<string, unknown> };
       archiveResearcher?: { tools?: Record<string, unknown> };
-      "optic-analyst"?: { tools?: Record<string, unknown> };
+      "eye-scan"?: { tools?: Record<string, unknown> };
       nexusOrchestrator?: { tools?: Record<string, unknown> };
       cipherOperator?: { tools?: Record<string, unknown> };
     };
     const configAgent = config.agent as AgentConfig | undefined;
 
-    if (isSisyphusEnabled && builtinAgents["cipher-operator"]) {
-      (config as { default_agent?: string }).default_agent = "cipher-operator";
+    if (isSisyphusEnabled && builtinAgents["void-runner"]) {
+      (config as { default_agent?: string }).default_agent = "void-runner";
 
       const agentConfig: Record<string, unknown> = {
-        "cipher-operator": builtinAgents["cipher-operator"],
+        "void-runner": builtinAgents["void-runner"],
       };
 
-      agentConfig["cipher-runner"] = createSisyphusJuniorAgentWithOverrides(
-        pluginConfig.agents?.["cipher-runner"],
+      agentConfig["dark-runner"] = createSisyphusJuniorAgentWithOverrides(
+        pluginConfig.agents?.["dark-runner"],
         config.model as string | undefined,
       );
 
@@ -242,7 +242,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         const migratedPlanConfig = migrateAgentConfig(
           planConfigWithoutName as Record<string, unknown>,
         );
-        const augurOverride = pluginConfig.agents?.["augur-planner"] as
+        const augurOverride = pluginConfig.agents?.["zen-planner"] as
           | (Record<string, unknown> & {
               category?: string;
               model?: string;
@@ -263,7 +263,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
             )
           : undefined;
 
-        const augurRequirement = AGENT_MODEL_REQUIREMENTS["augur-planner"];
+        const augurRequirement = AGENT_MODEL_REQUIREMENTS["zen-planner"];
         const connectedProviders = readConnectedProvidersCache();
         // IMPORTANT: Do NOT pass ctx.client to fetchAvailableModels during plugin initialization.
         // Calling client API (e.g., client.provider.list()) from config handler causes deadlock:
@@ -298,7 +298,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         const maxTokensToUse =
           augurOverride?.maxTokens ?? categoryConfig?.maxTokens;
         const augurBase = {
-          name: "augur-planner",
+          name: "zen-planner",
           ...(resolvedModel ? { model: resolvedModel } : {}),
           ...(variantToUse ? { variant: variantToUse } : {}),
           mode: "all" as const,
@@ -323,7 +323,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
             : {}),
         };
 
-        agentConfig["augur-planner"] = augurOverride
+        agentConfig["zen-planner"] = augurOverride
           ? { ...augurBase, ...augurOverride }
           : augurBase;
       }
@@ -354,9 +354,9 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         : {};
 
       const planDemoteConfig =
-        replacePlan && agentConfig["augur-planner"]
+        replacePlan && agentConfig["zen-planner"]
           ? {
-              ...agentConfig["augur-planner"],
+              ...agentConfig["zen-planner"],
               name: "plan",
               mode: "subagent" as const,
             }
@@ -366,7 +366,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         ...agentConfig,
         ...Object.fromEntries(
           Object.entries(builtinAgents).filter(
-            ([k]) => k !== "cipher-operator",
+            ([k]) => k !== "void-runner",
           ),
         ),
         ...userAgents,
@@ -402,12 +402,12 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       const agent = agentResult.archiveResearcher as AgentWithPermission;
       agent.permission = { ...agent.permission, "grep_app_*": "allow" };
     }
-    if (agentResult["optic-analyst"]) {
-      const agent = agentResult["optic-analyst"] as AgentWithPermission;
+    if (agentResult["eye-scan"]) {
+      const agent = agentResult["eye-scan"] as AgentWithPermission;
       agent.permission = { ...agent.permission, task: "deny", look_at: "deny" };
     }
-    if (agentResult["nexus-orchestrator"]) {
-      const agent = agentResult["nexus-orchestrator"] as AgentWithPermission;
+    if (agentResult["grid-sync"]) {
+      const agent = agentResult["grid-sync"] as AgentWithPermission;
       agent.permission = {
         ...agent.permission,
         task: "deny",
@@ -415,8 +415,8 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         delegate_task: "allow",
       };
     }
-    if (agentResult["cipher-operator"]) {
-      const agent = agentResult["cipher-operator"] as AgentWithPermission;
+    if (agentResult["void-runner"]) {
+      const agent = agentResult["void-runner"] as AgentWithPermission;
       agent.permission = {
         ...agent.permission,
         call_grid_agent: "deny",
@@ -424,8 +424,8 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         question: "allow",
       };
     }
-    if (agentResult["augur-planner"]) {
-      const agent = agentResult["augur-planner"] as AgentWithPermission;
+    if (agentResult["zen-planner"]) {
+      const agent = agentResult["zen-planner"] as AgentWithPermission;
       agent.permission = {
         ...agent.permission,
         call_grid_agent: "deny",
@@ -433,8 +433,8 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         question: "allow",
       };
     }
-    if (agentResult["cipher-runner"]) {
-      const agent = agentResult["cipher-runner"] as AgentWithPermission;
+    if (agentResult["dark-runner"]) {
+      const agent = agentResult["dark-runner"] as AgentWithPermission;
       agent.permission = { ...agent.permission, delegate_task: "allow" };
     }
 

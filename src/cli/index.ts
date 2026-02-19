@@ -29,7 +29,6 @@ program
   .command("install")
   .description("Install and configure ghostwire with interactive setup")
   .option("--no-tui", "Run in non-interactive mode (requires all options)")
-  .option("--claude <value>", "Claude subscription: no, yes, max20")
   .option("--openai <value>", "OpenAI/ChatGPT subscription: no, yes (default: no)")
   .option("--gemini <value>", "Gemini integration: no, yes")
   .option("--copilot <value>", "GitHub Copilot subscription: no, yes")
@@ -42,7 +41,6 @@ program
   .action(async (options) => {
     const args: InstallArgs = {
       tui: options.tui !== false,
-      claude: options.claude,
       openai: options.openai,
       gemini: options.gemini,
       copilot: options.copilot,

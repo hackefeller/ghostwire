@@ -265,15 +265,13 @@ describe("config-manager ANTIGRAVITY_PROVIDER_CONFIG", () => {
 });
 
 describe("generateOmoConfig - model fallback system", () => {
-  test("generates native sonnet models when Claude standard subscription", () => {
-    // #given user has Claude standard subscription (not max20)
+  test("generates OpenCode Zen models when OpenCode Zen available", () => {
+    // #given user has OpenCode Zen access
     const config: InstallConfig = {
-      hasClaude: true,
-      isMax20: false,
       hasOpenAI: false,
       hasGemini: false,
       hasCopilot: false,
-      hasOpencodeZen: false,
+      hasOpencodeZen: true,
       hasZaiCodingPlan: false,
       hasKimiForCoding: false,
     };
@@ -281,26 +279,24 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config);
 
-    // #then should use native anthropic sonnet (cost-efficient for standard plan)
+    // #then should use OpenCode Zen models
     expect(result.$schema).toBe(
       "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
     );
     expect(result.agents).toBeDefined();
     expect(
-      (result.agents as Record<string, { model: string }>)["cipher-operator"]
+      (result.agents as Record<string, { model: string }>)["void-runner"]
         .model,
-    ).toBe("anthropic/claude-sonnet-4-5");
+    ).toBe("opencode/claude-opus-4-5");
   });
 
-  test("generates native opus models when Claude max20 subscription", () => {
-    // #given user has Claude max20 subscription
+  test("generates opencode models when OpenCode Zen subscription", () => {
+    // #given user has OpenCode Zen access
     const config: InstallConfig = {
-      hasClaude: true,
-      isMax20: true,
       hasOpenAI: false,
       hasGemini: false,
       hasCopilot: false,
-      hasOpencodeZen: false,
+      hasOpencodeZen: true,
       hasZaiCodingPlan: false,
       hasKimiForCoding: false,
     };
@@ -308,18 +304,16 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config);
 
-    // #then should use native anthropic opus (max power for max20 plan)
+    // #then should use opencode models
     expect(
-      (result.agents as Record<string, { model: string }>)["cipher-operator"]
+      (result.agents as Record<string, { model: string }>)["void-runner"]
         .model,
-    ).toBe("anthropic/claude-opus-4-5");
+    ).toBe("opencode/claude-opus-4-5");
   });
 
   test("uses github-copilot sonnet fallback when only copilot available", () => {
-    // #given user has only copilot (no max plan)
+    // #given user has only copilot
     const config: InstallConfig = {
-      hasClaude: false,
-      isMax20: false,
       hasOpenAI: false,
       hasGemini: false,
       hasCopilot: true,
@@ -331,18 +325,16 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config);
 
-    // #then should use github-copilot sonnet models (copilot fallback)
+    // #then should use github-copilot opus models (copilot fallback)
     expect(
-      (result.agents as Record<string, { model: string }>)["cipher-operator"]
+      (result.agents as Record<string, { model: string }>)["void-runner"]
         .model,
-    ).toBe("github-copilot/claude-sonnet-4.5");
+    ).toBe("github-copilot/claude-opus-4.5");
   });
 
   test("uses ultimate fallback when no providers configured", () => {
     // #given user has no providers
     const config: InstallConfig = {
-      hasClaude: false,
-      isMax20: false,
       hasOpenAI: false,
       hasGemini: false,
       hasCopilot: false,
@@ -359,20 +351,18 @@ describe("generateOmoConfig - model fallback system", () => {
       "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
     );
     expect(
-      (result.agents as Record<string, { model: string }>)["cipher-operator"]
+      (result.agents as Record<string, { model: string }>)["void-runner"]
         .model,
     ).toBe("opencode/glm-4.7-free");
   });
 
   test("uses zai-coding-plan/glm-4.7 for archiveResearcher when Z.ai available", () => {
-    // #given user has Z.ai and Claude max20
+    // #given user has Z.ai and OpenCode Zen
     const config: InstallConfig = {
-      hasClaude: true,
-      isMax20: true,
       hasOpenAI: false,
       hasGemini: false,
       hasCopilot: false,
-      hasOpencodeZen: false,
+      hasOpencodeZen: true,
       hasZaiCodingPlan: true,
       hasKimiForCoding: false,
     };
@@ -380,23 +370,21 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config);
 
-    // #then archive-researcher should use zai-coding-plan/glm-4.7
+    // #then data-dive should use zai-coding-plan/glm-4.7
     expect(
-      (result.agents as Record<string, { model: string }>)["archive-researcher"]
+      (result.agents as Record<string, { model: string }>)["data-dive"]
         .model,
     ).toBe("zai-coding-plan/glm-4.7");
-    // #then other agents should use native opus (max20 plan)
+    // #then other agents should use OpenCode Zen
     expect(
-      (result.agents as Record<string, { model: string }>)["cipher-operator"]
+      (result.agents as Record<string, { model: string }>)["void-runner"]
         .model,
-    ).toBe("anthropic/claude-opus-4-5");
+    ).toBe("opencode/claude-opus-4-5");
   });
 
   test("uses native OpenAI models when only ChatGPT available", () => {
     // #given user has only ChatGPT subscription
     const config: InstallConfig = {
-      hasClaude: false,
-      isMax20: false,
       hasOpenAI: true,
       hasGemini: false,
       hasCopilot: false,
@@ -410,30 +398,28 @@ describe("generateOmoConfig - model fallback system", () => {
 
     // #then Cipher Operator should use native OpenAI (fallback within native tier)
     expect(
-      (result.agents as Record<string, { model: string }>)["cipher-operator"]
+      (result.agents as Record<string, { model: string }>)["void-runner"]
         .model,
-    ).toBe("openai/gpt-5.2");
+    ).toBe("openai/gpt-5.2-codex");
     // #then Seer Advisor should use native OpenAI (first fallback entry)
     expect(
-      (result.agents as Record<string, { model: string }>)["seer-advisor"]
+      (result.agents as Record<string, { model: string }>)["eye-ops"]
         .model,
     ).toBe("openai/gpt-5.2");
     // #then opticAnalyst should use native OpenAI (fallback within native tier)
     expect(
-      (result.agents as Record<string, { model: string }>)["optic-analyst"]
+      (result.agents as Record<string, { model: string }>)["eye-scan"]
         .model,
     ).toBe("openai/gpt-5.2");
   });
 
-  test("uses haiku for scoutRecon when Claude max20", () => {
-    // #given user has Claude max20
+  test("uses opencode claude-haiku for scoutRecon when OpenCode Zen available", () => {
+    // #given user has OpenCode Zen
     const config: InstallConfig = {
-      hasClaude: true,
-      isMax20: true,
       hasOpenAI: false,
       hasGemini: false,
       hasCopilot: false,
-      hasOpencodeZen: false,
+      hasOpencodeZen: true,
       hasZaiCodingPlan: false,
       hasKimiForCoding: false,
     };
@@ -441,21 +427,19 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config);
 
-    // #then scoutRecon should use haiku (max20 plan uses Claude quota)
+    // #then scoutRecon should use opencode claude-haiku
     expect(
-      (result.agents as Record<string, { model: string }>)["scout-recon"].model,
-    ).toBe("anthropic/claude-haiku-4-5");
+      (result.agents as Record<string, { model: string }>)["scan-ops"].model,
+    ).toBe("opencode/claude-haiku-4-5");
   });
 
-  test("uses haiku for scoutRecon regardless of max20 flag", () => {
-    // #given user has Claude but not max20
+  test("uses opencode claude-haiku for scoutRecon with OpenCode Zen", () => {
+    // #given user has OpenCode Zen
     const config: InstallConfig = {
-      hasClaude: true,
-      isMax20: false,
       hasOpenAI: false,
       hasGemini: false,
       hasCopilot: false,
-      hasOpencodeZen: false,
+      hasOpencodeZen: true,
       hasZaiCodingPlan: false,
       hasKimiForCoding: false,
     };
@@ -463,9 +447,9 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config);
 
-    // #then scoutRecon should use haiku (isMax20 doesn't affect scoutRecon anymore)
+    // #then scoutRecon should use opencode claude-haiku
     expect(
-      (result.agents as Record<string, { model: string }>)["scout-recon"].model,
-    ).toBe("anthropic/claude-haiku-4-5");
+      (result.agents as Record<string, { model: string }>)["scan-ops"].model,
+    ).toBe("opencode/claude-haiku-4-5");
   });
 });

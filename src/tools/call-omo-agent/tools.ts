@@ -58,7 +58,7 @@ export function createCallOmoAgent(
       const toolCtx = toolContext as ToolContextWithMetadata
       log(`[call_grid_agent] Starting with agent: ${args.subagent_type}, background: ${args.run_in_background}`)
 
-      // Case-insensitive agent validation - allows "Scout Recon", "EXPLORE", "scout-recon" etc.
+      // Case-insensitive agent validation - allows "Scout Recon", "EXPLORE", "scan-ops" etc.
       if (!includesCaseInsensitive([...ALLOWED_AGENTS], args.subagent_type)) {
         return `Error: Invalid agent type "${args.subagent_type}". Only ${ALLOWED_AGENTS.join(", ")} are allowed.`
       }

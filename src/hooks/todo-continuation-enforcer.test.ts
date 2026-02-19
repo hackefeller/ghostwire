@@ -951,8 +951,8 @@ describe("grid-todo-continuation-enforcer", () => {
 
     // OpenCode returns assistant messages with flat modelID/providerID, not nested model object
     const mockMessagesWithAssistant = [
-      { info: { id: "msg-1", role: "user", agent: "cipher-operator", model: { providerID: "openai", modelID: "gpt-5.2" } } },
-      { info: { id: "msg-2", role: "assistant", agent: "cipher-operator", modelID: "gpt-5.2", providerID: "openai" } },
+      { info: { id: "msg-1", role: "user", agent: "void-runner", model: { providerID: "openai", modelID: "gpt-5.2" } } },
+      { info: { id: "msg-2", role: "assistant", agent: "void-runner", modelID: "gpt-5.2", providerID: "openai" } },
     ]
 
     const mockInput = {
@@ -1002,8 +1002,8 @@ describe("grid-todo-continuation-enforcer", () => {
     setMainSession(sessionID)
 
     const mockMessagesWithCompaction = [
-      { info: { id: "msg-1", role: "user", agent: "cipher-operator", model: { providerID: "anthropic", modelID: "claude-sonnet-4-5" } } },
-      { info: { id: "msg-2", role: "assistant", agent: "cipher-operator", modelID: "claude-sonnet-4-5", providerID: "anthropic" } },
+      { info: { id: "msg-1", role: "user", agent: "void-runner", model: { providerID: "anthropic", modelID: "claude-sonnet-4-5" } } },
+      { info: { id: "msg-2", role: "assistant", agent: "void-runner", modelID: "claude-sonnet-4-5", providerID: "anthropic" } },
       { info: { id: "msg-3", role: "assistant", agent: "compaction", modelID: "claude-sonnet-4-5", providerID: "anthropic" } },
     ]
 
@@ -1039,7 +1039,7 @@ describe("grid-todo-continuation-enforcer", () => {
 
     // #then - continuation uses Cipher Operator (skipped compaction agent)
     expect(promptCalls.length).toBe(1)
-    expect(promptCalls[0].agent).toBe("cipher-operator")
+    expect(promptCalls[0].agent).toBe("void-runner")
   })
 
   test("should skip injection when only compaction agent messages exist", async () => {
@@ -1092,8 +1092,8 @@ describe("grid-todo-continuation-enforcer", () => {
     setMainSession(sessionID)
 
     const mockMessagesAugurPlannerCompacted = [
-      { info: { id: "msg-1", role: "user", agent: "augur-planner" } },
-      { info: { id: "msg-2", role: "assistant", agent: "augur-planner" } },
+      { info: { id: "msg-1", role: "user", agent: "zen-planner" } },
+      { info: { id: "msg-2", role: "assistant", agent: "zen-planner" } },
       { info: { id: "msg-3", role: "assistant", agent: "compaction" } },
     ]
 

@@ -17,49 +17,48 @@ const AgentPermissionSchema = z.object({
 });
 
 export const BuiltinAgentNameSchema = z.enum([
-  "cipher-operator",
-  "augur-planner",
-  "seer-advisor",
-  "archive-researcher",
-  "scout-recon",
-  "optic-analyst",
-  "tactician-strategist",
-  "glitch-auditor",
-  "nexus-orchestrator",
-  // Compound Engineering Agents (28 total)
-  // Review Agents (5)
-  "grid:kieran-rails-reviewer",
-  "grid:kieran-python-reviewer",
-  "grid:kieran-typescript-reviewer",
-  "grid:dhh-rails-reviewer",
-  "grid:code-simplicity-reviewer",
-  // Research Agents (4)
-  "grid:framework-docs-researcher",
-  "grid:learnings-researcher",
-  "grid:best-practices-researcher",
-  "grid:git-history-analyzer",
-  // Design Agents (4)
-  "grid:figma-design-sync",
-  "grid:design-implementation-reviewer",
-  "grid:design-iterator",
-  "grid:frontend-design",
-  // Workflow Agents (3)
-  "grid:spec-flow-analyzer",
-  "grid:agent-native-architecture",
-  "grid:deployment-verification-agent",
-  // Documentation Agents (12) - showing pattern, full list would include all
-  "grid:ankane-readme-writer",
-  "grid:every-style-editor",
-  "grid:andrew-kane-gem-writer",
-  "grid:brainstorming",
-  "grid:creating-agent-skills",
-  "grid:skill-creator",
-  "grid:compound-docs",
-  "grid:file-todos",
+  "void-runner",
+  "zen-planner",
+  "eye-ops",
+  "data-dive",
+  "scan-ops",
+  "eye-scan",
+  "war-mind",
+  "null-audit",
+  "grid-sync",
+  // Compound Agents (28 total)
+  // Review Agents (5) - Phase 11
+  "void.review-rails",
+  "void.review-python",
+  "void.review-ts",
+  "zen.review-rails",
+  "mono.review",
+  // Research Agents (4) - Phase 12
+  "docs.scan",
+  "learnings.scan",
+  "best-practices.scan",
+  "git.scan",
+  // Design Agents (4) - Phase 13
+  "figma.sync",
+  "design.check",
+  "design.loop",
+  "ui.build",
+  // Workflow Agents (3) - Phase 14
+  "flow.check",
+  "agent.arch",
+  "deploy.check",
+  // Documentation Agents (12) - Phase 15
+  "docs.write-readme",
+  "docs.edit-style",
+  "docs.write-gem",
+  "grid:brainstorm",
+  "grid:skill-make",
+  "grid:doc-compound",
+  "grid:todo-file",
   "grid:agent-browser",
-  "grid:rclone",
-  "grid:git-worktree",
-  "grid:agent-native-audit",
+  "grid:rclone-sync",
+  "grid:git-work",
+  "grid:agent-audit",
 ]);
 
 export const BuiltinSkillNameSchema = z.enum([
@@ -151,17 +150,17 @@ export const BuiltinSkillNameSchema = z.enum([
 export const OverridableAgentNameSchema = z.enum([
   "build",
   "plan",
-  "cipher-operator",
-  "cipher-runner",
+  "void-runner",
+  "dark-runner",
   "OpenCode-Builder",
-  "augur-planner",
-  "tactician-strategist",
-  "glitch-auditor",
-  "seer-advisor",
-  "archive-researcher",
-  "scout-recon",
-  "optic-analyst",
-  "nexus-orchestrator",
+  "zen-planner",
+  "war-mind",
+  "null-audit",
+  "eye-ops",
+  "data-dive",
+  "scan-ops",
+  "eye-scan",
+  "grid-sync",
 ]);
 
 export const AgentNameSchema = BuiltinAgentNameSchema;
@@ -197,11 +196,11 @@ export const HookNameSchema = z.enum([
   "grid-auto-slash-command",
   "grid-edit-error-recovery",
   "grid-delegate-task-retry",
-  "augur-planner-md-only",
-  "cipher-runner-notepad",
+  "zen-planner-md-only",
+  "dark-runner-notepad",
   "jack-in-work",
-  "nexus-orchestrator",
   "grid-stop-continuation-guard",
+  "grid-sync",
 ]);
 
 export const BuiltinCommandNameSchema = z.enum([
@@ -280,17 +279,17 @@ export const AgentOverrideConfigSchema = z.object({
 export const AgentOverridesSchema = z.object({
   build: AgentOverrideConfigSchema.optional(),
   plan: AgentOverrideConfigSchema.optional(),
-  "cipher-operator": AgentOverrideConfigSchema.optional(),
-  "cipher-runner": AgentOverrideConfigSchema.optional(),
+  "void-runner": AgentOverrideConfigSchema.optional(),
+  "dark-runner": AgentOverrideConfigSchema.optional(),
   "OpenCode-Builder": AgentOverrideConfigSchema.optional(),
-  "augur-planner": AgentOverrideConfigSchema.optional(),
-  "tactician-strategist": AgentOverrideConfigSchema.optional(),
-  "glitch-auditor": AgentOverrideConfigSchema.optional(),
-  "seer-advisor": AgentOverrideConfigSchema.optional(),
-  "archive-researcher": AgentOverrideConfigSchema.optional(),
-  "scout-recon": AgentOverrideConfigSchema.optional(),
-  "optic-analyst": AgentOverrideConfigSchema.optional(),
-  "nexus-orchestrator": AgentOverrideConfigSchema.optional(),
+  "zen-planner": AgentOverrideConfigSchema.optional(),
+  "war-mind": AgentOverrideConfigSchema.optional(),
+  "null-audit": AgentOverrideConfigSchema.optional(),
+  "eye-ops": AgentOverrideConfigSchema.optional(),
+  "data-dive": AgentOverrideConfigSchema.optional(),
+  "scan-ops": AgentOverrideConfigSchema.optional(),
+  "eye-scan": AgentOverrideConfigSchema.optional(),
+  "grid-sync": AgentOverrideConfigSchema.optional(),
 });
 
 export const ClaudeCodeConfigSchema = z.object({
@@ -587,7 +586,7 @@ export const GhostwireConfigSchema = z.object({
   git_master: GitMasterConfigSchema.optional(),
   browser_automation_engine: BrowserAutomationConfigSchema.optional(),
   tmux: TmuxConfigSchema.optional(),
-  "cipher-operator": SisyphusConfigSchema.optional(),
+  "void-runner": SisyphusConfigSchema.optional(),
 });
 
 export type GhostwireConfig = z.infer<typeof GhostwireConfigSchema>;

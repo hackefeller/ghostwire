@@ -1,4 +1,4 @@
-import { describe, expect, it, mock, beforeEach } from "bun:test"
+import { describe, expect, it, mock, beforeEach, afterEach } from "bun:test"
 
 // Mock dependencies before importing
 const mockInjectHookMessage = mock(() => true)
@@ -11,7 +11,8 @@ mock.module("../../shared/logger", () => ({
 }))
 
 mock.module("../../shared/system-directive", () => ({
-  createSystemDirective: (type: string) => `[DIRECTIVE:${type}]`,
+  SYSTEM_DIRECTIVE_PREFIX: "[SYSTEM DIRECTIVE: GHOSTWIRE",
+  createSystemDirective: (type: string) => `[SYSTEM DIRECTIVE: GHOSTWIRE - ${type}]`,
   SystemDirectiveTypes: {
     TODO_CONTINUATION: "TODO CONTINUATION",
     RALPH_LOOP: "RALPH LOOP",

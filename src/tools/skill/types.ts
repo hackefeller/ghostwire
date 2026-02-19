@@ -29,3 +29,29 @@ export interface SkillLoadOptions {
   /** Git master configuration for watermark/co-author settings */
   gitMasterConfig?: GitMasterConfig
 }
+
+// CRUD Types
+export interface SkillListArgs {
+  scope?: "builtin" | "project" | "user" | "all"
+}
+
+export interface SkillCreateArgs {
+  name: string
+  description: string
+  template?: "agent" | "tool" | "analysis" | "hook"
+  scope?: "project" | "user"
+  content?: string
+}
+
+export interface SkillUpdateArgs {
+  skill_name: string
+  name?: string
+  description?: string
+  content?: string
+  append?: string
+}
+
+export interface SkillDeleteArgs {
+  skill_name: string
+  force?: boolean
+}

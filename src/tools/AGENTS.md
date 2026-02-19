@@ -207,6 +207,60 @@ const result = await todo_delete({
 - `completed` - Finished
 - `cancelled` - Cancelled/abandoned
 
+## SKILL CRUD OPERATIONS
+
+Ghostwire provides CRUD operations for managing skills. Skills are stored as SKILL.md files in project or user directories.
+
+### Skill List
+
+Lists all available skills with filtering by scope:
+
+```typescript
+const result = await skill_list({ scope: "builtin" })
+// scope: "builtin" | "project" | "user" | "all" (default)
+```
+
+### Skill Create
+
+Creates a new skill from a template:
+
+```typescript
+const result = await skill_create({
+  name: "security-audit",
+  description: "Analyze code for security vulnerabilities",
+  template: "analysis",  // "agent" | "tool" | "analysis" | "hook"
+  scope: "project",     // or "user"
+})
+```
+
+### Skill Update
+
+Updates skill metadata or content:
+
+```typescript
+const result = await skill_update({
+  skill_name: "security-audit",
+  description: "Enhanced security analysis",
+  append: "\n## Additional Checks\n- Check for XSS vulnerabilities",
+})
+```
+
+### Skill Delete
+
+Deletes a custom skill (builtin skills are protected):
+
+```typescript
+const result = await skill_delete({
+  skill_name: "old-skill",
+})
+```
+
+### Builtin Skills
+
+The following skills are protected and cannot be modified or deleted:
+- `playwright`, `agent-browser`, `git-master`
+- Any skill with `builtin:` prefix
+
 ## ANTI-PATTERNS
 
 - **Sequential bash**: Use `&&` or delegation

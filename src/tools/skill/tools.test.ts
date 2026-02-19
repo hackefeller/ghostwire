@@ -113,9 +113,9 @@ describe("skill tool - agent restriction", () => {
 
   it("allows skill when agent matches restriction", async () => {
     // #given
-    const loadedSkills = [createMockSkill("restricted-skill", { agent: "sisyphus" })]
+    const loadedSkills = [createMockSkill("restricted-skill", { agent: "cipher-operator" })]
     const tool = createSkillTool({ skills: loadedSkills })
-    const context = { ...mockContext, agent: "sisyphus" }
+    const context = { ...mockContext, agent: "cipher-operator" }
 
     // #when
     const result = await tool.execute({ name: "restricted-skill" }, context)
@@ -126,25 +126,25 @@ describe("skill tool - agent restriction", () => {
 
   it("throws error when agent does not match restriction", async () => {
     // #given
-    const loadedSkills = [createMockSkill("sisyphus-only-skill", { agent: "sisyphus" })]
+    const loadedSkills = [createMockSkill("cipher-operator-only-skill", { agent: "cipher-operator" })]
     const tool = createSkillTool({ skills: loadedSkills })
-    const context = { ...mockContext, agent: "oracle" }
+    const context = { ...mockContext, agent: "seer-advisor" }
 
     // #when / #then
-    await expect(tool.execute({ name: "sisyphus-only-skill" }, context)).rejects.toThrow(
-      'Skill "sisyphus-only-skill" is restricted to agent "sisyphus"'
+    await expect(tool.execute({ name: "cipher-operator-only-skill" }, context)).rejects.toThrow(
+      'Skill "cipher-operator-only-skill" is restricted to agent "cipher-operator"'
     )
   })
 
   it("throws error when context agent is undefined for restricted skill", async () => {
     // #given
-    const loadedSkills = [createMockSkill("sisyphus-only-skill", { agent: "sisyphus" })]
+    const loadedSkills = [createMockSkill("cipher-operator-only-skill", { agent: "cipher-operator" })]
     const tool = createSkillTool({ skills: loadedSkills })
     const contextWithoutAgent = { ...mockContext, agent: undefined as unknown as string }
 
     // #when / #then
-    await expect(tool.execute({ name: "sisyphus-only-skill" }, contextWithoutAgent)).rejects.toThrow(
-      'Skill "sisyphus-only-skill" is restricted to agent "sisyphus"'
+    await expect(tool.execute({ name: "cipher-operator-only-skill" }, contextWithoutAgent)).rejects.toThrow(
+      'Skill "cipher-operator-only-skill" is restricted to agent "cipher-operator"'
     )
   })
 

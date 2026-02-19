@@ -3,7 +3,7 @@ import { mkdirSync, writeFileSync, rmSync, existsSync } from "node:fs"
 import { join } from "node:path"
 import { tmpdir } from "node:os"
 
-const TEST_DIR = join(tmpdir(), "omo-test-session-manager")
+const TEST_DIR = join(tmpdir(), "grid-test-session-manager")
 const TEST_MESSAGE_STORAGE = join(TEST_DIR, "message")
 const TEST_PART_STORAGE = join(TEST_DIR, "part")
 const TEST_SESSION_STORAGE = join(TEST_DIR, "session")
@@ -163,7 +163,7 @@ describe("session-manager storage", () => {
       JSON.stringify({
         id: "msg_002",
         role: "assistant",
-        agent: "oracle",
+        agent: "seer-advisor",
         time: { created: now },
       })
     )
@@ -176,7 +176,7 @@ describe("session-manager storage", () => {
     expect(info?.id).toBe(sessionID)
     expect(info?.message_count).toBe(2)
     expect(info?.agents_used).toContain("build")
-    expect(info?.agents_used).toContain("oracle")
+    expect(info?.agents_used).toContain("seer-advisor")
   })
 })
 

@@ -2,7 +2,7 @@
 
 ## OVERVIEW
 
-20+ tools: LSP (6), AST-Grep (2), Search (2), Session (4), Agent delegation (4), System (2), Skill (3).
+20+ tools: LSP (6), AST-Grep (2), Search (2), Session (7), Agent delegation (4), System (2), Skill (3).
 
 ## STRUCTURE
 
@@ -16,7 +16,7 @@ tools/
 ├── lsp/              # 6 tools: definition, references, symbols, diagnostics, rename (client.ts 596 lines)
 ├── ast-grep/         # 2 tools: search, replace (25 languages)
 ├── delegate-task/    # Category-based routing (1070 lines)
-├── session-manager/  # 4 tools: list, read, search, info
+├── session-manager/  # 7 tools: list, read, search, info, create, update, delete
 ├── grep/             # Custom grep with timeout (60s, 10MB)
 ├── glob/             # 60s timeout, 100 file limit
 ├── interactive-bash/ # Tmux session management
@@ -24,7 +24,7 @@ tools/
 ├── skill/            # Skill execution
 ├── skill-mcp/        # Skill MCP operations
 ├── slashcommand/     # Slash command dispatch
-├── call-omo-agent/   # Direct agent invocation
+├── call-grid-agent/   # Direct agent invocation
 └── background-task/  # background_output, background_cancel
 ```
 
@@ -34,8 +34,8 @@ tools/
 |----------|-------|---------|
 | LSP | lsp_goto_definition, lsp_find_references, lsp_symbols, lsp_diagnostics, lsp_prepare_rename, lsp_rename | Direct |
 | Search | ast_grep_search, ast_grep_replace, grep, glob | Direct |
-| Session | session_list, session_read, session_search, session_info | Direct |
-| Agent | delegate_task, call_omo_agent | Factory |
+| Session | session_list, session_read, session_search, session_info, session_create, session_update, session_delete | Direct |
+| Agent | delegate_task, call_grid_agent | Factory |
 | Background | background_output, background_cancel | Factory |
 | System | interactive_bash, look_at | Mixed |
 | Skill | skill, skill_mcp, slashcommand | Factory |
@@ -70,6 +70,76 @@ export function createDelegateTask(ctx, manager): ToolDefinition {
 - **Tool names**: snake_case (`lsp_goto_definition`)
 - **Functions**: camelCase (`createDelegateTask`)
 - **Directories**: kebab-case (`delegate-task/`)
+
+## SESSION CRUD OPERATIONS
+
+Ghostwire provides full CRUD (Create, Read, Update, Delete) operations for OpenCode sessions, enabling agents to programmatically manage their workspace.
+
+### Session Create
+
+Creates a new session with optional parent-child relationship:
+
+```typescript
+const result = await session_create({
+  title: "Security audit - auth module",
+  description: "Analyze authentication flows",
+  parent_session_id: "ses_parent123",  // Optional: creates child session
+})
+```
+
+### Session Update
+
+Updates session metadata:
+
+```typescript
+const result = await session_update({
+  session_id: "ses_abc123",
+  title: "Updated: Security audit",
+  description: "Enhanced analysis scope",
+})
+```
+
+### Session Delete
+
+Deletes session with configurable cascade behavior:
+
+```typescript
+// Safe delete - rejects if children exist
+const result = await session_delete({
+  session_id: "ses_abc123",
+})
+
+// Cascade delete - removes children recursively
+const result = await session_delete({
+  session_id: "ses_abc123",
+  cascade: true,
+  reason: "Analysis complete",
+})
+```
+
+### Cascade Behavior
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `cascade` | `false` | If true, recursively delete child sessions |
+| `force` | `false` | If true, bypass safety checks |
+| `archive_todos` | `true` | If true, archive todos instead of deleting |
+
+### Events
+
+Session CRUD operations emit events that hooks can listen to:
+
+```typescript
+import { onSessionEvent } from "./tools"
+
+onSessionEvent((event) => {
+  if (event.type === "session.created") {
+    console.log(`Session ${event.session_id} created`)
+  }
+})
+```
+
+Event types: `session.created`, `session.updated`, `session.deleted`, `session.archived`
 
 ## ANTI-PATTERNS
 

@@ -1,15 +1,15 @@
 import * as fs from "fs";
 import * as path from "path";
-import { GhostwireConfigSchema, type GhostwireConfig } from "./config";
+import { GhostwireConfigSchema, type GhostwireConfig } from "./platform/config";
 import {
   log,
   deepMerge,
   addConfigLoadError,
   parseJsonc,
   detectConfigFile,
-} from "./shared";
+} from "./integration/shared";
 import { getOpenCodeConfigDir } from "./platform/opencode/config-dir";
-import { migrateConfigFile } from "./config/migration";
+import { migrateConfigFile } from "./platform/config/migration";
 
 export function loadConfigFromPath(
   configPath: string,

@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "fs"
 import { join } from "path"
-import { log } from "../../shared/logger"
-import { getOpenCodeCacheDir } from "../../shared/data-path"
+import { log } from "../../integration/shared/logger"
+import { getOpenCodeCacheDir } from "../../integration/shared/data-path"
 import { readProviderModelsCache, hasProviderModelsCache } from "./connected-providers-cache"
 
 /**

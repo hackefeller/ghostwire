@@ -5,7 +5,7 @@ import {
   getLatestVersion,
   isLocalDevMode,
   findPluginEntry,
-} from "../../../hooks/auto-update-checker/checker"
+} from "../../../orchestration/hooks/auto-update-checker/checker"
 
 function compareVersions(current: string, latest: string): boolean {
   const parseVersion = (v: string): number[] => {
@@ -50,7 +50,7 @@ export async function getVersionInfo(): Promise<VersionCheckInfo> {
   }
 
   const currentVersion = getCachedVersion()
-  const { extractChannel } = await import("../../../hooks/auto-update-checker/index")
+  const { extractChannel } = await import("../../../orchestration/hooks/auto-update-checker/index")
   const channel = extractChannel(pluginInfo?.pinnedVersion ?? currentVersion)
   const latestVersion = await getLatestVersion(channel)
 

@@ -1,6 +1,6 @@
 ---
 description: Generate an actionable, dependency-ordered tasks.md for the feature based on available design artifacts.
-model: anthropic/claude-haiku-4-5
+model: github-copilot/claude-haiku-4.5
 handoffs: 
   - label: Analyze For Consistency
     agent: speckit.analyze

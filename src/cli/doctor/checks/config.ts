@@ -5,9 +5,9 @@ import { CHECK_IDS, CHECK_NAMES, PACKAGE_NAME } from "../constants";
 import {
   parseJsonc,
   detectConfigFile,
-} from "../../../shared";
+} from "../../../integration/shared";
 import { getOpenCodeConfigDir } from "../../../platform/opencode/config-dir";
-import { GhostwireConfigSchema } from "../../../config";
+import { GhostwireConfigSchema } from "../../../platform/config";
 
 const USER_CONFIG_DIR = getOpenCodeConfigDir({ binary: "opencode" });
 const USER_CONFIG_BASE = join(USER_CONFIG_DIR, `${PACKAGE_NAME}`);

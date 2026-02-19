@@ -1,12 +1,12 @@
 import { readFileSync, existsSync } from "node:fs"
 import type { CheckResult, CheckDefinition } from "../types"
 import { CHECK_IDS, CHECK_NAMES } from "../constants"
-import { parseJsonc, detectConfigFile } from "../../../shared"
+import { parseJsonc, detectConfigFile } from "../../../integration/shared"
 import {
   AGENT_MODEL_REQUIREMENTS,
   CATEGORY_MODEL_REQUIREMENTS,
   type ModelRequirement,
-} from "../../../agents/model-requirements"
+} from "../../../orchestration/agents/model-requirements"
 import { homedir } from "node:os"
 import { join } from "node:path"
 

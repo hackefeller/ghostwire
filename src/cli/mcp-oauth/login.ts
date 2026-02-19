@@ -1,4 +1,4 @@
-import { McpOAuthProvider } from "../../features/mcp-oauth/provider"
+import { McpOAuthProvider } from "../../execution/features/mcp-oauth/provider"
 
 export interface LoginOptions {
   serverUrl?: string

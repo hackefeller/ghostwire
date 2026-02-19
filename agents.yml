@@ -44,7 +44,7 @@ agents:
 
   - id: scout-recon
     display_name: scout-recon
-    model: anthropic/claude-haiku-4-5
+    model: github-copilot/claude-haiku-4.5
     purpose: Fast codebase grep
     fallbacks:
       - gpt-5-mini

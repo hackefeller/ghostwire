@@ -1,6 +1,6 @@
 ---
 description: Create or update the feature specification from a natural language feature description.
-model: anthropic/claude-haiku-4-5
+model: github-copilot/claude-haiku-4.5
 handoffs: 
   - label: Build Technical Plan
     agent: speckit.plan

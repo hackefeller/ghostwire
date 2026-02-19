@@ -1,6 +1,6 @@
 ---
 description: Execute the implementation plan by processing and executing all tasks defined in tasks.md
-model: anthropic/claude-haiku-4-5
+model: github-copilot/claude-haiku-4.5
 ---
 
 ## User Input

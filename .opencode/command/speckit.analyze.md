@@ -1,6 +1,6 @@
 ---
 description: Perform a non-destructive cross-artifact consistency and quality analysis across spec.md, plan.md, and tasks.md after task generation.
-model: anthropic/claude-haiku-4-5
+model: github-copilot/claude-haiku-4.5
 ---
 
 ## User Input

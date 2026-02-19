@@ -3,7 +3,7 @@ import { homedir } from "node:os"
 import { join } from "node:path"
 import {
   parseJsonc,
-} from "../shared"
+} from "../integration/shared"
 import {
   getOpenCodeConfigPaths,
   type OpenCodeBinaryType,

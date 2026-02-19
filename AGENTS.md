@@ -1,7 +1,7 @@
 # PROJECT KNOWLEDGE BASE
 
-**Generated:** 2026-02-19T12:45:00+09:00
-**Commit:** Phase 2 in progress
+**Generated:** 2026-02-19T14:00:00+09:00
+**Commit:** Phase 4 complete
 **Branch:** 042-reorganize-repo-topology
 
 ---
@@ -40,10 +40,13 @@ ghostwire/
 │   ├── execution/      # Features + Tools (what does work) ✅ MOVED (Phase 2)
 │   │   ├── features/      # Background agents, Claude Code compat
 │   │   └── tools/         # 20+ tools
-│   ├── shared/         # Cross-cutting utilities (⏳ Phase 3)
-│   ├── mcp/            # Built-in MCPs (⏳ Phase 3)
-│   ├── config/         # Zod schema (⏳ Phase 4)
-│   ├── platform/       # Platform-specific code (not moving)
+│   ├── integration/    # Shared utilities + MCPs (what integrates) ✅ MOVED (Phase 3)
+│   │   ├── shared/        # Cross-cutting utilities (logger, parser, etc.)
+│   │   └── mcp/           # Built-in MCPs (websearch, context7, grep_app)
+│   ├── platform/       # Config + Platform-specific (what configures) ✅ MOVED (Phase 4)
+│   │   ├── config/        # Zod schema, migrations, permission compat
+│   │   ├── opencode/      # OpenCode-specific config (config-dir, config-composer)
+│   │   └── claude/        # Claude-specific config (config-dir)
 │   ├── cli/            # CLI installer, doctor (not moving)
 │   └── index.ts        # Main plugin entry (672 lines)
 ├── script/             # build-schema.ts, build-binaries.ts

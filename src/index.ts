@@ -84,19 +84,23 @@ import { clearBoulderState } from "./features/boulder-state";
 import { type HookName } from "./config";
 import {
   log,
-  detectExternalNotificationPlugin,
-  getNotificationConflictWarning,
   resetMessageCursor,
   includesCaseInsensitive,
-  hasConnectedProvidersCache,
+  runHookWithTelemetry,
+} from "./shared";
+import {
+  detectExternalNotificationPlugin,
+  getNotificationConflictWarning,
+} from "./platform/opencode/external-plugin-detector";
+import { hasConnectedProvidersCache } from "./platform/opencode/connected-providers-cache";
+import {
   getOpenCodeVersion,
   isOpenCodeVersionAtLeast,
   OPENCODE_NATIVE_AGENTS_INJECTION_VERSION,
-  runHookWithTelemetry,
-} from "./shared";
+} from "./platform/opencode/version";
 import { loadPluginConfig } from "./plugin-config";
 import { createModelCacheState, getModelLimit } from "./plugin-state";
-import { createConfigHandler } from "./plugin-handlers";
+import { createConfigHandler } from "./platform/opencode/config-composer";
 
 const GhostwirePlugin: Plugin = async (ctx) => {
   log("[GhostwirePlugin] ENTRY - plugin loading", { directory: ctx.directory });

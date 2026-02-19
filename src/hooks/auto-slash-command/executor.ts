@@ -5,9 +5,9 @@ import {
   resolveCommandsInText,
   resolveFileReferencesInText,
   sanitizeModelField,
-  getClaudeConfigDir,
-  getOpenCodeConfigDir,
 } from "../../shared"
+import { getClaudeConfigDir } from "../../platform/claude/config-dir"
+import { getOpenCodeConfigDir } from "../../platform/opencode/config-dir"
 import type { CommandFrontmatter } from "../../features/claude-code-command-loader/types"
 import { isMarkdownFile } from "../../shared/file-utils"
 import { discoverAllSkills, type LoadedSkill, type LazyContentLoader } from "../../features/opencode-skill-loader"

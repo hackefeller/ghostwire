@@ -2,7 +2,7 @@
 
 ## Overview
 
-Design automatic migration system for transitioning from import-based configuration to unified compound-engineering configuration.
+Design automatic migration system for transitioning from import-based configuration to unified ghostwire configuration.
 
 ## Configuration Schema Evolution
 
@@ -193,9 +193,9 @@ export function showMigrationNotification(config: UnifiedConfiguration): void {
     const daysAgo = Math.floor(timeSince / (1000 * 60 * 60 * 24));
     
     if (daysAgo === 0) {
-      console.log("✅ Configuration migrated to unified compound-engineering system today");
+      console.log("✅ Configuration migrated to unified ghostwire system today");
       console.log(`📦 ${getComponentCount(compoundConfig)} components now available directly`);
-      console.log(`🔧 Use 'grid:' prefix to access compound-engineering features`);
+      console.log(`🔧 Use 'grid:' prefix to access ghostwire features`);
     }
   }
 }
@@ -289,7 +289,7 @@ describe('Configuration Migration', () => {
 
 ### **Configuration Guide Updates**
 - Remove import system documentation sections
-- Add unified compound-engineering configuration examples
+- Add unified ghostwire configuration examples
 - Document migration process and rollback procedures
 - Update troubleshooting section for new configuration format
 

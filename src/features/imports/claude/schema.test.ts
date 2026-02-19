@@ -16,7 +16,7 @@ describe("ClaudeImportConfigSchema", () => {
       warnings: true,
       atomic: false,
       dry_run: true,
-      path: "/plugins/compound-engineering",
+      path: "/plugin",
       namespace_prefix: "compound",
       namespace_overrides: {
         "security-sentinel": "custom-security",

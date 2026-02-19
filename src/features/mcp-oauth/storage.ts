@@ -1,6 +1,6 @@
 import { chmodSync, existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs"
 import { dirname, join } from "node:path"
-import { getOpenCodeConfigDir } from "../../shared"
+import { getOpenCodeConfigDir } from "../../platform/opencode/config-dir"
 
 export interface OAuthTokenData {
   accessToken: string

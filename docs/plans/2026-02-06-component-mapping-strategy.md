@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document defines the mapping strategy for integrating 125+ compound-engineering components into ghostwire architecture.
+This document defines the mapping strategy for integrating 125+ ghostwire components into ghostwire architecture.
 
 ## Component Analysis
 
@@ -123,7 +123,7 @@ Analysis Skills (8):
 **Primary Namespace**: `grid:` prefix for all merged components
 
 **Rationale**: 
-- Clear identification of compound-engineering origin
+- Clear identification of ghostwire origin
 - Prevents naming conflicts with existing ghostwire components
 - Maintains traceability for debugging and documentation
 - Allows selective enabling/disabling by namespace
@@ -420,4 +420,4 @@ const compoundSkills: BuiltinSkill[] = [
 6. Implement configuration migration
 7. Comprehensive testing
 
-This mapping strategy provides a clear, systematic approach to integrating all 125+ compound-engineering components while maintaining system stability and performance.
+This mapping strategy provides a clear, systematic approach to integrating all 125+ ghostwire components while maintaining system stability and performance.

@@ -5,8 +5,8 @@ import { PACKAGE_NAME } from "./constants"
 import { log } from "../../shared/logger"
 import { getConfigLoadErrors, clearConfigLoadErrors } from "../../shared/config-errors"
 import { runBunInstall } from "../../cli/config-manager"
-import { isModelCacheAvailable } from "../../shared/model-availability"
-import { hasConnectedProvidersCache, updateConnectedProvidersCache } from "../../shared/connected-providers-cache"
+import { isModelCacheAvailable } from "../../platform/opencode/model-availability"
+import { hasConnectedProvidersCache, updateConnectedProvidersCache } from "../../platform/opencode/connected-providers-cache"
 import type { AutoUpdateCheckerOptions } from "./types"
 
 const SISYPHUS_SPINNER = ["·", "•", "●", "○", "◌", "◦", " "]

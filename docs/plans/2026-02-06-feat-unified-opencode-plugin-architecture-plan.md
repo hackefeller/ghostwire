@@ -8,13 +8,13 @@ date: 2026-02-06
 
 ## Overview
 
-Successfully consolidated ghostwire and compound-engineering into a single unified plugin. All 125 components are now natively available with the `grid:` namespace prefix in ghostwire v3.2.0.
+Successfully consolidated ghostwire and ghostwire into a single unified plugin. All 125 components are now natively available with the `grid:` namespace prefix in ghostwire v3.2.0.
 
 ## Problem Statement (Resolved in v3.2.0)
 
 Previously, users needed to manage two separate plugins:
 1. **ghostwire**: Native OpenCode orchestration with agents, hooks, tools, MCPs
-2. **compound-engineering-plugin**: Advanced agents, commands, and skills (now integrated)
+2. **ghostwire**: Advanced agents, commands, and skills (now integrated)
 
 This creates:
 - Configuration fragmentation across two plugins
@@ -55,7 +55,7 @@ This creates:
 - Extend with conversion rules, validation, conflict resolution
 
 **Layer 3: Feature Bundles** (New)
-- Location: `src/features/bundles/compound-engineering/`
+- Location: `src/features/bundles/ghostwire/`
 - Wrap imported components as first-class OpenCode features
 - Configurable enable/disable per bundle
 
@@ -301,7 +301,7 @@ export const FeatureBundleConfigSchema = z.object({
 
 ## Future Considerations
 
-- Additional feature bundles beyond compound-engineering
+- Additional feature bundles beyond ghostwire
 - General-purpose converter for other plugin formats
 - Hot-reload for imported components
 - Plugin marketplace integration

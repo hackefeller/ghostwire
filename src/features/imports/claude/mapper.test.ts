@@ -22,7 +22,7 @@ describe("importClaudePluginFromPath", () => {
     //#when importing from missing path
     const result = await importClaudePluginFromPath({
       path: pluginPath,
-      pluginName: "compound-engineering",
+      pluginName: "ghostwire",
     })
 
     //#then returns empty components with warning
@@ -34,7 +34,7 @@ describe("importClaudePluginFromPath", () => {
 
   it("imports commands, skills, and agents from a plugin directory", async () => {
     //#given a plugin directory with commands, skills, and agents
-    const pluginRoot = join(TEST_DIR, "compound-engineering")
+    const pluginRoot = join(TEST_DIR, "ghostwire")
     const commandsDir = join(pluginRoot, "commands")
     const skillsDir = join(pluginRoot, "skills", "frontend-design")
     const agentsDir = join(pluginRoot, "agents")
@@ -61,7 +61,7 @@ describe("importClaudePluginFromPath", () => {
     //#when importing from plugin path
     const result = await importClaudePluginFromPath({
       path: pluginRoot,
-      pluginName: "compound-engineering",
+      pluginName: "ghostwire",
     })
 
     //#then returns namespaced components
@@ -69,9 +69,9 @@ describe("importClaudePluginFromPath", () => {
     expect(result.report.converted.skills).toBe(1)
     expect(result.report.converted.agents).toBe(1)
 
-    expect(result.components.commands["compound-engineering:workflows-plan"]).toBeDefined()
-    expect(result.components.skills["compound-engineering:frontend-design"]).toBeDefined()
-    expect(result.components.agents["compound-engineering:architecture-strategist"]).toBeDefined()
+    expect(result.components.commands["ghostwire:workflows-plan"]).toBeDefined()
+    expect(result.components.skills["ghostwire:frontend-design"]).toBeDefined()
+    expect(result.components.agents["ghostwire:architecture-strategist"]).toBeDefined()
   })
 
   it("applies custom namespace prefix", async () => {

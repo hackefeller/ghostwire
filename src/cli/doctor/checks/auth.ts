@@ -2,7 +2,8 @@ import { existsSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import type { CheckResult, CheckDefinition, AuthProviderInfo, AuthProviderId } from "../types"
 import { CHECK_IDS, CHECK_NAMES } from "../constants"
-import { parseJsonc, getOpenCodeConfigDir } from "../../../shared"
+import { parseJsonc } from "../../../shared"
+import { getOpenCodeConfigDir } from "../../../platform/opencode/config-dir"
 
 const OPENCODE_CONFIG_DIR = getOpenCodeConfigDir({ binary: "opencode" })
 const OPENCODE_JSON = join(OPENCODE_CONFIG_DIR, "opencode.json")

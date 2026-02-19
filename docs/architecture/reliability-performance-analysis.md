@@ -6,7 +6,7 @@ Date: 2026-02-18
 
 Static + dynamic analysis of the active runtime pipeline:
 - plugin bootstrap and lifecycle hooks (`src/index.ts`)
-- config composition (`src/plugin-config.ts`, `src/plugin-handlers/config-handler.ts`)
+- config composition (`src/plugin-config.ts`, `src/platform/opencode/config-composer.ts`)
 - background orchestration (`src/features/background-agent/manager.ts`)
 - tool paths (`src/tools/*`)
 

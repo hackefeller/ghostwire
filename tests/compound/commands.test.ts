@@ -6,30 +6,30 @@ describe("Compound Engineering Commands", () => {
     test("all compound command names are valid", () => {
       //#given
       const compoundCommands = [
-        "grid:workflows:plan",
-        "grid:workflows:create",
-        "grid:workflows:status",
-        "grid:workflows:complete",
-        "grid:code:refactor",
-        "grid:code:review",
-        "grid:code:optimize",
-        "grid:code:format",
-        "grid:git:smart-commit",
-        "grid:git:branch",
-        "grid:git:merge",
-        "grid:git:cleanup",
-        "grid:project:init",
-        "grid:project:build",
-        "grid:project:deploy",
-        "grid:project:test",
-        "grid:util:clean",
-        "grid:util:backup",
-        "grid:util:restore",
-        "grid:util:doctor",
-        "grid:docs:deploy-docs",
-        "grid:docs:release-docs",
-        "grid:docs:feature-video",
-        "grid:docs:test-browser",
+        "ghostwire:workflows:plan",
+        "ghostwire:workflows:create",
+        "ghostwire:workflows:status",
+        "ghostwire:workflows:complete",
+        "ghostwire:code:refactor",
+        "ghostwire:code:review",
+        "ghostwire:code:optimize",
+        "ghostwire:code:format",
+        "ghostwire:git:smart-commit",
+        "ghostwire:git:branch",
+        "ghostwire:git:merge",
+        "ghostwire:git:cleanup",
+        "ghostwire:project:init",
+        "ghostwire:project:build",
+        "ghostwire:project:deploy",
+        "ghostwire:project:test",
+        "ghostwire:util:clean",
+        "ghostwire:util:backup",
+        "ghostwire:util:restore",
+        "ghostwire:util:doctor",
+        "ghostwire:docs:deploy-docs",
+        "ghostwire:docs:release-docs",
+        "ghostwire:docs:feature-video",
+        "ghostwire:docs:test-browser",
       ]
 
       //#when
@@ -40,19 +40,19 @@ describe("Compound Engineering Commands", () => {
       expect(failures.length).toBe(0)
     })
 
-    test("all command names follow grid:category:action pattern", () => {
+    test("all command names follow ghostwire:category:action pattern", () => {
       //#given
       const compoundCommands = [
-        "grid:workflows:plan",
-        "grid:code:refactor",
-        "grid:git:smart-commit",
-        "grid:project:init",
-        "grid:util:clean",
-        "grid:docs:deploy-docs",
+        "ghostwire:workflows:plan",
+        "ghostwire:code:refactor",
+        "ghostwire:git:smart-commit",
+        "ghostwire:project:init",
+        "ghostwire:util:clean",
+        "ghostwire:docs:deploy-docs",
       ]
 
       //#when
-      const pattern = /^grid:[a-z]+:[a-z-]+$/
+      const pattern = /^ghostwire:[a-z]+:[a-z-]+$/
       const validCommands = compoundCommands.filter((cmd) => pattern.test(cmd))
 
       //#then
@@ -64,10 +64,10 @@ describe("Compound Engineering Commands", () => {
     test("workflows commands exist (4)", () => {
       //#given
       const workflowCommands = [
-        "grid:workflows:plan",
-        "grid:workflows:create",
-        "grid:workflows:status",
-        "grid:workflows:complete",
+        "ghostwire:workflows:plan",
+        "ghostwire:workflows:create",
+        "ghostwire:workflows:status",
+        "ghostwire:workflows:complete",
       ]
 
       //#when
@@ -80,10 +80,10 @@ describe("Compound Engineering Commands", () => {
     test("code commands exist (4)", () => {
       //#given
       const codeCommands = [
-        "grid:code:refactor",
-        "grid:code:review",
-        "grid:code:optimize",
-        "grid:code:format",
+        "ghostwire:code:refactor",
+        "ghostwire:code:review",
+        "ghostwire:code:optimize",
+        "ghostwire:code:format",
       ]
 
       //#when
@@ -96,10 +96,10 @@ describe("Compound Engineering Commands", () => {
     test("git commands exist (4)", () => {
       //#given
       const gitCommands = [
-        "grid:git:smart-commit",
-        "grid:git:branch",
-        "grid:git:merge",
-        "grid:git:cleanup",
+        "ghostwire:git:smart-commit",
+        "ghostwire:git:branch",
+        "ghostwire:git:merge",
+        "ghostwire:git:cleanup",
       ]
 
       //#when
@@ -112,10 +112,10 @@ describe("Compound Engineering Commands", () => {
     test("project commands exist (4)", () => {
       //#given
       const projectCommands = [
-        "grid:project:init",
-        "grid:project:build",
-        "grid:project:deploy",
-        "grid:project:test",
+        "ghostwire:project:init",
+        "ghostwire:project:build",
+        "ghostwire:project:deploy",
+        "ghostwire:project:test",
       ]
 
       //#when
@@ -128,10 +128,10 @@ describe("Compound Engineering Commands", () => {
     test("util commands exist (4)", () => {
       //#given
       const utilCommands = [
-        "grid:util:clean",
-        "grid:util:backup",
-        "grid:util:restore",
-        "grid:util:doctor",
+        "ghostwire:util:clean",
+        "ghostwire:util:backup",
+        "ghostwire:util:restore",
+        "ghostwire:util:doctor",
       ]
 
       //#when
@@ -144,10 +144,10 @@ describe("Compound Engineering Commands", () => {
     test("docs commands exist (4)", () => {
       //#given
       const docCommands = [
-        "grid:docs:deploy-docs",
-        "grid:docs:release-docs",
-        "grid:docs:feature-video",
-        "grid:docs:test-browser",
+        "ghostwire:docs:deploy-docs",
+        "ghostwire:docs:release-docs",
+        "ghostwire:docs:feature-video",
+        "ghostwire:docs:test-browser",
       ]
 
       //#when
@@ -162,30 +162,30 @@ describe("Compound Engineering Commands", () => {
     test("24 total compound commands", () => {
       //#given
       const allCommands = [
-        "grid:workflows:plan",
-        "grid:workflows:create",
-        "grid:workflows:status",
-        "grid:workflows:complete",
-        "grid:code:refactor",
-        "grid:code:review",
-        "grid:code:optimize",
-        "grid:code:format",
-        "grid:git:smart-commit",
-        "grid:git:branch",
-        "grid:git:merge",
-        "grid:git:cleanup",
-        "grid:project:init",
-        "grid:project:build",
-        "grid:project:deploy",
-        "grid:project:test",
-        "grid:util:clean",
-        "grid:util:backup",
-        "grid:util:restore",
-        "grid:util:doctor",
-        "grid:docs:deploy-docs",
-        "grid:docs:release-docs",
-        "grid:docs:feature-video",
-        "grid:docs:test-browser",
+        "ghostwire:workflows:plan",
+        "ghostwire:workflows:create",
+        "ghostwire:workflows:status",
+        "ghostwire:workflows:complete",
+        "ghostwire:code:refactor",
+        "ghostwire:code:review",
+        "ghostwire:code:optimize",
+        "ghostwire:code:format",
+        "ghostwire:git:smart-commit",
+        "ghostwire:git:branch",
+        "ghostwire:git:merge",
+        "ghostwire:git:cleanup",
+        "ghostwire:project:init",
+        "ghostwire:project:build",
+        "ghostwire:project:deploy",
+        "ghostwire:project:test",
+        "ghostwire:util:clean",
+        "ghostwire:util:backup",
+        "ghostwire:util:restore",
+        "ghostwire:util:doctor",
+        "ghostwire:docs:deploy-docs",
+        "ghostwire:docs:release-docs",
+        "ghostwire:docs:feature-video",
+        "ghostwire:docs:test-browser",
       ]
 
       //#when
@@ -198,30 +198,30 @@ describe("Compound Engineering Commands", () => {
     test("no duplicate commands", () => {
       //#given
       const allCommands = [
-        "grid:workflows:plan",
-        "grid:workflows:create",
-        "grid:workflows:status",
-        "grid:workflows:complete",
-        "grid:code:refactor",
-        "grid:code:review",
-        "grid:code:optimize",
-        "grid:code:format",
-        "grid:git:smart-commit",
-        "grid:git:branch",
-        "grid:git:merge",
-        "grid:git:cleanup",
-        "grid:project:init",
-        "grid:project:build",
-        "grid:project:deploy",
-        "grid:project:test",
-        "grid:util:clean",
-        "grid:util:backup",
-        "grid:util:restore",
-        "grid:util:doctor",
-        "grid:docs:deploy-docs",
-        "grid:docs:release-docs",
-        "grid:docs:feature-video",
-        "grid:docs:test-browser",
+        "ghostwire:workflows:plan",
+        "ghostwire:workflows:create",
+        "ghostwire:workflows:status",
+        "ghostwire:workflows:complete",
+        "ghostwire:code:refactor",
+        "ghostwire:code:review",
+        "ghostwire:code:optimize",
+        "ghostwire:code:format",
+        "ghostwire:git:smart-commit",
+        "ghostwire:git:branch",
+        "ghostwire:git:merge",
+        "ghostwire:git:cleanup",
+        "ghostwire:project:init",
+        "ghostwire:project:build",
+        "ghostwire:project:deploy",
+        "ghostwire:project:test",
+        "ghostwire:util:clean",
+        "ghostwire:util:backup",
+        "ghostwire:util:restore",
+        "ghostwire:util:doctor",
+        "ghostwire:docs:deploy-docs",
+        "ghostwire:docs:release-docs",
+        "ghostwire:docs:feature-video",
+        "ghostwire:docs:test-browser",
       ]
 
       //#when

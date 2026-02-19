@@ -36,20 +36,20 @@ import {
 } from "../../features/claude-code-session-state";
 import {
   log,
-  getAgentToolRestrictions,
-  resolveModel,
-  getOpenCodeConfigPaths,
   findByNameCaseInsensitive,
   equalsIgnoreCase,
   promptWithModelSuggestionRetry,
 } from "../../shared";
+import { getAgentToolRestrictions } from "../../agents/agent-tool-restrictions";
+import { resolveModel } from "../../agents/model-resolver";
+import { getOpenCodeConfigPaths } from "../../platform/opencode/config-dir";
 import {
   fetchAvailableModels,
   isModelAvailable,
-} from "../../shared/model-availability";
-import { readConnectedProvidersCache } from "../../shared/connected-providers-cache";
-import { resolveModelWithFallback } from "../../shared/model-resolver";
-import { CATEGORY_MODEL_REQUIREMENTS } from "../../shared/model-requirements";
+} from "../../platform/opencode/model-availability";
+import { readConnectedProvidersCache } from "../../platform/opencode/connected-providers-cache";
+import { resolveModelWithFallback } from "../../agents/model-resolver";
+import { CATEGORY_MODEL_REQUIREMENTS } from "../../agents/model-requirements";
 
 type OpencodeClient = PluginInput["client"];
 

@@ -5,8 +5,8 @@ import { CHECK_IDS, CHECK_NAMES, PACKAGE_NAME } from "../constants";
 import {
   parseJsonc,
   detectConfigFile,
-  getOpenCodeConfigDir,
 } from "../../../shared";
+import { getOpenCodeConfigDir } from "../../../platform/opencode/config-dir";
 import { GhostwireConfigSchema } from "../../../config";
 
 const USER_CONFIG_DIR = getOpenCodeConfigDir({ binary: "opencode" });

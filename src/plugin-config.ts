@@ -4,16 +4,12 @@ import { GhostwireConfigSchema, type GhostwireConfig } from "./config";
 import {
   log,
   deepMerge,
-  getOpenCodeConfigDir,
   addConfigLoadError,
   parseJsonc,
   detectConfigFile,
-  migrateConfigFile,
 } from "./shared";
-import {
-  migrateCompoundEngineering,
-  createConfigBackup,
-} from "./shared/compound-migration";
+import { getOpenCodeConfigDir } from "./platform/opencode/config-dir";
+import { migrateConfigFile } from "./config/migration";
 
 export function loadConfigFromPath(
   configPath: string,
@@ -26,25 +22,6 @@ export function loadConfigFromPath(
 
       // Run standard migrations first (legacy agent/hook names, etc.)
       migrateConfigFile(configPath, rawConfig);
-
-      // Then run compound engineering migration
-      const compoundMigration = migrateCompoundEngineering(
-        configPath,
-        rawConfig,
-      );
-      if (!compoundMigration.success) {
-        log(
-          `Warning: Compound engineering migration had errors:`,
-          compoundMigration.errors,
-        );
-      } else if (compoundMigration.changed) {
-        // Create backup if migration made changes
-        createConfigBackup(configPath);
-        log(`Migrated compound engineering configuration:`, {
-          migratedCount: compoundMigration.migratedCount,
-          warnings: compoundMigration.warnings,
-        });
-      }
 
       const result = GhostwireConfigSchema.safeParse(rawConfig);
 

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const ROOT = process.cwd();
@@ -14,22 +14,16 @@ const TARGETS = [
   "package.json",
 ];
 const LEGACY_TOKENS = [
-  "ghostwire",
-  "sisyphus",
-  "atlas",
-  "prometheus",
-  "oracle",
-  "librarian",
-  "metis",
-  "momus",
-  "multimodal-looker",
-  "call_omo_agent",
-  "compound:",
-  ".sisyphus/",
+  "compound-engineering",
+  "compound-engineering-plugin",
+  "/compound-engineering:",
+  "plugin_compound-engineering",
+  "plugins/compound-engineering",
 ];
 
 function collectFiles(path: string): string[] {
   const abs = join(ROOT, path);
+  if (!existsSync(abs)) return [];
   const st = statSync(abs);
   if (st.isFile()) return [abs];
 

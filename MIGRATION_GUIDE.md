@@ -1,12 +1,12 @@
 # Migration Guide: ghostwire v3.2.0 - Compound Engineering Integration
 
-**Upgrading from compound-engineering plugin to unified ghostwire**
+**Upgrading from legacy plugin architecture to unified ghostwire**
 
 ---
 
 ## Overview
 
-ghostwire v3.2.0 integrates the compound-engineering plugin directly into the core, making all 125 components (28 agents, 24 commands, 73 skills) available natively with the `grid:` namespace prefix.
+ghostwire v3.2.0 integrates all plugin components directly into the core, making all 125 components (28 agents, 24 commands, 73 skills) available natively with the `grid:` namespace prefix.
 
 **Key Points:**
 - ✅ **Zero Breaking Changes** - Full backward compatibility
@@ -59,7 +59,7 @@ Your configuration has been automatically migrated. Continue using ghostwire as 
 
 When you upgrade, the migration system automatically:
 
-1. **Detects** old compound-engineering plugin imports
+1. **Detects** old plugin imports
 2. **Remaps** agent names to new `grid:` prefix
 3. **Remaps** command names to new `grid:` prefix
 4. **Remaps** skill names to new `grid:` prefix
@@ -69,7 +69,7 @@ When you upgrade, the migration system automatically:
 
 ### Example: Automatic Migration
 
-If you previously had compound-engineering plugin configured:
+If you previously had legacy plugin imports configured:
 
 ```javascript
 // BEFORE (old configuration with separate plugin)
@@ -383,7 +383,7 @@ commands: {
 
 ## FAQ
 
-### Q: Do I need to uninstall the old compound-engineering plugin?
+### Q: Do I need to uninstall the old plugin?
 
 **A**: No, it can remain installed but will not be used. The integrated version in ghostwire v3.2.0 takes precedence.
 
@@ -441,7 +441,7 @@ cp ~/.config/opencode/config.jsonc.backup.* ~/.config/opencode/config.jsonc
 ## Summary
 
 **Before Migration:**
-- Separate compound-engineering plugin
+- Separate external plugin
 - Manual integration required
 - Multiple imports and configurations
 

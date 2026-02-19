@@ -5,7 +5,7 @@ import type { AgentOverrideConfig } from "../config/schema"
 import {
   createAgentToolRestrictions,
   type PermissionValue,
-} from "../shared/permission-compat"
+} from "../config/permission-compat"
 
 const MODE: AgentMode = "subagent"
 

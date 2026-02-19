@@ -2,7 +2,8 @@ import { existsSync, readFileSync } from "fs"
 import { join } from "path"
 import { BUILTIN_SERVERS, EXT_TO_LANG, LSP_INSTALL_HINTS } from "./constants"
 import type { ResolvedServer, ServerLookupResult } from "./types"
-import { getOpenCodeConfigDir, getDataDir, parseJsonc } from "../../shared"
+import { getDataDir, parseJsonc } from "../../shared"
+import { getOpenCodeConfigDir } from "../../platform/opencode/config-dir"
 
 interface LspEntry {
   disabled?: boolean

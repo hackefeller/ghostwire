@@ -6,7 +6,7 @@ import {
   AGENT_MODEL_REQUIREMENTS,
   CATEGORY_MODEL_REQUIREMENTS,
   type ModelRequirement,
-} from "../../../shared/model-requirements"
+} from "../../../agents/model-requirements"
 import { homedir } from "node:os"
 import { join } from "node:path"
 

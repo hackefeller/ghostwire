@@ -17,7 +17,7 @@ As of v3.2.x:
 
 2. **Integrated Components**
    - Compound agents/commands/skills wired into schema + runtime registries
-   - Migration support via `src/shared/compound-migration.ts`
+   - Migration support via `src/config/migration.ts`
 
 3. **Import/Mapping Utilities (Library-only)**
    - Claude plugin parsing/mapping/diagnostics in `src/features/imports/claude/`
@@ -35,7 +35,7 @@ Key files:
 - `src/index.ts`
 - `src/plugin-config.ts`
 - `src/config/schema.ts`
-- `src/plugin-handlers/config-handler.ts`
+- `src/platform/opencode/config-composer.ts`
 
 ## Config Scope and Precedence
 
@@ -78,7 +78,7 @@ Direct integration is now the single source of runtime truth.
 When adding/changing behavior:
 - Runtime flow: `src/index.ts`
 - Config contract: `src/config/schema.ts`
-- Effective config composition: `src/plugin-handlers/config-handler.ts`
+- Effective config composition: `src/platform/opencode/config-composer.ts`
 - Hook behavior/policies: `src/hooks/*`
 - Tool behavior: `src/tools/*`
 

@@ -1,4 +1,4 @@
-import type { ModelSource } from "../../shared/model-resolver"
+import type { ModelSource } from "../../agents/model-resolver"
 
 export type TaskStatus = "running" | "queued" | "completed" | "error"
 

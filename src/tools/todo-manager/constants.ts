@@ -1,5 +1,5 @@
 import { join } from "node:path"
-import { getClaudeConfigDir } from "../../shared"
+import { getClaudeConfigDir } from "../../platform/claude/config-dir"
 
 export const TODO_DIR = join(getClaudeConfigDir(), "todos")
 

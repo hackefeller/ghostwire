@@ -1,7 +1,7 @@
 import * as path from "node:path"
 import * as os from "node:os"
 import * as fs from "node:fs"
-import { getOpenCodeConfigDir } from "../../shared"
+import { getOpenCodeConfigDir } from "../../platform/opencode/config-dir"
 
 export const PACKAGE_NAME = "ghostwire"
 export const NPM_REGISTRY_URL = `https://registry.npmjs.org/-/package/${PACKAGE_NAME}/dist-tags`

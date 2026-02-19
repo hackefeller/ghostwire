@@ -1,18 +1,18 @@
 ---
-title: feat: True merge compound-engineering components
+title: feat: True merge ghostwire components
 type: feat
 date: 2026-02-06
 ---
 
-# feat: True merge compound-engineering components
+# feat: True merge ghostwire components
 
 ## Overview
 
-Integrate all 125+ compound-engineering components (28 agents, 24 commands, 73 skills) directly into ghostwire plugin, replacing the current import/bundle system with a unified architecture. This major architectural change will provide users with seamless access to all compound-engineering capabilities without external plugin dependencies.
+Integrate all 125+ ghostwire components (28 agents, 24 commands, 73 skills) directly into ghostwire plugin, replacing the current import/bundle system with a unified architecture. This major architectural change will provide users with seamless access to all ghostwire capabilities without external plugin dependencies.
 
 ## Problem Statement
 
-The current three-phase import/bundle system we built (Phase 1: Architecture + Skeleton, Phase 2: Lazy Loading & Caching, Phase 3: Harden & Extend) successfully provides external plugin loading capabilities. However, users want direct integration of compound-engineering components for:
+The current three-phase import/bundle system we built (Phase 1: Architecture + Skeleton, Phase 2: Lazy Loading & Caching, Phase 3: Harden & Extend) successfully provides external plugin loading capabilities. However, users want direct integration of ghostwire components for:
 
 1. **Simplified Setup**: Eliminate need for separate plugin installation and configuration
 2. **Performance**: Remove import layer overhead and startup latency
@@ -23,7 +23,7 @@ The current three-phase import/bundle system we built (Phase 1: Architecture + S
 
 ### **Architecture Decision: Complete Migration**
 
-Replace the import/bundle system with direct integration of all compound-engineering components into the main plugin codebase.
+Replace the import/bundle system with direct integration of all ghostwire components into the main plugin codebase.
 
 **Key Decision Points:**
 
@@ -55,7 +55,7 @@ src/
 │   ├── builtin-skills/
 │   │   └── compound/              # New: 73 integrated skills
 │   ├── [existing features - remove imports/, bundles/]
-│   └── compound-engineering/        # New: Unified component management
+│   └── ghostwire/        # New: Unified component management
 ├── config/
 │   └── schema.ts                    # Update: Remove import config, add compound config
 └── index.ts                         # Update: Remove import initialization
@@ -135,7 +135,7 @@ export function createBuiltinSkills(options: SkillOptions): BuiltinSkill[] {
 #### **Component Management System**
 
 ```typescript
-// src/features/compound-engineering/index.ts
+// src/features/ghostwire/index.ts
 export interface CompoundEngineeringConfig {
   enabled: boolean;
   components: {
@@ -264,7 +264,7 @@ interface ComponentPerformanceFramework {
 - [ ] Create component reference documentation
 - [ ] Final code review and cleanup
 - [ ] Prepare release notes
-- [x] Remove compound-engineering-plugin directory (archived after v3.2.0)
+- [x] Remove ghostwire directory (archived after v3.2.0)
 
 **Deliverables:**
 - Complete documentation updated
@@ -297,7 +297,7 @@ interface ComponentPerformanceFramework {
 
 ### **Functional Requirements**
 
-- [ ] All 125+ compound-engineering components available directly in ghostwire
+- [ ] All 125+ ghostwire components available directly in ghostwire
 - [ ] No external plugin dependencies required
 - [ ] Existing ghostwire features remain fully functional
 - [ ] Configuration migration from import system to unified config
@@ -347,7 +347,7 @@ interface ComponentPerformanceFramework {
 
 ### **Critical Dependencies**
 - ghostwire base system (current)
-- Integrated compound-engineering components (125+ now native)
+- Integrated ghostwire components (125+ now native)
 - TypeScript configuration and build system
 - Existing test framework and CI/CD
 

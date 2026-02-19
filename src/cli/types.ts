@@ -11,6 +11,7 @@ export interface InstallArgs {
   zaiCodingPlan?: BooleanArg
   kimiForCoding?: BooleanArg
   skipAuth?: boolean
+  installPath?: string
 }
 
 export interface InstallConfig {

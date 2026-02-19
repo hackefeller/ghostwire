@@ -44,11 +44,14 @@ jobs:
         env:
           BUN_INSTALL_ALLOW_SCRIPTS: "@ast-grep/napi"
 
+      - name: Check topology
+        run: bun run check:topology
+
       - name: Run mock-heavy tests (isolated)
         run: |
           # These files use mock.module() which pollutes module cache
           # Run them in separate processes to prevent cross-file contamination
-          bun test src/plugin-handlers
+          bun test src/platform/opencode/config-composer.test.ts
           bun test src/hooks/atlas
           bun test src/hooks/compaction-context-injector
           bun test src/features/tmux-subagent
@@ -57,7 +60,7 @@ jobs:
         run: |
           # Run all other tests (mock-heavy ones are re-run but that's acceptable)
           bun test bin script src/cli src/config src/mcp src/index.test.ts \
-            src/agents src/tools src/shared \
+            src/agents src/tools src/shared src/platform \
             src/hooks/anthropic-context-window-limit-recovery \
             src/hooks/claude-code-compatibility \
             src/hooks/context-injection \
@@ -86,6 +89,9 @@ jobs:
         run: bun install
         env:
           BUN_INSTALL_ALLOW_SCRIPTS: "@ast-grep/napi"
+
+      - name: Check topology
+        run: bun run check:topology
 
       - name: Type check
         run: bun run typecheck

@@ -1,10 +1,14 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync, statSync } from "node:fs"
+import { homedir } from "node:os"
+import { join } from "node:path"
 import {
   parseJsonc,
+} from "../shared"
+import {
   getOpenCodeConfigPaths,
   type OpenCodeBinaryType,
   type OpenCodeConfigPaths,
-} from "../shared"
+} from "../platform/opencode/config-dir"
 import type { ConfigMergeResult, DetectedConfig, InstallConfig } from "./types"
 import { generateModelConfig } from "./model-fallback"
 
@@ -277,6 +281,78 @@ export async function addPluginToOpenCodeConfig(currentVersion: string): Promise
     return { success: true, configPath: path }
   } catch (err) {
     return { success: false, configPath: path, error: formatErrorWithSuggestion(err, "update opencode config") }
+  }
+}
+
+interface PluginInstallationEntry {
+  scope: "user" | "project" | "local" | "managed"
+  installPath: string
+  version: string
+  installedAt: string
+  lastUpdated: string
+  isLocal?: boolean
+}
+
+interface InstalledPluginsDatabase {
+  version: 2
+  plugins: Record<string, PluginInstallationEntry[]>
+}
+
+export async function addToInstalledPlugins(installPath: string, version: string): Promise<{ success: boolean; error?: string }> {
+  const pluginsDir = join(homedir(), ".claude", "plugins")
+  const dbPath = join(pluginsDir, "installed_plugins.json")
+
+  let db: InstalledPluginsDatabase
+
+  try {
+    mkdirSync(pluginsDir, { recursive: true })
+  } catch (err) {
+    return { success: false, error: formatErrorWithSuggestion(err, "create plugins directory") }
+  }
+
+  try {
+    if (existsSync(dbPath)) {
+      const content = readFileSync(dbPath, "utf-8")
+      const parsed = JSON.parse(content)
+      if (parsed.version === 2) {
+        db = parsed as InstalledPluginsDatabase
+      } else {
+        db = { version: 2, plugins: {} }
+      }
+    } else {
+      db = { version: 2, plugins: {} }
+    }
+  } catch (err) {
+    db = { version: 2, plugins: {} }
+  }
+
+  const now = new Date().toISOString()
+  const entry: PluginInstallationEntry = {
+    scope: "local",
+    installPath,
+    version,
+    installedAt: now,
+    lastUpdated: now,
+    isLocal: true,
+  }
+
+  const pluginName = "ghostwire"
+  if (!db.plugins[pluginName]) {
+    db.plugins[pluginName] = []
+  }
+
+  const existingIndex = db.plugins[pluginName].findIndex(p => p.scope === "local")
+  if (existingIndex >= 0) {
+    db.plugins[pluginName][existingIndex] = entry
+  } else {
+    db.plugins[pluginName].push(entry)
+  }
+
+  try {
+    writeFileSync(dbPath, JSON.stringify(db, null, 2) + "\n")
+    return { success: true }
+  } catch (err) {
+    return { success: false, error: formatErrorWithSuggestion(err, "write installed_plugins.json") }
   }
 }
 

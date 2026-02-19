@@ -8,7 +8,7 @@ date: 2026-02-07
 
 ## Overview
 
-Execute Phase 2 of the true merge implementation: integrate all 125+ compound-engineering components (28 agents, 24 commands, 73 skills) directly into ghostwire architecture, removing the import/bundle system and establishing unified component management with `grid:` namespace prefix.
+Execute Phase 2 of the true merge implementation: integrate all 125+ ghostwire components (28 agents, 24 commands, 73 skills) directly into ghostwire architecture, removing the import/bundle system and establishing unified component management with `grid:` namespace prefix.
 
 This builds on the completed Phase 1 foundation (backup, mapping strategy, directory structure, migration system design) and implements the core integration work.
 
@@ -22,13 +22,13 @@ This builds on the completed Phase 1 foundation (backup, mapping strategy, direc
 - ✅ Test suite foundation established
 
 **Required Change:**
-Users want direct access to all compound-engineering components without external plugin dependencies. The current import system adds complexity and startup overhead that direct integration would eliminate.
+Users want direct access to all ghostwire components without external plugin dependencies. The current import system adds complexity and startup overhead that direct integration would eliminate.
 
 **Business Impact:**
 - **User Experience**: Simplified setup, all features immediately available
 - **Performance**: Remove import layer overhead, faster startup  
 - **Maintenance**: Single codebase instead of plugin system complexity
-- **Adoption**: Lower barrier to entry for compound-engineering features
+- **Adoption**: Lower barrier to entry for ghostwire features
 
 ## Proposed Solution
 
@@ -36,7 +36,7 @@ Users want direct access to all compound-engineering components without external
 
 Implement direct component integration using established ghostwire patterns:
 
-1. **Agent Integration**: Convert 28 compound-engineering agents to TypeScript agent factories following Seer Advisor/Cipher Operator patterns
+1. **Agent Integration**: Convert 28 ghostwire agents to TypeScript agent factories following Seer Advisor/Cipher Operator patterns
 2. **Command Integration**: Convert 24 compound commands to builtin command templates following overclock-loop/jack-in-work patterns  
 3. **Skill Integration**: Convert 73 compound skills to builtin skill definitions following playwright/git-master patterns
 4. **Configuration Migration**: Implement automatic migration from import config to unified config
@@ -250,7 +250,7 @@ export const UnifiedCompoundEngineeringConfigSchema = z.object({
 
 #### **Phase 2A: Agent Integration (Days 1-3)**
 
-**Objective**: Convert and integrate all 28 compound-engineering agents
+**Objective**: Convert and integrate all 28 ghostwire agents
 
 **Tasks:**
 - [ ] **Convert Review Agents (5 components)**
@@ -287,7 +287,7 @@ export const UnifiedCompoundEngineeringConfigSchema = z.object({
 
 #### **Phase 2B: Command Integration (Days 4-5)**
 
-**Objective**: Convert and integrate all 24 compound-engineering commands
+**Objective**: Convert and integrate all 24 ghostwire commands
 
 **Tasks:**
 - [ ] **Convert Workflow Commands (4 components)**
@@ -314,7 +314,7 @@ export const UnifiedCompoundEngineeringConfigSchema = z.object({
 
 #### **Phase 2C: Skill Integration (Days 6-8)**  
 
-**Objective**: Convert and integrate all 73 compound-engineering skills
+**Objective**: Convert and integrate all 73 ghostwire skills
 
 **Tasks:**
 - [ ] **Convert Development Skills (25 components)**
@@ -425,7 +425,7 @@ export const UnifiedCompoundEngineeringConfigSchema = z.object({
 
 ### **Functional Requirements**
 
-- [ ] All 125+ compound-engineering components integrated and functional
+- [ ] All 125+ ghostwire components integrated and functional
 - [ ] Namespace isolation with `grid:` prefix for all components
 - [ ] Automatic configuration migration from import to unified system
 - [ ] Component-level disable/enable functionality working
@@ -480,7 +480,7 @@ export const UnifiedCompoundEngineeringConfigSchema = z.object({
 - ✅ Backup created with rollback capability
 
 ### **External Dependencies**
-- **No external dependencies**: All compound-engineering components are now integrated
+- **No external dependencies**: All ghostwire components are now integrated
 - **Development environment**: Bun, TypeScript, existing ghostwire build system
 - **Testing framework**: Existing test infrastructure
 - **All patterns**: Consistent with existing ghostwire architecture
@@ -596,7 +596,7 @@ export const UnifiedCompoundEngineeringConfigSchema = z.object({
 
 #### **Component Update Delivery**
 - Framework for component versioning and updates
-- Automated synchronization with compound-engineering source
+- Automated synchronization with ghostwire source
 - Conflict resolution for component changes
 - User notification of available updates
 
@@ -668,7 +668,7 @@ export const UnifiedCompoundEngineeringConfigSchema = z.object({
 
 ### **Internal References**
 
-- **Phase 1 Foundation**: docs/plans/2026-02-06-feat-true-merge-compound-engineering-plan.md  
+- **Phase 1 Foundation**: docs/plans/2026-02-06-feat-true-merge-ghostwire-plan.md  
 - **Component Mapping**: docs/plans/2026-02-06-component-mapping-strategy.md
 - **Configuration Migration**: docs/plans/2026-02-06-configuration-migration-system.md
 - **Agent Patterns**: src/agents/seer-advisor.ts:1, src/agents/cipher-operator.ts:1
@@ -719,7 +719,7 @@ export const UnifiedCompoundEngineeringConfigSchema = z.object({
 
 ### **Pre-Implementation Setup**
 - [ ] Verify Phase 1 completion (backup, directories, planning)
-- [ ] Confirm compound-engineering source access
+- [ ] Confirm ghostwire source access
 - [ ] Establish performance baseline measurements
 - [ ] Prepare development environment for large-scale changes
 

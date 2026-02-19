@@ -26,7 +26,8 @@ import {
 import { cacheToolInput, getToolInput } from "./tool-input-cache"
 import { recordToolUse, recordToolResult, getTranscriptPath, recordUserMessage } from "./transcript"
 import type { PluginConfig } from "./types"
-import { log, isHookDisabled } from "../../shared"
+import { log } from "../../shared"
+import { isHookDisabled } from "../../platform/claude/hook-disabled"
 import type { ContextCollector } from "../../features/context-injector"
 
 const sessionFirstMessageProcessed = new Set<string>()

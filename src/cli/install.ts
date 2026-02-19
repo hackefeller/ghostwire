@@ -9,6 +9,7 @@ import type {
 } from "./types";
 import {
   addPluginToOpenCodeConfig,
+  addToInstalledPlugins,
   writeOmoConfig,
   isOpenCodeInstalled,
   getOpenCodeVersion,
@@ -453,7 +454,7 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
 
   printHeader(isUpdate);
 
-  const totalSteps = 6;
+  const totalSteps = 7;
   let step = 1;
 
   printStep(step++, totalSteps, "Checking OpenCode installation...");
@@ -486,6 +487,18 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
   printSuccess(
     `Plugin ${isUpdate ? "verified" : "added"} ${SYMBOLS.arrow} ${color.dim(pluginResult.configPath)}`,
   );
+
+  if (args.installPath) {
+    printStep(step++, totalSteps, "Registering with Claude Code plugins...");
+    const pluginsResult = await addToInstalledPlugins(args.installPath, VERSION);
+    if (!pluginsResult.success) {
+      printError(`Failed: ${pluginsResult.error}`);
+      return 1;
+    }
+    printSuccess(
+      `Claude Code plugin registered ${SYMBOLS.arrow} ${color.dim(args.installPath)}`,
+    );
+  }
 
   if (config.hasGemini) {
     printStep(step++, totalSteps, "Adding auth plugins...");

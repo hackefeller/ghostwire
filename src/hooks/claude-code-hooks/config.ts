@@ -1,6 +1,6 @@
 import { join } from "path"
 import { existsSync } from "fs"
-import { getClaudeConfigDir } from "../../shared"
+import { getClaudeConfigDir } from "../../platform/claude/config-dir"
 import type { ClaudeHooksConfig, HookMatcher, HookCommand } from "./types"
 
 interface RawHookMatcher {

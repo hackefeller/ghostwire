@@ -1,5 +1,5 @@
-// Compound Engineering Agents - Unified Export
-// This file exports all 28 compound-engineering agents integrated into ghostwire
+// Ghostwire Agents - Unified Export
+// This file exports all ghostwire agents integrated into ghostwire plugin
 
 import { createKieranRailsReviewerAgent } from "./review/kieran-rails-reviewer"
 import { createKieranPythonReviewerAgent } from "./review/kieran-python-reviewer"

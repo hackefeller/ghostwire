@@ -33,14 +33,16 @@ import type {
 } from "./dynamic-agent-prompt-builder";
 import {
   deepMerge,
-  fetchAvailableModels,
-  resolveModelWithFallback,
-  AGENT_MODEL_REQUIREMENTS,
   findCaseInsensitive,
   includesCaseInsensitive,
-  readConnectedProvidersCache,
-  isModelAvailable,
 } from "../shared";
+import {
+  fetchAvailableModels,
+  isModelAvailable,
+  readConnectedProvidersCache,
+} from "../platform/opencode";
+import { resolveModelWithFallback } from "./model-resolver";
+import { AGENT_MODEL_REQUIREMENTS } from "./model-requirements";
 import {
   DEFAULT_CATEGORIES,
   CATEGORY_DESCRIPTIONS,
@@ -55,7 +57,7 @@ import type { BrowserAutomationProvider } from "../config/schema";
 export {
   createAgentToolRestrictions,
   createAgentToolAllowlist,
-} from "../shared/permission-compat";
+} from "../config/permission-compat";
 
 type AgentSource = AgentFactory | AgentConfig;
 

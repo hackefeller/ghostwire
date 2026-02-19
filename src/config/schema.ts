@@ -207,36 +207,36 @@ export const HookNameSchema = z.enum([
 export const BuiltinCommandNameSchema = z.enum([
   "init-deep",
   "jack-in-work",
-  // Compound workflows commands
-  "grid:workflows:plan",
-  "grid:workflows:create",
-  "grid:workflows:status",
-  "grid:workflows:complete",
-  // Compound code commands
-  "grid:code:refactor",
-  "grid:code:review",
-  "grid:code:optimize",
-  "grid:code:format",
-  // Compound git commands
-  "grid:git:smart-commit",
-  "grid:git:branch",
-  "grid:git:merge",
-  "grid:git:cleanup",
-  // Compound project commands
-  "grid:project:init",
-  "grid:project:build",
-  "grid:project:deploy",
-  "grid:project:test",
-  // Compound utility commands
-  "grid:util:clean",
-  "grid:util:backup",
-  "grid:util:restore",
-  "grid:util:doctor",
-  // Compound documentation commands
-  "grid:docs:deploy-docs",
-  "grid:docs:release-docs",
-  "grid:docs:feature-video",
-  "grid:docs:test-browser",
+  // Ghostwire workflows commands
+  "ghostwire:workflows:plan",
+  "ghostwire:workflows:create",
+  "ghostwire:workflows:status",
+  "ghostwire:workflows:complete",
+  // Ghostwire code commands
+  "ghostwire:code:refactor",
+  "ghostwire:code:review",
+  "ghostwire:code:optimize",
+  "ghostwire:code:format",
+  // Ghostwire git commands
+  "ghostwire:git:smart-commit",
+  "ghostwire:git:branch",
+  "ghostwire:git:merge",
+  "ghostwire:git:cleanup",
+  // Ghostwire project commands
+  "ghostwire:project:init",
+  "ghostwire:project:build",
+  "ghostwire:project:deploy",
+  "ghostwire:project:test",
+  // Ghostwire utility commands
+  "ghostwire:util:clean",
+  "ghostwire:util:backup",
+  "ghostwire:util:restore",
+  "ghostwire:util:doctor",
+  // Ghostwire documentation commands
+  "ghostwire:docs:deploy-docs",
+  "ghostwire:docs:release-docs",
+  "ghostwire:docs:feature-video",
+  "ghostwire:docs:test-browser",
 ]);
 
 export const AgentOverrideConfigSchema = z.object({

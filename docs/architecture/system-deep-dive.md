@@ -8,7 +8,7 @@ Ghostwire is an OpenCode plugin + CLI wrapper that turns OpenCode into a multi-a
 
 At a systems level, Ghostwire provides:
 - A plugin bootstrap that registers tools, hooks, and config handlers (`src/index.ts`)
-- A control plane for agent/model/permission configuration (`src/plugin-config.ts`, `src/config/schema.ts`, `src/plugin-handlers/config-handler.ts`)
+- A control plane for agent/model/permission configuration (`src/plugin-config.ts`, `src/config/schema.ts`, `src/platform/opencode/config-composer.ts`)
 - An execution plane for orchestration, background delegation, and tooling (`src/hooks/`, `src/tools/`, `src/features/background-agent/`)
 
 ## 2) Runtime Entry Points
@@ -28,7 +28,7 @@ flowchart TD
     P --> C["Config Load + Validation (`src/plugin-config.ts`, `src/config/schema.ts`)"]
     P --> H["Hook Pipeline (`src/hooks/*`)"]
     P --> T["Tool Registry (`src/tools/*`)"]
-    P --> A["Agent Resolution (`src/plugin-handlers/config-handler.ts`)"]
+    P --> A["Agent Resolution (`src/platform/opencode/config-composer.ts`)"]
     A --> M["Model Fallback + Category/Skill Expansion"]
     T --> B["Background Manager (`src/features/background-agent/manager.ts`)"]
     H --> O["Orchestration Hooks (Augur Planner/Nexus Orchestrator/Start-Work)"]
@@ -147,7 +147,7 @@ Primary failure modes to monitor:
 When changing behavior:
 - Runtime wiring: `src/index.ts`
 - New config fields/types: `src/config/schema.ts` + docs + loader/merge logic
-- Agent resolution behavior: `src/plugin-handlers/config-handler.ts`
+- Agent resolution behavior: `src/platform/opencode/config-composer.ts`
 - Execution policy: relevant hooks in `src/hooks/`
 - End-user operational interfaces: `src/cli/`
 

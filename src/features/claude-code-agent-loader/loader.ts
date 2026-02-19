@@ -3,7 +3,7 @@ import { join, basename } from "path"
 import type { AgentConfig } from "@opencode-ai/sdk"
 import { parseFrontmatter } from "../../shared/frontmatter"
 import { isMarkdownFile } from "../../shared/file-utils"
-import { getClaudeConfigDir } from "../../shared"
+import { getClaudeConfigDir } from "../../platform/claude/config-dir"
 import type { AgentScope, AgentFrontmatter, LoadedAgent } from "./types"
 
 function parseToolsConfig(toolsStr?: string): Record<string, boolean> | undefined {

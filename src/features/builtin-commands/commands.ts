@@ -113,7 +113,7 @@ $ARGUMENTS
 ${STOP_CONTINUATION_TEMPLATE}
 </command-instruction>`,
    },
-   "grid:workflows:plan": {
+   "ghostwire:workflows:plan": {
      description: "(compound) Transform feature descriptions into implementation plans",
      template: `<command-instruction>
 ${WORKFLOWS_PLAN_TEMPLATE}
@@ -124,7 +124,7 @@ $ARGUMENTS
 </feature-description>`,
      argumentHint: "[feature description, bug report, or improvement idea]",
    },
-   "grid:workflows:create": {
+   "ghostwire:workflows:create": {
      description: "(compound) Execute plan by breaking into tasks and coordinating implementation",
      template: `<command-instruction>
 ${WORKFLOWS_CREATE_TEMPLATE}
@@ -135,7 +135,7 @@ $ARGUMENTS
 </plan-reference>`,
      argumentHint: "[plan-name or plan-file-path]",
    },
-   "grid:workflows:status": {
+   "ghostwire:workflows:status": {
      description: "(compound) Check status of in-progress workflow or plan",
      template: `<command-instruction>
 ${WORKFLOWS_STATUS_TEMPLATE}
@@ -146,7 +146,7 @@ $ARGUMENTS
 </workflow-reference>`,
      argumentHint: "[workflow-id or plan-name]",
    },
-   "grid:workflows:complete": {
+   "ghostwire:workflows:complete": {
      description: "(compound) Finalize and archive completed workflow",
      template: `<command-instruction>
 ${WORKFLOWS_COMPLETE_TEMPLATE}
@@ -157,7 +157,7 @@ $ARGUMENTS
 </workflow-reference>`,
      argumentHint: "[workflow-id or plan-name]",
    },
-   "grid:code:refactor": {
+   "ghostwire:code:refactor": {
      description: "(compound) Systematically refactor code while maintaining functionality",
      template: `<command-instruction>
 ${CODE_REFACTOR_TEMPLATE}
@@ -168,7 +168,7 @@ $ARGUMENTS
 </refactoring-target>`,
      argumentHint: "<target> [--scope=file|module|project] [--strategy=safe|aggressive]",
    },
-   "grid:code:review": {
+   "ghostwire:code:review": {
      description: "(compound) Conduct comprehensive code reviews with specialist agents",
      template: `<command-instruction>
 ${CODE_REVIEW_TEMPLATE}
@@ -179,7 +179,7 @@ $ARGUMENTS
 </code-context>`,
      argumentHint: "[file-path or PR-number] [--type=architecture|security|performance]",
    },
-   "grid:code:optimize": {
+   "ghostwire:code:optimize": {
      description: "(compound) Improve performance, reduce bundle size, or enhance efficiency",
      template: `<command-instruction>
 ${CODE_OPTIMIZE_TEMPLATE}
@@ -190,7 +190,7 @@ $ARGUMENTS
 </optimization-target>`,
      argumentHint: "[target] [--area=algorithmic|memory|cpu|network|build]",
    },
-   "grid:code:format": {
+   "ghostwire:code:format": {
      description: "(compound) Apply consistent formatting and style standards",
      template: `<command-instruction>
 ${CODE_FORMAT_TEMPLATE}
@@ -201,7 +201,7 @@ $ARGUMENTS
 </format-scope>`,
      argumentHint: "[path-to-format] [--dry-run]",
    },
-   "grid:git:smart-commit": {
+   "ghostwire:git:smart-commit": {
      description: "(compound) Generate well-structured commits following conventions",
      template: `<command-instruction>
 ${GIT_SMART_COMMIT_TEMPLATE}
@@ -212,7 +212,7 @@ $ARGUMENTS
 </commit-context>`,
      argumentHint: '[--message="custom message"]',
    },
-   "grid:git:branch": {
+   "ghostwire:git:branch": {
      description: "(compound) Create and manage feature branches with naming conventions",
      template: `<command-instruction>
 ${GIT_BRANCH_TEMPLATE}
@@ -223,7 +223,7 @@ $ARGUMENTS
 </branch-context>`,
      argumentHint: "[feature-description] [--type=feature|fix|refactor]",
    },
-   "grid:git:merge": {
+   "ghostwire:git:merge": {
      description: "(compound) Merge branches safely with conflict resolution",
      template: `<command-instruction>
 ${GIT_MERGE_TEMPLATE}
@@ -234,7 +234,7 @@ $ARGUMENTS
 </merge-context>`,
      argumentHint: "[branch-name] [--strategy=fast-forward|squash|rebase]",
    },
-   "grid:git:cleanup": {
+   "ghostwire:git:cleanup": {
      description: "(compound) Remove stale branches and optimize repository",
      template: `<command-instruction>
 ${GIT_CLEANUP_TEMPLATE}
@@ -245,7 +245,7 @@ $ARGUMENTS
 </cleanup-options>`,
      argumentHint: "[--days=N] [--dry-run]",
    },
-   "grid:project:init": {
+   "ghostwire:project:init": {
      description: "(compound) Initialize new project with structure and tooling",
      template: `<command-instruction>
 ${PROJECT_INIT_TEMPLATE}
@@ -256,7 +256,7 @@ $ARGUMENTS
 </project-context>`,
      argumentHint: "[project-name] [--type=web|api|library|cli|monorepo]",
    },
-   "grid:project:build": {
+   "ghostwire:project:build": {
      description: "(compound) Compile, transpile, and bundle project code",
      template: `<command-instruction>
 ${PROJECT_BUILD_TEMPLATE}
@@ -267,7 +267,7 @@ $ARGUMENTS
 </build-context>`,
      argumentHint: "[--mode=development|production|staging]",
    },
-   "grid:project:deploy": {
+   "ghostwire:project:deploy": {
      description: "(compound) Deploy project to specified environment",
      template: `<command-instruction>
 ${PROJECT_DEPLOY_TEMPLATE}
@@ -278,7 +278,7 @@ $ARGUMENTS
 </deploy-context>`,
      argumentHint: "[environment] [--strategy=blue-green|canary|standard]",
    },
-   "grid:project:test": {
+   "ghostwire:project:test": {
      description: "(compound) Run test suites and measure code coverage",
      template: `<command-instruction>
 ${PROJECT_TEST_TEMPLATE}
@@ -289,7 +289,7 @@ $ARGUMENTS
 </test-context>`,
      argumentHint: "[--type=unit|integration|e2e|all] [--coverage]",
    },
-   "grid:util:clean": {
+   "ghostwire:util:clean": {
      description: "(compound) Remove build artifacts and temporary files",
      template: `<command-instruction>
 ${UTIL_CLEAN_TEMPLATE}
@@ -300,7 +300,7 @@ $ARGUMENTS
 </clean-context>`,
      argumentHint: "[--level=light|standard|deep|aggressive] [--dry-run]",
    },
-   "grid:util:backup": {
+   "ghostwire:util:backup": {
      description: "(compound) Create backups of project state and files",
      template: `<command-instruction>
 ${UTIL_BACKUP_TEMPLATE}
@@ -311,7 +311,7 @@ $ARGUMENTS
 </backup-context>`,
      argumentHint: "[--type=snapshot|config|database|selective]",
    },
-   "grid:util:restore": {
+   "ghostwire:util:restore": {
      description: "(compound) Restore project from backup",
      template: `<command-instruction>
 ${UTIL_RESTORE_TEMPLATE}
@@ -322,7 +322,7 @@ $ARGUMENTS
 </restore-context>`,
      argumentHint: "[backup-name] [--selective] [--dry-run]",
    },
-   "grid:util:doctor": {
+   "ghostwire:util:doctor": {
      description: "(compound) Diagnose project health and configuration",
      template: `<command-instruction>
 ${UTIL_DOCTOR_TEMPLATE}
@@ -333,7 +333,7 @@ $ARGUMENTS
 </doctor-context>`,
      argumentHint: "[--fix] [--verbose]",
    },
-   "grid:docs:deploy-docs": {
+   "ghostwire:docs:deploy-docs": {
      description: "(compound) Build and deploy documentation to hosting",
      template: `<command-instruction>
 ${DOCS_DEPLOY_DOCS_TEMPLATE}
@@ -344,7 +344,7 @@ $ARGUMENTS
 </docs-context>`,
      argumentHint: "[--target=github-pages|vercel|netlify|s3] [--version=latest|stable]",
    },
-   "grid:docs:release-docs": {
+   "ghostwire:docs:release-docs": {
      description: "(compound) Create versioned documentation release",
      template: `<command-instruction>
 ${DOCS_RELEASE_DOCS_TEMPLATE}
@@ -355,7 +355,7 @@ $ARGUMENTS
 </release-context>`,
      argumentHint: "[version] [--create-migration-guide]",
    },
-   "grid:docs:feature-video": {
+   "ghostwire:docs:feature-video": {
      description: "(compound) Create demonstration video for feature",
      template: `<command-instruction>
 ${DOCS_FEATURE_VIDEO_TEMPLATE}
@@ -366,7 +366,7 @@ $ARGUMENTS
 </video-context>`,
      argumentHint: "[feature-name] [--type=demo|tutorial|comparison|tip]",
    },
-   "grid:docs:test-browser": {
+   "ghostwire:docs:test-browser": {
      description: "(compound) Test documentation in browser environment",
      template: `<command-instruction>
 ${DOCS_TEST_BROWSER_TEMPLATE}

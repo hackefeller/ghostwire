@@ -27,13 +27,13 @@ date: 2026-02-06
 
 ## Overview
 
-Successfully integrated all compound-engineering capabilities directly into ghostwire. All 125 components (28 agents, 24 commands, 73 skills) are now natively available with the `grid:` namespace prefix.
+Successfully integrated all ghostwire capabilities directly into ghostwire. All 125 components (28 agents, 24 commands, 73 skills) are now natively available with the `grid:` namespace prefix.
 
 ## Problem Statement
 
 Before the merge, users needed separate plugins for different capabilities:
 1. **ghostwire**: Native OpenCode orchestration with agents, hooks, tools, MCPs
-2. **compound-engineering-plugin**: Advanced agents, commands, and skills (now integrated)
+2. **ghostwire**: Advanced agents, commands, and skills (now integrated)
 
 This creates:
 - Configuration fragmentation across two plugins
@@ -74,7 +74,7 @@ This creates:
 - Extend with conversion rules, validation, conflict resolution
 
 **Layer 3: Feature Bundles** (New)
-- Location: `src/features/bundles/compound-engineering/`
+- Location: `src/features/bundles/ghostwire/`
 - Wrap imported components as first-class OpenCode features
 - Configurable enable/disable per bundle
 
@@ -477,7 +477,7 @@ it("returns empty components when path is missing", async () => {
 
 ## Future Considerations
 
-- Additional feature bundles beyond compound-engineering
+- Additional feature bundles beyond ghostwire
 - General-purpose converter for other plugin formats
 - Hot-reload for imported components
 - Plugin marketplace integration

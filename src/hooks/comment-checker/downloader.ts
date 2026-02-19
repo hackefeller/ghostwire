@@ -73,12 +73,12 @@ export function getCachedBinaryPath(): string | null {
 }
 
 /**
- * Get the version from the installed @pontistudios/grid-comment-checker package.
+ * Get the version from the installed @code-yeongyu/comment-checker package.
  */
 function getPackageVersion(): string {
   try {
     const require = createRequire(import.meta.url);
-    const pkg = require("@pontistudios/grid-comment-checker/package.json");
+    const pkg = require("@code-yeongyu/comment-checker/package.json");
     return pkg.version;
   } catch {
     // Fallback to hardcoded version if package not found

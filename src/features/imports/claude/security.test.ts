@@ -58,19 +58,19 @@ describe("validatePluginPath", () => {
 describe("buildNamespacedName", () => {
   it("builds namespaced names correctly", () => {
     //#given namespace and name
-    const namespace = "compound-engineering"
+    const namespace = "ghostwire"
     const name = "security-sentinel"
 
     //#when building namespaced name
     const result = buildNamespacedName(namespace, name)
 
     //#then
-    expect(result).toBe("compound-engineering:security-sentinel")
+    expect(result).toBe("ghostwire:security-sentinel")
   })
 
   it("applies namespace overrides", () => {
     //#given namespace with override
-    const namespace = "compound-engineering"
+    const namespace = "ghostwire"
     const name = "security-sentinel"
     const overrides = { "security-sentinel": "custom-security" }
 

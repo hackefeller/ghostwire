@@ -6,7 +6,7 @@ import type { AvailableAgent, AvailableSkill, AvailableCategory } from "./dynami
 import { buildCategorySkillsDelegationGuide } from "./dynamic-agent-prompt-builder"
 import type { CategoryConfig } from "../config/schema"
 import { DEFAULT_CATEGORIES, CATEGORY_DESCRIPTIONS } from "../tools/delegate-task/constants"
-import { createAgentToolRestrictions } from "../shared/permission-compat"
+import { createAgentToolRestrictions } from "../config/permission-compat"
 
 const getCategoryDescription = (name: string, userCategories?: Record<string, CategoryConfig>) =>
   userCategories?.[name]?.description ?? CATEGORY_DESCRIPTIONS[name] ?? "General tasks"

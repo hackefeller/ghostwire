@@ -5,7 +5,7 @@
 We will build a single OpenCode plugin that consolidates the most valuable capabilities from two sources:
 
 - **ghostwire** (OpenCode-native orchestration, agents, tools, hooks, MCPs)
-- **Integrated compound-engineering** (All agents, commands, skills now native with `grid:` namespace)
+- **Integrated ghostwire** (All agents, commands, skills now native with `grid:` namespace)
 
 The result is one OpenCode plugin with a clear internal architecture, explicit integration points, and a predictable migration path for Claude Code features.
 
@@ -98,7 +98,7 @@ Structure:
 ```
 src/
   features/
-    compound-engineering/
+    ghostwire/
       index.ts
       tools.ts
       commands.ts
@@ -114,7 +114,7 @@ Rules:
 
 ## Import Priority List and Mapping Table
 
-The table below is the initial, detailed import priority list for the compound-engineering plugin. This list is the contract for Phase 2 and drives testing, fixtures, and migration order.
+The table below is the initial, detailed import priority list for the ghostwire plugin. This list is the contract for Phase 2 and drives testing, fixtures, and migration order.
 
 Priority legend:
 
@@ -223,7 +223,7 @@ Example:
     "compoundEngineering": {
       "enabled": true,
       "source": "local",
-      "path": "./plugins/compound-engineering"
+      "path": "./plugin"
     }
   },
   "imports": {
@@ -293,6 +293,6 @@ Test coverage should follow the ghostwire TDD requirements.
 
 ## Status (Completed in v3.2.0)
 
-All compound-engineering components have been successfully integrated into ghostwire.
+All ghostwire components have been successfully integrated into ghostwire.
 All 125 components are now natively available and tested.
-Archive location for historical reference: `archive/compound-engineering-plugin/`
+Archive location for historical reference: `archive/ghostwire/`

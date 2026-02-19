@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from "node:fs"
 import type { CheckResult, CheckDefinition, PluginInfo } from "../types"
 import { CHECK_IDS, CHECK_NAMES, PACKAGE_NAME } from "../constants"
-import { parseJsonc, getOpenCodeConfigPaths } from "../../../shared"
+import { parseJsonc } from "../../../shared"
+import { getOpenCodeConfigPaths } from "../../../platform/opencode/config-dir"
 
 function detectConfigPath(): { path: string; format: "json" | "jsonc" } | null {
   const paths = getOpenCodeConfigPaths({ binary: "opencode", version: null })

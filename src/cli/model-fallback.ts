@@ -2,7 +2,7 @@ import {
   AGENT_MODEL_REQUIREMENTS,
   CATEGORY_MODEL_REQUIREMENTS,
   type FallbackEntry,
-} from "../shared/model-requirements";
+} from "../agents/model-requirements";
 import type { InstallConfig } from "./types";
 
 interface ProviderAvailability {

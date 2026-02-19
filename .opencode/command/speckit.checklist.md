@@ -1,6 +1,6 @@
 ---
 description: Generate a custom checklist for the current feature based on user requirements.
-model: anthropic/claude-haiku-4-5
+model: github-copilot/claude-haiku-4.5
 ---
 
 ## Checklist Purpose: "Unit Tests for English"

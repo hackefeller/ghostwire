@@ -1,6 +1,6 @@
 ---
 description: Compare HEAD with the latest published npm version and list all unpublished changes
-model: anthropic/claude-haiku-4-5
+model: github-copilot/claude-haiku-4.5
 ---
 
 <command-instruction>

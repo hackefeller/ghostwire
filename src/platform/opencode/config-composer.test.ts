@@ -5,12 +5,12 @@ import type { GhostwireConfig } from "../../config";
 
 import * as agents from "../../orchestration/agents";
 import * as cipherJunior from "../../orchestration/agents/dark-runner";
-import * as commandLoader from "../../features/claude-code-command-loader";
-import * as builtinCommands from "../../features/builtin-commands";
-import * as skillLoader from "../../features/opencode-skill-loader";
-import * as agentLoader from "../../features/claude-code-agent-loader";
-import * as mcpLoader from "../../features/claude-code-mcp-loader";
-import * as pluginLoader from "../../features/claude-code-plugin-loader";
+import * as commandLoader from "../../execution/features/claude-code-command-loader";
+import * as builtinCommands from "../../execution/features/builtin-commands";
+import * as skillLoader from "../../execution/features/opencode-skill-loader";
+import * as agentLoader from "../../execution/features/claude-code-agent-loader";
+import * as mcpLoader from "../../execution/features/claude-code-mcp-loader";
+import * as pluginLoader from "../../execution/features/claude-code-plugin-loader";
 import * as mcpModule from "../../mcp";
 import * as logger from "../../shared/logger";
 import * as modelAvailability from "./model-availability";

@@ -2,9 +2,9 @@ import { describe, expect, test, beforeEach, afterEach, mock } from "bun:test"
 import { mkdirSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 import { createAugurPlannerMdOnlyHook } from "./index"
-import { MESSAGE_STORAGE } from "../../../features/hook-message-injector"
+import { MESSAGE_STORAGE } from "../../../execution/features/hook-message-injector"
 import { SYSTEM_DIRECTIVE_PREFIX, createSystemDirective, SystemDirectiveTypes } from "../../../shared/system-directive"
-import { clearSessionAgent } from "../../../features/claude-code-session-state"
+import { clearSessionAgent } from "../../../execution/features/claude-code-session-state"
 
 describe("zen-planner-md-only", () => {
   const TEST_SESSION_ID = "test-session-zen-planner"

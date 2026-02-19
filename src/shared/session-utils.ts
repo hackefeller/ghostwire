@@ -2,7 +2,7 @@ import * as path from "node:path"
 import * as os from "node:os"
 import { existsSync, readdirSync } from "node:fs"
 import { join } from "node:path"
-import { findNearestMessageWithFields, MESSAGE_STORAGE } from "../features/hook-message-injector"
+import { findNearestMessageWithFields, MESSAGE_STORAGE } from "../execution/features/hook-message-injector"
 
 export function getMessageDir(sessionID: string): string | null {
   if (!existsSync(MESSAGE_STORAGE)) return null

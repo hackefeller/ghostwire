@@ -3,8 +3,8 @@ import { detectKeywordsWithType, extractPromptText, removeCodeBlocks } from "./d
 import { isPlannerAgent } from "./constants"
 import { log } from "../../../shared"
 import { hasSystemReminder, isSystemDirective, removeSystemReminders } from "../../../shared/system-directive"
-import { getMainSessionID, getSessionAgent, subagentSessions } from "../../../features/claude-code-session-state"
-import type { ContextCollector } from "../../../features/context-injector"
+import { getMainSessionID, getSessionAgent, subagentSessions } from "../../../execution/features/claude-code-session-state"
+import type { ContextCollector } from "../../../execution/features/context-injector"
 
 export * from "./detector"
 export * from "./constants"

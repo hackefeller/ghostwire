@@ -7,10 +7,10 @@ import {
   writeBoulderState,
   clearBoulderState,
   readBoulderState,
-} from "../../../features/boulder-state"
-import type { BoulderState } from "../../../features/boulder-state"
+} from "../../../execution/features/boulder-state"
+import type { BoulderState } from "../../../execution/features/boulder-state"
 
-import { MESSAGE_STORAGE } from "../../../features/hook-message-injector"
+import { MESSAGE_STORAGE } from "../../../execution/features/hook-message-injector"
 
 describe("grid-sync hook", () => {
    const TEST_DIR = join(tmpdir(), "grid-sync-test-" + Date.now())

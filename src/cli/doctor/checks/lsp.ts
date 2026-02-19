@@ -12,7 +12,7 @@ const DEFAULT_LSP_SERVERS: Array<{
   { id: "gopls", binary: "gopls", extensions: [".go"] },
 ]
 
-import { isServerInstalled } from "../../../tools/lsp/config"
+import { isServerInstalled } from "../../../execution/tools/lsp/config"
 
 export async function getLspServersInfo(): Promise<LspServerInfo[]> {
   const servers: LspServerInfo[] = []

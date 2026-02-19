@@ -38,7 +38,7 @@ import {
 import {
   contextCollector,
   createContextInjectorMessagesTransformHook,
-} from "./features/context-injector";
+} from "./execution/features/context-injector";
 import {
   applyAgentVariant,
   resolveAgentVariant,
@@ -51,16 +51,16 @@ import {
   discoverOpencodeGlobalSkills,
   discoverOpencodeProjectSkills,
   mergeSkills,
-} from "./features/opencode-skill-loader";
-import { createBuiltinSkills } from "./features/builtin-skills";
-import { getSystemMcpServerNames } from "./features/claude-code-mcp-loader";
+} from "./execution/features/opencode-skill-loader";
+import { createBuiltinSkills } from "./execution/features/builtin-skills";
+import { getSystemMcpServerNames } from "./execution/features/claude-code-mcp-loader";
 import {
   setMainSession,
   getMainSessionID,
   setSessionAgent,
   updateSessionAgent,
   clearSessionAgent,
-} from "./features/claude-code-session-state";
+} from "./execution/features/claude-code-session-state";
 import {
   builtinTools,
   createCallOmoAgent,
@@ -75,12 +75,12 @@ import {
   interactive_bash,
   startTmuxCheck,
   lspManager,
-} from "./tools";
-import { BackgroundManager } from "./features/background-agent";
-import { SkillMcpManager } from "./features/skill-mcp-manager";
-import { initTaskToastManager } from "./features/task-toast-manager";
-import { TmuxSessionManager } from "./features/tmux-subagent";
-import { clearBoulderState } from "./features/boulder-state";
+} from "./execution/tools";
+import { BackgroundManager } from "./execution/features/background-agent";
+import { SkillMcpManager } from "./execution/features/skill-mcp-manager";
+import { initTaskToastManager } from "./execution/features/task-toast-manager";
+import { TmuxSessionManager } from "./execution/features/tmux-subagent";
+import { clearBoulderState } from "./execution/features/boulder-state";
 import { type HookName } from "./config";
 import {
   log,

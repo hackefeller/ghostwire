@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, spyOn, afterEach } from "bun:test"
 import { createBuiltinAgents } from "./utils"
 import type { AgentConfig } from "@opencode-ai/sdk"
-import { clearSkillCache } from "../../features/opencode-skill-loader/skill-content"
+import { clearSkillCache } from "../../execution/features/opencode-skill-loader/skill-content"
 import * as connectedProvidersCache from "../../platform/opencode/connected-providers-cache"
 import * as modelAvailability from "../../platform/opencode/model-availability"
 

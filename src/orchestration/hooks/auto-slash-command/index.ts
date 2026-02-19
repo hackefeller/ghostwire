@@ -12,7 +12,7 @@ import type {
   AutoSlashCommandHookInput,
   AutoSlashCommandHookOutput,
 } from "./types"
-import type { LoadedSkill } from "../../../features/opencode-skill-loader"
+import type { LoadedSkill } from "../../../execution/features/opencode-skill-loader"
 
 export * from "./detector"
 export * from "./executor"

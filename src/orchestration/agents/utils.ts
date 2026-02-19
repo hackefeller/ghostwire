@@ -46,13 +46,13 @@ import { AGENT_MODEL_REQUIREMENTS } from "./model-requirements";
 import {
   DEFAULT_CATEGORIES,
   CATEGORY_DESCRIPTIONS,
-} from "../../tools/delegate-task/constants";
-import { resolveMultipleSkills } from "../../features/opencode-skill-loader/skill-content";
-import { createBuiltinSkills } from "../../features/builtin-skills";
+} from "../../execution/tools/delegate-task/constants";
+import { resolveMultipleSkills } from "../../execution/features/opencode-skill-loader/skill-content";
+import { createBuiltinSkills } from "../../execution/features/builtin-skills";
 import type {
   LoadedSkill,
   SkillScope,
-} from "../../features/opencode-skill-loader/types";
+} from "../../execution/features/opencode-skill-loader/types";
 import type { BrowserAutomationProvider } from "../../config/schema";
 export {
   createAgentToolRestrictions,

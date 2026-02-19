@@ -1,6 +1,6 @@
 import { describe, expect, test, beforeEach, afterEach, spyOn } from "bun:test"
 import { createCategorySkillReminderHook } from "./index"
-import { updateSessionAgent, clearSessionAgent, _resetForTesting } from "../../../features/claude-code-session-state"
+import { updateSessionAgent, clearSessionAgent, _resetForTesting } from "../../../execution/features/claude-code-session-state"
 import * as logger from "../../../shared/logger"
 
 describe("grid-category-skill-reminder hook", () => {

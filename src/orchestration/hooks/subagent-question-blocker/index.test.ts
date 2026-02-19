@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach } from "bun:test"
 import { createSubagentQuestionBlockerHook } from "./index"
-import { subagentSessions, _resetForTesting } from "../../../features/claude-code-session-state"
+import { subagentSessions, _resetForTesting } from "../../../execution/features/claude-code-session-state"
 
 describe("createSubagentQuestionBlockerHook", () => {
   const hook = createSubagentQuestionBlockerHook()

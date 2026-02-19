@@ -28,7 +28,7 @@ import { recordToolUse, recordToolResult, getTranscriptPath, recordUserMessage }
 import type { PluginConfig } from "./types"
 import { log } from "../../../shared"
 import { isHookDisabled } from "../../../platform/claude/hook-disabled"
-import type { ContextCollector } from "../../../features/context-injector"
+import type { ContextCollector } from "../../../execution/features/context-injector"
 
 const sessionFirstMessageProcessed = new Set<string>()
 const sessionErrorState = new Map<string, { hasError: boolean; errorMessage?: string }>()

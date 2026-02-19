@@ -1,8 +1,8 @@
 # PROJECT KNOWLEDGE BASE
 
-**Generated:** 2026-01-26T14:50:00+09:00
-**Commit:** 9d66b807
-**Branch:** dev
+**Generated:** 2026-02-19T12:45:00+09:00
+**Commit:** Phase 2 in progress
+**Branch:** 042-reorganize-repo-topology
 
 ---
 
@@ -34,18 +34,17 @@ Directory maps (for navigation and audits) live here:
 ```
 ghostwire/
 ├── src/
-│   ├── orchestration/  # Agents + Hooks (what orchestrates)
+│   ├── orchestration/  # Agents + Hooks (what orchestrates) ✅ MOVED (Phase 1)
 │   │   ├── agents/        # 10 AI agents
 │   │   └── hooks/         # 32 lifecycle hooks
-│   ├── execution/      # Features + Tools (what does work)
+│   ├── execution/      # Features + Tools (what does work) ✅ MOVED (Phase 2)
 │   │   ├── features/      # Background agents, Claude Code compat
 │   │   └── tools/         # 20+ tools
-│   ├── integration/    # Shared + MCP (what connects)
-│   │   ├── shared/        # 55 cross-cutting utilities
-│   │   └── mcp/           # Built-in MCPs
-│   ├── platform/       # Config (what provides foundation)
-│   │   └── config/        # Zod schema, TypeScript types
-│   ├── cli/            # CLI installer, doctor
+│   ├── shared/         # Cross-cutting utilities (⏳ Phase 3)
+│   ├── mcp/            # Built-in MCPs (⏳ Phase 3)
+│   ├── config/         # Zod schema (⏳ Phase 4)
+│   ├── platform/       # Platform-specific code (not moving)
+│   ├── cli/            # CLI installer, doctor (not moving)
 │   └── index.ts        # Main plugin entry (672 lines)
 ├── script/             # build-schema.ts, build-binaries.ts
 ├── packages/           # 7 platform-specific binaries

@@ -6,13 +6,13 @@ import {
   readBoulderState,
   appendSessionId,
   getPlanProgress,
-} from "../../../features/boulder-state"
-import { getMainSessionID, subagentSessions } from "../../../features/claude-code-session-state"
-import { findNearestMessageWithFields, MESSAGE_STORAGE } from "../../../features/hook-message-injector"
+} from "../../../execution/features/boulder-state"
+import { getMainSessionID, subagentSessions } from "../../../execution/features/claude-code-session-state"
+import { findNearestMessageWithFields, MESSAGE_STORAGE } from "../../../execution/features/hook-message-injector"
 import { log } from "../../../shared/logger"
 import { createSystemDirective, SYSTEM_DIRECTIVE_PREFIX, SystemDirectiveTypes } from "../../../shared/system-directive"
 import { isCallerOrchestrator, getMessageDir } from "../../../shared/session-utils"
-import type { BackgroundManager } from "../../../features/background-agent"
+import type { BackgroundManager } from "../../../execution/features/background-agent"
 
 export const HOOK_NAME = "grid-sync"
 

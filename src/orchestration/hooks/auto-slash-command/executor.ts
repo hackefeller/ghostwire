@@ -8,9 +8,9 @@ import {
 } from "../../../shared"
 import { getClaudeConfigDir } from "../../../platform/claude/config-dir"
 import { getOpenCodeConfigDir } from "../../../platform/opencode/config-dir"
-import type { CommandFrontmatter } from "../../../features/claude-code-command-loader/types"
+import type { CommandFrontmatter } from "../../../execution/features/claude-code-command-loader/types"
 import { isMarkdownFile } from "../../../shared/file-utils"
-import { discoverAllSkills, type LoadedSkill, type LazyContentLoader } from "../../../features/opencode-skill-loader"
+import { discoverAllSkills, type LoadedSkill, type LazyContentLoader } from "../../../execution/features/opencode-skill-loader"
 import type { ParsedSlashCommand } from "./types"
 
 interface CommandScope {

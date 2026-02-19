@@ -5,8 +5,8 @@ import {
   loadProjectCommands,
   loadOpencodeGlobalCommands,
   loadOpencodeProjectCommands,
-} from "../../features/claude-code-command-loader";
-import { loadBuiltinCommands } from "../../features/builtin-commands";
+} from "../../execution/features/claude-code-command-loader";
+import { loadBuiltinCommands } from "../../execution/features/builtin-commands";
 import {
   loadUserSkills,
   loadProjectSkills,
@@ -16,13 +16,13 @@ import {
   discoverProjectClaudeSkills,
   discoverOpencodeGlobalSkills,
   discoverOpencodeProjectSkills,
-} from "../../features/opencode-skill-loader";
+} from "../../execution/features/opencode-skill-loader";
 import {
   loadUserAgents,
   loadProjectAgents,
-} from "../../features/claude-code-agent-loader";
-import { loadMcpConfigs } from "../../features/claude-code-mcp-loader";
-import { loadAllPluginComponents } from "../../features/claude-code-plugin-loader";
+} from "../../execution/features/claude-code-agent-loader";
+import { loadMcpConfigs } from "../../execution/features/claude-code-mcp-loader";
+import { loadAllPluginComponents } from "../../execution/features/claude-code-plugin-loader";
 import { createBuiltinMcps } from "../../mcp";
 import type { GhostwireConfig } from "../../config";
 import {
@@ -41,7 +41,7 @@ import {
   AUGUR_PLANNER_SYSTEM_PROMPT,
   AUGUR_PLANNER_PERMISSION,
 } from "../../orchestration/agents/zen-planner";
-import { DEFAULT_CATEGORIES } from "../../tools/delegate-task/constants";
+import { DEFAULT_CATEGORIES } from "../../execution/tools/delegate-task/constants";
 import type { ModelCacheState } from "../../plugin-state";
 import type { CategoryConfig } from "../../config/schema";
 

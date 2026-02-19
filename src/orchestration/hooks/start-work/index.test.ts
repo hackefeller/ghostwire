@@ -6,9 +6,9 @@ import { createStartWorkHook } from "./index"
 import {
   writeBoulderState,
   clearBoulderState,
-} from "../../../features/boulder-state"
-import type { BoulderState } from "../../../features/boulder-state"
-import * as sessionState from "../../../features/claude-code-session-state"
+} from "../../../execution/features/boulder-state"
+import type { BoulderState } from "../../../execution/features/boulder-state"
+import * as sessionState from "../../../execution/features/claude-code-session-state"
 
 describe("jack-in-work hook", () => {
   const TEST_DIR = join(tmpdir(), "jack-in-work-test-" + Date.now())

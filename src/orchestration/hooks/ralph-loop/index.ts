@@ -11,7 +11,7 @@ import {
 } from "./constants"
 import type { RalphLoopState, RalphLoopOptions } from "./types"
 import { getTranscriptPath as getDefaultTranscriptPath } from "../claude-code-hooks/transcript"
-import { findNearestMessageWithFields, MESSAGE_STORAGE } from "../../../features/hook-message-injector"
+import { findNearestMessageWithFields, MESSAGE_STORAGE } from "../../../execution/features/hook-message-injector"
 
 function getMessageDir(sessionID: string): string | null {
   if (!existsSync(MESSAGE_STORAGE)) return null

@@ -3,7 +3,7 @@
 **Feature**: Reorganize Core Repo Topology | **Branch**: `042-reorganize-repo-topology`  
 **User Stories**: P1 (Reorganize structure) + P2 (Document changes)  
 **Total Tasks**: 47 | **Estimated Duration**: 1-2 weeks (6 phases)  
-**Progress**: ✅ Phases 0-3 COMPLETE | 🔄 Phase 4 pending
+**Progress**: ✅ Phases 0-4 COMPLETE | 🔄 Phase 5 pending
 
 ---
 
@@ -158,23 +158,33 @@ This task checklist breaks the 6-phase repo reorganization into specific, execut
 **User Story**: [US1] Reorganize to domain-based structure
 
 ### T044 – Platform Directory Setup
-- [ ] T044 Create `src/platform/` directory in /Users/charlesponti/Developer/agents/src/platform/
+- [x] T044 Create `src/platform/` directory in /Users/charlesponti/Developer/agents/src/platform/
 
 ### T045 – Move Config to Platform
-- [ ] T045 [US1] Move config/ → platform/config/ using `git mv src/config src/platform/config` in /Users/charlesponti/Developer/agents/
+- [x] T045 [US1] Move config/ → platform/config/ using `git mv src/config src/platform/config` in /Users/charlesponti/Developer/agents/
 
 ### T046 – Update Cross-Domain Imports (All → Platform)
-- [ ] T046 [US1] Run import-mapping on all domains for platform config refs: `./scripts/update-imports.sh "src/config" "src/platform/config" "src"` in /Users/charlesponti/Developer/agents/
+- [x] T046 [US1] Run import-mapping on all domains for platform config refs: `./scripts/update-imports.sh "src/config" "src/platform/config" "src"` in /Users/charlesponti/Developer/agents/
 
 ### T047 – Update Root-Level Imports
-- [ ] T047 [US1] Update imports in `src/index.ts` and `src/plugin-config.ts` from `./config/` to `./platform/config/` in /Users/charlesponti/Developer/agents/src/
-- [ ] T048 [US1] Create barrel file `src/platform/index.ts` exporting from config in /Users/charlesponti/Developer/agents/src/platform/index.ts
+- [x] T047 [US1] Update imports in `src/index.ts` and `src/plugin-config.ts` from `./config/` to `./platform/config/` in /Users/charlesponti/Developer/agents/src/
+- [x] T048 [US1] Create barrel file `src/platform/index.ts` exporting from config in /Users/charlesponti/Developer/agents/src/platform/index.ts
 
-### T049 – Validate Phase 4
-- [ ] T049 [US1] Run `bun run typecheck` and verify no errors in /Users/charlesponti/Developer/agents/
-- [ ] T050 [US1] Run `bun run build` and verify ESM output in dist/platform/ in /Users/charlesponti/Developer/agents/
-- [ ] T051 [US1] Verify config loads correctly (test platform/config/loader.ts) in /Users/charlesponti/Developer/agents/
-- [ ] T052 [US1] Commit Phase 4: `git commit -m "refactor: reorganize config into platform domain"` in /Users/charlesponti/Developer/agents/
+### T052 – Validate Phase 4
+- [x] T049 [US1] Run `bun run typecheck` and verify no errors in /Users/charlesponti/Developer/agents/
+- [x] T050 [US1] Run `bun run build` and verify ESM output in dist/platform/ in /Users/charlesponti/Developer/agents/
+- [x] T051 [US1] Verify config loads correctly (test platform/config/loader.ts) in /Users/charlesponti/Developer/agents/
+- [x] T052 [US1] Commit Phase 4: `git commit -m "refactor: reorganize config into platform domain"` in /Users/charlesponti/Developer/agents/
+
+**Phase 4 Summary**:
+- ✅ Moved `src/config/` → `src/platform/config/` (7 files, git history preserved)
+- ✅ Updated 131 files with corrected imports across all domains
+- ✅ Fixed relative import paths for new directory depth
+- ✅ Updated build-schema.ts for new location
+- ✅ Typecheck: 0 errors
+- ✅ Build: ESM + declarations + schema generated
+- ✅ Tests: 1928 pass, 9 fail (pre-existing), 2 errors (pre-existing)
+- ✅ Commit: `50f43c2` - Phase 4 complete
 
 ---
 

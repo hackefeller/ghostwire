@@ -60,7 +60,7 @@ export function createBackgroundTask(manager: BackgroundManager): ToolDefinition
       const ctx = toolContext as ToolContextWithMetadata
 
       if (!args.agent || args.agent.trim() === "") {
-        return `[ERROR] Agent parameter is required. Please specify which agent to use (e.g., "explore", "librarian", "build", etc.)`
+        return `[ERROR] Agent parameter is required. Please specify which agent to use (e.g., "scout-recon", "archive-researcher", "build", etc.)`
       }
 
       try {
@@ -511,6 +511,268 @@ Session ID: ${task.sessionID}
 Status: ${task.status}`
       } catch (error) {
         return `[ERROR] Error cancelling task: ${error instanceof Error ? error.message : String(error)}`
+      }
+    },
+  })
+}
+
+export function createBackgroundTaskList(manager: BackgroundManager): ToolDefinition {
+  return tool({
+    description: `List background tasks with optional filtering.
+
+Returns information about background tasks, filtered by parent session or status.
+
+Arguments:
+- parent_session_id (optional): Filter by parent session ID
+- status (optional): Filter by status - "pending", "running", "completed", "error", "cancelled"
+
+Example:
+background_task_list(parent_session_id="ses_abc123")
+Lists all tasks for a specific session`,
+    args: {
+      parent_session_id: tool.schema.string().optional().describe("Filter by parent session ID"),
+      status: tool.schema.enum(["pending", "running", "completed", "error", "cancelled"]).optional().describe("Filter by status"),
+    },
+    execute: async (args: { parent_session_id?: string; status?: string }, toolContext) => {
+      const ctx = toolContext as { sessionID: string }
+
+      try {
+        let tasks: BackgroundTask[]
+
+        if (args.parent_session_id) {
+          tasks = manager.getTasksByParentSession(args.parent_session_id)
+        } else {
+          tasks = manager.getTasksByParentSession(ctx.sessionID)
+        }
+
+        if (args.status) {
+          tasks = tasks.filter(t => t.status === args.status)
+        }
+
+        if (tasks.length === 0) {
+          return `No background tasks found${args.parent_session_id ? ` for session ${args.parent_session_id}` : ""}`
+        }
+
+        let result = `Background Tasks:\n\n`
+
+        const statusEmoji: Record<string, string> = {
+          pending: "⏳",
+          running: "🔄",
+          completed: "✅",
+          error: "❌",
+          cancelled: "🚫",
+        }
+
+        for (const task of tasks) {
+          const emoji = statusEmoji[task.status] || "?"
+          const duration = task.startedAt && task.completedAt
+            ? formatDuration(task.startedAt, task.completedAt)
+            : task.startedAt
+              ? formatDuration(task.startedAt)
+              : "-"
+
+          result += `[${emoji}] \`${task.id}\`\n`
+          result += `  Description: ${task.description}\n`
+          result += `  Agent: ${task.agent}\n`
+          result += `  Status: ${task.status}\n`
+          result += `  Duration: ${duration}\n`
+
+          if (task.error) {
+            result += `  Error: ${task.error.substring(0, 100)}...\n`
+          }
+
+          result += "\n"
+        }
+
+        // Summary
+        const counts = {
+          pending: tasks.filter(t => t.status === "pending").length,
+          running: tasks.filter(t => t.status === "running").length,
+          completed: tasks.filter(t => t.status === "completed").length,
+          error: tasks.filter(t => t.status === "error").length,
+          cancelled: tasks.filter(t => t.status === "cancelled").length,
+        }
+
+        result += `---\n`
+        result += `Total: ${tasks.length} | Pending: ${counts.pending} | Running: ${counts.running} | Completed: ${counts.completed} | Error: ${counts.error} | Cancelled: ${counts.cancelled}`
+
+        return result
+      } catch (error) {
+        return `[ERROR] Error listing tasks: ${error instanceof Error ? error.message : String(error)}`
+      }
+    },
+  })
+}
+
+export function createBackgroundTaskInfo(manager: BackgroundManager): ToolDefinition {
+  return tool({
+    description: `Get detailed information about a specific background task.
+
+Returns full task metadata including status, timing, agent, and output.
+
+Arguments:
+- task_id (required): Task ID to inspect
+
+Example:
+background_task_info(task_id="task_abc123")`,
+    args: {
+      task_id: tool.schema.string().describe("Task ID to inspect"),
+    },
+    execute: async (args: { task_id: string }) => {
+      try {
+        const task = manager.getTask(args.task_id)
+
+        if (!task) {
+          return `[ERROR] Task not found: ${args.task_id}`
+        }
+
+        const statusEmoji: Record<string, string> = {
+          pending: "⏳",
+          running: "🔄",
+          completed: "✅",
+          error: "❌",
+          cancelled: "🚫",
+        }
+
+        const emoji = statusEmoji[task.status] || "?"
+        const duration = task.startedAt && task.completedAt
+          ? formatDuration(task.startedAt, task.completedAt)
+          : task.startedAt
+            ? formatDuration(task.startedAt)
+            : "-"
+
+        let result = `Task: ${args.task_id}\n`
+        result += `${emoji} Status: ${task.status}\n\n`
+        result += `**Description:** ${task.description}\n`
+        result += `**Agent:** ${task.agent}\n`
+        result += `**Parent Session:** ${task.parentSessionID}\n`
+
+        if (task.sessionID) {
+          result += `**Task Session:** ${task.sessionID}\n`
+        }
+
+        result += `\n**Timing:**\n`
+        result += `- Queued: ${task.queuedAt?.toISOString() || "-"}\n`
+        result += `- Started: ${task.startedAt?.toISOString() || "-"}\n`
+        result += `- Completed: ${task.completedAt?.toISOString() || "-"}\n`
+        result += `- Duration: ${duration}\n`
+
+        if (task.error) {
+          result += `\n**Error:**\n${task.error}\n`
+        }
+
+        if (task.result) {
+          result += `\n**Result:**\n${task.result.substring(0, 500)}${task.result.length > 500 ? "..." : ""}\n`
+        }
+
+        if (task.progress) {
+          result += `\n**Progress:**\n`
+          result += `- Tool Calls: ${task.progress.toolCalls}\n`
+          if (task.progress.lastTool) {
+            result += `- Last Tool: ${task.progress.lastTool}\n`
+          }
+          if (task.progress.lastMessage) {
+            result += `- Last Message: ${task.progress.lastMessage.substring(0, 100)}...\n`
+          }
+        }
+
+        return result
+      } catch (error) {
+        return `[ERROR] Error getting task info: ${error instanceof Error ? error.message : String(error)}`
+      }
+    },
+  })
+}
+
+export function createBackgroundTaskUpdate(manager: BackgroundManager): ToolDefinition {
+  return tool({
+    description: `Update a background task - retry failed tasks or pause/resume.
+
+Allows retrying failed tasks or resuming paused tasks.
+
+Arguments:
+- task_id (required): Task ID to update
+- operation (required): Operation - "retry", "pause", "resume"
+- reason (optional): Reason for the operation
+
+Example:
+background_task_update(task_id="task_abc123", operation="retry", reason="Fixed the file issue")`,
+    args: {
+      task_id: tool.schema.string().describe("Task ID to update"),
+      operation: tool.schema.enum(["retry", "pause", "resume"]).describe("Operation to perform"),
+      reason: tool.schema.string().optional().describe("Reason for the operation"),
+    },
+    execute: async (args: { task_id: string; operation: "retry" | "pause" | "resume"; reason?: string }) => {
+      try {
+        const task = manager.getTask(args.task_id)
+
+        if (!task) {
+          return `[ERROR] Task not found: ${args.task_id}`
+        }
+
+        switch (args.operation) {
+          case "retry":
+            if (task.status !== "error" && task.status !== "cancelled" && task.status !== "completed") {
+              return `[ERROR] Can only retry tasks with status: error, cancelled, or completed. Current: ${task.status}`
+            }
+
+            await manager.launch({
+              description: `Retry of ${task.description}`,
+              prompt: task.prompt,
+              agent: task.agent,
+              parentSessionID: task.parentSessionID,
+              parentMessageID: task.parentMessageID,
+              parentModel: task.parentModel,
+              parentAgent: task.parentAgent,
+              model: task.model,
+            })
+
+            return `Task has been restarted
+
+Original Description: ${task.description}
+Agent: ${task.agent}
+New Status: running`
+
+          case "pause":
+            if (task.status !== "running") {
+              return `[ERROR] Can only pause running tasks. Current: ${task.status}`
+            }
+
+            if (task.sessionID) {
+              return `[ERROR] Pause not implemented - task is running in session ${task.sessionID}. Use background_task_cancel instead.`
+            }
+
+            return `[ERROR] Pause not supported for this task type`
+
+          case "resume":
+            if (task.status !== "pending") {
+              return `[ERROR] Can only resume pending tasks. Current: ${task.status}`
+            }
+
+            if (!task.sessionID) {
+              return `[ERROR] Task has no session to resume`
+            }
+
+            await manager.resume({
+              sessionId: task.sessionID,
+              prompt: task.prompt,
+              parentSessionID: task.parentSessionID,
+              parentMessageID: task.parentMessageID,
+              parentModel: task.parentModel,
+              parentAgent: task.parentAgent,
+            })
+
+            return `Task ${task.id} has been resumed
+
+Description: ${task.description}
+Agent: ${task.agent}
+New Status: running`
+
+          default:
+            return `[ERROR] Unknown operation: ${args.operation}`
+        }
+      } catch (error) {
+        return `[ERROR] Error updating task: ${error instanceof Error ? error.message : String(error)}`
       }
     },
   })

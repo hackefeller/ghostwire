@@ -24,6 +24,9 @@ import {
   session_read,
   session_search,
   session_info,
+  session_create,
+  session_update,
+  session_delete,
 } from "./session-manager"
 
 export { sessionExists } from "./session-manager/storage"
@@ -33,8 +36,25 @@ export { createSkillTool } from "./skill"
 export { createSkillMcpTool } from "./skill-mcp"
 
 import {
+  todo_create,
+  todo_list,
+  todo_update,
+  todo_delete,
+} from "./todo-manager"
+
+import {
+  skill_list,
+  skill_create,
+  skill_update,
+  skill_delete,
+} from "./skill"
+
+import {
   createBackgroundOutput,
   createBackgroundCancel,
+  createBackgroundTaskList,
+  createBackgroundTaskInfo,
+  createBackgroundTaskUpdate,
 } from "./background-task"
 
 import type { PluginInput, ToolDefinition } from "@opencode-ai/plugin"
@@ -50,6 +70,9 @@ export function createBackgroundTools(manager: BackgroundManager, client: Openco
   return {
     background_output: createBackgroundOutput(manager, client),
     background_cancel: createBackgroundCancel(manager, client),
+    background_task_list: createBackgroundTaskList(manager),
+    background_task_info: createBackgroundTaskInfo(manager),
+    background_task_update: createBackgroundTaskUpdate(manager),
   }
 }
 
@@ -68,4 +91,15 @@ export const builtinTools: Record<string, ToolDefinition> = {
   session_read,
   session_search,
   session_info,
+  session_create,
+  session_update,
+  session_delete,
+  todo_create,
+  todo_list,
+  todo_update,
+  todo_delete,
+  skill_list,
+  skill_create,
+  skill_update,
+  skill_delete,
 }

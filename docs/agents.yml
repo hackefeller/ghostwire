@@ -153,31 +153,31 @@ agents:
 
   # === Compound Agents (Integrated from ghostwire) ===
 
-  - id: void-review-rails
+  - id: reviewer-rails
     display_name: void.review-rails
     model: anthropic/claude-opus-4-5
     purpose: Kieran-style Rails code review specialist
     fallbacks: []
 
-  - id: void-review-python
+  - id: reviewer-python
     display_name: void.review-python
     model: anthropic/claude-opus-4-5
     purpose: Python code review specialist
     fallbacks: []
 
-  - id: void-review-ts
+  - id: reviewer-typescript
     display_name: void.review-ts
     model: anthropic/claude-opus-4-5
     purpose: TypeScript code review specialist
     fallbacks: []
 
-  - id: zen-review-rails
+  - id: reviewer-rails-dh
     display_name: zen.review-rails
     model: anthropic/claude-sonnet-4-5
     purpose: DHH-style Rails code review
     fallbacks: []
 
-  - id: mono-review
+  - id: reviewer-simplicity
     display_name: mono.review
     model: anthropic/claude-sonnet-4-5
     purpose: Code simplicity reviewer

@@ -1,11 +1,11 @@
 // Ghostwire Agents - Unified Export
 // This file exports all ghostwire agents integrated into ghostwire plugin
 
-import { createKieranRailsReviewerAgent } from "../void-review-rails";
-import { createKieranPythonReviewerAgent } from "../void-review-python";
-import { createKieranTypeScriptReviewerAgent } from "../void-review-ts";
-import { createDHHRailsReviewerAgent } from "../zen-review-rails";
-import { createCodeSimplicityReviewerAgent } from "../mono-review";
+import { createKieranRailsReviewerAgent } from "../reviewer-rails";
+import { createKieranPythonReviewerAgent } from "../reviewer-python";
+import { createKieranTypeScriptReviewerAgent } from "../reviewer-typescript";
+import { createDHHRailsReviewerAgent } from "../reviewer-rails-dh";
+import { createCodeSimplicityReviewerAgent } from "../reviewer-simplicity";
 import { createFrameworkDocsResearcherAgent } from "../docs-scan";
 import { createLearningsResearcherAgent } from "../learnings-scan";
 import { createBestPracticesResearcherAgent } from "../best-practices-scan";
@@ -23,20 +23,20 @@ import { createAnkaneReadmeWriterAgent } from "../docs-write-readme";
 export {
   createKieranRailsReviewerAgent,
   KIERAN_RAILS_REVIEWER_METADATA,
-} from "../void-review-rails";
+} from "../reviewer-rails";
 export {
   createKieranPythonReviewerAgent,
   KIERAN_PYTHON_REVIEWER_METADATA,
-} from "../void-review-python";
+} from "../reviewer-python";
 export {
   createKieranTypeScriptReviewerAgent,
   KIERAN_TYPESCRIPT_REVIEWER_METADATA,
-} from "../void-review-ts";
-export { createDHHRailsReviewerAgent, DHH_RAILS_REVIEWER_METADATA } from "../zen-review-rails";
+} from "../reviewer-typescript";
+export { createDHHRailsReviewerAgent, DHH_RAILS_REVIEWER_METADATA } from "../reviewer-rails-dh";
 export {
   createCodeSimplicityReviewerAgent,
   CODE_SIMPLICITY_REVIEWER_METADATA,
-} from "../mono-review";
+} from "../reviewer-simplicity";
 
 // Research Agents (4)
 export {

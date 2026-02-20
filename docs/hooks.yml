@@ -93,10 +93,10 @@ hooks:
 
     # === Task & Boulder Management ===
 
-    - id: overclock-loop
+    - id: ralph-loop
       description: Implements iterative task execution loop. Continues prompting until a completion promise is detected or max iterations reached. Self-driving task completion.
 
-    - id: jack-in-work
+    - id: start-work
       description: Handles /jack-in-work command. Loads/creates boulder state, selects planner plans, injects context for work continuation.
 
     - id: task-resume-info

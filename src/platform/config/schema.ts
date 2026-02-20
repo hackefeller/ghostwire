@@ -185,7 +185,7 @@ export const HookNameSchema = z.enum([
   "interactive-bash-session",
 
   "thinking-block-validator",
-  "overclock-loop",
+  "ralph-loop",
   "category-skill-reminder",
 
   "compaction-context-injector",
@@ -195,7 +195,7 @@ export const HookNameSchema = z.enum([
   "delegate-task-retry",
   "planner-md-only",
   "executor-notepad",
-  "jack-in-work",
+  "start-work",
   "stop-continuation-guard",
   "orchestrator",
 ]);

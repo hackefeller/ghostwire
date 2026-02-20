@@ -15,7 +15,7 @@ import {
   updateSessionAgent,
 } from "../../../execution/features/claude-code-session-state";
 
-export const HOOK_NAME = "jack-in-work";
+export const HOOK_NAME = "start-work";
 
 const KEYWORD_PATTERN = /\b(ultrawork|ulw)\b/gi;
 
@@ -71,7 +71,7 @@ export function createStartWorkHook(ctx: PluginInput) {
         return;
       }
 
-      log(`[${HOOK_NAME}] Processing jack-in-work command`, {
+      log(`[${HOOK_NAME}] Processing start-work command`, {
         sessionID: input.sessionID,
       });
 

@@ -244,7 +244,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     ? createCategorySkillReminderHook(ctx)
     : null;
 
-  const ralphLoop = isHookEnabled("overclock-loop")
+  const ralphLoop = isHookEnabled("ralph-loop")
     ? createRalphLoopHook(ctx, {
         config: pluginConfig.ralph_loop,
         checkSessionExists: async (sessionId) => sessionExists(sessionId),
@@ -259,7 +259,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     ? createDelegateTaskRetryHook(ctx)
     : null;
 
-  const startWork = isHookEnabled("jack-in-work") ? createStartWorkHook(ctx) : null;
+  const startWork = isHookEnabled("start-work") ? createStartWorkHook(ctx) : null;
 
   const plannerMdOnly = isHookEnabled("planner-md-only")
     ? createPlannerMdOnlyHook(ctx)
@@ -470,7 +470,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("chat.message", "auto-slash-command", () =>
         autoSlashCommand?.["chat.message"]?.(input, output),
       );
-      await runHook("chat.message", "jack-in-work", () =>
+      await runHook("chat.message", "start-work", () =>
         startWork?.["chat.message"]?.(input, output),
       );
 
@@ -514,7 +514,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
           const maxIterMatch = rawTask.match(/--max-iterations=(\d+)/i);
           const promiseMatch = rawTask.match(/--completion-promise=["']?([^"'\s]+)["']?/i);
 
-          log("[overclock-loop] Starting loop from chat.message", {
+          log("[ralph-loop] Starting loop from chat.message", {
             sessionID: input.sessionID,
             prompt,
           });
@@ -523,7 +523,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
             completionPromise: promiseMatch?.[1],
           });
         } else if (isCancelRalphTemplate) {
-          log("[overclock-loop] Cancelling loop from chat.message", {
+          log("[ralph-loop] Cancelling loop from chat.message", {
             sessionID: input.sessionID,
           });
           ralphLoop.cancelLoop(input.sessionID);
@@ -582,7 +582,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("event", "interactive-bash-session", () =>
         interactiveBashSession?.event(input),
       );
-      await runHook("event", "overclock-loop", () => ralphLoop?.event(input));
+      await runHook("event", "ralph-loop", () => ralphLoop?.event(input));
       await runHook("event", "stop-continuation-guard", () =>
         stopContinuationGuard?.event(input),
       );
@@ -723,8 +723,8 @@ const GhostwirePlugin: Plugin = async (ctx) => {
         const command = args?.command?.replace(/^\//, "").toLowerCase();
         const sessionID = input.sessionID || getMainSessionID();
 
-        if (command === "overclock-loop" && sessionID) {
-          const rawArgs = args?.command?.replace(/^\/?(overclock-loop)\s*/i, "") || "";
+        if (command === "ralph-loop" && sessionID) {
+          const rawArgs = args?.command?.replace(/^\/?(ralph-loop)\s*/i, "") || "";
           const taskMatch = rawArgs.match(/^["'](.+?)["']/);
           const prompt =
             taskMatch?.[1] ||

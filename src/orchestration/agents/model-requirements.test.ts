@@ -27,7 +27,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     // #given - cipherOperator agent requirement
     const cipherOperator = AGENT_MODEL_REQUIREMENTS["void-runner"];
 
-    // #when - accessing Cipher Operator requirement
+    // #when - accessing void-runner requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
     expect(cipherOperator).toBeDefined();
     expect(cipherOperator.fallbackChain).toBeArray();
@@ -94,16 +94,16 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
   });
 
   test("zen-planner has valid fallbackChain with claude-opus-4-5 as primary", () => {
-    // #given - augurPlanner agent requirement
-    const augurPlanner = AGENT_MODEL_REQUIREMENTS["zen-planner"];
+    // #given - zen-planner agent requirement
+    const zenPlanner = AGENT_MODEL_REQUIREMENTS["zen-planner"];
 
-    // #when - accessing Augur Planner requirement
+    // #when - accessing zen-planner requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
-    expect(augurPlanner).toBeDefined();
-    expect(augurPlanner.fallbackChain).toBeArray();
-    expect(augurPlanner.fallbackChain.length).toBeGreaterThan(0);
+    expect(zenPlanner).toBeDefined();
+    expect(zenPlanner!.fallbackChain).toBeArray();
+    expect(zenPlanner!.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = augurPlanner.fallbackChain[0];
+    const primary = zenPlanner!.fallbackChain[0];
     expect(primary.model).toBe("claude-opus-4-5");
     expect(primary.providers[0]).toBe("anthropic");
     expect(primary.variant).toBe("max");
@@ -145,7 +145,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     // #given - nexusOrchestrator agent requirement
     const nexusOrchestrator = AGENT_MODEL_REQUIREMENTS["grid-sync"];
 
-    // #when - accessing Nexus Orchestrator requirement
+    // #when - accessing grid-sync requirement
     // #then - fallbackChain exists with k2p5 as first entry (kimi-for-coding prioritized)
     expect(nexusOrchestrator).toBeDefined();
     expect(nexusOrchestrator.fallbackChain).toBeArray();

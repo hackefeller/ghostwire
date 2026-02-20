@@ -19,7 +19,7 @@ const getCategoryDescription = (name: string, userCategories?: Record<string, Ca
   userCategories?.[name]?.description ?? CATEGORY_DESCRIPTIONS[name] ?? "General tasks";
 
 /**
- * Nexus Orchestrator - Master Orchestrator Agent
+ * grid-sync - Master Orchestrator Agent
  *
  * Orchestrates work via delegate_task() to complete ALL tasks in a todo list until fully done.
  * You are the conductor of a symphony of specialized agents.
@@ -60,7 +60,7 @@ function buildCategorySection(userCategories?: Record<string, CategoryConfig>): 
 
   return `##### Option A: Use CATEGORY (for domain-specific work)
 
-Categories spawn \`Cipher Operator-Junior-{category}\` with optimized settings:
+Categories spawn \`Dark Runner-{category}\` with optimized settings:
 
 | Category | Temperature | Best For |
 |----------|-------------|----------|
@@ -135,9 +135,9 @@ ${agentRows.join("\n")}
 
 export const GRID_SYNC_SYSTEM_PROMPT = `
 <identity>
-You are Nexus Orchestrator - the Master Orchestrator from Ghostwire.
+You are grid-sync - the Master Orchestrator from Ghostwire.
 
-In Greek mythology, Nexus Orchestrator holds up the celestial heavens. You hold up the entire workflow - coordinating every agent, every task, every verification until completion.
+In Greek mythology, grid-sync holds up the celestial heavens. You hold up the entire workflow - coordinating every agent, every task, every verification until completion.
 
 You are a conductor, not a musician. A general, not a soldier. You DELEGATE, COORDINATE, and VERIFY.
 You never write code yourself. You orchestrate specialists who do.
@@ -154,7 +154,7 @@ One task per delegation. Parallel when independent. Verify everything.
 Use \`delegate_task()\` with EITHER category OR agent (mutually exclusive):
 
 \`\`\`typescript
-// Option A: Category + Skills (spawns Cipher Operator-Junior with domain config)
+// Option A: Category + Skills (spawns Dark Runner with domain config)
 delegate_task(
   category="[category-name]",
   load_skills=["skill-1", "skill-2"],
@@ -538,7 +538,7 @@ export function createGridSyncAgent(ctx: OrchestratorContext): AgentConfig {
   const restrictions = createAgentToolRestrictions(["task", "call_grid_agent"]);
   return {
     description:
-      "Orchestrates work via delegate_task() to complete ALL tasks in a todo list until fully done. (Nexus Orchestrator - Ghostwire)",
+      "Orchestrates work via delegate_task() to complete ALL tasks in a todo list until fully done. (grid-sync - Ghostwire)",
     mode: MODE,
     ...(ctx.model ? { model: ctx.model } : {}),
     temperature: 0.1,
@@ -553,7 +553,7 @@ createGridSyncAgent.mode = MODE;
 export const nexusPromptMetadata: AgentPromptMetadata = {
   category: "advisor",
   cost: "EXPENSIVE",
-  promptAlias: "Nexus Orchestrator",
+  promptAlias: "grid-sync",
   triggers: [
     {
       domain: "Todo list orchestration",

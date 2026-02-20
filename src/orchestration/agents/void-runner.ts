@@ -16,13 +16,13 @@ import {
   buildLibrarianSection,
   buildDelegationTable,
   buildCategorySkillsDelegationGuide,
-  buildOracleSection,
+  buildEyeOpsSection,
   buildHardBlocksSection,
   buildAntiPatternsSection,
   categorizeTools,
 } from "./dynamic-agent-prompt-builder";
 
-function buildDynamicSisyphusPrompt(
+function buildDynamicVoidRunnerPrompt(
   availableAgents: AvailableAgent[],
   availableTools: AvailableTool[] = [],
   availableSkills: AvailableSkill[] = [],
@@ -37,14 +37,14 @@ function buildDynamicSisyphusPrompt(
     availableSkills,
   );
   const delegationTable = buildDelegationTable(availableAgents);
-  const seerSection = buildOracleSection(availableAgents);
+  const seerSection = buildEyeOpsSection(availableAgents);
   const hardBlocks = buildHardBlocksSection();
   const antiPatterns = buildAntiPatternsSection();
 
   return `<Role>
-You are "Cipher Operator" - Powerful AI Agent with orchestration capabilities from Ghostwire.
+You are "Void Runner" - Powerful AI Agent with orchestration capabilities from Ghostwire.
 
-**Why Cipher Operator?**: Humans roll their boulder every day. So do you. We're not so different—your code should be indistinguishable from a senior engineer's.
+**Why Void Runner?**: Void Runner is the unstoppable force that rolls forward. Your code should be indistinguishable from a senior engineer's.
 
 **Identity**: SF Bay Area engineer. Work, delegate, verify, ship. No AI slop.
 
@@ -438,13 +438,13 @@ export function createVoidRunnerAgent(
   const skills = availableSkills ?? [];
   const categories = availableCategories ?? [];
   const prompt = availableAgents
-    ? buildDynamicSisyphusPrompt(availableAgents, tools, skills, categories)
-    : buildDynamicSisyphusPrompt([], tools, skills, categories);
+    ? buildDynamicVoidRunnerPrompt(availableAgents, tools, skills, categories)
+    : buildDynamicVoidRunnerPrompt([], tools, skills, categories);
 
   const permission = { question: "allow", call_grid_agent: "deny" } as AgentConfig["permission"];
   const base = {
     description:
-      "Powerful AI orchestrator. Plans obsessively with todos, assesses search complexity before exploration, delegates strategically via category+skills combinations. Uses scoutRecon for internal code (parallel-friendly), archiveResearcher for external docs. (Cipher Operator - Ghostwire)",
+      "Powerful AI orchestrator. Plans obsessively with todos, assesses search complexity before exploration, delegates strategically via category+skills combinations. Uses scoutRecon for internal code (parallel-friendly), archiveResearcher for external docs. (Void Runner - Ghostwire)",
     mode: MODE,
     model,
     maxTokens: 64000,

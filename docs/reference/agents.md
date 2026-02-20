@@ -16,7 +16,7 @@ Ghostwire provides a team of specialized AI agents, each optimized for specific 
 - **Temperature**: 0.1
 - **Fallback Chain**: kimi-k2.5 → gpt-5.2
 
-**Master orchestrator** that holds the todo list and manages complex multi-agent workflows. Works in tandem with Augur Planner to execute planned work systematically.
+**Master orchestrator** that holds the todo list and manages complex multi-agent workflows. Works in tandem with zen-planner to execute planned work systematically.
 
 ### Seer Advisor
 - **Model**: `openai/gpt-5.2`
@@ -55,7 +55,7 @@ Ghostwire provides a team of specialized AI agents, each optimized for specific 
 
 ## Planning Agents
 
-### Augur Planner
+### zen-planner
 - **Model**: `anthropic/claude-opus-4-5`
 - **Temperature**: 0.1
 - **Fallback Chain**: kimi-k2.5 → gpt-5.2 → gemini-3-pro
@@ -109,7 +109,7 @@ delegate_task(agent="scout-recon", background=true, prompt="Find auth implementa
 The following agents have 32k thinking budget tokens enabled by default:
 - Cipher Operator
 - Seer Advisor
-- Augur Planner
+- zen-planner
 - Nexus Orchestrator
 
 ## Configuration

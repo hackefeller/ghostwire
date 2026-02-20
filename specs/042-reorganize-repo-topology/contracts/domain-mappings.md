@@ -17,8 +17,8 @@ src/agents/**/*.test.ts          → src/orchestration/agents/**/*.test.ts
 
 **Files Affected**: 43 files
 
-**Key Files**:
-- `src/agents/augur-planner.ts` → `src/orchestration/agents/augur-planner.ts`
+- **Key Files**:
+- `src/agents/zen-planner.ts` → `src/orchestration/agents/zen-planner.ts`
 - `src/agents/coordinator.ts` → `src/orchestration/agents/coordinator.ts`
 - (etc. for all 43 agent files)
 
@@ -272,4 +272,3 @@ README.md or similar:
 ### Phase 5-6
 - Documentation updates
 - PR creation and merge
-

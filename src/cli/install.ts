@@ -50,7 +50,7 @@ function formatConfigSummary(config: InstallConfig): string {
     formatProvider(
       "Kimi For Coding",
       config.hasKimiForCoding,
-      "Cipher Operator/Augur Planner fallback",
+      "void-runner/zen-planner fallback",
     ),
   );
 
@@ -312,7 +312,7 @@ async function runTuiMode(detected: DetectedConfig): Promise<InstallConfig | nul
       {
         value: "yes" as const,
         label: "Yes",
-        hint: "Kimi K2.5 for Cipher Operator/Augur Planner fallback",
+        hint: "Kimi K2.5 for void-runner/zen-planner fallback",
       },
     ],
     initialValue: initial.kimiForCoding,

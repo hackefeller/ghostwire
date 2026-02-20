@@ -384,7 +384,7 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config);
 
-    // #then Cipher Operator should use native OpenAI (fallback within native tier)
+    // #then void-runner should use native OpenAI (fallback within native tier)
     expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
       "openai/gpt-5.2-codex",
     );

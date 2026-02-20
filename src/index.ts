@@ -28,8 +28,8 @@ import {
   createDelegateTaskRetryHook,
   createTaskResumeInfoHook,
   createStartWorkHook,
-  createAtlasHook,
-  createAugurPlannerMdOnlyHook,
+  createGridSyncHook,
+  createZenPlannerMdOnlyHook,
   createDarkRunnerNotepadHook,
   createQuestionLabelTruncatorHook,
   createSubagentQuestionBlockerHook,
@@ -261,8 +261,8 @@ const GhostwirePlugin: Plugin = async (ctx) => {
 
   const startWork = isHookEnabled("jack-in-work") ? createStartWorkHook(ctx) : null;
 
-  const augurMdOnly = isHookEnabled("zen-planner-md-only")
-    ? createAugurPlannerMdOnlyHook(ctx)
+  const zenPlannerMdOnly = isHookEnabled("zen-planner-md-only")
+    ? createZenPlannerMdOnlyHook(ctx)
     : null;
 
   const cipherJuniorNotepad = isHookEnabled("dark-runner-notepad")
@@ -304,7 +304,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
   });
 
   const nexusHook = isHookEnabled("grid-sync")
-    ? createAtlasHook(ctx, { directory: ctx.directory, backgroundManager })
+    ? createGridSyncHook(ctx, { directory: ctx.directory, backgroundManager })
     : null;
 
   initTaskToastManager(ctx.client);
@@ -694,7 +694,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
         rulesInjector?.["tool.execute.before"]?.(input, output),
       );
       await runHook("tool.execute.before", "zen-planner-md-only", () =>
-        augurMdOnly?.["tool.execute.before"]?.(input, output),
+        zenPlannerMdOnly?.["tool.execute.before"]?.(input, output),
       );
       await runHook("tool.execute.before", "dark-runner-notepad", () =>
         cipherJuniorNotepad?.["tool.execute.before"]?.(input, output),

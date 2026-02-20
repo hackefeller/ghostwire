@@ -1,7 +1,7 @@
 import { describe, expect, test, beforeEach, afterEach, mock } from "bun:test";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { createAugurPlannerMdOnlyHook } from "./index";
+import { createZenPlannerMdOnlyHook } from "./index";
 import { MESSAGE_STORAGE } from "../../../execution/features/hook-message-injector";
 import {
   SYSTEM_DIRECTIVE_PREFIX,
@@ -42,14 +42,14 @@ describe("zen-planner-md-only", () => {
     }
   });
 
-  describe("with Augur Planner agent in message storage", () => {
+  describe("with zen-planner agent in message storage", () => {
     beforeEach(() => {
       setupMessageStorage(TEST_SESSION_ID, "zen-planner");
     });
 
-    test("should block Augur Planner from writing non-.md files", async () => {
+    test("should block zen-planner from writing non-.md files", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -65,9 +65,9 @@ describe("zen-planner-md-only", () => {
       );
     });
 
-    test("should allow Augur Planner to write .md files inside .ghostwire/", async () => {
+    test("should allow zen-planner to write .md files inside .ghostwire/", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -81,9 +81,9 @@ describe("zen-planner-md-only", () => {
       await expect(hook["tool.execute.before"](input, output)).resolves.toBeUndefined();
     });
 
-    test("should inject workflow reminder when Augur Planner writes to .ghostwire/plans/", async () => {
+    test("should inject workflow reminder when zen-planner writes to .ghostwire/plans/", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -97,7 +97,7 @@ describe("zen-planner-md-only", () => {
       await hook["tool.execute.before"](input, output);
 
       // #then
-      expect(output.message).toContain("AUGUR PLANNER MANDATORY WORKFLOW REMINDER");
+      expect(output.message).toContain("ZEN PLANNER MANDATORY WORKFLOW REMINDER");
       expect(output.message).toContain("INTERVIEW");
       expect(output.message).toContain("METIS CONSULTATION");
       expect(output.message).toContain("MOMUS REVIEW");
@@ -105,7 +105,7 @@ describe("zen-planner-md-only", () => {
 
     test("should NOT inject workflow reminder for .ghostwire/drafts/", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -122,9 +122,9 @@ describe("zen-planner-md-only", () => {
       expect(output.message).toBeUndefined();
     });
 
-    test("should block Augur Planner from writing .md files outside .ghostwire/", async () => {
+    test("should block zen-planner from writing .md files outside .ghostwire/", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -142,7 +142,7 @@ describe("zen-planner-md-only", () => {
 
     test("should block Edit tool for non-.md files", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Edit",
         sessionID: TEST_SESSION_ID,
@@ -160,7 +160,7 @@ describe("zen-planner-md-only", () => {
 
     test("should not affect non-Write/Edit tools", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Read",
         sessionID: TEST_SESSION_ID,
@@ -176,7 +176,7 @@ describe("zen-planner-md-only", () => {
 
     test("should handle missing filePath gracefully", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -190,9 +190,9 @@ describe("zen-planner-md-only", () => {
       await expect(hook["tool.execute.before"](input, output)).resolves.toBeUndefined();
     });
 
-    test("should inject read-only warning when Augur Planner calls delegate_task", async () => {
+    test("should inject read-only warning when zen-planner calls delegate_task", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "delegate_task",
         sessionID: TEST_SESSION_ID,
@@ -210,9 +210,9 @@ describe("zen-planner-md-only", () => {
       expect(output.args.prompt).toContain("DO NOT modify any files");
     });
 
-    test("should inject read-only warning when Augur Planner calls task", async () => {
+    test("should inject read-only warning when zen-planner calls task", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "task",
         sessionID: TEST_SESSION_ID,
@@ -229,9 +229,9 @@ describe("zen-planner-md-only", () => {
       expect(output.args.prompt).toContain(SYSTEM_DIRECTIVE_PREFIX);
     });
 
-    test("should inject read-only warning when Augur Planner calls call_grid_agent", async () => {
+    test("should inject read-only warning when zen-planner calls call_grid_agent", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "call_grid_agent",
         sessionID: TEST_SESSION_ID,
@@ -250,7 +250,7 @@ describe("zen-planner-md-only", () => {
 
     test("should not double-inject warning if already present", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "delegate_task",
         sessionID: TEST_SESSION_ID,
@@ -270,14 +270,14 @@ describe("zen-planner-md-only", () => {
     });
   });
 
-  describe("with non-Augur Planner agent in message storage", () => {
+  describe("with non-zen-planner agent in message storage", () => {
     beforeEach(() => {
       setupMessageStorage(TEST_SESSION_ID, "void-runner");
     });
 
-    test("should not affect non-Augur Planner agents", async () => {
+    test("should not affect non-zen-planner agents", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -291,9 +291,9 @@ describe("zen-planner-md-only", () => {
       await expect(hook["tool.execute.before"](input, output)).resolves.toBeUndefined();
     });
 
-    test("should not inject warning for non-Augur Planner agents calling delegate_task", async () => {
+    test("should not inject warning for non-zen-planner agents calling delegate_task", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "delegate_task",
         sessionID: TEST_SESSION_ID,
@@ -316,7 +316,7 @@ describe("zen-planner-md-only", () => {
   describe("without message storage", () => {
     test("should handle missing session gracefully (no agent found)", async () => {
       // #given
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: "non-existent-session",
@@ -333,13 +333,13 @@ describe("zen-planner-md-only", () => {
 
   describe("cross-platform path validation", () => {
     beforeEach(() => {
-      setupMessageStorage(TEST_SESSION_ID, "Augur Planner (Planner)");
+      setupMessageStorage(TEST_SESSION_ID, "zen-planner (Planner)");
     });
 
     test("should allow Windows-style backslash paths under .ghostwire/", async () => {
       // #given
       setupMessageStorage(TEST_SESSION_ID, "zen-planner");
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -356,7 +356,7 @@ describe("zen-planner-md-only", () => {
     test("should allow mixed separator paths under .ghostwire/", async () => {
       // #given
       setupMessageStorage(TEST_SESSION_ID, "zen-planner");
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -373,7 +373,7 @@ describe("zen-planner-md-only", () => {
     test("should allow uppercase .MD extension", async () => {
       // #given
       setupMessageStorage(TEST_SESSION_ID, "zen-planner");
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -390,7 +390,7 @@ describe("zen-planner-md-only", () => {
     test("should block paths outside workspace root even if containing .void-runner", async () => {
       // #given
       setupMessageStorage(TEST_SESSION_ID, "zen-planner");
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -409,7 +409,7 @@ describe("zen-planner-md-only", () => {
     test("should allow nested .ghostwire directories (ctx.directory may be parent)", async () => {
       // #given - when ctx.directory is parent of actual project, path includes project name
       setupMessageStorage(TEST_SESSION_ID, "zen-planner");
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -426,7 +426,7 @@ describe("zen-planner-md-only", () => {
     test("should block path traversal attempts", async () => {
       // #given
       setupMessageStorage(TEST_SESSION_ID, "zen-planner");
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -445,7 +445,7 @@ describe("zen-planner-md-only", () => {
     test("should allow case-insensitive .GHOSTWIRE directory", async () => {
       // #given
       setupMessageStorage(TEST_SESSION_ID, "zen-planner");
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -463,7 +463,7 @@ describe("zen-planner-md-only", () => {
       // #given - simulates when ctx.directory is parent of actual project
       // User reported: xauusd-dxy-plan\.ghostwire\drafts\supabase-email-templates.md
       setupMessageStorage(TEST_SESSION_ID, "zen-planner");
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -480,7 +480,7 @@ describe("zen-planner-md-only", () => {
     test("should allow nested project path with mixed separators", async () => {
       // #given
       setupMessageStorage(TEST_SESSION_ID, "zen-planner");
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,
@@ -497,7 +497,7 @@ describe("zen-planner-md-only", () => {
     test("should block nested project path without .void-runner", async () => {
       // #given
       setupMessageStorage(TEST_SESSION_ID, "zen-planner");
-      const hook = createAugurPlannerMdOnlyHook(createMockPluginInput());
+      const hook = createZenPlannerMdOnlyHook(createMockPluginInput());
       const input = {
         tool: "Write",
         sessionID: TEST_SESSION_ID,

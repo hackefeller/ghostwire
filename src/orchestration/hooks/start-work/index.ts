@@ -3,7 +3,7 @@ import {
   readBoulderState,
   writeBoulderState,
   appendSessionId,
-  findAugurPlannerPlans,
+  findZenPlannerPlans,
   getPlanProgress,
   createBoulderState,
   getPlanName,
@@ -64,7 +64,7 @@ export function createStartWorkHook(ctx: PluginInput) {
           .trim() || "";
 
       // Only trigger on actual command execution (contains <session-context> tag)
-      // NOT on description text like "Start Cipher Operator work session from Augur Planner plan"
+      // NOT on description text like "Start void-runner work session from zen-planner plan"
       const isStartWorkCommand = promptText.includes("<session-context>");
 
       if (!isStartWorkCommand) {
@@ -90,7 +90,7 @@ export function createStartWorkHook(ctx: PluginInput) {
           sessionID: input.sessionID,
         });
 
-        const allPlans = findAugurPlannerPlans(ctx.directory);
+        const allPlans = findZenPlannerPlans(ctx.directory);
         const matchedPlan = findPlanByName(allPlans, explicitPlanName);
 
         if (matchedPlan) {
@@ -179,7 +179,7 @@ Looking for new plans...`;
           !explicitPlanName &&
           getPlanProgress(existingState.active_plan).isComplete)
       ) {
-        const plans = findAugurPlannerPlans(ctx.directory);
+        const plans = findZenPlannerPlans(ctx.directory);
         const incompletePlans = plans.filter((p) => !getPlanProgress(p).isComplete);
 
         if (plans.length === 0) {
@@ -187,8 +187,8 @@ Looking for new plans...`;
 
 ## No Plans Found
 
-No Augur Planner plan files found at .ghostwire/plans/
-Use Augur Planner to create a work plan first: /plan "your task"`;
+No zen-planner plan files found at .ghostwire/plans/
+Use zen-planner to create a work plan first: /plan "your task"`;
         } else if (incompletePlans.length === 0) {
           contextInfo += `
 

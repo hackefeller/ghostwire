@@ -222,9 +222,9 @@ The agent renaming change (cipher-operator → void-runner, etc.) affects 658+ r
 
 ### Fine-Grained Tasks
 
-#### Discovery
-- [ ] Find `augur-planner` in hooks, agents, config, docs, tests
-- [ ] Identify hook directory: `src/hooks/augur-planner-md-only/`
+- #### Discovery
+- [ ] Document where legacy `augur-planner` strings still exist (hooks, agents, config, docs, tests)
+- [ ] Confirm hook directory: `src/hooks/augur-planner-md-only/`
 - [ ] Verify any dynamic prompt builder usage
 - [ ] Check docs: `docs/reference/modes.md`, `docs/reference/lifecycle-hooks.md`
 
@@ -243,12 +243,12 @@ The agent renaming change (cipher-operator → void-runner, etc.) affects 658+ r
 #### Refactor/Verify
 - [ ] Run planner tests
 - [ ] `typecheck` clean
-- [ ] Verify no `augur-planner` references remain
+- [ ] Verify no residual `augur-planner` references remain (documentation only)
 
 ### Acceptance Criteria
-- [ ] TypeScript compiles without `augur-planner` errors
+- [ ] TypeScript compiles without `Augur Planner`-related wording (for historical records)
 - [ ] Tests pass for `zen-planner`
-- [ ] No `augur-planner` string references remain
+- [ ] No `augur-planner` string references remain (goal achieved)
 
 ---
 

@@ -497,9 +497,9 @@ export const NotificationConfigSchema = z.object({
 });
 
 export const GitMasterConfigSchema = z.object({
-  /** Add "Ultraworked with Cipher Operator" footer to commit messages (default: true) */
+  /** Add "Ultraworked with Void Runner" footer to commit messages (default: true) */
   commit_footer: z.boolean().default(true),
-  /** Add "Co-authored-by: Cipher Operator" trailer to commit messages (default: true) */
+  /** Add "Co-authored-by: Void Runner" trailer to commit messages (default: true) */
   include_co_authored_by: z.boolean().default(true),
 });
 

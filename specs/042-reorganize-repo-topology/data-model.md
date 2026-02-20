@@ -12,11 +12,11 @@ phase: 1
 
 **Purpose**: Controls execution flow and lifecycle coordination
 
-**Components**:
+- **Components**:
 - **agents/** - AI agent implementations (43 files)
-  - Purpose: Implement autonomous reasoning and task orchestration
-  - Examples: augur-planner, coordinator, delegator
-  - Interface: Factory functions returning agent instances
+-   - Purpose: Implement autonomous reasoning and task orchestration
+-   - Examples: zen-planner, coordinator, delegator
+-   - Interface: Factory functions returning agent instances
   
 - **hooks/** - Lifecycle orchestration (41 directories)
   - Purpose: Intercept and control plugin lifecycle events
@@ -284,4 +284,3 @@ After each phase, validate:
 6. **Tests pass** (`bun test` runs without errors)
 
 This ensures each domain reorganization is solid before moving to the next.
-

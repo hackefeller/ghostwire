@@ -213,7 +213,7 @@ Update `src/config/schema.ts` to support new components:
 ```typescript
 // Add all compound agents to schema
 export const BuiltinAgentNameSchema = z.enum([
-  "cipher-operator", "augur-planner", "seer-advisor", "archive-researcher", "scout-recon", "optic-analyst", "tactician-strategist", "glitch-auditor", "nexus-orchestrator",
+  "cipher-operator", "zen-planner", "seer-advisor", "archive-researcher", "scout-recon", "optic-analyst", "tactician-strategist", "glitch-auditor", "nexus-orchestrator",
   // Compound Review Agents
   "grid:kieran-rails-reviewer", "grid:kieran-python-reviewer", "grid:kieran-typescript-reviewer",
   "grid:dhh-rails-reviewer", "grid:code-simplicity-reviewer",

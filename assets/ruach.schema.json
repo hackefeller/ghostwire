@@ -21,7 +21,7 @@
         "type": "string",
         "enum": [
           "void-runner",
-          "augur-planner",
+          "zen-planner",
           "seer-advisor",
           "archive-researcher",
           "scout-recon",
@@ -178,7 +178,7 @@
           "grid-auto-slash-command",
           "grid-edit-error-recovery",
           "grid-delegate-task-retry",
-          "augur-planner-md-only",
+          "zen-planner-md-only",
           "cipher-runner-notepad",
           "jack-in-work",
           "grid-sync",
@@ -868,7 +868,7 @@
             }
           }
         },
-        "augur-planner": {
+        "zen-planner": {
           "type": "object",
           "properties": {
             "model": {

@@ -37,9 +37,9 @@ git restore src/
 **Test Scenario 1**: Directory moves preserve git history
 ```bash
 # After moving src/agents → src/orchestration/agents
-git log --oneline --follow src/orchestration/agents/augur-planner.ts | head -5
+git log --oneline --follow src/orchestration/agents/zen-planner.ts | head -5
 
-# Expected: Shows commit history from src/agents/augur-planner.ts
+# Expected: Shows commit history from src/agents/zen-planner.ts
 ```
 
 **Test Scenario 2**: TypeScript compiles without errors
@@ -56,8 +56,8 @@ bun run typecheck
 bun run build
 
 # Expected:
-# ✓ dist/orchestration/agents/augur-planner.js (ESM)
-# ✓ dist/orchestration/agents/augur-planner.d.ts (TypeScript)
+# ✓ dist/orchestration/agents/zen-planner.js (ESM)
+# ✓ dist/orchestration/agents/zen-planner.d.ts (TypeScript)
 # ✓ dist/orchestration/index.d.ts (barrel file)
 ```
 
@@ -282,4 +282,3 @@ bun install && bun run build
 
 # Expected: Build succeeds, repo is usable
 ```
-

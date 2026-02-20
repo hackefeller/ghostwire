@@ -210,7 +210,7 @@ describe("createDarkRunnerAgent", () => {
       const result = createDarkRunnerAgent(override);
 
       // #then
-      expect(result.prompt).toContain("Cipher Operator-Junior");
+      expect(result.prompt).toContain("Dark Runner");
       expect(result.prompt).toContain("You work ALONE");
       expect(result.prompt).toContain("BLOCKED ACTIONS");
     });

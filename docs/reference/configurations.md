@@ -246,7 +246,7 @@ Or disable via `disabled_agents` in `~/.config/opencode/ghostwire.json` or `.ope
 }
 ```
 
-Available agents: `void-runner`, `augur-planner`, `seer-advisor`, `archive-researcher`, `scout-recon`, `optic-analyst`, `tactician-strategist`, `glitch-auditor`, `grid-sync`
+Available agents: `void-runner`, `zen-planner`, `seer-advisor`, `archive-researcher`, `scout-recon`, `optic-analyst`, `tactician-strategist`, `glitch-auditor`, `grid-sync`
 
 ## Built-in Skills
 
@@ -612,7 +612,7 @@ When enabled (default), Cipher Operator provides a powerful orchestrator with op
 
 - **Cipher Operator**: Primary orchestrator agent (Claude Opus 4.5)
 - **OpenCode-Builder**: OpenCode's default build agent, renamed due to SDK limitations (disabled by default)
-- **Augur Planner (Planner)**: OpenCode's default plan agent with work-planner methodology (enabled by default)
+- **zen-planner (Planner)**: OpenCode's default plan agent with work-planner methodology (enabled by default)
 - **Tactician Strategist (Plan Consultant)**: Pre-planning analysis agent that identifies hidden requirements and AI failure points
 
 **Configuration Options:**
@@ -662,7 +662,7 @@ You can also customize Cipher Operator agents like other agents:
     "OpenCode-Builder": {
       "model": "anthropic/claude-opus-4"
     },
-    "Augur Planner (Planner)": {
+    "zen-planner (Planner)": {
       "model": "openai/gpt-5.2"
     },
     "Tactician Strategist (Plan Consultant)": {
@@ -676,8 +676,8 @@ You can also customize Cipher Operator agents like other agents:
 | ------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `disabled`                | `false` | When `true`, disables all Cipher Operator orchestration and restores original build/plan as primary.                                          |
 | `default_builder_enabled` | `false` | When `true`, enables OpenCode-Builder agent (same as OpenCode build, renamed due to SDK limitations). Disabled by default.             |
-| `planner_enabled`         | `true`  | When `true`, enables Augur Planner (Planner) agent with work-planner methodology. Enabled by default.                                     |
-| `replace_plan`            | `true`  | When `true`, demotes default plan agent to subagent mode. Set to `false` to keep both Augur Planner (Planner) and default plan available. |
+| `planner_enabled`         | `true`  | When `true`, enables zen-planner (Planner) agent with work-planner methodology. Enabled by default.                                     |
+| `replace_plan`            | `true`  | When `true`, demotes default zen-planner (Planner) agent to subagent mode. Set to `false` to keep both zen-planner (Planner) and default plan available. |
 
 ## Background Tasks
 
@@ -900,7 +900,7 @@ Each agent has a defined provider priority chain. The system tries providers in 
 | **archive-researcher** | `glm-4.7` | zai-coding-plan → opencode → anthropic |
 | **scout-recon** | `claude-haiku-4-5` | anthropic → github-copilot → opencode |
 | **optic-analyst** | `gemini-3-flash` | google → openai → zai-coding-plan → kimi-for-coding → anthropic → opencode |
-| **Augur Planner (Planner)** | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
+| **zen-planner (Planner)** | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
 | **Tactician Strategist (Plan Consultant)** | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
 | **Glitch Auditor (Plan Reviewer)** | `gpt-5.2` | openai → anthropic → google |
 | **Nexus Orchestrator** | `claude-sonnet-4-5` | anthropic → kimi-for-coding → openai → google |

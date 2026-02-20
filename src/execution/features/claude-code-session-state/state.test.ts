@@ -24,7 +24,7 @@ describe("claude-code-session-state", () => {
     test("should store agent for session", () => {
       // #given
       const sessionID = "test-session-1";
-      const agent = "Augur Planner (Planner)";
+      const agent = "zen-planner (Planner)";
 
       // #when
       setSessionAgent(sessionID, agent);
@@ -36,13 +36,13 @@ describe("claude-code-session-state", () => {
     test("should NOT overwrite existing agent (first-write wins)", () => {
       // #given
       const sessionID = "test-session-1";
-      setSessionAgent(sessionID, "Augur Planner (Planner)");
+      setSessionAgent(sessionID, "zen-planner (Planner)");
 
       // #when - try to overwrite
       setSessionAgent(sessionID, "void-runner");
 
       // #then - first agent preserved
-      expect(getSessionAgent(sessionID)).toBe("Augur Planner (Planner)");
+      expect(getSessionAgent(sessionID)).toBe("zen-planner (Planner)");
     });
 
     test("should return undefined for unknown session", () => {
@@ -57,7 +57,7 @@ describe("claude-code-session-state", () => {
     test("should overwrite existing agent", () => {
       // #given
       const sessionID = "test-session-1";
-      setSessionAgent(sessionID, "Augur Planner (Planner)");
+      setSessionAgent(sessionID, "zen-planner (Planner)");
 
       // #when - force update
       updateSessionAgent(sessionID, "void-runner");
@@ -71,8 +71,8 @@ describe("claude-code-session-state", () => {
     test("should remove agent from session", () => {
       // #given
       const sessionID = "test-session-1";
-      setSessionAgent(sessionID, "Augur Planner (Planner)");
-      expect(getSessionAgent(sessionID)).toBe("Augur Planner (Planner)");
+      setSessionAgent(sessionID, "zen-planner (Planner)");
+      expect(getSessionAgent(sessionID)).toBe("zen-planner (Planner)");
 
       // #when
       clearSessionAgent(sessionID);
@@ -103,23 +103,23 @@ describe("claude-code-session-state", () => {
   });
 
   describe("zen-planner-md-only integration scenario", () => {
-    test("should correctly identify Augur Planner agent for permission checks", () => {
-      // #given - Augur Planner session
-      const sessionID = "test-augurPlanner-session";
-      const augurAgent = "Augur Planner (Planner)";
+    test("should correctly identify zen-planner agent for permission checks", () => {
+      // #given - zen-planner session
+      const sessionID = "test-zenPlanner-session";
+      const zenPlannerAgent = "zen-planner (Planner)";
 
       // #when - agent is set (simulating chat.message hook)
-      setSessionAgent(sessionID, augurAgent);
+      setSessionAgent(sessionID, zenPlannerAgent);
 
       // #then - getSessionAgent returns correct agent for augurPlanner-md-only hook
       const agent = getSessionAgent(sessionID);
-      expect(agent).toBe("Augur Planner (Planner)");
-      expect(["Augur Planner (Planner)"].includes(agent!)).toBe(true);
+      expect(agent).toBe("zen-planner (Planner)");
+      expect(["zen-planner (Planner)"].includes(agent!)).toBe(true);
     });
 
     test("should return undefined when agent not set (bug scenario)", () => {
       // #given - session exists but no agent set (the bug)
-      const sessionID = "test-augurPlanner-session";
+      const sessionID = "test-zenPlanner-session";
 
       // #when / #then - this is the bug: agent is undefined
       expect(getSessionAgent(sessionID)).toBeUndefined();
@@ -138,7 +138,7 @@ describe("claude-code-session-state", () => {
       expect(getSessionAgent(sessionID)).toBe(customAgent);
 
       // #when - first message after switch sends default agent
-      // This simulates the bug: input.agent = "Cipher Operator" on first message
+      // This simulates the bug: input.agent = "void-runner" on first message
       // Using setSessionAgent (first-write wins) should preserve custom agent
       setSessionAgent(sessionID, defaultAgent);
 

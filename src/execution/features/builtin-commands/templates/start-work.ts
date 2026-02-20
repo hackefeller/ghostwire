@@ -1,8 +1,8 @@
-export const START_WORK_TEMPLATE = `You are starting a Cipher Operator work session.
+export const START_WORK_TEMPLATE = `You are starting a void-runner work session.
 
 ## WHAT TO DO
 
-1. **Find available plans**: Search for Augur Planner-generated plan files at \`.ghostwire/plans/\`
+1. **Find available plans**: Search for void-runner-generated plan files at \`.ghostwire/plans/\`
 
 2. **Check for active boulder state**: Read \`.ghostwire/boulder.json\` if it exists
 
@@ -25,7 +25,7 @@ export const START_WORK_TEMPLATE = `You are starting a Cipher Operator work sess
    }
    \`\`\`
 
-5. **Read the plan file** and start executing tasks according to nexusOrchestrator workflow
+5. **Read the plan file** and start executing tasks according to void-runner/grid-sync workflow
 
 ## OUTPUT FORMAT
 
@@ -69,4 +69,4 @@ Reading plan and beginning execution...
 - The session_id is injected by the hook - use it directly
 - Always update boulder.json BEFORE starting work
 - Read the FULL plan file before delegating any tasks
-- Follow nexusOrchestrator delegation protocols (7-section format)`;
+- Follow void-runner delegation protocols and grid-sync handoff checklist (7-section format with safety checks)`;

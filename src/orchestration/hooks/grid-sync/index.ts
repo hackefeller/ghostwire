@@ -30,7 +30,7 @@ export const HOOK_NAME = "grid-sync";
  * Cross-platform check if a path is inside .ghostwire/ directory.
  * Handles both forward slashes (Unix) and backslashes (Windows).
  */
-function isSisyphusPath(filePath: string): boolean {
+function isGhostwirePath(filePath: string): boolean {
   return /\.ghostwire[/\\]/.test(filePath);
 }
 
@@ -122,7 +122,7 @@ ${createSystemDirective(SystemDirectiveTypes.DELEGATION_REQUIRED)}
 
 **STOP. YOU ARE VIOLATING ORCHESTRATOR PROTOCOL.**
 
-You (Nexus Orchestrator) are attempting to directly modify a file outside \`.ghostwire/\`.
+You (grid-sync) are attempting to directly modify a file outside \`.ghostwire/\`.
 
 **Path attempted:** $FILE_PATH
 
@@ -404,7 +404,7 @@ interface SessionState {
 
 const CONTINUATION_COOLDOWN_MS = 5000;
 
-export interface AtlasHookOptions {
+export interface GridSyncHookOptions {
   directory: string;
   backgroundManager?: BackgroundManager;
 }
@@ -435,7 +435,7 @@ function isAbortError(error: unknown): boolean {
   return false;
 }
 
-export function createAtlasHook(ctx: PluginInput, options?: AtlasHookOptions) {
+export function createGridSyncHook(ctx: PluginInput, options?: GridSyncHookOptions) {
   const backgroundManager = options?.backgroundManager;
   const sessions = new Map<string, SessionState>();
   const pendingFilePaths = new Map<string, string>();
@@ -583,7 +583,7 @@ export function createAtlasHook(ctx: PluginInput, options?: AtlasHookOptions) {
         }
 
         if (!isCallerOrchestrator(sessionID)) {
-          log(`[${HOOK_NAME}] Skipped: last agent is not Nexus Orchestrator`, { sessionID });
+          log(`[${HOOK_NAME}] Skipped: last agent is not grid-sync`, { sessionID });
           return;
         }
 
@@ -672,7 +672,7 @@ export function createAtlasHook(ctx: PluginInput, options?: AtlasHookOptions) {
         const filePath = (output.args.filePath ?? output.args.path ?? output.args.file) as
           | string
           | undefined;
-        if (filePath && !isSisyphusPath(filePath)) {
+        if (filePath && !isGhostwirePath(filePath)) {
           // Store filePath for use in tool.execute.after
           if (input.callID) {
             pendingFilePaths.set(input.callID, filePath);
@@ -722,7 +722,7 @@ export function createAtlasHook(ctx: PluginInput, options?: AtlasHookOptions) {
         if (!filePath) {
           filePath = output.metadata?.filePath as string | undefined;
         }
-        if (filePath && !isSisyphusPath(filePath)) {
+        if (filePath && !isGhostwirePath(filePath)) {
           output.output = (output.output || "") + DIRECT_WORK_REMINDER;
           log(`[${HOOK_NAME}] Direct work reminder appended`, {
             sessionID: input.sessionID,

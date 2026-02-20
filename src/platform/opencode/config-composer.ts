@@ -25,11 +25,9 @@ import { loadMcpConfigs } from "../../execution/features/claude-code-mcp-loader"
 import { loadAllPluginComponents } from "../../execution/features/claude-code-plugin-loader";
 import { createBuiltinMcps } from "../../integration/mcp";
 import type { GhostwireConfig } from "../../platform/config";
-import { log } from "../../integration/shared";
-import { fetchAvailableModels, readConnectedProvidersCache } from "./index";
-import { getOpenCodeConfigPaths } from "./config-dir";
-import { migrateAgentConfig } from "../../platform/config/permission-compat";
-import { AGENT_NAME_MAP } from "../../platform/config/migration";
+import {
+  log,
+} from "../../integration/shared";
 import { resolveModelWithFallback } from "../../orchestration/agents/model-resolver";
 import { AGENT_MODEL_REQUIREMENTS } from "../../orchestration/agents/model-requirements";
 import {
@@ -39,6 +37,9 @@ import {
 import { DEFAULT_CATEGORIES } from "../../execution/tools/delegate-task/constants";
 import type { ModelCacheState } from "../../plugin-state";
 import type { CategoryConfig } from "../../platform/config/schema";
+import { migrateAgentConfig } from "../../platform/config/permission-compat";
+import { fetchAvailableModels } from "./model-availability";
+import { readConnectedProvidersCache } from "./connected-providers-cache";
 
 export interface ConfigHandlerDeps {
   ctx: { directory: string; client?: any };
@@ -105,10 +106,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       log(`Plugin load errors`, { errors: pluginComponents.errors });
     }
 
-    // Migrate disabled_agents from old names to new names
-    const migratedDisabledAgents = (pluginConfig.disabled_agents ?? []).map((agent) => {
-      return AGENT_NAME_MAP[agent.toLowerCase()] ?? AGENT_NAME_MAP[agent] ?? agent;
-    }) as typeof pluginConfig.disabled_agents;
+    const disabledAgents = pluginConfig.disabled_agents ?? [];
 
     const includeClaudeSkillsForAwareness = pluginConfig.claude_code?.skills ?? true;
     const [
@@ -135,7 +133,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     // Pass it as uiSelectedModel so it takes highest priority in model resolution
     const currentModel = config.model as string | undefined;
     const builtinAgents = await createBuiltinAgents(
-      migratedDisabledAgents,
+      disabledAgents,
       pluginConfig.agents,
       ctx.directory,
       undefined, // systemDefaultModel - let fallback chain handle this
@@ -270,7 +268,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
           mode: "all" as const,
           prompt: AUGUR_PLANNER_SYSTEM_PROMPT,
           permission: AUGUR_PLANNER_PERMISSION,
-          description: `${configAgent?.plan?.description ?? "Plan agent"} (Augur Planner - Ghostwire)`,
+          description: `${configAgent?.plan?.description ?? "Plan agent"} (zen-planner - Ghostwire)`,
           color: (configAgent?.plan?.color as string) ?? "#FF6347",
           ...(temperatureToUse !== undefined ? { temperature: temperatureToUse } : {}),
           ...(topPToUse !== undefined ? { top_p: topPToUse } : {}),

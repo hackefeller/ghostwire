@@ -67,7 +67,7 @@ hooks:
       description: Finds and injects .md rule files (copilot-instructions) matching the current file being edited. Uses frontmatter patterns to match relevant rules.
 
     - id: zen-planner-md-only
-      description: Restricts Augur Planner to only write .md files inside .ghostwire/ directory. Injects workflow reminders for plan file writes.
+      description: Restricts zen-planner to only write .md files inside .ghostwire/ directory. Injects workflow reminders for plan file writes.
 
     # === Error Recovery ===
 
@@ -108,7 +108,7 @@ hooks:
       description: Implements iterative task execution loop. Continues prompting until a completion promise is detected or max iterations reached. Self-driving task completion.
 
     - id: start-work
-      description: Handles /jack-in-work command. Loads/creates boulder state, selects Augur Planner plans, injects context for work continuation.
+      description: Handles /jack-in-work command. Loads/creates boulder state, selects zen-planner plans, injects context for work continuation.
 
     - id: task-resume-info
       description: Appends resume instructions to task/delegate_task outputs that launch new sessions. Enables cross-session task continuation.

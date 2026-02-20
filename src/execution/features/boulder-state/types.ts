@@ -1,8 +1,8 @@
 /**
  * Boulder State Types
  *
- * Manages the active work plan state for Cipher Operator orchestrator.
- * Named after Cipher Operator's boulder - the eternal task that must be rolled.
+ * Manages the active work plan state for the void-runner orchestrator.
+ * Named after the void-runner boulder—the eternal task that must be rolled.
  */
 
 export interface BoulderState {

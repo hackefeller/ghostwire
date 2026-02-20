@@ -340,7 +340,7 @@ describe("jack-in-work hook", () => {
   });
 
   describe("session agent management", () => {
-    test("should update session agent to Nexus Orchestrator when jack-in-work command is triggered", async () => {
+    test("should update session agent to grid-sync when jack-in-work command is triggered", async () => {
       // #given
       const updateSpy = spyOn(sessionState, "updateSessionAgent");
 

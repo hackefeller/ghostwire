@@ -16,4 +16,4 @@ $ bunx ghostwire install --no-tui --claude=no --gemini=no --copilot=yes --ghostw
 - **Copilot** — github-copilot/ models (fallback)
 - **Ghostwire Zen** — ghostwire/ models (ghostwire/claude-opus-4-5, etc.)
 - **Z.ai** — zai-coding-plan/glm-4.7 (Archive Researcher priority)
-- **Kimi** — kimi-for-coding/k2p5 (Cipher Operator/Augur Planner fallback)
+- **Kimi** — kimi-for-coding/k2p5 (void-runner/zen-planner fallback)

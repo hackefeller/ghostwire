@@ -4,7 +4,7 @@ describe("Compound Engineering - Regression Tests", () => {
   describe("No Breaking Changes to Existing Agents", () => {
     test("builtin agents are unaffected", () => {
       //#given
-      const builtinAgents = ["void-runner", "seer-advisor", "archive-researcher", "scout-recon", "build", "grid-sync", "augur-planner", "tactician-strategist", "glitch-auditor"]
+      const builtinAgents = ["void-runner", "seer-advisor", "archive-researcher", "scout-recon", "build", "grid-sync", "zen-planner", "tactician-strategist", "glitch-auditor"]
 
       //#when & #then
       // Verify builtin agents remain as they were
@@ -77,7 +77,7 @@ describe("Compound Engineering - Regression Tests", () => {
   describe("Namespace Isolation", () => {
     test("compound agents don't conflict with builtin agents", () => {
       //#given
-      const builtinAgents = new Set(["void-runner", "seer-advisor", "archive-researcher", "scout-recon", "build", "grid-sync", "augur-planner", "tactician-strategist", "glitch-auditor"])
+      const builtinAgents = new Set(["void-runner", "seer-advisor", "archive-researcher", "scout-recon", "build", "grid-sync", "zen-planner", "tactician-strategist", "glitch-auditor"])
       const compoundAgents = new Set(["grid:kieran-rails-reviewer", "grid:framework-docs-researcher", "grid:figma-design-sync"])
 
       //#when

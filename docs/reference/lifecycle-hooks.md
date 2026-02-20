@@ -50,15 +50,15 @@ Ghostwire provides 32+ lifecycle hooks that intercept and modify agent behavior 
 
 ### jack-in-work
 - **Event**: PostToolUse
-- **Description**: Handles `/jack-in-work` command execution to start Cipher Operator work sessions from Augur Planner plans.
+- **Description**: Handles `/jack-in-work` command execution to start void-runner work sessions from zen-planner plans.
 
 ### grid-auto-slash-command
 - **Event**: UserPromptSubmit
 - **Description**: Automatically detects and executes slash commands embedded in natural language prompts.
 
-### augur-planner-md-only
+### zen-planner-md-only
 - **Event**: PostToolUse
-- **Description**: Enforces markdown-only output mode for Augur Planner planner agent.
+- **Description**: Enforces markdown-only output mode for the zen-planner planning agent.
 
 ## Quality & Safety Hooks
 
@@ -199,7 +199,7 @@ keywordDetector → claudeCodeHooks → autoSlashCommand → startWork
 ### PreToolUse Order
 ```
 questionLabelTruncator → claudeCodeHooks → nonInteractiveEnv → commentChecker →
-directoryAgentsInjector → directoryReadmeInjector → rulesInjector → augurMdOnly →
+    directoryAgentsInjector → directoryReadmeInjector → rulesInjector → zenPlannerMdOnly →
 cipherJuniorNotepad → nexusHook
 ```
 

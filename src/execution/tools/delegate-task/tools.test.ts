@@ -157,9 +157,9 @@ describe("void-runner-task", () => {
       expect(result).toBe(true);
     });
 
-    test("returns true for case-insensitive match 'Augur Planner'", () => {
+    test("returns true for case-insensitive match 'zen-planner'", () => {
       // #given / #when
-      const result = isPlanAgent("Augur Planner");
+      const result = isPlanAgent("zen-planner");
 
       // #then
       expect(result).toBe(true);
@@ -1899,13 +1899,13 @@ describe("void-runner-task", () => {
       expect(result).toBe(PLAN_AGENT_SYSTEM_PREPEND);
     });
 
-    test("prepends plan agent system prompt when agentName is 'Augur Planner' (case insensitive)", () => {
+    test("prepends plan agent system prompt when agentName is 'zen-planner' (case insensitive)", () => {
       // #given
       const { buildSystemContent } = require("./tools");
       const { PLAN_AGENT_SYSTEM_PREPEND } = require("./constants");
 
       // #when
-      const result = buildSystemContent({ agentName: "Augur Planner" });
+      const result = buildSystemContent({ agentName: "zen-planner" });
 
       // #then
       expect(result).toContain("<system>");
@@ -2276,8 +2276,8 @@ describe("void-runner-task", () => {
       { timeout: 20000 },
     );
 
-    test("case-insensitive: Augur Planner (capitalized) cannot delegate to zen-planner", async () => {
-      // #given - current agent is Augur Planner (capitalized)
+    test("case-insensitive: zen-planner (capitalized) cannot delegate to zen-planner", async () => {
+      // #given - current agent is zen-planner (capitalized)
       const { createDelegateTask } = require("./tools");
 
       const mockManager = { launch: async () => ({}) };
@@ -2301,11 +2301,11 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "Augur Planner",
+        agent: "zen-planner",
         abort: new AbortController().signal,
       };
 
-      // #when - Augur Planner tries to delegate to zen-planner
+      // #when - zen-planner tries to delegate to zen-planner
       const result = await tool.execute(
         {
           description: "Test case-insensitive block",

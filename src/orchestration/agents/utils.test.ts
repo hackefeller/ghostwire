@@ -8,7 +8,7 @@ import * as modelAvailability from "../../platform/opencode/model-availability";
 const TEST_DEFAULT_MODEL = "anthropic/claude-opus-4-5";
 
 describe("createBuiltinAgents with model overrides", () => {
-  test("Cipher Operator with default model has thinking config", async () => {
+  test("void-runner with default model has thinking config", async () => {
     // #given - no overrides, using systemDefaultModel
 
     // #when
@@ -20,7 +20,7 @@ describe("createBuiltinAgents with model overrides", () => {
     expect(agents["void-runner"].reasoningEffort).toBeUndefined();
   });
 
-  test("Cipher Operator with GPT model override has reasoningEffort, no thinking", async () => {
+  test("void-runner with GPT model override has reasoningEffort, no thinking", async () => {
     // #given
     const overrides = {
       "void-runner": { model: "github-copilot/gpt-5.2" },
@@ -35,7 +35,7 @@ describe("createBuiltinAgents with model overrides", () => {
     expect(agents["void-runner"].thinking).toBeUndefined();
   });
 
-  test("Cipher Operator uses system default when no availableModels provided", async () => {
+  test("void-runner uses system default when no availableModels provided", async () => {
     // #given
     const systemDefaultModel = "anthropic/claude-opus-4-5";
 

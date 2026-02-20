@@ -487,13 +487,13 @@ describe("grid-todo-continuation-enforcer", () => {
   });
 
   test("should accept skipAgents option without error", async () => {
-    // #given - session with skipAgents configured for Augur Planner
-    const sessionID = "main-augurPlanner-option";
+    // #given - session with skipAgents configured for zen-planner
+    const sessionID = "main-zenPlanner-option";
     setMainSession(sessionID);
 
     // #when - create hook with skipAgents option (should not throw)
     const hook = createTodoContinuationEnforcer(createMockPluginInput(), {
-      skipAgents: ["Augur Planner (Planner)", "custom-agent"],
+      skipAgents: ["zen-planner (Planner)", "custom-agent"],
     });
 
     // #then - handler works without error
@@ -1035,7 +1035,7 @@ describe("grid-todo-continuation-enforcer", () => {
   // ============================================================
 
   test("should skip compaction agent messages when resolving agent info", async () => {
-    // #given - session where last message is from compaction agent but previous was Cipher Operator
+    // #given - session where last message is from compaction agent but previous was void-runner
     const sessionID = "main-compaction-filter";
     setMainSession(sessionID);
 
@@ -1098,7 +1098,7 @@ describe("grid-todo-continuation-enforcer", () => {
     await hook.handler({ event: { type: "session.idle", properties: { sessionID } } });
     await fakeTimers.advanceBy(2500);
 
-    // #then - continuation uses Cipher Operator (skipped compaction agent)
+    // #then - continuation uses void-runner (skipped compaction agent)
     expect(promptCalls.length).toBe(1);
     expect(promptCalls[0].agent).toBe("void-runner");
   });
@@ -1147,12 +1147,12 @@ describe("grid-todo-continuation-enforcer", () => {
     expect(promptCalls).toHaveLength(0);
   });
 
-  test("should skip injection when augurPlanner agent is after compaction", async () => {
-    // #given - augurPlanner session that was compacted
-    const sessionID = "main-augurPlanner-compacted";
+  test("should skip injection when zen-planner agent is after compaction", async () => {
+    // #given - zen-planner session that was compacted
+    const sessionID = "main-zenPlanner-compacted";
     setMainSession(sessionID);
 
-    const mockMessagesAugurPlannerCompacted = [
+    const mockMessagesZenPlannerCompacted = [
       { info: { id: "msg-1", role: "user", agent: "zen-planner" } },
       { info: { id: "msg-2", role: "assistant", agent: "zen-planner" } },
       { info: { id: "msg-3", role: "assistant", agent: "compaction" } },
@@ -1164,7 +1164,7 @@ describe("grid-todo-continuation-enforcer", () => {
           todo: async () => ({
             data: [{ id: "1", content: "Task 1", status: "pending", priority: "high" }],
           }),
-          messages: async () => ({ data: mockMessagesAugurPlannerCompacted }),
+          messages: async () => ({ data: mockMessagesZenPlannerCompacted }),
           prompt: async (opts: any) => {
             promptCalls.push({
               sessionID: opts.path.id,
@@ -1189,7 +1189,7 @@ describe("grid-todo-continuation-enforcer", () => {
 
     await fakeTimers.advanceBy(3000);
 
-    // #then - no continuation (augurPlanner found after filtering compaction, augurPlanner is in skipAgents)
+    // #then - no continuation (zen-planner found after filtering compaction, zen-planner is in skipAgents)
     expect(promptCalls).toHaveLength(0);
   });
 

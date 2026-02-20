@@ -294,7 +294,7 @@ We have lots of features that you'll think should obviously exist, and once you 
 See the full [Features Documentation](docs/features.md) for detailed information.
 
 **Quick Overview:**
-- **Agents**: Cipher Operator (the main agent), Augur Planner (planner), Seer Advisor (architecture/debugging), Archive Researcher (docs/code search), Scout Recon (fast codebase grep), Multimodal Looker
+- **Agents**: Cipher Operator (the main agent), zen-planner (planner), Seer Advisor (architecture/debugging), Archive Researcher (docs/code search), Scout Recon (fast codebase grep), Multimodal Looker
 - **Background Agents**: Run multiple agents in parallel like a real dev team
 - **LSP & AST Tools**: Refactoring, rename, diagnostics, AST-aware code search
 - **Context Injection**: Auto-inject AGENTS.md, README.md, conditional rules
@@ -313,7 +313,7 @@ See the full [Configuration Documentation](docs/configurations.md) for detailed 
 - **JSONC Support**: Comments and trailing commas supported
 - **Agents**: Override models, temperatures, prompts, and permissions for any agent
 - **Built-in Skills**: `playwright` (browser automation), `git-master` (atomic commits)
-- **Cipher Operator Agent**: Main orchestrator with Augur Planner (Planner) and Tactician Strategist (Plan Consultant)
+- **Cipher Operator Agent**: Main orchestrator with zen-planner (Planner) and Tactician Strategist (Plan Consultant)
 - **Background Tasks**: Configure concurrency limits per provider/model
 - **Categories**: Domain-specific task delegation (`visual`, `business-logic`, custom)
 - **Hooks**: 25+ built-in hooks, all configurable via `disabled_hooks`

@@ -6,7 +6,7 @@ import { getAgentDisplayName } from "../../../integration/shared/agent-display-n
 
 export const HOOK_NAME = "zen-planner-md-only";
 
-export const AUGUR_PLANNER_AGENTS = ["zen-planner"];
+export const ZEN_PLANNER_AGENTS = ["zen-planner"];
 
 export const ALLOWED_EXTENSIONS = [".md"];
 
@@ -18,7 +18,7 @@ export const PLANNING_CONSULT_WARNING = `
 
 ---
 
-${createSystemDirective(SystemDirectiveTypes.AUGUR_PLANNER_READ_ONLY)}
+  ${createSystemDirective(SystemDirectiveTypes.ZEN_PLANNER_READ_ONLY)}
 
 You are being invoked by ${getAgentDisplayName("zen-planner")}, a READ-ONLY planning agent.
 
@@ -35,18 +35,18 @@ Return your findings and recommendations. The actual implementation will be hand
 
 `;
 
-export const AUGUR_PLANNER_WORKFLOW_REMINDER = `
+export const ZEN_PLANNER_WORKFLOW_REMINDER = `
 
 ---
 
-${createSystemDirective(SystemDirectiveTypes.AUGUR_PLANNER_READ_ONLY)}
+  ${createSystemDirective(SystemDirectiveTypes.ZEN_PLANNER_READ_ONLY)}
 
-## AUGUR PLANNER MANDATORY WORKFLOW REMINDER
+## ZEN PLANNER MANDATORY WORKFLOW REMINDER
 
 **You are writing a work plan. STOP AND VERIFY you completed ALL steps:**
 
 ┌─────────────────────────────────────────────────────────────────────┐
-│                     AUGUR PLANNER WORKFLOW                             │
+│                     ZEN PLANNER WORKFLOW                             │
 ├──────┬──────────────────────────────────────────────────────────────┤
 │  1   │ INTERVIEW: Full consultation with user                       │
 │      │    - Gather ALL requirements                                 │

@@ -46,7 +46,7 @@ agents:
       QA Protocol: Subagents lie, verify EVERYTHING.
 
   - id: zen-planner
-    display_name: Augur Planner
+    display_name: zen-planner
     model: anthropic/claude-opus-4-5
     purpose: Strategic planning consultant that interviews users and generates work plans
     fallbacks:

@@ -399,8 +399,8 @@ describe("BuiltinCategoryNameSchema", () => {
   });
 });
 
-describe("Cipher Operator-Junior agent override", () => {
-  test("schema accepts agents['Cipher Operator-Junior'] and retains the key after parsing", () => {
+describe("Dark Runner agent override", () => {
+  test("schema accepts agents['dark-runner'] and retains the key after parsing", () => {
     // #given
     const config = {
       agents: {

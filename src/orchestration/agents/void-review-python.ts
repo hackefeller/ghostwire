@@ -110,7 +110,7 @@ export function createKieranPythonReviewerAgent(model: string): AgentConfig {
   };
 }
 
-// Agent metadata for Cipher Operator prompt building and task delegation
+// Agent metadata for void-runner prompt building and task delegation
 export const KIERAN_PYTHON_REVIEWER_METADATA: AgentPromptMetadata = {
   category: "review",
   cost: "MODERATE",

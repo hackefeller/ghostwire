@@ -270,7 +270,7 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
 MUTUALLY EXCLUSIVE: Provide EITHER category OR subagent_type, not both (unless continuing a session).
 
 - load_skills: ALWAYS REQUIRED. Pass at least one skill name (e.g., ["playwright"], ["git-master", "frontend-ui-ux"]).
-- category: Use predefined category → Spawns Cipher Operator-Junior with category config
+- category: Use predefined category → Spawns Dark Runner with category config
   Available categories:
 ${categoryList}
 - subagent_type: Use specific agent directly (e.g., "eye-ops", "scan-ops")
@@ -906,7 +906,7 @@ To continue this session: session_id="${sessionID}"`;
         if (equalsIgnoreCase(agentName, SISYPHUS_JUNIOR_AGENT)) {
           return `Cannot use subagent_type="${SISYPHUS_JUNIOR_AGENT}" directly. Use category parameter instead (e.g., ${categoryExamples}).
 
-Cipher Operator-Junior is spawned automatically when you specify a category. Pick the appropriate category for your task domain.`;
+  Dark Runner is spawned automatically when you specify a category. Pick the appropriate category for your task domain.`;
         }
 
         if (isPlanAgent(agentName) && isPlanAgent(parentAgent)) {

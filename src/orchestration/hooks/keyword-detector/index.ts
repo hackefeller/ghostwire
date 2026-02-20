@@ -56,7 +56,7 @@ export function createKeywordDetectorHook(ctx: PluginInput, collector?: ContextC
       }
 
       // Skip keyword detection for background task sessions to prevent mode injection
-      // (e.g., [analyze-mode]) which incorrectly triggers Augur Planner restrictions
+      // (e.g., [analyze-mode]) which incorrectly triggers zen-planner restrictions
       const isBackgroundTaskSession = subagentSessions.has(input.sessionID);
       if (isBackgroundTaskSession) {
         return;

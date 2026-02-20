@@ -185,7 +185,7 @@ describe("Plan agent demote behavior", () => {
   });
 });
 
-describe("Augur Planner category config resolution", () => {
+describe("zen-planner category config resolution", () => {
   test("resolves ultrabrain category config", () => {
     // #given
     const categoryName = "ultrabrain";
@@ -285,7 +285,7 @@ describe("Augur Planner category config resolution", () => {
   });
 });
 
-describe("Augur Planner direct override priority over category", () => {
+describe("zen-planner direct override priority over category", () => {
   test("direct reasoningEffort takes priority over category reasoningEffort", async () => {
     // #given - category has reasoningEffort=xhigh, direct override says "low"
     const pluginConfig: GhostwireConfig = {

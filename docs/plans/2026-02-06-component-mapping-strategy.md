@@ -237,7 +237,7 @@ src/features/builtin-skills/compound/
 ```typescript
 // Existing ghostwire agents
 const existingAgents = [
-  'cipher-operator', 'seer-advisor', 'archive-researcher', 'scout-recon', 'augur-planner'
+  'cipher-operator', 'seer-advisor', 'archive-researcher', 'scout-recon', 'zen-planner'
 ];
 
 // Compound agents (no conflicts - all have descriptive names)

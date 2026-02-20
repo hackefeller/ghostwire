@@ -18,7 +18,7 @@ export type AgentFactory = ((model: string) => AgentConfig) & {
 };
 
 /**
- * Agent category for grouping in Cipher Operator prompt sections
+ * Agent category for grouping in void-runner prompt sections
  */
 export type AgentCategory =
   | "exploration"
@@ -37,7 +37,7 @@ export type AgentCategory =
 export type AgentCost = "FREE" | "CHEAP" | "EXPENSIVE" | "LOW" | "MODERATE" | "HIGH";
 
 /**
- * Delegation trigger for Cipher Operator prompt's Delegation Table
+ * Delegation trigger for void-runner prompt's Delegation Table
  */
 export interface DelegationTrigger {
   /** Domain of work (e.g., "Frontend UI/UX") */
@@ -47,8 +47,8 @@ export interface DelegationTrigger {
 }
 
 /**
- * Metadata for generating Cipher Operator prompt sections dynamically
- * This allows adding/removing agents without manually updating the Cipher Operator prompt
+ * Metadata for generating void-runner prompt sections dynamically
+ * This allows adding/removing agents without manually updating the void-runner prompt
  */
 export interface AgentPromptMetadata {
   /** Category for grouping in prompt sections */

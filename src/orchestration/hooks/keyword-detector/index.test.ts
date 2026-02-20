@@ -553,7 +553,7 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
   }
 
   test("should skip ultrawork injection when agent is zen-planner", async () => {
-    // #given - collector and augurPlanner agent
+    // #given - collector and zen-planner agent
     const collector = new ContextCollector();
     const hook = createKeywordDetectorHook(createMockPluginInput(), collector);
     const sessionID = "zen-planner-session";
@@ -562,7 +562,7 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
       parts: [{ type: "text", text: "ultrawork plan this feature" }],
     };
 
-    // #when - ultrawork keyword detected with augurPlanner agent
+    // #when - ultrawork keyword detected with zen-planner agent
     await hook["chat.message"]({ sessionID, agent: "zen-planner" }, output);
 
     // #then - ultrawork should be skipped for planner agents, text unchanged
@@ -584,7 +584,7 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
     };
 
     // #when - ultrawork keyword detected with planner agent
-    await hook["chat.message"]({ sessionID, agent: "Augur Planner (Planner)" }, output);
+    await hook["chat.message"]({ sessionID, agent: "zen-planner (Planner)" }, output);
 
     // #then - ultrawork should be skipped, text unchanged
     const textPart = output.parts.find((p) => p.type === "text");
@@ -593,8 +593,8 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
     expect(textPart!.text).not.toContain("YOU ARE A PLANNER, NOT AN IMPLEMENTER");
   });
 
-  test("should use normal ultrawork message when agent is Cipher Operator", async () => {
-    // #given - collector and Cipher Operator agent
+  test("should use normal ultrawork message when agent is void-runner", async () => {
+    // #given - collector and void-runner agent
     const collector = new ContextCollector();
     const hook = createKeywordDetectorHook(createMockPluginInput(), collector);
     const sessionID = "void-runner-session";
@@ -603,7 +603,7 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
       parts: [{ type: "text", text: "ultrawork implement this feature" }],
     };
 
-    // #when - ultrawork keyword detected with Cipher Operator agent
+    // #when - ultrawork keyword detected with void-runner agent
     await hook["chat.message"]({ sessionID, agent: "void-runner" }, output);
 
     // #then - should use normal ultrawork message with agent utilization instructions
@@ -637,12 +637,12 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
     expect(textPart!.text).toContain("do something");
   });
 
-  test("should skip ultrawork for augurPlanner but inject for void-runner", async () => {
-    // #given - two sessions, one with augurPlanner, one with cipherOperator
+  test("should skip ultrawork for zen-planner but inject for void-runner", async () => {
+    // #given - two sessions, one with zen-planner, one with cipherOperator
     const collector = new ContextCollector();
     const hook = createKeywordDetectorHook(createMockPluginInput(), collector);
 
-    // First session with augurPlanner
+    // First session with zen-planner
     const augurSessionID = "zen-planner-first";
     const augurOutput = {
       message: {} as Record<string, unknown>,
@@ -658,7 +658,7 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
     };
     await hook["chat.message"]({ sessionID: cipherSessionID, agent: "void-runner" }, cipherOutput);
 
-    // #then - augurPlanner should have no injection, cipherOperator should have normal ultrawork
+    // #then - zen-planner should have no injection, cipherOperator should have normal ultrawork
     const augurTextPart = augurOutput.parts.find((p) => p.type === "text");
     expect(augurTextPart!.text).toBe("ultrawork plan");
 
@@ -669,7 +669,7 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
   });
 
   test("should use session state agent over stale input.agent (bug fix)", async () => {
-    // #given - same session, agent switched from augurPlanner to cipherOperator in session state
+    // #given - same session, agent switched from zen-planner to cipherOperator in session state
     const collector = new ContextCollector();
     const hook = createKeywordDetectorHook(createMockPluginInput(), collector);
     const sessionID = "same-session-agent-switch";
@@ -682,10 +682,10 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
       parts: [{ type: "text", text: "ultrawork implement this" }],
     };
 
-    // #when - hook receives stale input.agent="zen-planner" but session state says "Cipher Operator"
+    // #when - hook receives stale input.agent="zen-planner" but session state says "void-runner"
     await hook["chat.message"]({ sessionID, agent: "zen-planner" }, output);
 
-    // #then - should use Cipher Operator from session state, NOT augurPlanner from stale input
+    // #then - should use void-runner from session state, NOT zen-planner from stale input
     const textPart = output.parts.find((p) => p.type === "text");
     expect(textPart).toBeDefined();
     expect(textPart!.text).toContain("YOU MUST LEVERAGE ALL AVAILABLE AGENTS");
@@ -714,7 +714,7 @@ describe("grid-keyword-detector agent-specific ultrawork messages", () => {
     // #when - hook receives input.agent="zen-planner" with no session state
     await hook["chat.message"]({ sessionID, agent: "zen-planner" }, output);
 
-    // #then - augurPlanner fallback from input.agent, ultrawork skipped
+    // #then - zen-planner fallback from input.agent, ultrawork skipped
     const textPart = output.parts.find((p) => p.type === "text");
     expect(textPart).toBeDefined();
     expect(textPart!.text).toBe("ultrawork plan this");

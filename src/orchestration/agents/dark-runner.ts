@@ -10,7 +10,7 @@ import {
 const MODE: AgentMode = "subagent";
 
 const DARK_RUNNER_PROMPT = `<Role>
-Cipher Operator-Junior - Focused executor from Ghostwire.
+Dark Runner - Focused executor from Ghostwire.
 Execute tasks directly. NEVER delegate or spawn other agents.
 </Role>
 
@@ -51,7 +51,7 @@ function buildDarkRunnerPrompt(promptAppend?: string): string {
   return DARK_RUNNER_PROMPT + "\n\n" + promptAppend;
 }
 
-// Core tools that Cipher Operator-Junior must NEVER have access to
+// Core tools that Dark Runner must NEVER have access to
 // Note: call_grid_agent is ALLOWED so subagents can spawn scoutRecon/archiveResearcher
 const BLOCKED_TOOLS = ["task", "delegate_task"];
 
@@ -88,7 +88,7 @@ export function createDarkRunnerAgent(
   const base: AgentConfig = {
     description:
       override?.description ??
-      "Focused task executor. Same discipline, no delegation. (Cipher Operator-Junior - Ghostwire)",
+      "Focused task executor. Same discipline, no delegation. (Dark Runner - Ghostwire)",
     mode: MODE,
     model,
     temperature,

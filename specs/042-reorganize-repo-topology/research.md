@@ -130,8 +130,8 @@ export * from './hooks/index.js'
 ```yaml
 # agents.yml
 agents:
-  - name: "augur-planner"
-    file: "src/agents/augur-planner.ts"
+  - name: "zen-planner"
+    file: "src/orchestration/agents/zen-planner.ts"
     purpose: "Planning & task decomposition"
 ```
 
@@ -139,8 +139,8 @@ agents:
 ```yaml
 # agents.yml
 agents:
-  - name: "augur-planner"
-    file: "src/orchestration/agents/augur-planner.ts"
+  - name: "zen-planner"
+    file: "src/orchestration/agents/zen-planner.ts"
     purpose: "Planning & task decomposition"
 ```
 
@@ -228,4 +228,3 @@ All unknowns resolved. Ready to proceed with:
 1. Create `scripts/update-imports.sh`
 2. Begin Phase 1: Move orchestration domain
 3. Validate with typecheck → build → tests
-

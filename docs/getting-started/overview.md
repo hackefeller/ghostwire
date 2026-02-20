@@ -10,7 +10,7 @@ Learn about Ghostwire, a plugin that transforms OpenCode into the best agent har
 
 **Feeling lazy?** Just include `ultrawork` (or `ulw`) in your prompt. That's it. The agent figures out the rest.
 
-**Need precision?** Press **Tab** to enter Augur Planner (Planner) mode, create a work plan through an interview process, then run `/jack-in-work` to execute it with full orchestration.
+**Need precision?** Press **Tab** to enter zen-planner (Planner) mode, create a work plan through an interview process, then run `/jack-in-work` to execute it with grid-sync orchestration.
 
 ---
 
@@ -44,15 +44,15 @@ This is the "just do it" mode. Full automatic mode.
 The agent is already smart enough, so it explores the codebase and make plans itself.
 **You don't have to think that deep. Agent will think that deep.**
 
-### Option 2: Augur Planner Mode (For Precise Work)
+### Option 2: zen-planner Mode (For Precise Work)
 
-For complex or critical tasks, press **Tab** to switch to Augur Planner (Planner) mode.
+For complex or critical tasks, press **Tab** to switch to zen-planner (Planner) mode.
 
 **How it works:**
 
-1. **Augur Planner interviews you** - Acts as your personal consultant, asking clarifying questions while researching your codebase to understand exactly what you need.
+1. **zen-planner interviews you** - Acts as your personal consultant, asking clarifying questions while researching your codebase to understand exactly what you need.
 
-2. **Plan generation** - Based on the interview, Augur Planner generates a detailed work plan with tasks, acceptance criteria, and guardrails. Optionally reviewed by Glitch Auditor (plan reviewer) for high-accuracy validation.
+2. **Plan generation** - Based on the interview, zen-planner generates a detailed work plan with tasks, acceptance criteria, and guardrails. Optionally reviewed by Glitch Auditor (plan reviewer) for high-accuracy validation.
 
 3. **Run `/jack-in-work`** - The Nexus Orchestrator takes over:
    - Distributes tasks to specialized sub-agents
@@ -60,7 +60,7 @@ For complex or critical tasks, press **Tab** to switch to Augur Planner (Planner
    - Accumulates learnings across tasks
    - Tracks progress across sessions (resume anytime)
 
-**When to use Augur Planner:**
+**When to use zen-planner:**
 - Multi-day or multi-session projects
 - Critical production changes
 - Complex refactoring spanning many files
@@ -70,21 +70,21 @@ For complex or critical tasks, press **Tab** to switch to Augur Planner (Planner
 
 ## Critical Usage Guidelines
 
-### Always Use Augur Planner + Orchestrator Together
+### Always Use zen-planner + grid-sync Together
 
 **Do NOT use `grid-sync` without `/jack-in-work`.**
 
-The orchestrator is designed to execute work plans created by Augur Planner. Using it directly without a plan leads to unpredictable behavior.
+The orchestrator is designed to execute work plans created by zen-planner. Using it directly without a plan leads to unpredictable behavior.
 
 **Correct workflow:**
 ```
-1. Press Tab → Enter Augur Planner mode
-2. Describe work → Augur Planner interviews you
+1. Press Tab → Enter zen-planner mode
+2. Describe work → zen-planner interviews you
 3. Confirm plan → Review .ghostwire/plans/*.md
-4. Run /jack-in-work → Orchestrator executes
+4. Run /jack-in-work → grid-sync executes
 ```
 
-**Augur Planner and Nexus Orchestrator are a pair. Always use them together.**
+**zen-planner and grid-sync are a pair. Always use them together.**
 
 ---
 
@@ -163,7 +163,7 @@ For detailed configuration options including per-agent settings, category custom
 
 ### Core Documentation
 - [Installation Guide](./installation.md) - Detailed installation instructions
-- [Architecture](../concepts/orchestration.md) - Deep dive into Augur Planner → Orchestrator → Junior workflow
+- [Architecture](../concepts/orchestration.md) - Deep dive into zen-planner → grid-sync → void-runner workflow
 - [Philosophy](../concepts/philosophy.md) - Principles behind Ghostwire
 
 ### Reference Documentation

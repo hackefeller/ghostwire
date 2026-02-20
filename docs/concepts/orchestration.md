@@ -1,6 +1,6 @@
 # Orchestration System
 
-Ghostwire's orchestration system transforms a simple AI agent into a coordinated development team. This document explains how the Augur Planner → Nexus Orchestrator → Cipher Operator workflow creates high-quality, reliable code output.
+Ghostwire's orchestration system transforms a simple AI agent into a coordinated development team. This document explains how the zen-planner → grid-sync → void-runner workflow creates high-quality, reliable code output.
 
 ---
 
@@ -21,9 +21,9 @@ The orchestration system solves these problems through **specialization and dele
 
 ```mermaid
 flowchart TB
-    subgraph Planning["Planning Layer (Human + Augur Planner)"]
+    subgraph Planning["Planning Layer (Human + zen-planner)"]
         User[("User")]
-        Augur Planner["Augur Planner (Planner)"]
+        zen-planner["zen-planner (Planner)"]
         Tactician Strategist["Tactician Strategist (Consultant)"]
         Glitch Auditor["Glitch Auditor (Reviewer)"]
     end
@@ -39,12 +39,12 @@ flowchart TB
         Archive Researcher["Archive Researcher (Docs/OSS)"]
     end
     
-    User -->|"Describe work"| Augur Planner
-    Augur Planner -->|"Consult"| Tactician Strategist
-    Augur Planner -->|"Interview"| User
-    Augur Planner -->|"Generate plan"| Plan[".ghostwire/plans/*.md"]
+    User -->|"Describe work"| zen-planner
+    zen-planner -->|"Consult"| Tactician Strategist
+    zen-planner -->|"Interview"| User
+    zen-planner -->|"Generate plan"| Plan[".ghostwire/plans/*.md"]
     Plan -->|"High accuracy?"| Glitch Auditor
-    Glitch Auditor -->|"OKAY / REJECT"| Augur Planner
+    Glitch Auditor -->|"OKAY / REJECT"| zen-planner
     
     User -->|"/jack-in-work"| Orchestrator
     Plan -->|"Read"| Orchestrator
@@ -64,9 +64,9 @@ flowchart TB
 
 ## Layer 1: Planning
 
-### Augur Planner: Your Strategic Consultant
+### zen-planner: Your Strategic Consultant
 
-Augur Planner is **not just a planner** - it's an intelligent interviewer that helps you think through what you actually need.
+zen-planner is **not just a planner** - it's an intelligent interviewer that helps you think through what you actually need.
 
 **The Interview Process:**
 
@@ -104,7 +104,7 @@ stateDiagram-v2
 
 **Intent-Specific Strategies:**
 
-| Intent | Augur Planner Focus | Example Questions |
+| Intent | zen-planner Focus | Example Questions |
 |--------|------------------|-------------------|
 | **Refactoring** | Safety - behavior preservation | "What tests verify current behavior?" "Rollback strategy?" |
 | **Build from Scratch** | Discovery - patterns first | "Found pattern X in codebase. Follow it or deviate?" |
@@ -113,7 +113,7 @@ stateDiagram-v2
 
 ### Tactician Strategist: The Gap Analyzer
 
-Before Augur Planner writes the plan, **Tactician Strategist catches what Augur Planner missed**:
+Before zen-planner writes the plan, **Tactician Strategist catches what zen-planner missed**:
 
 - Hidden intentions in user's request
 - Ambiguities that could derail implementation
@@ -137,7 +137,7 @@ The Glitch Auditor only says "OKAY" when:
 - Zero tasks require assumptions about business logic
 - Zero critical red flags
 
-If REJECTED, Augur Planner fixes issues and resubmits. **No maximum retry limit.**
+If REJECTED, zen-planner fixes issues and resubmits. **No maximum retry limit.**
 
 ---
 
@@ -259,7 +259,7 @@ DO NOT respond until all todos are marked completed.
 |------------|----------|-------------|
 | **Simple** | Just prompt | Simple tasks, quick fixes, single-file changes |
 | **Complex + Lazy** | Just type `ulw` or `ultrawork` | Complex tasks where explaining context is tedious. Agent figures it out. |
-| **Complex + Precise** | `@plan` → `/jack-in-work` | Precise, multi-step work requiring true orchestration. Augur Planner plans, Nexus Orchestrator executes. |
+| **Complex + Precise** | `@plan` → `/jack-in-work` | Precise, multi-step work requiring true orchestration. zen-planner plans, grid-sync executes. |
 
 **Decision Flow:**
 
@@ -269,7 +269,7 @@ Is it a quick fix or simple task?
   └─ NO  → Is explaining the full context tedious?
              └─ YES → Type "ulw" and let the agent figure it out
              └─ NO  → Do you need precise, verifiable execution?
-                        └─ YES → Use @plan for Augur Planner planning, then /jack-in-work
+                        └─ YES → Use @plan for zen-planner planning, then /jack-in-work
                         └─ NO  → Just use "ulw"
 ```
 
@@ -279,7 +279,7 @@ Is it a quick fix or simple task?
 
 ### `@plan [request]`
 
-Invokes Augur Planner to start a planning session.
+Invokes zen-planner to start a planning session.
 
 - Example: `@plan "I want to refactor the authentication system to NextAuth"`
 
@@ -300,14 +300,14 @@ You can control related features in `ghostwire.json`.
 {
   "cipher_agent": {
     "disabled": false,           // Enable Nexus Orchestrator orchestration (default: false)
-    "planner_enabled": true,     // Enable Augur Planner (default: true)
-    "replace_plan": true         // Replace default plan agent with Augur Planner (default: true)
+    "planner_enabled": true,     // Enable zen-planner (default: true)
+    "replace_plan": true         // Replace default plan agent with zen-planner (default: true)
   },
   
   "hooks": {
     "disabled": [
       // "jack-in-work",             // Disable execution trigger
-      // "augur-planner-md-only"      // Remove Augur Planner write restrictions (not recommended)
+      // "zen-planner-md-only"      // Remove zen-planner write restrictions (not recommended)
     ]
   }
 }
@@ -319,7 +319,7 @@ You can control related features in `ghostwire.json`.
 
 ### 1. Separation of Concerns
 
-- **Planning** (Augur Planner): High reasoning, interview, strategic thinking
+- **Planning** (zen-planner): High reasoning, interview, strategic thinking
 - **Orchestration** (Nexus Orchestrator): Coordination, verification, wisdom accumulation
 - **Execution** (Junior): Focused implementation, no distractions
 
@@ -355,7 +355,7 @@ Bulk work goes to cost-effective models.
 
 ## Best Practices
 
-1. **Don't Rush**: Invest sufficient time in the interview with Augur Planner. The more perfect the plan, the faster the execution.
+1. **Don't Rush**: Invest sufficient time in the interview with zen-planner. The more perfect the plan, the faster the execution.
 2. **Single Plan Principle**: No matter how large the task, contain all TODOs in one plan file (`.md`). This prevents context fragmentation.
 3. **Active Delegation**: During execution, delegate to specialized agents via `delegate_task` rather than modifying code directly.
 

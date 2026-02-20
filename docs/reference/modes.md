@@ -40,19 +40,19 @@ Enable/disable via keyword detection (on by default):
 }
 ```
 
-## Augur Planner Mode
+## zen-planner Mode
 
-**Activation**: Press **Tab** to switch to Augur Planner (Planner) agent
+**Activation**: Press **Tab** to switch to zen-planner (Planner) agent
 
 Precision mode for complex, multi-step projects requiring careful planning.
 
 ### Workflow
 
-1. **Interview Phase**: Augur Planner asks clarifying questions
+1. **Interview Phase**: zen-planner asks clarifying questions
 2. **Research Phase**: Archive Researcher investigates codebase
 3. **Plan Generation**: Detailed work plan with tasks and acceptance criteria
 4. **Validation** (optional): Glitch Auditor reviews plan
-5. **Execution**: Run `/jack-in-work` to execute with Nexus Orchestrator
+5. **Execution**: Run `/jack-in-work` to execute with grid-sync orchestrator
 
 ### When to Use
 
@@ -65,14 +65,14 @@ Precision mode for complex, multi-step projects requiring careful planning.
 ### Usage Examples
 
 ```
-[Press Tab - enters Augur Planner mode]
+[Press Tab - enters zen-planner mode]
 
 I need to migrate from REST to GraphQL
 
-[Augur Planner interviews you, generates plan]
+[zen-planner interviews you, generates plan]
 
 /jack-in-work
-[Nexus Orchestrator executes the plan]
+[grid-sync orchestrator executes the plan]
 ```
 
 ### Configuration
@@ -80,7 +80,7 @@ I need to migrate from REST to GraphQL
 ```json
 {
   "agents": {
-    "augur-planner": {
+    "zen-planner": {
       "model": "anthropic/claude-opus-4-5",
       "variant": "max"
     }
@@ -327,7 +327,7 @@ Task-specific modes activated via `delegate_task` categories:
 | Mode | Speed | Depth | Planning | Best For |
 |------|-------|-------|----------|----------|
 | Ultrawork | Fast | Medium | Automatic | Quick tasks, prototyping |
-| Augur Planner | Slower | Deep | Explicit | Complex projects, production |
+| zen-planner | Slower | Deep | Explicit | Complex projects, production |
 | Search | Fast | Shallow | None | Exploration, discovery |
 | Analyze | Medium | Deep | Structured | Debugging, investigation |
 | Ralph Loop | Continuous | Variable | Self-managed | Long-running tasks |
@@ -338,7 +338,7 @@ Task-specific modes activated via `delegate_task` categories:
 Modes can be combined and switched dynamically:
 
 ```
-[Press Tab] Enter Augur Planner mode
+[Press Tab] Enter zen-planner mode
 Create detailed plan
 
 /jack-in-work  // Execute with orchestration

@@ -125,7 +125,7 @@ ghostwire/
 
 ### Current Implementation State
 
-Ghostwire is an OpenCode plugin with a CLI wrapper providing orchestration (Augur Planner/Nexus Orchestrator), built-in agents, tools, skills, MCP integration, and a partial Claude plugin import layer.
+Ghostwire is an OpenCode plugin with a CLI wrapper providing orchestration (zen-planner/grid-sync), built-in agents, tools, skills, MCP integration, and a partial Claude plugin import layer.
 
 **Primary Entry Points:**
 - Plugin entry: `src/index.ts`

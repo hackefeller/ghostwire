@@ -3,12 +3,12 @@ import { existsSync, readdirSync } from "node:fs";
 import { join, resolve, relative, isAbsolute } from "node:path";
 import {
   HOOK_NAME,
-  AUGUR_PLANNER_AGENTS,
+  ZEN_PLANNER_AGENTS,
   ALLOWED_EXTENSIONS,
   ALLOWED_PATH_PREFIX,
   BLOCKED_TOOLS,
   PLANNING_CONSULT_WARNING,
-  AUGUR_PLANNER_WORKFLOW_REMINDER,
+  ZEN_PLANNER_WORKFLOW_REMINDER,
 } from "./constants";
 import {
   findNearestMessageWithFields,
@@ -23,7 +23,7 @@ import { getAgentDisplayName } from "../../../integration/shared/agent-display-n
 export * from "./constants";
 
 /**
- * Cross-platform path validator for Augur Planner file writes.
+ * Cross-platform path validator for zen-planner file writes.
  * Uses path.resolve/relative instead of string matching to handle:
  * - Windows backslashes (e.g., .ghostwire\\plans\\x.md)
  * - Mixed separators (e.g., .ghostwire\\plans/x.md)
@@ -86,7 +86,7 @@ function getAgentFromSession(sessionID: string): string | undefined {
   return getSessionAgent(sessionID) ?? getAgentFromMessageFiles(sessionID);
 }
 
-export function createAugurPlannerMdOnlyHook(ctx: PluginInput) {
+export function createZenPlannerMdOnlyHook(ctx: PluginInput) {
   return {
     "tool.execute.before": async (
       input: { tool: string; sessionID: string; callID: string },
@@ -94,13 +94,13 @@ export function createAugurPlannerMdOnlyHook(ctx: PluginInput) {
     ): Promise<void> => {
       const agentName = getAgentFromSession(input.sessionID);
 
-      if (!agentName || !AUGUR_PLANNER_AGENTS.includes(agentName)) {
+      if (!agentName || !ZEN_PLANNER_AGENTS.includes(agentName)) {
         return;
       }
 
       const toolName = input.tool;
 
-      // Inject read-only warning for task tools called by Augur Planner
+      // Inject read-only warning for task tools called by zen-planner
       if (TASK_TOOLS.includes(toolName)) {
         const prompt = output.args.prompt as string | undefined;
         if (prompt && !prompt.includes(SYSTEM_DIRECTIVE_PREFIX)) {
@@ -126,7 +126,7 @@ export function createAugurPlannerMdOnlyHook(ctx: PluginInput) {
       }
 
       if (!isAllowedFile(filePath, ctx.directory)) {
-        log(`[${HOOK_NAME}] Blocked: Augur Planner can only write to .ghostwire/*.md`, {
+        log(`[${HOOK_NAME}] Blocked: zen-planner can only write to .ghostwire/*.md`, {
           sessionID: input.sessionID,
           tool: toolName,
           filePath,
@@ -151,7 +151,7 @@ export function createAugurPlannerMdOnlyHook(ctx: PluginInput) {
           filePath,
           agent: agentName,
         });
-        output.message = (output.message || "") + AUGUR_PLANNER_WORKFLOW_REMINDER;
+        output.message = (output.message || "") + ZEN_PLANNER_WORKFLOW_REMINDER;
       }
 
       log(`[${HOOK_NAME}] Allowed: .ghostwire/*.md write permitted`, {

@@ -9,16 +9,12 @@ import {
   detectConfigFile,
 } from "./integration/shared";
 import { getOpenCodeConfigDir } from "./platform/opencode/config-dir";
-import { migrateConfigFile } from "./platform/config/migration";
 
 export function loadConfigFromPath(configPath: string, ctx: unknown): GhostwireConfig | null {
   try {
     if (fs.existsSync(configPath)) {
       const content = fs.readFileSync(configPath, "utf-8");
       const rawConfig = parseJsonc<Record<string, unknown>>(content);
-
-      // Run standard migrations first (legacy agent/hook names, etc.)
-      migrateConfigFile(configPath, rawConfig);
 
       const result = GhostwireConfigSchema.safeParse(rawConfig);
 

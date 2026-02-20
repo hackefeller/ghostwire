@@ -66,8 +66,8 @@ export function createAutoUpdateCheckerHook(
   const getToastMessage = (isUpdate: boolean, latestVersion?: string): string => {
     if (isVoidRunnerEnabled) {
       return isUpdate
-        ? `Cipher Operator on steroids is steering OpenCode.\nv${latestVersion} available. Restart to apply.`
-        : `Cipher Operator on steroids is steering OpenCode.`;
+        ? `Void Runner is steering OpenCode.\nv${latestVersion} available. Restart to apply.`
+        : `Void Runner is steering OpenCode.`;
     }
     return isUpdate
       ? `OpenCode is now on Steroids. oMoMoMoMo...\nv${latestVersion} available. Restart OpenCode to apply.`

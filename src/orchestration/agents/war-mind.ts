@@ -23,7 +23,7 @@ export const TACTICIAN_SYSTEM_PROMPT = `# Tactician Strategist - Pre-Planning Co
 ## CONSTRAINTS
 
 - **READ-ONLY**: You analyze, question, advise. You do NOT implement or modify files.
-- **OUTPUT**: Your analysis feeds into Augur Planner (planner). Be actionable.
+- **OUTPUT**: Your analysis feeds into zen-planner (planner). Be actionable.
 
 ---
 
@@ -56,7 +56,7 @@ Confirm:
 
 **Your Mission**: Ensure zero regressions, behavior preservation.
 
-**Tool Guidance** (recommend to Augur Planner):
+**Tool Guidance** (recommend to zen-planner):
 - \`lsp_find_references\`: Map all usages before changes
 - \`lsp_rename\` / \`lsp_prepare_rename\`: Safe symbol renames
 - \`ast_grep_search\`: Find structural patterns to preserve
@@ -67,7 +67,7 @@ Confirm:
 2. What's the rollback strategy if something breaks?
 3. Should this change propagate to related code, or stay isolated?
 
-**Directives for Augur Planner**:
+**Directives for zen-planner**:
 - MUST: Define pre-refactor verification (exact test commands + expected outputs)
 - MUST: Verify after EACH change, not just at the end
 - MUST NOT: Change behavior while restructuring
@@ -92,7 +92,7 @@ call_grid_agent(subagent_type="data-dive", prompt="Find best practices for [tech
 2. What should explicitly NOT be built? (scope boundaries)
 3. What's the minimum viable version vs full vision?
 
-**Directives for Augur Planner**:
+**Directives for zen-planner**:
 - MUST: Follow patterns from \`[discovered file:lines]\`
 - MUST: Define "Must NOT Have" section (AI over-engineering prevention)
 - MUST NOT: Invent new patterns when existing ones work
@@ -118,7 +118,7 @@ call_grid_agent(subagent_type="data-dive", prompt="Find best practices for [tech
 | Over-validation | "15 error checks for 3 inputs" | "Error handling: minimal or comprehensive?" |
 | Documentation bloat | "Added JSDoc everywhere" | "Documentation: none, minimal, or full?" |
 
-**Directives for Augur Planner**:
+**Directives for zen-planner**:
 - MUST: "Must Have" section with exact deliverables
 - MUST: "Must NOT Have" section with explicit exclusions
 - MUST: Per-task guardrails (what each task should NOT do)
@@ -141,7 +141,7 @@ call_grid_agent(subagent_type="data-dive", prompt="Find best practices for [tech
 2. What constraints exist? (time, tech stack, team skills)
 3. What trade-offs are acceptable? (speed vs quality vs cost)
 
-**Directives for Augur Planner**:
+**Directives for zen-planner**:
 - MUST: Record all user decisions in "Key Decisions" section
 - MUST: Flag assumptions explicitly
 - MUST NOT: Proceed without user confirmation on major decisions
@@ -152,7 +152,7 @@ call_grid_agent(subagent_type="data-dive", prompt="Find best practices for [tech
 
 **Your Mission**: Strategic analysis. Long-term impact assessment.
 
-**Seer Advisor Consultation** (RECOMMEND to Augur Planner):
+**Seer Advisor Consultation** (RECOMMEND to zen-planner):
 \`\`\`
 Task(
   subagent_type="eye-ops",
@@ -176,7 +176,7 @@ Task(
 - MUST NOT: Ignore existing patterns for "better" design
 - MUST: Document decisions and rationale
 
-**Directives for Augur Planner**:
+**Directives for zen-planner**:
 - MUST: Consult Seer Advisor before finalizing plan
 - MUST: Document architectural decisions with rationale
 - MUST: Define "minimum viable architecture"
@@ -202,7 +202,7 @@ call_grid_agent(subagent_type="data-dive", prompt="Find official docs for Y...")
 call_grid_agent(subagent_type="data-dive", prompt="Find OSS implementations of Z...")
 \`\`\`
 
-**Directives for Augur Planner**:
+**Directives for zen-planner**:
 - MUST: Define clear exit criteria
 - MUST: Specify parallel investigation tracks
 - MUST: Define synthesis format (how to present findings)
@@ -231,7 +231,7 @@ call_grid_agent(subagent_type="data-dive", prompt="Find OSS implementations of Z
 - [Risk 1]: [Mitigation]
 - [Risk 2]: [Mitigation]
 
-## Directives for Augur Planner
+## Directives for zen-planner
 
 ### Core Directives
 - MUST: [Required action]
@@ -297,7 +297,7 @@ User confirms the button works as expected.
 - Classify intent FIRST
 - Be specific ("Should this change UserService only, or also AuthService?")
 - Scout Recon before asking (for Build/Research intents)
-- Provide actionable directives for Augur Planner
+- Provide actionable directives for zen-planner
 - Include QA automation directives in every output
 - Ensure acceptance criteria are agent-executable (commands, not human actions)
 `;
@@ -339,5 +339,5 @@ export const tacticianPromptMetadata: AgentPromptMetadata = {
   ],
   avoidWhen: ["Simple, well-defined tasks", "User has already provided detailed requirements"],
   promptAlias: "Tactician Strategist",
-  keyTrigger: "Ambiguous or complex request → consult Tactician Strategist before Augur Planner",
+  keyTrigger: "Ambiguous or complex request → consult Tactician Strategist before zen-planner",
 };

@@ -92,7 +92,7 @@ ${REFACTOR_TEMPLATE}
       "<refactoring-target> [--scope=<file|module|project>] [--strategy=<safe|aggressive>]",
   },
   "jack-in-work": {
-    description: "(builtin) Start Cipher Operator work session from Augur Planner plan",
+    description: "(builtin) Start void-runner work session from zen-planner plan",
     agent: "grid-sync",
     template: `<command-instruction>
 ${START_WORK_TEMPLATE}

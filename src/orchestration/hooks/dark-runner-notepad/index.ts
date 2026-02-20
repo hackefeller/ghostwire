@@ -17,7 +17,7 @@ export function createDarkRunnerNotepadHook(ctx: PluginInput) {
         return;
       }
 
-      // 2. Check if caller is Nexus Orchestrator (orchestrator)
+      // 2. Check if caller is grid-sync (orchestrator)
       if (!isCallerOrchestrator(input.sessionID)) {
         return;
       }

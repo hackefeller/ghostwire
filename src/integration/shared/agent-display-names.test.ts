@@ -9,19 +9,19 @@ describe("getAgentDisplayName", () => {
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "Cipher Operator (Ultraworker)"
-    expect(result).toBe("Cipher Operator (Ultraworker)");
+    // #then returns "void-runner"
+    expect(result).toBe("void-runner");
   });
 
   it("returns display name for uppercase config key (old format - case-insensitive)", () => {
-    // #given config key "Cipher Operator" (old format)
-    const configKey = "Cipher Operator";
+    // #given config key "void-runner" (old format)
+    const configKey = "void-runner";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "Cipher Operator (Ultraworker)" (case-insensitive lookup)
-    expect(result).toBe("Cipher Operator (Ultraworker)");
+    // #then returns "void-runner" (case-insensitive lookup)
+    expect(result).toBe("void-runner");
   });
 
   it("returns original key for unknown agents (fallback)", () => {
@@ -42,8 +42,8 @@ describe("getAgentDisplayName", () => {
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "Nexus Orchestrator (Plan Execution Orchestrator)"
-    expect(result).toBe("Nexus Orchestrator (Plan Execution Orchestrator)");
+    // #then returns "grid-sync"
+    expect(result).toBe("grid-sync");
   });
 
   it("returns display name for zen-planner", () => {
@@ -53,8 +53,8 @@ describe("getAgentDisplayName", () => {
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "Augur Planner (Plan Builder)"
-    expect(result).toBe("Augur Planner (Plan Builder)");
+    // #then returns "zen-planner"
+    expect(result).toBe("zen-planner");
   });
 
   it("returns display name for dark-runner", () => {
@@ -64,8 +64,8 @@ describe("getAgentDisplayName", () => {
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "Cipher Operator-Junior"
-    expect(result).toBe("Cipher Operator-Junior");
+    // #then returns "dark-runner"
+    expect(result).toBe("dark-runner");
   });
 
   it("returns display name for war-mind", () => {
@@ -75,8 +75,8 @@ describe("getAgentDisplayName", () => {
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "Tactician Strategist (Plan Consultant)"
-    expect(result).toBe("Tactician Strategist (Plan Consultant)");
+    // #then returns "war-mind"
+    expect(result).toBe("war-mind");
   });
 
   it("returns display name for null-audit", () => {
@@ -86,8 +86,8 @@ describe("getAgentDisplayName", () => {
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "Glitch Auditor (Plan Reviewer)"
-    expect(result).toBe("Glitch Auditor (Plan Reviewer)");
+    // #then returns "null-audit"
+    expect(result).toBe("null-audit");
   });
 
   it("returns display name for eye-ops", () => {
@@ -139,28 +139,28 @@ describe("AGENT_DISPLAY_NAMES", () => {
   it("contains all expected agent mappings", () => {
     // #given expected mappings (including legacy aliases)
     const expectedMappings = {
-      // Current agent names
-      "void-runner": "Cipher Operator (Ultraworker)",
-      "grid-sync": "Nexus Orchestrator (Plan Execution Orchestrator)",
-      "zen-planner": "Augur Planner (Plan Builder)",
-      "dark-runner": "Cipher Operator-Junior",
-      "war-mind": "Tactician Strategist (Plan Consultant)",
-      "null-audit": "Glitch Auditor (Plan Reviewer)",
+      // Current agent names (file-based)
+      "void-runner": "void-runner",
+      "grid-sync": "grid-sync",
+      "zen-planner": "zen-planner",
+      "dark-runner": "dark-runner",
+      "war-mind": "war-mind",
+      "null-audit": "null-audit",
       "eye-ops": "eye-ops",
       "data-dive": "data-dive",
       "scan-ops": "scan-ops",
       "eye-scan": "eye-scan",
       // Legacy aliases for backward compatibility
-      "cipher-operator": "Cipher Operator (Ultraworker)",
-      "nexus-orchestrator": "Nexus Orchestrator (Plan Execution Orchestrator)",
-      "augur-planner": "Augur Planner (Plan Builder)",
-      "cipher-runner": "Cipher Operator-Junior",
-      "tactician-strategist": "Tactician Strategist (Plan Consultant)",
-      "glitch-auditor": "Glitch Auditor (Plan Reviewer)",
-      "seer-advisor": "seer-advisor",
-      "archive-researcher": "archive-researcher",
-      "scout-recon": "scout-recon",
-      "optic-analyst": "optic-analyst",
+      "cipher-operator": "void-runner",
+      "nexus-orchestrator": "grid-sync",
+      "augur-planner": "zen-planner",
+      "cipher-runner": "dark-runner",
+      "tactician-strategist": "war-mind",
+      "glitch-auditor": "null-audit",
+      "seer-advisor": "eye-ops",
+      "archive-researcher": "data-dive",
+      "scout-recon": "scan-ops",
+      "optic-analyst": "eye-scan",
     };
 
     // #when checking the constant

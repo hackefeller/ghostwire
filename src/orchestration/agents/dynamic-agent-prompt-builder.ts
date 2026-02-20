@@ -263,7 +263,7 @@ delegate_task(category="...", load_skills=[], prompt="...")  // Empty load_skill
 \`\`\``;
 }
 
-export function buildOracleSection(agents: AvailableAgent[]): string {
+export function buildEyeOpsSection(agents: AvailableAgent[]): string {
   const seerAgent = agents.find((a) => a.name === "eye-ops");
   if (!seerAgent) return "";
 

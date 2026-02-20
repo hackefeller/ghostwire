@@ -10,7 +10,7 @@ import {
   getPlanProgress,
   getPlanName,
   createBoulderState,
-  findAugurPlannerPlans,
+  findZenPlannerPlans,
 } from "./storage";
 import type { BoulderState } from "./types";
 

@@ -18,37 +18,35 @@
 
 ## OVERVIEW
 
-OpenCode plugin: multi-model agent orchestration (Claude Opus 4.5, GPT-5.2, Gemini 3 Flash, Grok Code). 32 lifecycle hooks, 20+ tools (LSP, AST-Grep, delegation), 10 specialized agents, full Claude Code compatibility. "oh-my-zsh" for OpenCode.
+OpenCode plugin: multi-model agent orchestration (Claude Opus 4.5, GPT-5.2, Gemini 3 Flash, Grok Code). 39 lifecycle hooks, 14 tools (LSP, AST-Grep, delegation), 10 specialized agents, full Claude Code compatibility. "oh-my-zsh" for OpenCode.
 
-## SINGLE SOURCE OF TRUTH (AGENT METADATA)
+## METADATA
 
-Agent metadata (names, models, purposes, fallbacks) lives in `agents.yml`. Do not duplicate or re-document agent tables elsewhere—link to `agents.yml` instead.
-
-Directory maps (for navigation and audits) live here:
-- Hooks: `hooks.yml`
-- Tools: `tools.yml`
-- Features: `features.yml`
+- `docs/agents.yml`: Agent metadata (names, models, purposes, fallbacks)
+- `docs/hooks.yml`: Hook metadata (names, triggers, descriptions)
+- `docs/tools.yml`: Tool metadata (names, categories, descriptions)
+- `docs/features.yml`: Feature metadata (names, capabilities, descriptions)
 
 ## STRUCTURE
 
 ```
 ghostwire/
 ├── src/
-│   ├── orchestration/  # Agents + Hooks (what orchestrates) ✅ MOVED (Phase 1)
-│   │   ├── agents/        # 10 AI agents
-│   │   └── hooks/         # 32 lifecycle hooks
-│   ├── execution/      # Features + Tools (what does work) ✅ MOVED (Phase 2)
-│   │   ├── features/      # Background agents, Claude Code compat
-│   │   └── tools/         # 20+ tools
-│   ├── integration/    # Shared utilities + MCPs (what integrates) ✅ MOVED (Phase 3)
+│   ├── orchestration/  # Agents + Hooks (what orchestrates)
+│   │   ├── agents/        (what agents exist)
+│   │   └── hooks/         (when to call agents)
+│   ├── execution/      # Features + Tools (what does work)
+│   │   ├── features/      (what capabilities)
+│   │   └── tools/         (what actions can be taken)
+│   ├── integration/    # Shared utilities + MCPs (what integrates)
 │   │   ├── shared/        # Cross-cutting utilities (logger, parser, etc.)
 │   │   └── mcp/           # Built-in MCPs (websearch, context7, grep_app)
-│   ├── platform/       # Config + Platform-specific (what configures) ✅ MOVED (Phase 4)
+│   ├── platform/       # Config + Platform-specific (what configures)
 │   │   ├── config/        # Zod schema, migrations, permission compat
-│   │   ├── opencode/      # OpenCode-specific config (config-dir, config-composer)
-│   │   └── claude/        # Claude-specific config (config-dir)
-│   ├── cli/            # CLI installer, doctor (not moving)
-│   └── index.ts        # Main plugin entry (672 lines)
+│   │   ├── opencode/      # OpenCode-specific config
+│   │   └── claude/        # Claude-specific config
+│   ├── cli/            # CLI installer, doctor
+│   └── index.ts        # Main plugin entry
 ├── script/             # build-schema.ts, build-binaries.ts
 ├── packages/           # 7 platform-specific binaries
 └── dist/               # Build output (ESM + .d.ts)
@@ -65,8 +63,8 @@ ghostwire/
 | Add skill | `src/execution/features/builtin-skills/` | Create dir with SKILL.md |
 | Add command | `src/execution/features/builtin-commands/` | Add template + register in commands.ts |
 | Config schema | `src/platform/config/schema.ts` | Zod schema, run `bun run build:schema` |
-| Background agents | `src/execution/features/background-agent/` | manager.ts (1377 lines) |
-| Orchestrator | `src/orchestration/hooks/nexus-orchestrator/` | Main orchestration hook (752 lines) |
+| Background agents | `src/execution/features/background-agent/manager.ts` | Task lifecycle, concurrency (1419 lines) |
+| Orchestrator | `src/orchestration/hooks/grid-sync/index.ts` | Main orchestration hook (757 lines) |
 
 ## TDD (Test-Driven Development)
 
@@ -78,7 +76,7 @@ ghostwire/
 **Rules:**
 - NEVER write implementation before test
 - NEVER delete failing tests - fix the code
-- Test file: `*.test.ts` alongside source (100 test files)
+- Test file: `*.test.ts` alongside source (594 test files)
 - BDD comments: `//#given`, `//#when`, `//#then`
 
 ## CONVENTIONS
@@ -88,7 +86,7 @@ ghostwire/
 - **Build**: `bun build` (ESM) + `tsc --emitDeclarationOnly`
 - **Exports**: Barrel pattern via index.ts
 - **Naming**: kebab-case dirs, `createXXXHook`/`createXXXTool` factories
-- **Testing**: BDD comments, 100 test files
+- **Testing**: BDD comments, 594 test files
 - **Temperature**: 0.1 for code agents, max 0.3
 
 ## ANTI-PATTERNS
@@ -120,7 +118,7 @@ This table is intentionally maintained in `agents.yml` to avoid drift. Please re
 bun run typecheck      # Type check
 bun run build          # ESM + declarations + schema
 bun run rebuild        # Clean + Build
-bun test               # 100 test files
+bun test               # 594 test files
 ```
 
 ## DEPLOYMENT
@@ -135,13 +133,12 @@ bun test               # 100 test files
 | File | Lines | Description |
 |------|-------|-------------|
 | `src/execution/features/builtin-skills/skills.ts` | 1729 | Skill definitions |
-| `src/execution/features/background-agent/manager.ts` | 1377 | Task lifecycle, concurrency |
-| `src/orchestration/agents/augur-planner-prompt.ts` | 1196 | Planning agent |
-| `src/execution/tools/delegate-task/tools.ts` | 1070 | Category-based delegation |
-| `src/orchestration/hooks/nexus-orchestrator/index.ts` | 752 | Orchestrator hook |
-| `src/cli/config-manager.ts` | 664 | JSONC config parsing |
-| `src/index.ts` | 672 | Main plugin entry |
-| `src/execution/features/builtin-commands/templates/refactor.ts` | 619 | Refactor command template |
+| `src/execution/features/background-agent/manager.ts` | 1419 | Task lifecycle, concurrency |
+| `src/execution/tools/delegate-task/tools.ts` | 1414 | Category-based delegation |
+| `src/orchestration/agents/zen-planner.ts` | 1283 | Planning agent (Augur) |
+| `src/index.ts` | 940 | Main plugin entry |
+| `src/orchestration/hooks/grid-sync/index.ts` | 757 | Main orchestration hook (Nexus) |
+| `src/cli/config-manager.ts` | 741 | JSONC config parsing |
 
 ## MCP ARCHITECTURE
 

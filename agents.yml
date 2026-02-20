@@ -1,6 +1,6 @@
 version: 1
 source: agents/agents.yml
-description: Source of truth for agent metadata used by AGENTS.md and docs.
+description: Source of truth for agent metadata. Contains all agent definitions with purposes, models, and fallbacks.
 
 metadata:
   generated: false
@@ -11,58 +11,265 @@ metadata:
     - AGENTS.md should link here instead of duplicating full tables.
 
 agents:
+  # === Core Orchestrators ===
+
   - id: cipher-operator
     display_name: Cipher Operator
     model: anthropic/claude-opus-4-5
-    purpose: Primary orchestrator
+    purpose: Primary orchestrator with obsession for todos, strategic delegation, and parallel execution
     fallbacks:
       - kimi-k2.5
       - glm-4.7
       - gpt-5.2-codex
-      - gemini-3-pro
+      - gemini-3-Pro
+    description: |
+      Named after Sisyphus - rolls the boulder daily like humans roll their work.
+      Identity: SF Bay Area engineer, works/delegates/verifies/ships.
+      Core competencies: Parses implicit requirements, adapts to codebase maturity, delegates to specialists, parallel execution.
+      Phase 0: Intent classification (Trivial/Explicit/Exploratory/Open-ended/Ambiguous)
+      Phase 1: Codebase assessment (Disciplined/Transitional/Legacy/Greenfield)
+      Phase 2A: Exploration via scoutRecon/archiveResearcher (parallel by default)
+      Phase 2B: Implementation with todos, delegation, verification
+      Phase 2C: Failure recovery (3 failures → STOP → REVERT → DOCUMENT → CONSULT)
+      Phase 3: Completion with background task cancellation
 
   - id: nexus-orchestrator
     display_name: Nexus Orchestrator
     model: anthropic/claude-sonnet-4-5
-    purpose: Master orchestrator
+    purpose: Master orchestrator that coordinates all agents and tasks until completion
     fallbacks:
       - kimi-k2.5
       - gpt-5.2
+    description: |
+      Named after Atlas - holds up heavens, coordinates all agents.
+      Identity: Conductor, not musician. Delegates, coordinates, verifies. NEVER writes code.
+      Workflow: Read todo list → build parallelization map → initialize notepad → execute tasks in parallel/sequential → verify EVERY task → handle failures via session_id resume.
+      Notepad Protocol: Subagents are stateless, notepad is cumulative intelligence.
+      QA Protocol: Subagents lie, verify EVERYTHING.
+
+  - id: zen-planner
+    display_name: Augur Planner
+    model: anthropic/claude-opus-4-5
+    purpose: Strategic planning consultant that interviews users and generates work plans
+    fallbacks:
+      - kimi-k2.5
+      - gpt-5.2
+    description: |
+      Named after Titan who gave fire (knowledge/foresight) to humanity.
+      CONSTRAINT: NEVER writes code, ONLY creates plans.
+      Phase 1 - Interview Mode (DEFAULT): Consults user, uses scoutRecon/archiveResearcher, asks clarifying questions.
+      Phase 2 - Plan Generation: Consults Tactician Strategist (MANDATORY), generates .ghostwire/plans/{name}.md, self-review.
+      Phase 3 - High Accuracy Mode: Loops through Glitch Auditor until "OKAY".
+      Draft System: Records decisions to .ghostwire/drafts/{name}.md during interview.
+
+  # === Specialist Agents ===
 
   - id: seer-advisor
-    display_name: seer-advisor
+    display_name: Seer Advisor
     model: openai/gpt-5.2
-    purpose: Consultation, debugging
+    purpose: High-IQ read-only consultation specialist for debugging and architecture decisions
     fallbacks: []
+    description: |
+      Strategic technical advisor with deep reasoning. Invoked by primary agent for complex analysis.
+      Each consultation is standalone (no clarifying dialogue).
+      Decision Framework: Pragmatic minimalism, leverage existing patterns, prioritize DX.
+      Output Format: Bottom line (2-3 sentences), action plan, effort estimate (Quick/Short/Medium/Large).
+      Key capabilities: Architecture decisions, self-review, hard debugging, security/performance concerns.
 
   - id: archive-researcher
-    display_name: archive-researcher
+    display_name: Archive Researcher
     model: zai-coding-plan/glm-4.7
-    purpose: Docs, GitHub search
+    purpose: Searches remote codebases and official documentation with GitHub permalinks
     fallbacks:
       - glm-4.7-free
+    description: |
+      Specialized for open-source codebase understanding.
+      Request Classification:
+        TYPE A: Conceptual ("How do I use X?") → Doc Discovery
+        TYPE B: Implementation ("How does X implement Y?") → gh clone + read
+        TYPE C: Context ("Why was this changed?") → gh issues/PRs
+        TYPE D: Comprehensive → All tools
+      Phase 0.5: Documentation Discovery (websearch → version check → sitemap → targeted investigation)
+      Mandatory Citation: Every claim needs permalink to GitHub source.
+      Tools: context7, websearch, webfetch, grep_app, gh CLI.
 
   - id: scout-recon
-    display_name: scout-recon
+    display_name: Scout Recon
     model: github-copilot/claude-haiku-4.5
-    purpose: Fast codebase grep
+    purpose: Fast contextual grep for codebases - finds files/patterns/functions
     fallbacks:
       - gpt-5-mini
       - gpt-5-nano
+    description: |
+      Codebase search specialist.
+      Intent Analysis: Wraps analysis in <analysis> tags before any search.
+      Parallel Execution: Launch 3+ tools simultaneously (never sequential).
+      Structured Results: Must include <results> block with absolute paths, direct answer, next steps.
+      Key capabilities: Semantic search (LSP), structural patterns (ast-grep), text patterns (grep), file patterns (glob), git history.
 
   - id: optic-analyst
-    display_name: optic-analyst
+    display_name: Optic Analyst
     model: google/gemini-3-flash
-    purpose: PDF/image analysis
+    purpose: Analyzes media files (PDFs, images, diagrams) beyond raw text interpretation
     fallbacks: []
+    description: |
+      Examines attached files and extracts only what was requested.
+      When to use: Media files, extracting specific info from documents, describing visual content.
+      When NOT to use: Source code, plain text files, simple file reading.
+      For PDFs: Extract text, structure, tables, data from sections.
+      For images: Describe layouts, UI elements, text, diagrams, charts.
 
-  - id: augur-planner
-    display_name: Augur Planner
+  - id: war-mind
+    display_name: Tactician Strategist
     model: anthropic/claude-opus-4-5
-    purpose: Strategic planning
+    purpose: Pre-planning consultant that prevents AI failures by identifying hidden intentions and ambiguities
     fallbacks:
       - kimi-k2.5
       - gpt-5.2
+    description: |
+      Named after Metis - Greek goddess of wisdom.
+      Intent Classification (6 types):
+        - Refactoring: Safety focus, behavior preservation
+        - Build from Scratch: Discovery focus, pattern research first
+        - Mid-sized Task: Boundary focus, scope creep prevention
+        - Collaborative: Dialogue focus, incremental clarity
+        - Architecture: Strategic focus, long-term impact
+        - Research: Investigation focus, exit criteria
+      Mandatory Actions: Launch agents BEFORE asking questions, flag AI-slop patterns, QA must be agent-executable.
+
+  - id: null-audit
+    display_name: Glitch Auditor
+    model: anthropic/claude-opus-4-5
+    purpose: Expert reviewer for evaluating work plans against clarity and executability
+    fallbacks:
+      - kimi-k2.5
+      - gpt-5.2
+    description: |
+      Named after Momus - Greek god of satire/criticism.
+      Only checks:
+        1. Reference Verification: Do files exist? Line numbers valid?
+        2. Executability: Can developer START each task?
+        3. Critical Blockers: Only blocking issues, NOT perfectionism
+      Approval Bias: "80% clear is good enough" - developers can figure minor gaps.
+      Max 3 issues per rejection - specific, actionable, blocking.
+
+  # === Compound Agents (Integrated from ghostwire) ===
+
+  - id: void-review-rails
+    display_name: void.review-rails
+    model: anthropic/claude-opus-4-5
+    purpose: Kieran-style Rails code review specialist
+    fallbacks: []
+
+  - id: void-review-python
+    display_name: void.review-python
+    model: anthropic/claude-opus-4-5
+    purpose: Python code review specialist
+    fallbacks: []
+
+  - id: void-review-ts
+    display_name: void.review-ts
+    model: anthropic/claude-opus-4-5
+    purpose: TypeScript code review specialist
+    fallbacks: []
+
+  - id: zen-review-rails
+    display_name: zen.review-rails
+    model: anthropic/claude-sonnet-4-5
+    purpose: DHH-style Rails code review
+    fallbacks: []
+
+  - id: mono-review
+    display_name: mono.review
+    model: anthropic/claude-sonnet-4-5
+    purpose: Code simplicity reviewer
+    fallbacks: []
+
+  - id: docs-scan
+    display_name: docs.scan
+    model: anthropic/claude-sonnet-4-5
+    purpose: Framework documentation researcher
+    fallbacks: []
+
+  - id: learnings-scan
+    display_name: learnings.scan
+    model: anthropic/claude-sonnet-4-5
+    purpose: Internal learnings researcher
+    fallbacks: []
+
+  - id: best-practices-scan
+    display_name: best-practices.scan
+    model: anthropic/claude-sonnet-4-5
+    purpose: Best practices researcher
+    fallbacks: []
+
+  - id: git-scan
+    display_name: git.scan
+    model: anthropic/claude-sonnet-4-5
+    purpose: Git history analyzer
+    fallbacks: []
+
+  - id: figma-sync
+    display_name: figma.sync
+    model: anthropic/claude-opus-4-5
+    purpose: Figma design synchronization
+    fallbacks: []
+
+  - id: design-check
+    display_name: design.check
+    model: anthropic/claude-sonnet-4-5
+    purpose: Design implementation reviewer
+    fallbacks: []
+
+  - id: design-loop
+    display_name: design.loop
+    model: anthropic/claude-opus-4-5
+    purpose: Design iterator for visual improvements
+    fallbacks: []
+
+  - id: ui-build
+    display_name: ui.build
+    model: anthropic/claude-opus-4-5
+    purpose: Frontend design implementation
+    fallbacks: []
+
+  - id: flow-check
+    display_name: flow.check
+    model: anthropic/claude-sonnet-4-5
+    purpose: Spec flow analyzer
+    fallbacks: []
+
+  - id: agent-arch
+    display_name: agent.arch
+    model: anthropic/claude-opus-4-5
+    purpose: Agent native architecture specialist
+    fallbacks: []
+
+  - id: deploy-check
+    display_name: deploy.check
+    model: anthropic/claude-sonnet-4-5
+    purpose: Deployment verification
+    fallbacks: []
+
+  - id: docs-write-readme
+    display_name: docs.write-readme
+    model: anthropic/claude-sonnet-4-5
+    purpose: Ankane-style README writer
+    fallbacks: []
+
+  - id: docs-edit-style
+    display_name: docs.edit-style
+    model: anthropic/claude-sonnet-4-5
+    purpose: Style guide editor
+    fallbacks: []
+
+  - id: docs-write-gem
+    display_name: docs.write-gem
+    model: anthropic/claude-sonnet-4-5
+    purpose: Ruby gem documentation writer
+    fallbacks: []
 
 notes:
   - Add new agents here first, then update docs to reference this file.
+  - Agents are organized by type: Core Orchestrators, Specialist Agents, Compound Agents.
+  - cipher-operator replaces void-runner, nexus-orchestrator replaces grid-sync.

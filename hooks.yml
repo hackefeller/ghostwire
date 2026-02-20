@@ -1,51 +1,133 @@
 version: 1
 source: agents/hooks.yml
-description: Map of hook directories and files. Update when hooks are added, renamed, or removed.
+description: Map of hook directories and files with descriptions. Update when hooks are added, renamed, or removed.
 
 hooks:
   directories:
-    - agent-usage-reminder
-    - anthropic-context-window-limit-recovery
-    - auto-slash-command
-    - auto-update-checker
-    - background-notification
-    - category-skill-reminder
-    - claude-code-hooks
-    - comment-checker
-    - compaction-context-injector
-    - dark-runner-notepad
-    - delegate-task-retry
-    - directory-agents-injector
-    - directory-readme-injector
-    - edit-error-recovery
-    - grid-sync
-    - interactive-bash-session
-    - keyword-detector
-    - non-interactive-env
-    - question-label-truncator
-    - ralph-loop
-    - rules-injector
-    - session-recovery
-    - start-work
-    - stop-continuation-guard
-    - subagent-question-blocker
-    - task-resume-info
-    - think-mode
-    - thinking-block-validator
-    - zen-planner-md-only
+    # === Session & Lifecycle Management ===
+    
+    - id: agent-usage-reminder
+      description: Reminds users to use delegation agents after they perform direct work with tools like edit/write/bash. Triggers after tool execution to suggest agent-based alternatives.
+
+    - id: anthropic-context-window-limit-recovery
+      description: Automatically recovers from Anthropic token limit errors by truncating large tool outputs and re-executing the failed operation. Handles session errors, idle states, and message updates.
+
+    - id: auto-update-checker
+      description: Checks for plugin updates on session startup. Can auto-update the pinned version. Notifies users of available updates.
+
+    - id: background-notification
+      description: Routes events to BackgroundManager for handling background task notifications. Coordinates notification delivery for background agents.
+
+    - id: non-interactive-env
+      description: Prevents interactive commands (vim, less, nano) in non-interactive shells. Prepends GIT_EDITOR/GIT_PAGER environment variables for git commands.
+
+    - id: session-recovery
+      description: Recovers from session errors including missing tool results, thinking block order issues, and empty content by injecting placeholder data to maintain session integrity.
+
+    - id: stop-continuation-guard
+      description: Manages session continuation state - allows stopping automatic continuation when session becomes idle. Controls the continuation mechanism lifecycle.
+
+    # === Claude Code Compatibility ===
+
+    - id: claude-code-hooks
+      description: Main hook for Claude Code compatibility. Handles PreToolUse, PostToolUse, PreCompact, and Stop hooks. Manages transcript recording and config loading. Core compatibility layer.
+
+    - id: thinking-block-validator
+      description: Proactively validates message structure before API calls. Prepends thinking blocks to prevent "Expected thinking but found tool_use" errors.
+
+    # === Delegation & Agent Orchestration ===
+
+    - id: category-skill-reminder
+      description: Reminds orchestrator agents (void-runner, dark-runner, grid-sync) to use the category+skill delegation system after 3+ tool calls. Promotes agent-based delegation.
+
+    - id: dark-runner-notepad
+      description: Injects a notepad directive into delegate_task prompts when called by the orchestrator. Tracks work progress across delegation boundaries.
+
+    - id: delegate-task-retry
+      description: Detects delegate_task tool errors and appends guidance with fix hints and correct parameter examples. Enables self-healing delegation.
+
+    - id: grid-sync
+      description: Main orchestration hook for boulder continuation. Injects verification reminders after subagent work completes. Prevents direct file edits by orchestrator to maintain workflow integrity.
+
+    - id: subagent-question-blocker
+      description: Blocks question/askuserquestion tool calls in subagent sessions. Prevents subagents from prompting users for input directly.
+
+    # === Code Context Injection ===
+
+    - id: compaction-context-injector
+      description: Injects structured context requirements into compaction summaries. Ensures user requests, goals, and remaining tasks are preserved during context compaction.
+
+    - id: directory-agents-injector
+      description: Automatically injects AGENTS.md content from parent directories when reading files. Provides agent-specific context based on project structure.
+
+    - id: directory-readme-injector
+      description: Automatically injects README.md content from parent directories when reading files. Provides project context during development.
+
+    - id: rules-injector
+      description: Finds and injects .md rule files (copilot-instructions) matching the current file being edited. Uses frontmatter patterns to match relevant rules.
+
+    - id: zen-planner-md-only
+      description: Restricts Augur Planner to only write .md files inside .ghostwire/ directory. Injects workflow reminders for plan file writes.
+
+    # === Error Recovery ===
+
+    - id: edit-error-recovery
+      description: Detects Edit tool errors (oldString not found, multiple matches) and injects a recovery reminder to read/verify the file before retrying.
+
+    - id: empty-task-response-detector
+      description: Detects Task tool invocations that return empty responses and appends a warning about possible failure.
+
+    # === Monitoring & Notifications ===
+
+    - id: context-window-monitor
+      description: Monitors Anthropic token usage and reminds users they have plenty of context when usage exceeds 70%. Prevents premature compaction.
+
+    - id: session-notification
+      description: Sends native OS notifications (macOS/Windows/Linux) when main session becomes idle. Supports optional sound and todo-skip logic.
+
+    - id: tool-output-truncator
+      description: Truncates large tool outputs (grep, glob, webfetch, etc.) to default 50k tokens. Prevents context window issues from large results.
+
+    # === Slash Commands & Chat ===
+
+    - id: auto-slash-command
+      description: Detects slash commands in chat messages and replaces them with command templates automatically. Enables quick command access.
+
+    - id: keyword-detector
+      description: Detects keywords like ultrawork/analyze-mode in prompts and injects mode-specific system messages. Enables contextual mode switching.
+
+    - id: question-label-truncator
+      description: Truncates question option labels to max 30 characters. Prevents UI overflow in user prompts with long option text.
+
+    - id: think-mode
+      description: Detects "think" keyword in prompts and switches model to high variant (e.g., opus-high) with thinking enabled. Enables reasoning mode.
+
+    # === Task & Boulder Management ===
+
+    - id: ralph-loop
+      description: Implements iterative task execution loop. Continues prompting until a completion promise is detected or max iterations reached. Self-driving task completion.
+
+    - id: start-work
+      description: Handles /jack-in-work command. Loads/creates boulder state, selects Augur Planner plans, injects context for work continuation.
+
+    - id: task-resume-info
+      description: Appends resume instructions to task/delegate_task outputs that launch new sessions. Enables cross-session task continuation.
+
+    - id: todo-continuation-enforcer
+      description: Automatically continues work when session is idle with incomplete todos. Injects continuation prompt after countdown. Enforces todo completion.
+
+    # === Interactive Sessions ===
+
+    - id: interactive-bash-session
+      description: Tracks tmux session operations (create/kill). Reminds users of active sessions. Cleans up on session deletion.
 
   files:
-    - context-window-monitor.ts
-    - empty-task-response-detector.ts
-    - index.ts
-    - session-notification-utils.ts
-    - session-notification.test.ts
-    - session-notification.ts
-    - todo-continuation-enforcer.test.ts
-    - todo-continuation-enforcer.ts
-    - tool-output-truncator.test.ts
-    - tool-output-truncator.ts
+    # These are handled by the hook system as direct file hooks (not directories)
+    # Included here for completeness of the hook inventory
 
 notes:
-  - This map reflects agents/src/hooks contents.
+  - This map reflects src/orchestration/hooks contents.
   - Keep in sync with directory structure.
+  - Hooks are categorized by primary function: Session, Claude Code, Delegation, Context Injection, Error Recovery, Monitoring, Slash Commands, Task Management, Interactive Sessions.
+  - Directory hooks contain index.ts with hook implementation.
+  - File hooks are standalone TypeScript files that export hook functions.

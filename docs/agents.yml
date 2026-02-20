@@ -207,31 +207,31 @@ agents:
     purpose: Git history analyzer
     fallbacks: []
 
-  - id: figma-sync
+  - id: designer-sync
     display_name: figma.sync
     model: anthropic/claude-opus-4-5
     purpose: Figma design synchronization
     fallbacks: []
 
-  - id: design-check
+  - id: analyzer-design
     display_name: design.check
     model: anthropic/claude-sonnet-4-5
     purpose: Design implementation reviewer
     fallbacks: []
 
-  - id: design-loop
+  - id: designer-iterator
     display_name: design.loop
     model: anthropic/claude-opus-4-5
     purpose: Design iterator for visual improvements
     fallbacks: []
 
-  - id: ui-build
+  - id: designer-builder
     display_name: ui.build
     model: anthropic/claude-opus-4-5
     purpose: Frontend design implementation
     fallbacks: []
 
-  - id: flow-check
+  - id: designer-flow
     display_name: flow.check
     model: anthropic/claude-sonnet-4-5
     purpose: Spec flow analyzer

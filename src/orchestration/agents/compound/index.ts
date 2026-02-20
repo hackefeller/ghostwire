@@ -10,11 +10,11 @@ import { createFrameworkDocsResearcherAgent } from "../researcher-docs";
 import { createLearningsResearcherAgent } from "../researcher-learnings";
 import { createBestPracticesResearcherAgent } from "../researcher-practices";
 import { createGitHistoryAnalyzerAgent } from "../researcher-git";
-import { createFigmaDesignSyncAgent } from "../figma-sync";
-import { createDesignImplementationReviewerAgent } from "../design-check";
-import { createDesignIteratorAgent } from "../design-loop";
-import { createFrontendDesignAgent } from "../ui-build";
-import { createSpecFlowAnalyzerAgent } from "../flow-check";
+import { createFigmaDesignSyncAgent } from "../designer-sync";
+import { createDesignImplementationReviewerAgent } from "../analyzer-design";
+import { createDesignIteratorAgent } from "../designer-iterator";
+import { createFrontendDesignAgent } from "../designer-builder";
+import { createSpecFlowAnalyzerAgent } from "../designer-flow";
 import { createAgentNativeArchitectureAgent } from "../agent-arch";
 import { createDeploymentVerificationAgent } from "../deploy-check";
 import { createAnkaneReadmeWriterAgent } from "../docs-write-readme";
@@ -51,16 +51,16 @@ export {
 export { createGitHistoryAnalyzerAgent, GIT_HISTORY_ANALYZER_METADATA } from "../researcher-git";
 
 // Design Agents (4)
-export { createFigmaDesignSyncAgent, FIGMA_DESIGN_SYNC_METADATA } from "../figma-sync";
+export { createFigmaDesignSyncAgent, FIGMA_DESIGN_SYNC_METADATA } from "../designer-sync";
 export {
   createDesignImplementationReviewerAgent,
   DESIGN_IMPLEMENTATION_REVIEWER_METADATA,
-} from "../design-check";
-export { createDesignIteratorAgent, DESIGN_ITERATOR_METADATA } from "../design-loop";
-export { createFrontendDesignAgent, FRONTEND_DESIGN_METADATA } from "../ui-build";
+} from "../analyzer-design";
+export { createDesignIteratorAgent, DESIGN_ITERATOR_METADATA } from "../designer-iterator";
+export { createFrontendDesignAgent, FRONTEND_DESIGN_METADATA } from "../designer-builder";
 
 // Workflow Agents (3)
-export { createSpecFlowAnalyzerAgent, SPEC_FLOW_ANALYZER_METADATA } from "../flow-check";
+export { createSpecFlowAnalyzerAgent, SPEC_FLOW_ANALYZER_METADATA } from "../designer-flow";
 export {
   createAgentNativeArchitectureAgent,
   AGENT_NATIVE_ARCHITECTURE_METADATA,

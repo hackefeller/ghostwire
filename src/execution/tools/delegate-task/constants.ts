@@ -455,5 +455,11 @@ export const PLAN_AGENT_NAMES = ["plan", "planner", "planner"];
 export function isPlanAgent(agentName: string | undefined): boolean {
   if (!agentName) return false;
   const lowerName = agentName.toLowerCase().trim();
-  return PLAN_AGENT_NAMES.some((name) => lowerName === name || lowerName.includes(name));
+  // Check for exact match or match with hyphen-separated prefix
+  // "planner" matches "planner" or "planner-*"
+  // "plan" matches "plan" or "plan-*"
+  // This prevents "advisor-plan" from matching "plan"
+  return PLAN_AGENT_NAMES.some((name) => {
+    return lowerName === name || lowerName.startsWith(name + "-");
+  });
 }

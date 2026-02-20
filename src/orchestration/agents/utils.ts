@@ -15,7 +15,7 @@ import { createOperatorAgent } from "./operator";
 import { createEyeOpsAgent, EYE_OPS_PROMPT_METADATA } from "./eye-ops";
 import { createLibrarianAgent, LIBRARIAN_PROMPT_METADATA } from "./data-dive";
 import { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./scan-ops";
-import { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./eye-scan";
+import { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./analyzer-media";
 import { createWarMindAgent } from "./war-mind";
 import { createOrchestratorAgent } from "./orchestrator";
 import { createNullAuditAgent } from "./null-audit";
@@ -53,7 +53,7 @@ const agentSources: Record<BuiltinAgentName, AgentSource> = {
   "eye-ops": createEyeOpsAgent,
   "data-dive": createLibrarianAgent,
   "scan-ops": createExploreAgent,
-  "eye-scan": createMultimodalLookerAgent,
+  "analyzer-media": createMultimodalLookerAgent,
   "war-mind": createWarMindAgent,
   "null-audit": createNullAuditAgent,
   // Note: orchestrator is handled specially in createBuiltinAgents()
@@ -71,7 +71,7 @@ const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
   "eye-ops": EYE_OPS_PROMPT_METADATA,
   "data-dive": LIBRARIAN_PROMPT_METADATA,
   "scan-ops": EXPLORE_PROMPT_METADATA,
-  "eye-scan": MULTIMODAL_LOOKER_PROMPT_METADATA,
+  "analyzer-media": MULTIMODAL_LOOKER_PROMPT_METADATA,
 };
 
 function isFactory(source: AgentSource): source is AgentFactory {

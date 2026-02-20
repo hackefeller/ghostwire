@@ -6,10 +6,10 @@ import { createKieranPythonReviewerAgent } from "../reviewer-python";
 import { createKieranTypeScriptReviewerAgent } from "../reviewer-typescript";
 import { createDHHRailsReviewerAgent } from "../reviewer-rails-dh";
 import { createCodeSimplicityReviewerAgent } from "../reviewer-simplicity";
-import { createFrameworkDocsResearcherAgent } from "../docs-scan";
-import { createLearningsResearcherAgent } from "../learnings-scan";
-import { createBestPracticesResearcherAgent } from "../best-practices-scan";
-import { createGitHistoryAnalyzerAgent } from "../git-scan";
+import { createFrameworkDocsResearcherAgent } from "../researcher-docs";
+import { createLearningsResearcherAgent } from "../researcher-learnings";
+import { createBestPracticesResearcherAgent } from "../researcher-practices";
+import { createGitHistoryAnalyzerAgent } from "../researcher-git";
 import { createFigmaDesignSyncAgent } from "../figma-sync";
 import { createDesignImplementationReviewerAgent } from "../design-check";
 import { createDesignIteratorAgent } from "../design-loop";
@@ -42,13 +42,13 @@ export {
 export {
   createFrameworkDocsResearcherAgent,
   FRAMEWORK_DOCS_RESEARCHER_METADATA,
-} from "../docs-scan";
-export { createLearningsResearcherAgent, LEARNINGS_RESEARCHER_METADATA } from "../learnings-scan";
+} from "../researcher-docs";
+export { createLearningsResearcherAgent, LEARNINGS_RESEARCHER_METADATA } from "../researcher-learnings";
 export {
   createBestPracticesResearcherAgent,
   BEST_PRACTICES_RESEARCHER_METADATA,
-} from "../best-practices-scan";
-export { createGitHistoryAnalyzerAgent, GIT_HISTORY_ANALYZER_METADATA } from "../git-scan";
+} from "../researcher-practices";
+export { createGitHistoryAnalyzerAgent, GIT_HISTORY_ANALYZER_METADATA } from "../researcher-git";
 
 // Design Agents (4)
 export { createFigmaDesignSyncAgent, FIGMA_DESIGN_SYNC_METADATA } from "../figma-sync";

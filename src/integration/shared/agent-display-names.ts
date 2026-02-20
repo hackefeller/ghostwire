@@ -17,7 +17,7 @@ export const AGENT_DISPLAY_NAMES: Record<string, string> = {
   "eye-ops": "eye-ops",
   "data-dive": "data-dive",
   "scan-ops": "scan-ops",
-  "eye-scan": "eye-scan",
+  "analyzer-media": "analyzer-media",
   // Legacy aliases for backward compatibility
   "cipher-operator": "operator",
   "void-runner": "operator",
@@ -32,7 +32,7 @@ export const AGENT_DISPLAY_NAMES: Record<string, string> = {
   "seer-advisor": "eye-ops",
   "archive-researcher": "data-dive",
   "scout-recon": "scan-ops",
-  "optic-analyst": "eye-scan",
+  "optic-analyst": "analyzer-media",
 };
 
 /**

@@ -393,7 +393,7 @@ describe("generateOmoConfig - model fallback system", () => {
       "openai/gpt-5.2",
     );
     // #then opticAnalyst should use native OpenAI (fallback within native tier)
-    expect((result.agents as Record<string, { model: string }>)["eye-scan"].model).toBe(
+    expect((result.agents as Record<string, { model: string }>)["analyzer-media"].model).toBe(
       "openai/gpt-5.2",
     );
   });

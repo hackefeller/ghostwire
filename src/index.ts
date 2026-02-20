@@ -333,7 +333,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
   const callOmoAgent = createCallOmoAgent(ctx, backgroundManager);
   const isMultimodalLookerEnabled = !includesCaseInsensitive(
     pluginConfig.disabled_agents ?? [],
-    "eye-scan",
+    "analyzer-media",
   );
   const lookAt = isMultimodalLookerEnabled ? createLookAt(ctx) : null;
   const browserProvider = pluginConfig.browser_automation_engine?.provider ?? "playwright";

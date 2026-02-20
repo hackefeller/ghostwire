@@ -123,15 +123,15 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("scan-ops");
   });
 
-  it("returns display name for eye-scan", () => {
-    // #given config key "eye-scan"
-    const configKey = "eye-scan";
+  it("returns display name for analyzer-media", () => {
+    // #given config key "analyzer-media"
+    const configKey = "analyzer-media";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "eye-scan"
-    expect(result).toBe("eye-scan");
+    // #then returns "analyzer-media"
+    expect(result).toBe("analyzer-media");
   });
 });
 
@@ -149,7 +149,7 @@ describe("AGENT_DISPLAY_NAMES", () => {
       "eye-ops": "eye-ops",
       "data-dive": "data-dive",
       "scan-ops": "scan-ops",
-      "eye-scan": "eye-scan",
+      "analyzer-media": "analyzer-media",
       // Legacy aliases for backward compatibility
       "cipher-operator": "operator",
       "nexus-orchestrator": "orchestrator",
@@ -160,7 +160,7 @@ describe("AGENT_DISPLAY_NAMES", () => {
       "seer-advisor": "eye-ops",
       "archive-researcher": "data-dive",
       "scout-recon": "scan-ops",
-      "optic-analyst": "eye-scan",
+      "optic-analyst": "analyzer-media",
     };
 
     // #when checking the constant

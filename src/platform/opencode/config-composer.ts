@@ -170,7 +170,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       plan?: Record<string, unknown>;
       scoutRecon?: { tools?: Record<string, unknown> };
       archiveResearcher?: { tools?: Record<string, unknown> };
-      "eye-scan"?: { tools?: Record<string, unknown> };
+      "analyzer-media"?: { tools?: Record<string, unknown> };
       nexusOrchestrator?: { tools?: Record<string, unknown> };
       cipherOperator?: { tools?: Record<string, unknown> };
     };
@@ -350,8 +350,8 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       const agent = agentResult.archiveResearcher as AgentWithPermission;
       agent.permission = { ...agent.permission, "grep_app_*": "allow" };
     }
-    if (agentResult["eye-scan"]) {
-      const agent = agentResult["eye-scan"] as AgentWithPermission;
+    if (agentResult["analyzer-media"]) {
+      const agent = agentResult["analyzer-media"] as AgentWithPermission;
       agent.permission = { ...agent.permission, task: "deny", look_at: "deny" };
     }
     if (agentResult["orchestrator"]) {

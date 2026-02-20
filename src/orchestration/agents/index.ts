@@ -10,7 +10,7 @@ export { createEyeOpsAgent, EYE_OPS_PROMPT_METADATA } from "./eye-ops";
 export { createLibrarianAgent, LIBRARIAN_PROMPT_METADATA } from "./data-dive";
 export { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./scan-ops";
 
-export { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./eye-scan";
+export { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./analyzer-media";
 export { createWarMindAgent, TACTICIAN_SYSTEM_PROMPT, tacticianPromptMetadata } from "./war-mind";
 export {
   createNullAuditAgent,

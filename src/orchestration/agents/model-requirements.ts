@@ -58,7 +58,7 @@ export const AGENT_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
       { providers: ["opencode"], model: "gpt-5-nano" },
     ],
   },
-  "eye-scan": {
+  "analyzer-media": {
     fallbackChain: [
       { providers: ["google", "github-copilot", "opencode"], model: "gemini-3-flash" },
       { providers: ["openai", "github-copilot", "opencode"], model: "gpt-5.2" },

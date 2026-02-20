@@ -78,9 +78,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(tertiary.model).toBe("gpt-5-nano");
   });
 
-  test("eye-scan has valid fallbackChain with gemini-3-flash as primary", () => {
+  test("analyzer-media has valid fallbackChain with gemini-3-flash as primary", () => {
     // #given - opticAnalyst agent requirement
-    const multimodalLooker = AGENT_MODEL_REQUIREMENTS["eye-scan"];
+    const multimodalLooker = AGENT_MODEL_REQUIREMENTS["analyzer-media"];
 
     // #when - accessing opticAnalyst requirement
     // #then - fallbackChain exists with gemini-3-flash as first entry
@@ -163,7 +163,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
       "eye-ops",
       "data-dive",
       "scan-ops",
-      "eye-scan",
+      "analyzer-media",
       "planner",
       "war-mind",
       "null-audit",

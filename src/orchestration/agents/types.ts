@@ -85,7 +85,7 @@ export type BuiltinAgentName =
   | "eye-ops"
   | "data-dive"
   | "scan-ops"
-  | "eye-scan"
+  | "analyzer-media"
   | "war-mind"
   | "null-audit"
   | "orchestrator";

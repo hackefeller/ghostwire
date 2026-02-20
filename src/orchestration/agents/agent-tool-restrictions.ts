@@ -26,7 +26,7 @@ const AGENT_RESTRICTIONS: Record<string, Record<string, boolean>> = {
     delegate_task: false,
   },
 
-  "eye-scan": {
+  "analyzer-media": {
     read: true,
   },
 

@@ -183,25 +183,25 @@ agents:
     purpose: Code simplicity reviewer
     fallbacks: []
 
-  - id: docs-scan
+  - id: researcher-docs
     display_name: docs.scan
     model: anthropic/claude-sonnet-4-5
     purpose: Framework documentation researcher
     fallbacks: []
 
-  - id: learnings-scan
+  - id: researcher-learnings
     display_name: learnings.scan
     model: anthropic/claude-sonnet-4-5
     purpose: Internal learnings researcher
     fallbacks: []
 
-  - id: best-practices-scan
+  - id: researcher-practices
     display_name: best-practices.scan
     model: anthropic/claude-sonnet-4-5
     purpose: Best practices researcher
     fallbacks: []
 
-  - id: git-scan
+  - id: researcher-git
     display_name: git.scan
     model: anthropic/claude-sonnet-4-5
     purpose: Git history analyzer

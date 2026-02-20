@@ -160,7 +160,7 @@ tools:
     path: src/execution/tools/look-at
     purpose: Analyze files (images, PDFs, videos, text) using multimodal vision models
     description: |
-      Sends files to multimodal agent ("eye-scan") for analysis.
+      Sends files to multimodal agent ("analyzer-media") for analysis.
       Supports: images (jpg, png, webp, heic), videos (mp4, mov, webm), PDFs, audio, text.
       Uses MIME type inference based on file extension.
       Requires file_path (absolute) and goal (what to extract/analyze).

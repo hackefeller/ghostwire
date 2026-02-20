@@ -19,7 +19,7 @@ export const BuiltinAgentNameSchema = z.enum([
   "eye-ops",
   "data-dive",
   "scan-ops",
-  "eye-scan",
+  "analyzer-media",
   "war-mind",
   "null-audit",
   "orchestrator",
@@ -156,7 +156,7 @@ export const OverridableAgentNameSchema = z.enum([
   "eye-ops",
   "data-dive",
   "scan-ops",
-  "eye-scan",
+  "analyzer-media",
   "orchestrator",
 ]);
 
@@ -285,7 +285,7 @@ export const AgentOverridesSchema = z.object({
   "eye-ops": AgentOverrideConfigSchema.optional(),
   "data-dive": AgentOverrideConfigSchema.optional(),
   "scan-ops": AgentOverrideConfigSchema.optional(),
-  "eye-scan": AgentOverrideConfigSchema.optional(),
+  "analyzer-media": AgentOverrideConfigSchema.optional(),
   "orchestrator": AgentOverrideConfigSchema.optional(),
 });
 

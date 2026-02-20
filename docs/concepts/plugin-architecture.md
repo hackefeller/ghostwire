@@ -198,7 +198,7 @@ Direct integration is now the single source of runtime truth.
 Areas with higher architectural complexity:
 - `src/index.ts` (global runtime composition)
 - `src/features/background-agent/manager.ts` (task lifecycle/concurrency)
-- `src/hooks/nexus-orchestrator/index.ts` (orchestration governance)
+- `src/orchestration/hooks/grid-sync/index.ts` (orchestration governance)
 - `src/tools/delegate-task/tools.ts` (delegation policy and execution shaping)
 
 Primary failure modes to monitor:

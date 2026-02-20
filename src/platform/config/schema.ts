@@ -330,7 +330,7 @@ export const FeaturesConfigSchema = z.object({
   compound_engineering: CompoundEngineeringConfigSchema.optional(),
 });
 
-export const SisyphusAgentConfigSchema = z.object({
+export const VoidRunnerConfigSchema = z.object({
   disabled: z.boolean().optional(),
   default_builder_enabled: z.boolean().optional(),
   planner_enabled: z.boolean().optional(),
@@ -541,8 +541,8 @@ export const TmuxConfigSchema = z.object({
   agent_pane_min_width: z.number().min(20).default(40),
 });
 
-export const SisyphusTasksConfigSchema = z.object({
-  /** Enable Cipher Operator Tasks system (default: false) */
+export const TaskQueueConfigSchema = z.object({
+  /** Enable Void Runner Tasks system (default: false) */
   enabled: z.boolean().default(false),
   /** Storage path for tasks (default: .ghostwire/tasks) */
   storage_path: z.string().default(".ghostwire/tasks"),
@@ -550,8 +550,8 @@ export const SisyphusTasksConfigSchema = z.object({
   claude_code_compat: z.boolean().default(false),
 });
 
-export const SisyphusSwarmConfigSchema = z.object({
-  /** Enable Cipher Operator Swarm system (default: false) */
+export const AgentSwarmConfigSchema = z.object({
+  /** Enable Void Runner Swarm system (default: false) */
   enabled: z.boolean().default(false),
   /** Storage path for teams (default: .ghostwire/teams) */
   storage_path: z.string().default(".ghostwire/teams"),
@@ -559,9 +559,13 @@ export const SisyphusSwarmConfigSchema = z.object({
   ui_mode: z.enum(["toast", "tmux", "both"]).default("toast"),
 });
 
-export const SisyphusConfigSchema = z.object({
-  tasks: SisyphusTasksConfigSchema.optional(),
-  swarm: SisyphusSwarmConfigSchema.optional(),
+export const VoidRunnerConfigSchemaWrapper = z.object({
+  tasks: TaskQueueConfigSchema.optional(),
+  swarm: AgentSwarmConfigSchema.optional(),
+  disabled: z.boolean().optional(),
+  default_builder_enabled: z.boolean().optional(),
+  planner_enabled: z.boolean().optional(),
+  replace_plan: z.boolean().optional(),
 });
 export const GhostwireConfigSchema = z.object({
   $schema: z.string().optional(),
@@ -575,7 +579,7 @@ export const GhostwireConfigSchema = z.object({
   claude_code: ClaudeCodeConfigSchema.optional(),
   imports: ImportsConfigSchema.optional(),
   features: FeaturesConfigSchema.optional(),
-  cipher_agent: SisyphusAgentConfigSchema.optional(),
+  void_runner: VoidRunnerConfigSchemaWrapper.optional(),
   comment_checker: CommentCheckerConfigSchema.optional(),
   experimental: ExperimentalConfigSchema.optional(),
   auto_update: z.boolean().optional(),
@@ -586,7 +590,6 @@ export const GhostwireConfigSchema = z.object({
   git_master: GitMasterConfigSchema.optional(),
   browser_automation_engine: BrowserAutomationConfigSchema.optional(),
   tmux: TmuxConfigSchema.optional(),
-  "void-runner": SisyphusConfigSchema.optional(),
 });
 
 export type GhostwireConfig = z.infer<typeof GhostwireConfigSchema>;
@@ -597,7 +600,7 @@ export type AgentName = z.infer<typeof AgentNameSchema>;
 export type HookName = z.infer<typeof HookNameSchema>;
 export type BuiltinCommandName = z.infer<typeof BuiltinCommandNameSchema>;
 export type BuiltinSkillName = z.infer<typeof BuiltinSkillNameSchema>;
-export type SisyphusAgentConfig = z.infer<typeof SisyphusAgentConfigSchema>;
+export type VoidRunnerConfig = z.infer<typeof VoidRunnerConfigSchema>;
 export type CommentCheckerConfig = z.infer<typeof CommentCheckerConfigSchema>;
 export type ExperimentalConfig = z.infer<typeof ExperimentalConfigSchema>;
 export type DynamicContextPruningConfig = z.infer<
@@ -619,9 +622,9 @@ export type BrowserAutomationConfig = z.infer<
 >;
 export type TmuxConfig = z.infer<typeof TmuxConfigSchema>;
 export type TmuxLayout = z.infer<typeof TmuxLayoutSchema>;
-export type SisyphusTasksConfig = z.infer<typeof SisyphusTasksConfigSchema>;
-export type SisyphusSwarmConfig = z.infer<typeof SisyphusSwarmConfigSchema>;
-export type SisyphusConfig = z.infer<typeof SisyphusConfigSchema>;
+export type TaskQueueConfig = z.infer<typeof TaskQueueConfigSchema>;
+export type AgentSwarmConfig = z.infer<typeof AgentSwarmConfigSchema>;
+export type VoidRunnerConfigWrapper = z.infer<typeof VoidRunnerConfigSchemaWrapper>;
 
 export {
   AnyMcpNameSchema,

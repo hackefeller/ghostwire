@@ -72,7 +72,7 @@ For complex or critical tasks, press **Tab** to switch to Augur Planner (Planner
 
 ### Always Use Augur Planner + Orchestrator Together
 
-**Do NOT use `nexus-orchestrator` without `/jack-in-work`.**
+**Do NOT use `grid-sync` without `/jack-in-work`.**
 
 The orchestrator is designed to execute work plans created by Augur Planner. Using it directly without a plan leads to unpredictable behavior.
 
@@ -128,7 +128,7 @@ Here's a real-world config for a user with **Claude, OpenAI, Gemini, and Z.ai** 
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
     // Override specific agents only - rest use fallback chain
-    "nexus-orchestrator": { "model": "anthropic/claude-sonnet-4-5", "variant": "max" },
+    "grid-sync": { "model": "anthropic/claude-sonnet-4-5", "variant": "max" },
     "archive-researcher": { "model": "zai-coding-plan/glm-4.7" },
     "scout-recon": { "model": "opencode/gpt-5-nano" },
     "optic-analyst": { "model": "zai-coding-plan/glm-4.6v" }

@@ -161,7 +161,7 @@ Ghostwire provides 32+ lifecycle hooks that intercept and modify agent behavior 
 - **Event**: All
 - **Description**: Executes hooks from Claude Code's `settings.json` for full compatibility.
 
-### nexus-orchestrator
+### grid-sync
 - **Event**: All
 - **Description**: Main orchestration logic (752 lines) that coordinates multi-agent workflows.
 

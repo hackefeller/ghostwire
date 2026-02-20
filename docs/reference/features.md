@@ -210,7 +210,7 @@ Everything runs at maximum intensity - parallel agents, background tasks, aggres
 /jack-in-work [plan-name]
 ```
 
-Uses nexus-orchestrator agent to execute planned tasks systematically.
+Uses grid-sync agent to execute planned tasks systematically.
 
 ### Custom Commands
 

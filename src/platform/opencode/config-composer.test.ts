@@ -136,7 +136,7 @@ describe("Plan agent demote behavior", () => {
   test("plan agent should be demoted to subagent mode when replacePlan is true", async () => {
     // #given
     const pluginConfig: GhostwireConfig = {
-      cipher_agent: {
+      void_runner: {
         planner_enabled: true,
         replace_plan: true,
       },
@@ -176,7 +176,7 @@ describe("Plan agent demote behavior", () => {
   test("zen-planner should have mode 'all' to be callable via delegate_task", async () => {
     // #given
     const pluginConfig: GhostwireConfig = {
-      cipher_agent: {
+      void_runner: {
         planner_enabled: true,
       },
     };
@@ -307,7 +307,7 @@ describe("Augur Planner direct override priority over category", () => {
   test("direct reasoningEffort takes priority over category reasoningEffort", async () => {
     // #given - category has reasoningEffort=xhigh, direct override says "low"
     const pluginConfig: GhostwireConfig = {
-      cipher_agent: {
+      void_runner: {
         planner_enabled: true,
       },
       categories: {
@@ -348,7 +348,7 @@ describe("Augur Planner direct override priority over category", () => {
   test("category reasoningEffort applied when no direct override", async () => {
     // #given - category has reasoningEffort but no direct override
     const pluginConfig: GhostwireConfig = {
-      cipher_agent: {
+      void_runner: {
         planner_enabled: true,
       },
       categories: {
@@ -388,7 +388,7 @@ describe("Augur Planner direct override priority over category", () => {
   test("direct temperature takes priority over category temperature", async () => {
     // #given
     const pluginConfig: GhostwireConfig = {
-      cipher_agent: {
+      void_runner: {
         planner_enabled: true,
       },
       categories: {
@@ -439,7 +439,7 @@ describe("Deadlock prevention - fetchAvailableModels must not receive client", (
     ).mockResolvedValue(new Set<string>());
 
     const pluginConfig: GhostwireConfig = {
-      cipher_agent: {
+      void_runner: {
         planner_enabled: true,
       },
     };

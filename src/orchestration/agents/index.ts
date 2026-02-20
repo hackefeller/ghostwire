@@ -1,7 +1,7 @@
 export * from "./types"
 export { createBuiltinAgents } from "./utils"
 export type { AvailableAgent, AvailableCategory, AvailableSkill } from "./dynamic-agent-prompt-builder"
-export { createSisyphusAgent } from "./void-runner"
+export { createVoidRunnerAgent } from "./void-runner"
 export { createOracleAgent, ORACLE_PROMPT_METADATA } from "./eye-ops"
 export { createLibrarianAgent, LIBRARIAN_PROMPT_METADATA } from "./data-dive"
 export { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./scan-ops"

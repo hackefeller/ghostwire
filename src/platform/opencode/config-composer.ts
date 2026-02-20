@@ -186,11 +186,11 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       ]),
     );
 
-    const isSisyphusEnabled = pluginConfig.cipher_agent?.disabled !== true;
+    const isVoidRunnerEnabled = pluginConfig.void_runner?.disabled !== true;
     const builderEnabled =
-      pluginConfig.cipher_agent?.default_builder_enabled ?? false;
-    const plannerEnabled = pluginConfig.cipher_agent?.planner_enabled ?? true;
-    const replacePlan = pluginConfig.cipher_agent?.replace_plan ?? true;
+      pluginConfig.void_runner?.default_builder_enabled ?? false;
+    const plannerEnabled = pluginConfig.void_runner?.planner_enabled ?? true;
+    const replacePlan = pluginConfig.void_runner?.replace_plan ?? true;
 
     type AgentConfig = Record<string, Record<string, unknown> | undefined> & {
       build?: Record<string, unknown>;
@@ -203,7 +203,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     };
     const configAgent = config.agent as AgentConfig | undefined;
 
-    if (isSisyphusEnabled && builtinAgents["void-runner"]) {
+    if (isVoidRunnerEnabled && builtinAgents["void-runner"]) {
       (config as { default_agent?: string }).default_agent = "void-runner";
 
       const agentConfig: Record<string, unknown> = {

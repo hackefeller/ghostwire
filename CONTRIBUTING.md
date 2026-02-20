@@ -139,7 +139,7 @@ Ghostwire is an OpenCode plugin with a CLI wrapper providing orchestration (Augu
 - OpenCode core: `~/.config/opencode/opencode.json`
 
 **Core Runtime Systems:**
-- Orchestration: `src/hooks/nexus-orchestrator/index.ts`
+- Orchestration: `src/orchestration/hooks/grid-sync/index.ts`
 - Background agents: `src/features/background-agent/manager.ts`
 - Agents: `src/agents/` + registry wiring in `src/index.ts`
 - Tools: `src/tools/`

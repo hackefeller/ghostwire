@@ -62,7 +62,7 @@ describe('Compound Engineering - Foundation Tests', () => {
       ];
       
       const existingComponentNames = [
-        'cipher-operator', 'seer-advisor', 'archive-researcher', 'scout-recon'
+        'void-runner', 'seer-advisor', 'archive-researcher', 'scout-recon'
       ];
       
       // Verify no conflicts

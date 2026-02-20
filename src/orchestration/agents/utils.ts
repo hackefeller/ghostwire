@@ -11,7 +11,7 @@ import type {
   CategoryConfig,
   GitMasterConfig,
 } from "../../platform/config/schema";
-import { createSisyphusAgent } from "./void-runner";
+import { createVoidRunnerAgent } from "./void-runner";
 import { createOracleAgent, ORACLE_PROMPT_METADATA } from "./eye-ops";
 import {
   createLibrarianAgent,
@@ -62,7 +62,7 @@ export {
 type AgentSource = AgentFactory | AgentConfig;
 
 const agentSources: Record<BuiltinAgentName, AgentSource> = {
-  "void-runner": createSisyphusAgent,
+  "void-runner": createVoidRunnerAgent,
   "eye-ops": createOracleAgent,
   "data-dive": createLibrarianAgent,
   "scan-ops": createExploreAgent,
@@ -377,7 +377,7 @@ export async function createBuiltinAgents(
       const { model: cipherModel, variant: cipherResolvedVariant } =
         cipherResolution;
 
-      let cipherConfig = createSisyphusAgent(
+      let cipherConfig = createVoidRunnerAgent(
         cipherModel,
         availableAgents,
         undefined,

@@ -15,7 +15,7 @@ export function getTaskDir(
   listId: string,
   config: Partial<GhostwireConfig>,
 ): string {
-  const tasksConfig = config["void-runner"]?.tasks;
+  const tasksConfig = config.void_runner?.tasks;
 
   if (tasksConfig?.claude_code_compat) {
     return join(homedir(), ".cache", "claude-code", "tasks", listId);
@@ -37,7 +37,7 @@ export function getTeamDir(
   teamName: string,
   config: Partial<GhostwireConfig>,
 ): string {
-  const swarmConfig = config["void-runner"]?.swarm;
+  const swarmConfig = config.void_runner?.swarm;
 
   if (swarmConfig?.storage_path?.includes("claude")) {
     return join(homedir(), ".claude", "teams", teamName);

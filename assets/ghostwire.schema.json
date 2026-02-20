@@ -2639,9 +2639,48 @@
         }
       }
     },
-    "cipher_agent": {
+    "void_runner": {
       "type": "object",
       "properties": {
+        "tasks": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "default": false,
+              "type": "boolean"
+            },
+            "storage_path": {
+              "default": ".ghostwire/tasks",
+              "type": "string"
+            },
+            "claude_code_compat": {
+              "default": false,
+              "type": "boolean"
+            }
+          }
+        },
+        "swarm": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "default": false,
+              "type": "boolean"
+            },
+            "storage_path": {
+              "default": ".ghostwire/teams",
+              "type": "string"
+            },
+            "ui_mode": {
+              "default": "toast",
+              "type": "string",
+              "enum": [
+                "toast",
+                "tmux",
+                "both"
+              ]
+            }
+          }
+        },
         "disabled": {
           "type": "boolean"
         },
@@ -3009,50 +3048,6 @@
           "default": 40,
           "type": "number",
           "minimum": 20
-        }
-      }
-    },
-    "void-runner": {
-      "type": "object",
-      "properties": {
-        "tasks": {
-          "type": "object",
-          "properties": {
-            "enabled": {
-              "default": false,
-              "type": "boolean"
-            },
-            "storage_path": {
-              "default": ".ghostwire/tasks",
-              "type": "string"
-            },
-            "claude_code_compat": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        },
-        "swarm": {
-          "type": "object",
-          "properties": {
-            "enabled": {
-              "default": false,
-              "type": "boolean"
-            },
-            "storage_path": {
-              "default": ".ghostwire/teams",
-              "type": "string"
-            },
-            "ui_mode": {
-              "default": "toast",
-              "type": "string",
-              "enum": [
-                "toast",
-                "tmux",
-                "both"
-              ]
-            }
-          }
         }
       }
     }

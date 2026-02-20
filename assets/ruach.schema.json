@@ -20,7 +20,7 @@
       "items": {
         "type": "string",
         "enum": [
-          "cipher-operator",
+          "void-runner",
           "augur-planner",
           "seer-advisor",
           "archive-researcher",
@@ -28,7 +28,7 @@
           "optic-analyst",
           "tactician-strategist",
           "glitch-auditor",
-          "nexus-orchestrator",
+          "grid-sync",
           "grid:kieran-rails-reviewer",
           "grid:kieran-python-reviewer",
           "grid:kieran-typescript-reviewer",
@@ -181,7 +181,7 @@
           "augur-planner-md-only",
           "cipher-runner-notepad",
           "jack-in-work",
-          "nexus-orchestrator",
+          "grid-sync",
           "grid-stop-continuation-guard"
         ]
       }
@@ -481,7 +481,7 @@
             }
           }
         },
-        "cipher-operator": {
+        "void-runner": {
           "type": "object",
           "properties": {
             "model": {
@@ -1771,7 +1771,7 @@
             }
           }
         },
-        "nexus-orchestrator": {
+        "grid-sync": {
           "type": "object",
           "properties": {
             "model": {
@@ -2441,7 +2441,7 @@
         }
       }
     },
-    "cipher-operator": {
+    "void-runner": {
       "type": "object",
       "properties": {
         "tasks": {

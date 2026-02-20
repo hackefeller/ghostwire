@@ -235,7 +235,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
   const autoUpdateChecker = isHookEnabled("grid-auto-update-checker")
     ? createAutoUpdateCheckerHook(ctx, {
         showStartupToast: isHookEnabled("grid-startup-toast"),
-        isSisyphusEnabled: pluginConfig.cipher_agent?.disabled !== true,
+        isVoidRunnerEnabled: pluginConfig.void_runner?.disabled !== true,
         autoUpdate: pluginConfig.auto_update ?? true,
       })
     : null;

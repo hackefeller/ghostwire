@@ -4,7 +4,7 @@ describe("Compound Engineering - Regression Tests", () => {
   describe("No Breaking Changes to Existing Agents", () => {
     test("builtin agents are unaffected", () => {
       //#given
-      const builtinAgents = ["cipher-operator", "seer-advisor", "archive-researcher", "scout-recon", "build", "nexus-orchestrator", "augur-planner", "tactician-strategist", "glitch-auditor"]
+      const builtinAgents = ["void-runner", "seer-advisor", "archive-researcher", "scout-recon", "build", "grid-sync", "augur-planner", "tactician-strategist", "glitch-auditor"]
 
       //#when & #then
       // Verify builtin agents remain as they were
@@ -16,7 +16,7 @@ describe("Compound Engineering - Regression Tests", () => {
 
     test("builtin agent names are lowercase", () => {
       //#given
-      const builtinAgents = ["cipher-operator", "seer-advisor", "archive-researcher", "scout-recon", "build", "nexus-orchestrator"]
+      const builtinAgents = ["void-runner", "seer-advisor", "archive-researcher", "scout-recon", "build", "grid-sync"]
 
       //#when
       const invalidAgents = builtinAgents.filter((agent) => agent !== agent.toLowerCase())
@@ -77,7 +77,7 @@ describe("Compound Engineering - Regression Tests", () => {
   describe("Namespace Isolation", () => {
     test("compound agents don't conflict with builtin agents", () => {
       //#given
-      const builtinAgents = new Set(["cipher-operator", "seer-advisor", "archive-researcher", "scout-recon", "build", "nexus-orchestrator", "augur-planner", "tactician-strategist", "glitch-auditor"])
+      const builtinAgents = new Set(["void-runner", "seer-advisor", "archive-researcher", "scout-recon", "build", "grid-sync", "augur-planner", "tactician-strategist", "glitch-auditor"])
       const compoundAgents = new Set(["grid:kieran-rails-reviewer", "grid:framework-docs-researcher", "grid:figma-design-sync"])
 
       //#when
@@ -143,15 +143,15 @@ describe("Compound Engineering - Regression Tests", () => {
       //#given
       const oldConfig = {
         agents: {
-          "cipher-operator": {
+          "void-runner": {
             model: "anthropic/claude-opus-4-5",
           },
         },
       }
 
       //#when & #then
-      expect(oldConfig.agents["cipher-operator"]).toBeDefined()
-      expect(oldConfig.agents["cipher-operator"].model).toBe("anthropic/claude-opus-4-5")
+      expect(oldConfig.agents["void-runner"]).toBeDefined()
+      expect(oldConfig.agents["void-runner"].model).toBe("anthropic/claude-opus-4-5")
     })
 
     test("disabled_agents still works for builtin agents", () => {
@@ -169,7 +169,7 @@ describe("Compound Engineering - Regression Tests", () => {
       //#given
       const config = {
         agents: {
-          "cipher-operator": {
+          "void-runner": {
             model: "anthropic/claude-opus-4-5",
           },
           "grid:kieran-rails-reviewer": {
@@ -180,7 +180,7 @@ describe("Compound Engineering - Regression Tests", () => {
 
       //#when & #then
       expect(Object.keys(config.agents).length).toBe(2)
-      expect(config.agents["cipher-operator"]).toBeDefined()
+      expect(config.agents["void-runner"]).toBeDefined()
       expect((config.agents as Record<string, unknown>)["grid:kieran-rails-reviewer"]).toBeDefined()
     })
   })
@@ -190,7 +190,7 @@ describe("Compound Engineering - Regression Tests", () => {
       //#given
       const componentNames = [
         // Builtin
-        "cipher-operator",
+        "void-runner",
         "seer-advisor",
         "agent-browser",
         "git-master",

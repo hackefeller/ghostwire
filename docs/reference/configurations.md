@@ -246,7 +246,7 @@ Or disable via `disabled_agents` in `~/.config/opencode/ghostwire.json` or `.ope
 }
 ```
 
-Available agents: `cipher-operator`, `augur-planner`, `seer-advisor`, `archive-researcher`, `scout-recon`, `optic-analyst`, `tactician-strategist`, `glitch-auditor`, `nexus-orchestrator`
+Available agents: `void-runner`, `augur-planner`, `seer-advisor`, `archive-researcher`, `scout-recon`, `optic-analyst`, `tactician-strategist`, `glitch-auditor`, `grid-sync`
 
 ## Built-in Skills
 
@@ -1018,13 +1018,13 @@ Configure notification behavior for background task completion.
 | -------------- | ------- | ---------------------------------------------------------------------------------------------- |
 | `force_enable` | `false` | Force enable grid-session-notification even if external notification plugins are detected. Default: `false`. |
 
-## Cipher Operator Tasks & Swarm
+## Void Runner Tasks & Swarm
 
-Configure Cipher Operator Tasks and Swarm systems for advanced task management and multi-agent orchestration.
+Configure Void Runner Tasks and Swarm systems for advanced task management and multi-agent orchestration.
 
 ```json
 {
-  "cipher-operator": {
+  "void_runner": {
     "tasks": {
       "enabled": false,
       "storage_path": ".ghostwire/tasks",

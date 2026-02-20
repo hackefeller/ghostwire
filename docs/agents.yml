@@ -13,8 +13,8 @@ metadata:
 agents:
   # === Core Orchestrators ===
 
-  - id: cipher-operator
-    display_name: Cipher Operator
+  - id: void-runner
+    display_name: Void Runner
     model: anthropic/claude-opus-4-5
     purpose: Primary orchestrator with obsession for todos, strategic delegation, and parallel execution
     fallbacks:
@@ -23,7 +23,6 @@ agents:
       - gpt-5.2-codex
       - gemini-3-Pro
     description: |
-      Named after Sisyphus - rolls the boulder daily like humans roll their work.
       Identity: SF Bay Area engineer, works/delegates/verifies/ships.
       Core competencies: Parses implicit requirements, adapts to codebase maturity, delegates to specialists, parallel execution.
       Phase 0: Intent classification (Trivial/Explicit/Exploratory/Open-ended/Ambiguous)
@@ -33,15 +32,14 @@ agents:
       Phase 2C: Failure recovery (3 failures → STOP → REVERT → DOCUMENT → CONSULT)
       Phase 3: Completion with background task cancellation
 
-  - id: nexus-orchestrator
-    display_name: Nexus Orchestrator
+  - id: grid-sync
+    display_name: Grid Sync
     model: anthropic/claude-sonnet-4-5
     purpose: Master orchestrator that coordinates all agents and tasks until completion
     fallbacks:
       - kimi-k2.5
       - gpt-5.2
     description: |
-      Named after Atlas - holds up heavens, coordinates all agents.
       Identity: Conductor, not musician. Delegates, coordinates, verifies. NEVER writes code.
       Workflow: Read todo list → build parallelization map → initialize notepad → execute tasks in parallel/sequential → verify EVERY task → handle failures via session_id resume.
       Notepad Protocol: Subagents are stateless, notepad is cumulative intelligence.
@@ -272,4 +270,3 @@ agents:
 notes:
   - Add new agents here first, then update docs to reference this file.
   - Agents are organized by type: Core Orchestrators, Specialist Agents, Compound Agents.
-  - cipher-operator replaces void-runner, nexus-orchestrator replaces grid-sync.

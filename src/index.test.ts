@@ -31,7 +31,7 @@ describe("look_at tool conditional registration", () => {
     // #when checking if agent is enabled
     // #then should return true (enabled)
     it("returns true when opticAnalyst is not disabled", () => {
-      const disabledAgents = ["advisor-plan", "data-dive"];
+      const disabledAgents = ["advisor-plan", "researcher-data"];
       const isEnabled = !includesCaseInsensitive(disabledAgents, "analyzer-media");
       expect(isEnabled).toBe(true);
     });

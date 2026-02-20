@@ -72,7 +72,7 @@ export interface AgentPromptMetadata {
   /** Nickname/alias used in prompt (e.g., "Seer Advisor" instead of "advisor-plan") */
   promptAlias?: string;
 
-  /** Key triggers that should appear in Phase 0 (e.g., "External library mentioned → fire data-dive") */
+  /** Key triggers that should appear in Phase 0 (e.g., "External library mentioned → fire researcher-data") */
   keyTrigger?: string;
 }
 
@@ -83,8 +83,8 @@ export function isGptModel(model: string): boolean {
 export type BuiltinAgentName =
   | "operator"
   | "advisor-plan"
-  | "data-dive"
-  | "scan-ops"
+  | "researcher-data"
+  | "researcher-codebase"
   | "analyzer-media"
   | "advisor-strategy"
   | "validator-audit"

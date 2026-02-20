@@ -166,8 +166,8 @@ describe("generateModelConfig", () => {
     });
   });
 
-  describe("scan-ops agent special cases", () => {
-    test("scan-ops uses gpt-5-nano when only Gemini available", () => {
+  describe("researcher-codebase agent special cases", () => {
+    test("researcher-codebase uses gpt-5-nano when only Gemini available", () => {
       // #given only Gemini is available
       const config = createConfig({ hasGemini: true });
 
@@ -175,10 +175,10 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then scoutRecon should use gpt-5-nano (fallback)
-      expect(result.agents?.["scan-ops"]?.model).toBe("opencode/gpt-5-nano");
+      expect(result.agents?.["researcher-codebase"]?.model).toBe("opencode/gpt-5-nano");
     });
 
-    test("scan-ops uses OpenCode claude-haiku when OpenCode Zen available", () => {
+    test("researcher-codebase uses OpenCode claude-haiku when OpenCode Zen available", () => {
       // #given OpenCode Zen is available
       const config = createConfig({ hasOpencodeZen: true });
 
@@ -186,10 +186,10 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then scoutRecon should use opencode/claude-haiku-4-5
-      expect(result.agents?.["scan-ops"]?.model).toBe("opencode/claude-haiku-4-5");
+      expect(result.agents?.["researcher-codebase"]?.model).toBe("opencode/claude-haiku-4-5");
     });
 
-    test("scan-ops uses gpt-5-nano when only OpenAI available", () => {
+    test("researcher-codebase uses gpt-5-nano when only OpenAI available", () => {
       // #given only OpenAI is available
       const config = createConfig({ hasOpenAI: true });
 
@@ -197,10 +197,10 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then scoutRecon should use gpt-5-nano (fallback)
-      expect(result.agents?.["scan-ops"]?.model).toBe("opencode/gpt-5-nano");
+      expect(result.agents?.["researcher-codebase"]?.model).toBe("opencode/gpt-5-nano");
     });
 
-    test("scan-ops uses gpt-5-mini when only Copilot available", () => {
+    test("researcher-codebase uses gpt-5-mini when only Copilot available", () => {
       // #given only Copilot is available
       const config = createConfig({ hasCopilot: true });
 
@@ -208,12 +208,12 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then scoutRecon should use gpt-5-mini (Copilot fallback)
-      expect(result.agents?.["scan-ops"]?.model).toBe("github-copilot/gpt-5-mini");
+      expect(result.agents?.["researcher-codebase"]?.model).toBe("github-copilot/gpt-5-mini");
     });
   });
 
-  describe("data-dive agent special cases", () => {
-    test("data-dive uses ZAI when ZAI is available regardless of other providers", () => {
+  describe("researcher-data agent special cases", () => {
+    test("researcher-data uses ZAI when ZAI is available regardless of other providers", () => {
       // #given ZAI and OpenAI are available
       const config = createConfig({
         hasOpenAI: true,
@@ -224,7 +224,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then archiveResearcher should use ZAI_MODEL
-      expect(result.agents?.["data-dive"]?.model).toBe("zai-coding-plan/glm-4.7");
+      expect(result.agents?.["researcher-data"]?.model).toBe("zai-coding-plan/glm-4.7");
     });
   });
 

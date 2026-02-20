@@ -95,8 +95,8 @@ describe("grid-category-skill-reminder hook", () => {
     test("should NOT inject reminder for non-target agents", async () => {
       // #given - archiveResearcher agent session (not a target)
       const hook = createCategorySkillReminderHook(createMockPluginInput());
-      const sessionID = "data-dive-session";
-      updateSessionAgent(sessionID, "data-dive");
+      const sessionID = "researcher-data-session";
+      updateSessionAgent(sessionID, "researcher-data");
 
       const output = { title: "", output: "result", metadata: {} };
 

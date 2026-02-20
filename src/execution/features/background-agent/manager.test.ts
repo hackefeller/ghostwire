@@ -410,10 +410,10 @@ describe("BackgroundManager.notifyParentSession - release ordering", () => {
     const { ConcurrencyManager } = await import("./concurrency");
     const concurrencyManager = new ConcurrencyManager({ defaultConcurrency: 1 });
 
-    await concurrencyManager.acquire("scan-ops");
+    await concurrencyManager.acquire("researcher-codebase");
 
     let task2Resolved = false;
-    const task2Promise = concurrencyManager.acquire("scan-ops").then(() => {
+    const task2Promise = concurrencyManager.acquire("researcher-codebase").then(() => {
       task2Resolved = true;
     });
 
@@ -423,7 +423,7 @@ describe("BackgroundManager.notifyParentSession - release ordering", () => {
     // #when - simulate notifyParentSession: release BEFORE prompt (fixed behavior)
     let promptStarted = false;
     const simulateNotifyParentSession = async () => {
-      concurrencyManager.release("scan-ops");
+      concurrencyManager.release("researcher-codebase");
 
       promptStarted = true;
       await new Promise(() => {});
@@ -445,10 +445,10 @@ describe("BackgroundManager.notifyParentSession - release ordering", () => {
     const { ConcurrencyManager } = await import("./concurrency");
     const concurrencyManager = new ConcurrencyManager({ defaultConcurrency: 1 });
 
-    await concurrencyManager.acquire("scan-ops");
+    await concurrencyManager.acquire("researcher-codebase");
 
     let task2Resolved = false;
-    concurrencyManager.acquire("scan-ops").then(() => {
+    concurrencyManager.acquire("researcher-codebase").then(() => {
       task2Resolved = true;
     });
 
@@ -460,7 +460,7 @@ describe("BackgroundManager.notifyParentSession - release ordering", () => {
       try {
         await new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 50));
       } finally {
-        concurrencyManager.release("scan-ops");
+        concurrencyManager.release("researcher-codebase");
       }
     };
 
@@ -642,7 +642,7 @@ describe("BackgroundManager.resume", () => {
       sessionID: "session-a",
       parentSessionID: "old-parent",
       description: "original description",
-      agent: "scan-ops",
+      agent: "researcher-codebase",
       status: "completed",
     });
     manager.addTask(existingTask);
@@ -660,7 +660,7 @@ describe("BackgroundManager.resume", () => {
     expect(result.id).toBe("task-a");
     expect(result.sessionID).toBe("session-a");
     expect(result.description).toBe("original description");
-    expect(result.agent).toBe("scan-ops");
+    expect(result.agent).toBe("researcher-codebase");
     expect(result.parentModel).toEqual({ providerID: "anthropic", modelID: "claude-opus" });
   });
 
@@ -747,7 +747,7 @@ describe("LaunchInput.skillContent", () => {
     const input: import("./types").LaunchInput = {
       description: "test",
       prompt: "test prompt",
-      agent: "scan-ops",
+      agent: "researcher-codebase",
       parentSessionID: "parent-session",
       parentMessageID: "parent-msg",
     };
@@ -761,7 +761,7 @@ describe("LaunchInput.skillContent", () => {
     const input: import("./types").LaunchInput = {
       description: "test",
       prompt: "test prompt",
-      agent: "scan-ops",
+      agent: "researcher-codebase",
       parentSessionID: "parent-session",
       parentMessageID: "parent-msg",
       skillContent: "You are a playwright expert",
@@ -787,7 +787,7 @@ describe("BackgroundManager.notifyParentSession - dynamic message lookup", () =>
       parentMessageID: "msg-parent",
       description: "task with dynamic lookup",
       prompt: "test",
-      agent: "scan-ops",
+      agent: "researcher-codebase",
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
@@ -816,7 +816,7 @@ describe("BackgroundManager.notifyParentSession - dynamic message lookup", () =>
       parentMessageID: "msg-parent",
       description: "task fallback agent",
       prompt: "test",
-      agent: "scan-ops",
+      agent: "researcher-codebase",
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
@@ -842,7 +842,7 @@ describe("BackgroundManager.notifyParentSession - dynamic message lookup", () =>
       parentMessageID: "msg-parent",
       description: "task incomplete model",
       prompt: "test",
-      agent: "scan-ops",
+      agent: "researcher-codebase",
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
@@ -871,7 +871,7 @@ describe("BackgroundManager.notifyParentSession - dynamic message lookup", () =>
       parentMessageID: "msg-parent",
       description: "task no message",
       prompt: "test",
-      agent: "scan-ops",
+      agent: "researcher-codebase",
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
@@ -940,7 +940,7 @@ describe("BackgroundManager.tryCompleteTask", () => {
       parentMessageID: "msg-1",
       description: "test task",
       prompt: "test",
-      agent: "scan-ops",
+      agent: "researcher-codebase",
       status: "running",
       startedAt: new Date(),
       concurrencyKey,
@@ -969,7 +969,7 @@ describe("BackgroundManager.tryCompleteTask", () => {
       parentMessageID: "msg-1",
       description: "test task",
       prompt: "test",
-      agent: "scan-ops",
+      agent: "researcher-codebase",
       status: "running",
       startedAt: new Date(),
       concurrencyKey,
@@ -1095,12 +1095,12 @@ describe("BackgroundManager.resume model persistence", () => {
       parentMessageID: "msg-1",
       description: "task with model override",
       prompt: "original prompt",
-      agent: "scan-ops",
+      agent: "researcher-codebase",
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
       model: { providerID: "anthropic", modelID: "claude-sonnet-4-20250514" },
-      concurrencyGroup: "scan-ops",
+      concurrencyGroup: "researcher-codebase",
     };
     getTaskMap(manager).set(taskWithModel.id, taskWithModel);
 
@@ -1118,7 +1118,7 @@ describe("BackgroundManager.resume model persistence", () => {
       providerID: "anthropic",
       modelID: "claude-sonnet-4-20250514",
     });
-    expect(promptCalls[0].body.agent).toBe("scan-ops");
+    expect(promptCalls[0].body.agent).toBe("researcher-codebase");
   });
 
   test("should NOT pass model when task has no model (backward compatibility)", async () => {
@@ -1130,11 +1130,11 @@ describe("BackgroundManager.resume model persistence", () => {
       parentMessageID: "msg-1",
       description: "task without model",
       prompt: "original prompt",
-      agent: "scan-ops",
+      agent: "researcher-codebase",
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
-      concurrencyGroup: "scan-ops",
+      concurrencyGroup: "researcher-codebase",
     };
     getTaskMap(manager).set(taskWithoutModel.id, taskWithoutModel);
 
@@ -1149,7 +1149,7 @@ describe("BackgroundManager.resume model persistence", () => {
     // #then - model should NOT be in prompt body
     expect(promptCalls).toHaveLength(1);
     expect("model" in promptCalls[0].body).toBe(false);
-    expect(promptCalls[0].body.agent).toBe("scan-ops");
+    expect(promptCalls[0].body.agent).toBe("researcher-codebase");
   });
 });
 

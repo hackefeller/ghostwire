@@ -4,14 +4,14 @@ import { createAgentToolRestrictions } from "../../platform/config/permission-co
 
 const MODE: AgentMode = "subagent";
 
-export const LIBRARIAN_PROMPT_METADATA: AgentPromptMetadata = {
+export const RESEARCHER_DATA_PROMPT_METADATA: AgentPromptMetadata = {
   category: "exploration",
   cost: "CHEAP",
-  promptAlias: "Archive Researcher",
-  keyTrigger: "External library/source mentioned → fire `data-dive` background",
+  promptAlias: "researcher-data",
+  keyTrigger: "External library/source mentioned → fire `researcher-data` background",
   triggers: [
     {
-      domain: "Archive Researcher",
+      domain: "researcher-data",
       trigger:
         "Unfamiliar packages / libraries, struggles at weird behaviour (to find existing implementation of opensource)",
     },
@@ -25,7 +25,7 @@ export const LIBRARIAN_PROMPT_METADATA: AgentPromptMetadata = {
   ],
 };
 
-export function createLibrarianAgent(model: string): AgentConfig {
+export function createResearcherDataAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
     "write",
     "edit",
@@ -36,7 +36,7 @@ export function createLibrarianAgent(model: string): AgentConfig {
 
   return {
     description:
-      "Specialized codebase understanding agent for multi-repository analysis, searching remote codebases, retrieving official documentation, and finding implementation examples using GitHub CLI, Context7, and Web Search. MUST BE USED when users ask to look up code in remote repositories, explain library internals, or find usage examples in open source. (Archive Researcher - Ghostwire)",
+      "Specialized codebase understanding agent for multi-repository analysis, searching remote codebases, retrieving official documentation, and finding implementation examples using GitHub CLI, Context7, and Web Search. MUST BE USED when users ask to look up code in remote repositories, explain library internals, or find usage examples in open source. (researcher-data - Ghostwire)",
     mode: MODE,
     model,
     temperature: 0.1,
@@ -329,4 +329,4 @@ grep_app_searchGitHub(query: "useQuery")
 `,
   };
 }
-createLibrarianAgent.mode = MODE;
+createResearcherDataAgent.mode = MODE;

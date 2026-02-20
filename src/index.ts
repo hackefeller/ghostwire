@@ -707,7 +707,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
         const args = output.args as Record<string, unknown>;
         const subagentType = args.subagent_type as string;
         const isExploreOrLibrarian = includesCaseInsensitive(
-          ["scan-ops", "data-dive"],
+          ["researcher-codebase", "researcher-data"],
           subagentType ?? "",
         );
 

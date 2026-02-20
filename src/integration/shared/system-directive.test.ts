@@ -175,14 +175,14 @@ Please search for the bug in the code.`;
 System will search and investigate.
 </system-reminder>
 
-User wants to scan-ops the codebase and analyze the implementation.
+User wants to researcher-codebase the codebase and analyze the implementation.
 
 <system-reminder>
 Another system reminder with research keyword.
 </system-reminder>`;
 
       const cleanText = removeSystemReminders(text);
-      expect(cleanText).toContain("scan-ops");
+      expect(cleanText).toContain("researcher-codebase");
       expect(cleanText).toContain("analyze");
       expect(cleanText).not.toContain("search and investigate");
       expect(cleanText).not.toContain("research");

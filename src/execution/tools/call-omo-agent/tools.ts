@@ -68,7 +68,7 @@ export function createCallOmoAgent(
         `[call_grid_agent] Starting with agent: ${args.subagent_type}, background: ${args.run_in_background}`,
       );
 
-      // Case-insensitive agent validation - allows "Scout Recon", "EXPLORE", "scan-ops" etc.
+      // Case-insensitive agent validation - allows "Scout Recon", "EXPLORE", "researcher-codebase" etc.
       if (!includesCaseInsensitive([...ALLOWED_AGENTS], args.subagent_type)) {
         return `Error: Invalid agent type "${args.subagent_type}". Only ${ALLOWED_AGENTS.join(", ")} are allowed.`;
       }

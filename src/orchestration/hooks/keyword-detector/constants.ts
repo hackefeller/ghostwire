@@ -36,9 +36,9 @@ You ARE the planner. Your job: create bulletproof work plans.
 ### Research Protocol
 1. **Fire parallel background agents** for comprehensive context:
    \`\`\`
-   delegate_task(agent="scan-ops", prompt="Find existing patterns for [topic] in codebase", background=true)
-   delegate_task(agent="scan-ops", prompt="Find test infrastructure and conventions", background=true)
-   delegate_task(agent="data-dive", prompt="Find official docs and best practices for [technology]", background=true)
+   delegate_task(agent="researcher-codebase", prompt="Find existing patterns for [topic] in codebase", background=true)
+   delegate_task(agent="researcher-codebase", prompt="Find test infrastructure and conventions", background=true)
+   delegate_task(agent="researcher-data", prompt="Find official docs and best practices for [technology]", background=true)
    \`\`\`
 2. **Wait for results** before planning - rushed plans fail
 3. **Synthesize findings** into informed requirements
@@ -194,8 +194,8 @@ ${ULTRAWORK_PLANNER_SECTION}
 
 **WHEN IN DOUBT:**
 \`\`\`
-delegate_task(agent="scan-ops", prompt="Find [X] patterns in codebase", background=true)
-delegate_task(agent="data-dive", prompt="Find docs/examples for [Y]", background=true)
+delegate_task(agent="researcher-codebase", prompt="Find [X] patterns in codebase", background=true)
+delegate_task(agent="researcher-data", prompt="Find docs/examples for [Y]", background=true)
 
 // Hard problem? DON'T struggle alone:
 delegate_task(agent="advisor-plan", prompt="...")         // conventional: architecture, debugging
@@ -300,8 +300,8 @@ delegate_task(session_id="ses_abc123", prompt="Here's my answer to your question
 
 | Task Type | Action | Why |
 |-----------|--------|-----|
-| Codebase exploration | delegate_task(subagent_type="scan-ops", run_in_background=true) | Parallel, context-efficient |
-| Documentation lookup | delegate_task(subagent_type="data-dive", run_in_background=true) | Specialized knowledge |
+| Codebase exploration | delegate_task(subagent_type="researcher-codebase", run_in_background=true) | Parallel, context-efficient |
+| Documentation lookup | delegate_task(subagent_type="researcher-data", run_in_background=true) | Specialized knowledge |
 | Planning | delegate_task(subagent_type="plan") | Parallel task graph + structured TODO list |
 | Hard problem (conventional) | delegate_task(subagent_type="advisor-plan") | Architecture, debugging, complex logic |
 | Hard problem (non-conventional) | delegate_task(category="artistry", load_skills=[...]) | Different approach needed |
@@ -359,8 +359,8 @@ delegate_task(..., run_in_background=true)  // task_id_3
 
 1. **GATHER CONTEXT** (parallel background agents):
    \`\`\`
-   delegate_task(subagent_type="scan-ops", run_in_background=true, prompt="...")
-   delegate_task(subagent_type="data-dive", run_in_background=true, prompt="...")
+   delegate_task(subagent_type="researcher-codebase", run_in_background=true, prompt="...")
+   delegate_task(subagent_type="researcher-data", run_in_background=true, prompt="...")
    \`\`\`
 
 2. **INVOKE PLAN AGENT** (MANDATORY for non-trivial tasks):

@@ -114,7 +114,7 @@ describe("operator-task-retry", () => {
 
       const guidance = buildRetryGuidance(errorInfo);
 
-      expect(guidance).toContain("scan-ops");
+      expect(guidance).toContain("researcher-codebase");
       expect(guidance).toContain("advisor-plan");
     });
   });

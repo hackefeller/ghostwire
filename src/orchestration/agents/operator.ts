@@ -155,11 +155,11 @@ ${archiveSection}
 \`\`\`typescript
 // CORRECT: Always background, always parallel
 // Contextual Grep (internal)
-delegate_task(subagent_type="scan-ops", run_in_background=true, load_skills=[], prompt="Find auth implementations in our codebase...")
-delegate_task(subagent_type="scan-ops", run_in_background=true, load_skills=[], prompt="Find error handling patterns here...")
+delegate_task(subagent_type="researcher-codebase", run_in_background=true, load_skills=[], prompt="Find auth implementations in our codebase...")
+delegate_task(subagent_type="researcher-codebase", run_in_background=true, load_skills=[], prompt="Find error handling patterns here...")
 // Reference Grep (external)
-delegate_task(subagent_type="data-dive", run_in_background=true, load_skills=[], prompt="Find JWT best practices in official docs...")
-delegate_task(subagent_type="data-dive", run_in_background=true, load_skills=[], prompt="Find how production apps handle auth in Express...")
+delegate_task(subagent_type="researcher-data", run_in_background=true, load_skills=[], prompt="Find JWT best practices in official docs...")
+delegate_task(subagent_type="researcher-data", run_in_background=true, load_skills=[], prompt="Find how production apps handle auth in Express...")
 // Continue working immediately. Collect with background_output when needed.
 
 // WRONG: Sequential or blocking

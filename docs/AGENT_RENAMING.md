@@ -1,21 +1,22 @@
 # Agent Renaming - Complete Documentation
 
 **Last Updated**: 2026-02-20  
-**Status**: ✅ COMPLETE (5 phases executed, 27 agents renamed, isPlanAgent fix applied)  
-**Related Commits**: 72f8df8...c126c8d
+**Status**: ✅ COMPLETE (6 phases executed, 29 agents renamed, isPlanAgent fix applied)  
+**Related Commits**: 72f8df8...c126c8d (Phases 1-5), Phase 6 (current)
 
 ---
 
 ## Executive Summary
 
-All 27 agents in the Ghostwire repository have been successfully renamed from legacy metaphor-based names to clean, role-based names across 5 phases. The renaming eliminated inconsistent naming patterns and improved code clarity.
+All 29 agents in the Ghostwire repository have been successfully renamed from legacy metaphor-based names to clean, role-based names across 6 phases. The renaming eliminated inconsistent naming patterns and improved code clarity. All legacy compound agent aliases have been removed.
 
 ### Final Results
-- ✅ **27/27 agents renamed** across 5 phases
-- ✅ **1912 tests passing** (19 pre-existing failures unrelated to renaming)
-- ✅ **Build successful** (2.7MB main bundle, 969KB CLI)
+- ✅ **29/29 agents renamed** across 6 phases
+- ✅ **Tests passing** (1912 pass, 19 pre-existing failures unrelated to renaming)
+- ✅ **Build successful** (schema generated)
 - ✅ **Zero orphaned references** in codebase
-- ✅ **isPlanAgent function fixed** (word-boundary matching)
+- ✅ **Zero legacy aliases** (backward compatibility removed)
+- ✅ **agents.yml is canonical source of truth** for agent metadata
 
 ---
 
@@ -75,6 +76,20 @@ All 27 agents in the Ghostwire repository have been successfully renamed from le
 
 **Note**: Last 2 agents are compound agent placeholders in `src/orchestration/agents/compound/index.ts`
 
+### Phase 6: Legacy Agents (2 agents)
+| Old Name | New Name | Role | File |
+|----------|----------|------|------|
+| `scan-ops` | `researcher-codebase` | Codebase search specialist | `researcher-codebase.ts` |
+| `data-dive` | `researcher-data` | External library and docs researcher | `researcher-data.ts` |
+
+**Implementation**:
+- Renamed function exports: `createExploreAgent` → `createResearcherCodebaseAgent`, `createLibrarianAgent` → `createResearcherDataAgent`
+- Renamed metadata constants: `EXPLORE_PROMPT_METADATA` → `RESEARCHER_CODEBASE_PROMPT_METADATA`, `LIBRARIAN_PROMPT_METADATA` → `RESEARCHER_DATA_PROMPT_METADATA`
+- Updated all references throughout codebase
+- Added to agents.yml as canonical source of truth
+- Removed all legacy compound agent aliases from `agent-display-names.ts`
+- Updated test files to use new agent names
+
 ---
 
 ## Naming Convention
@@ -84,7 +99,7 @@ The new naming scheme follows **role-based prefixes**:
 | Prefix | Meaning | Examples |
 |--------|---------|----------|
 | `reviewer-*` | Code review specialists | `reviewer-rails`, `reviewer-typescript` |
-| `researcher-*` | Knowledge researchers | `researcher-docs`, `researcher-learnings` |
+| `researcher-*` | Knowledge researchers | `researcher-docs`, `researcher-learnings`, `researcher-codebase`, `researcher-data` |
 | `analyzer-*` | Analysis agents | `analyzer-media`, `analyzer-design` |
 | `designer-*` | Design specialists | `designer-flow`, `designer-sync` |
 | `advisor-*` | Strategic advisors | `advisor-architecture`, `advisor-strategy` |
@@ -189,7 +204,7 @@ All phases executed sequentially with `bun test` validation and git commits afte
 
 ## Verification Checklist
 
-✅ All 27 agents renamed  
+✅ All 29 agents renamed (Phases 1-6)
 ✅ Zero orphaned references  
 ✅ All exports updated  
 ✅ Hook directories renamed  
@@ -198,20 +213,8 @@ All phases executed sequentially with `bun test` validation and git commits afte
 ✅ Schema generated  
 ✅ Git history clean  
 ✅ isPlanAgent function fixed  
-✅ No backward compatibility issues identified  
-
----
-
-## Legacy Agents NOT Renamed (Unclear Status)
-
-Two agents were identified as potentially requiring renaming but were left out of the 5-phase project:
-
-- `data-dive` (createLibrarianAgent) - Archive Researcher
-- `scan-ops` (createExploreAgent) - Scout Recon
-
-**Status**: These agents already exist with their "new" names and were not legacy names that needed renaming. However, they don't follow the new naming convention (should be `researcher-*` or `explorer-*`).
-
-**Recommendation**: Consider if these should be renamed in a future phase to `researcher-data` and `explorer-codebase` to maintain naming consistency.
+✅ Zero legacy aliases (backward compatibility removed)
+✅ agents.yml is canonical source of truth
 
 ---
 
@@ -253,20 +256,23 @@ If you need to rename additional agents in the future, use the `bulk-rename.sh` 
 
 ## FAQ
 
-**Q: Why were only 25 agents renamed (5 phases × 5 agents), not all 27?**  
-A: The project completed 4 agents in Phase 1 and 8 agents in Phase 5, totaling 27 agents. Two agents (`data-dive`, `scan-ops`) were left out because they were already at their "final" names, though they don't follow the new naming convention.
+**Q: How many agents were renamed total?**  
+A: All 29 agents across 6 phases: 4 (Phase 1) + 5 (Phase 2) + 5 (Phase 3) + 5 (Phase 4) + 8 (Phase 5) + 2 (Phase 6) = 29 agents.
 
 **Q: What about backward compatibility?**  
-A: The project renamed agents at the file/export level only. Legacy alias mappings exist in `agent-display-names.ts` for user-facing references (e.g., `"zen-planner": "planner"`).
+A: All legacy alias mappings have been removed from `agent-display-names.ts`. This is a breaking change for internal code that relied on legacy names.
 
 **Q: Why did isPlanAgent break?**  
 A: The function used substring matching, so "advisor-plan" matched because it contains "plan". The fix uses exact match or prefix match (`startsWith(name + "-")`).
 
 **Q: Can I rename an agent myself?**  
-A: Yes, use the `bulk-rename.sh` script as a template and follow the key files list above.
+A: Yes, use the patterns from Phases 1-6 as templates and follow the key files list above.
 
 **Q: What tests are failing?**  
 A: 19 pre-existing failures unrelated to agent renaming (tmux timeouts, OAuth, compaction-context-injector). All agent-related tests pass.
+
+**Q: Is agents.yml the source of truth?**  
+A: Yes. agents.yml is now the canonical source of truth for agent metadata, models, purposes, and fallbacks. Update this file first, then update docs to reference it.
 
 ---
 

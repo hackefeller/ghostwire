@@ -55,10 +55,10 @@ describe("findCaseInsensitive", () => {
 describe("includesCaseInsensitive", () => {
   test("returns true for exact match", () => {
     // #given - array with exact value
-    const arr = ["scan-ops", "data-dive"];
+    const arr = ["researcher-codebase", "researcher-data"];
 
     // #when - check exact match
-    const result = includesCaseInsensitive(arr, "scan-ops");
+    const result = includesCaseInsensitive(arr, "researcher-codebase");
 
     // #then - returns true
     expect(result).toBe(true);
@@ -66,7 +66,7 @@ describe("includesCaseInsensitive", () => {
 
   test("returns true for case-insensitive match", () => {
     // #given - array with lowercase values
-    const arr = ["scan-ops", "data-dive"];
+    const arr = ["researcher-codebase", "researcher-data"];
 
     // #when - check uppercase value
     const result = includesCaseInsensitive(arr, "SCAN-OPS");
@@ -88,7 +88,7 @@ describe("includesCaseInsensitive", () => {
 
   test("returns false when value not found", () => {
     // #given - array without target value
-    const arr = ["scan-ops", "data-dive"];
+    const arr = ["researcher-codebase", "researcher-data"];
 
     // #when - check missing value
     const result = includesCaseInsensitive(arr, "advisor-plan");
@@ -102,7 +102,7 @@ describe("includesCaseInsensitive", () => {
     const arr: string[] = [];
 
     // #when - check any value
-    const result = includesCaseInsensitive(arr, "scan-ops");
+    const result = includesCaseInsensitive(arr, "researcher-codebase");
 
     // #then - returns false
     expect(result).toBe(false);
@@ -114,7 +114,7 @@ describe("findByNameCaseInsensitive", () => {
     // #given - array with named objects
     const arr = [
       { name: "advisor-plan", value: 1 },
-      { name: "scan-ops", value: 2 },
+      { name: "researcher-codebase", value: 2 },
     ];
 
     // #when - find by exact name
@@ -128,7 +128,7 @@ describe("findByNameCaseInsensitive", () => {
     // #given - array with named objects
     const arr = [
       { name: "advisor-plan", value: 1 },
-      { name: "scan-ops", value: 2 },
+      { name: "researcher-codebase", value: 2 },
     ];
 
     // #when - find by different case
@@ -143,7 +143,7 @@ describe("findByNameCaseInsensitive", () => {
     const arr = [{ name: "advisor-plan", value: 1 }];
 
     // #when - find missing name
-    const result = findByNameCaseInsensitive(arr, "data-dive");
+    const result = findByNameCaseInsensitive(arr, "researcher-data");
 
     // #then - returns undefined
     expect(result).toBeUndefined();
@@ -170,6 +170,6 @@ describe("equalsIgnoreCase", () => {
     // #given - different strings
     // #when - compare
     // #then - returns false
-    expect(equalsIgnoreCase("advisor-plan", "scan-ops")).toBe(false);
+    expect(equalsIgnoreCase("advisor-plan", "researcher-codebase")).toBe(false);
   });
 });

@@ -13,8 +13,8 @@ import type {
 } from "../../platform/config/schema";
 import { createOperatorAgent } from "./operator";
 import { createAdvisorPlanAgent, ADVISOR_PLAN_PROMPT_METADATA } from "./advisor-plan";
-import { createLibrarianAgent, LIBRARIAN_PROMPT_METADATA } from "./data-dive";
-import { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./scan-ops";
+import { createResearcherDataAgent, RESEARCHER_DATA_PROMPT_METADATA } from "./researcher-data";
+import { createResearcherCodebaseAgent, RESEARCHER_CODEBASE_PROMPT_METADATA } from "./researcher-codebase";
 import { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./analyzer-media";
 import { createAdvisorStrategyAgent } from "./advisor-strategy";
 import { createOrchestratorAgent } from "./orchestrator";
@@ -51,8 +51,8 @@ type AgentSource = AgentFactory | AgentConfig;
 const agentSources: Record<BuiltinAgentName, AgentSource> = {
   "operator": createOperatorAgent,
   "advisor-plan": createAdvisorPlanAgent,
-  "data-dive": createLibrarianAgent,
-  "scan-ops": createExploreAgent,
+  "researcher-data": createResearcherDataAgent,
+  "researcher-codebase": createResearcherCodebaseAgent,
   "analyzer-media": createMultimodalLookerAgent,
   "advisor-strategy": createAdvisorStrategyAgent,
   "validator-audit": createValidatorAuditAgent,
@@ -69,8 +69,8 @@ const agentSources: Record<BuiltinAgentName, AgentSource> = {
  */
 const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
   "advisor-plan": ADVISOR_PLAN_PROMPT_METADATA,
-  "data-dive": LIBRARIAN_PROMPT_METADATA,
-  "scan-ops": EXPLORE_PROMPT_METADATA,
+  "researcher-data": RESEARCHER_DATA_PROMPT_METADATA,
+  "researcher-codebase": RESEARCHER_CODEBASE_PROMPT_METADATA,
   "analyzer-media": MULTIMODAL_LOOKER_PROMPT_METADATA,
 };
 
@@ -302,7 +302,7 @@ export async function createBuiltinAgents(
       config = applyCategoryOverride(config, overrideCategory, mergedCategories);
     }
 
-    if (agentName === "data-dive" && directory && config.prompt) {
+    if (agentName === "researcher-data" && directory && config.prompt) {
       const envContext = createEnvContext();
       config = { ...config, prompt: config.prompt + envContext };
     }

@@ -120,13 +120,13 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
 
   for (const [role, req] of Object.entries(AGENT_MODEL_REQUIREMENTS)) {
     // Special case: archiveResearcher always uses ZAI first if available
-    if (role === "data-dive" && avail.zai) {
+    if (role === "researcher-data" && avail.zai) {
       agents[role] = { model: ZAI_MODEL };
       continue;
     }
 
     // Special case: scoutRecon uses OpenCode claude-haiku → GitHub Copilot gpt-5-mini → OpenCode gpt-5-nano
-    if (role === "scan-ops") {
+    if (role === "researcher-codebase") {
       if (avail.opencodeZen) {
         agents[role] = { model: "opencode/claude-haiku-4-5" };
       } else if (avail.copilot) {

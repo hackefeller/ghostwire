@@ -39,9 +39,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.variant).toBe("max");
   });
 
-  test("data-dive has valid fallbackChain with glm-4.7 as primary", () => {
+  test("researcher-data has valid fallbackChain with glm-4.7 as primary", () => {
     // #given - archiveResearcher agent requirement
-    const archiveResearcher = AGENT_MODEL_REQUIREMENTS["data-dive"];
+    const archiveResearcher = AGENT_MODEL_REQUIREMENTS["researcher-data"];
 
     // #when - accessing archiveResearcher requirement
     // #then - fallbackChain exists with glm-4.7 as first entry
@@ -54,9 +54,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.model).toBe("glm-4.7");
   });
 
-  test("scan-ops has valid fallbackChain with claude-haiku-4-5 as primary", () => {
+  test("researcher-codebase has valid fallbackChain with claude-haiku-4-5 as primary", () => {
     // #given - scoutRecon agent requirement
-    const scoutRecon = AGENT_MODEL_REQUIREMENTS["scan-ops"];
+    const scoutRecon = AGENT_MODEL_REQUIREMENTS["researcher-codebase"];
 
     // #when - accessing scoutRecon requirement
     // #then - fallbackChain exists with claude-haiku-4-5 as first entry, gpt-5-mini as second, gpt-5-nano as third
@@ -161,8 +161,8 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     const expectedAgents = [
       "operator",
       "advisor-plan",
-      "data-dive",
-      "scan-ops",
+      "researcher-data",
+      "researcher-codebase",
       "analyzer-media",
       "planner",
       "advisor-strategy",

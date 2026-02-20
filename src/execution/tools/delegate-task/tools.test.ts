@@ -173,9 +173,9 @@ describe("operator-task", () => {
       expect(result).toBe(false);
     });
 
-    test("returns false for 'scan-ops'", () => {
+    test("returns false for 'researcher-codebase'", () => {
       // #given / #when
-      const result = isPlanAgent("scan-ops");
+      const result = isPlanAgent("researcher-codebase");
 
       // #then
       expect(result).toBe(false);
@@ -859,7 +859,7 @@ describe("operator-task", () => {
           id: "task-123",
           sessionID: "ses_continue_test",
           description: "Continued task",
-          agent: "scan-ops",
+          agent: "researcher-codebase",
           status: "running",
         };
 
@@ -925,7 +925,7 @@ describe("operator-task", () => {
         id: "task-456",
         sessionID: "ses_bg_continue",
         description: "Background continued task",
-        agent: "scan-ops",
+        agent: "researcher-codebase",
         status: "running",
       };
 
@@ -2333,10 +2333,10 @@ describe("operator-task", () => {
         launch: async (input: any) => {
           launchInput = input;
           return {
-            id: "task-scan-ops",
+            id: "task-researcher-codebase",
             sessionID: "ses_explore_model",
             description: "Scout Recon task",
-            agent: "scan-ops",
+            agent: "researcher-codebase",
             status: "running",
           };
         },
@@ -2347,7 +2347,7 @@ describe("operator-task", () => {
           agents: async () => ({
             data: [
               {
-                name: "scan-ops",
+                name: "researcher-codebase",
                 mode: "subagent",
                 model: { providerID: "anthropic", modelID: "claude-haiku-4-5" },
               },
@@ -2379,7 +2379,7 @@ describe("operator-task", () => {
         {
           description: "Scout Recon codebase",
           prompt: "Find auth patterns",
-          subagent_type: "scan-ops",
+          subagent_type: "researcher-codebase",
           run_in_background: true,
           load_skills: [],
         },
@@ -2480,7 +2480,7 @@ describe("operator-task", () => {
           app: {
             agents: async () => ({
               data: [
-                { name: "scan-ops", mode: "subagent" }, // no model field
+                { name: "researcher-codebase", mode: "subagent" }, // no model field
               ],
             }),
           },
@@ -2516,7 +2516,7 @@ describe("operator-task", () => {
           {
             description: "Scout Recon without model",
             prompt: "Find something",
-            subagent_type: "scan-ops",
+            subagent_type: "researcher-codebase",
             run_in_background: false,
             load_skills: [],
           },

@@ -399,8 +399,8 @@ ACCUMULATED WISDOM:
 
 **For exploration (scoutRecon/archiveResearcher)**: ALWAYS background
 \`\`\`typescript
-delegate_task(subagent_type="scan-ops", run_in_background=true, ...)
-delegate_task(subagent_type="data-dive", run_in_background=true, ...)
+delegate_task(subagent_type="researcher-codebase", run_in_background=true, ...)
+delegate_task(subagent_type="researcher-data", run_in_background=true, ...)
 \`\`\`
 
 **For task execution**: NEVER background

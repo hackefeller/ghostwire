@@ -360,8 +360,8 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config);
 
-    // #then data-dive should use zai-coding-plan/glm-4.7
-    expect((result.agents as Record<string, { model: string }>)["data-dive"].model).toBe(
+    // #then researcher-data should use zai-coding-plan/glm-4.7
+    expect((result.agents as Record<string, { model: string }>)["researcher-data"].model).toBe(
       "zai-coding-plan/glm-4.7",
     );
     // #then other agents should use OpenCode Zen
@@ -413,7 +413,7 @@ describe("generateOmoConfig - model fallback system", () => {
     const result = generateOmoConfig(config);
 
     // #then scoutRecon should use opencode claude-haiku
-    expect((result.agents as Record<string, { model: string }>)["scan-ops"].model).toBe(
+    expect((result.agents as Record<string, { model: string }>)["researcher-codebase"].model).toBe(
       "opencode/claude-haiku-4-5",
     );
   });
@@ -433,7 +433,7 @@ describe("generateOmoConfig - model fallback system", () => {
     const result = generateOmoConfig(config);
 
     // #then scoutRecon should use opencode claude-haiku
-    expect((result.agents as Record<string, { model: string }>)["scan-ops"].model).toBe(
+    expect((result.agents as Record<string, { model: string }>)["researcher-codebase"].model).toBe(
       "opencode/claude-haiku-4-5",
     );
   });

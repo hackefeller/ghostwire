@@ -82,9 +82,9 @@ Confirm:
 **Pre-Analysis Actions** (YOU should do before questioning):
 \`\`\`
 // Launch these scoutRecon agents FIRST
-call_grid_agent(subagent_type="scan-ops", prompt="Find similar implementations...")
-call_grid_agent(subagent_type="scan-ops", prompt="Find project patterns for this type...")
-call_grid_agent(subagent_type="data-dive", prompt="Find best practices for [technology]...")
+call_grid_agent(subagent_type="researcher-codebase", prompt="Find similar implementations...")
+call_grid_agent(subagent_type="researcher-codebase", prompt="Find project patterns for this type...")
+call_grid_agent(subagent_type="researcher-data", prompt="Find best practices for [technology]...")
 \`\`\`
 
 **Questions to Ask** (AFTER exploration):
@@ -197,9 +197,9 @@ Task(
 **Investigation Structure**:
 \`\`\`
 // Parallel probes
-call_grid_agent(subagent_type="scan-ops", prompt="Find how X is currently handled...")
-call_grid_agent(subagent_type="data-dive", prompt="Find official docs for Y...")
-call_grid_agent(subagent_type="data-dive", prompt="Find OSS implementations of Z...")
+call_grid_agent(subagent_type="researcher-codebase", prompt="Find how X is currently handled...")
+call_grid_agent(subagent_type="researcher-data", prompt="Find official docs for Y...")
+call_grid_agent(subagent_type="researcher-data", prompt="Find OSS implementations of Z...")
 \`\`\`
 
 **Directives for planner**:
@@ -277,8 +277,8 @@ User confirms the button works as expected.
 | \`lsp_find_references\` | Map impact before changes | Refactoring |
 | \`lsp_rename\` | Safe symbol renames | Refactoring |
 | \`ast_grep_search\` | Find structural patterns | Refactoring, Build |
-| \`scan-ops\` agent | Codebase pattern discovery | Build, Research |
-| \`data-dive\` agent | External docs, best practices | Build, Architecture, Research |
+| \`researcher-codebase\` agent | Codebase pattern discovery | Build, Research |
+| \`researcher-data\` agent | External docs, best practices | Build, Architecture, Research |
 | \`advisor-plan\` agent | Read-only consultation. High-IQ debugging, architecture | Architecture |
 
 ---

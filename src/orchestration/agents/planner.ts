@@ -319,8 +319,8 @@ Or should I just note down this single fix?"
 
 **Research First:**
 \`\`\`typescript
-delegate_task(subagent_type="scan-ops", prompt="Find all usages of [target] using lsp_find_references pattern...", run_in_background=true)
-delegate_task(subagent_type="scan-ops", prompt="Find test coverage for [affected code]...", run_in_background=true)
+delegate_task(subagent_type="researcher-codebase", prompt="Find all usages of [target] using lsp_find_references pattern...", run_in_background=true)
+delegate_task(subagent_type="researcher-codebase", prompt="Find test coverage for [affected code]...", run_in_background=true)
 \`\`\`
 
 **Interview Focus:**
@@ -343,9 +343,9 @@ delegate_task(subagent_type="scan-ops", prompt="Find test coverage for [affected
 **Pre-Interview Research (MANDATORY):**
 \`\`\`typescript
 // Launch BEFORE asking user questions
-delegate_task(subagent_type="scan-ops", prompt="Find similar implementations in codebase...", run_in_background=true)
-delegate_task(subagent_type="scan-ops", prompt="Find project patterns for [feature type]...", run_in_background=true)
-delegate_task(subagent_type="data-dive", prompt="Find best practices for [technology]...", run_in_background=true)
+delegate_task(subagent_type="researcher-codebase", prompt="Find similar implementations in codebase...", run_in_background=true)
+delegate_task(subagent_type="researcher-codebase", prompt="Find project patterns for [feature type]...", run_in_background=true)
+delegate_task(subagent_type="researcher-data", prompt="Find best practices for [technology]...", run_in_background=true)
 \`\`\`
 
 **Interview Focus** (AFTER research):
@@ -384,7 +384,7 @@ Based on your stack, I'd recommend NextAuth.js - it integrates well with Next.js
 
 Run this check:
 \`\`\`typescript
-delegate_task(subagent_type="scan-ops", prompt="Find test infrastructure: package.json test scripts, test config files (jest.config, vitest.config, pytest.ini, etc.), existing test files (*.test.*, *.spec.*, test_*). Report: 1) Does test infra exist? 2) What framework? 3) Example test file patterns.", run_in_background=true)
+delegate_task(subagent_type="researcher-codebase", prompt="Find test infrastructure: package.json test scripts, test config files (jest.config, vitest.config, pytest.ini, etc.), existing test files (*.test.*, *.spec.*, test_*). Report: 1) Does test infra exist? 2) What framework? 3) Example test file patterns.", run_in_background=true)
 \`\`\`
 
 #### Step 2: Ask the Test Question (MANDATORY)
@@ -473,8 +473,8 @@ Add to draft immediately:
 
 **Research First:**
 \`\`\`typescript
-delegate_task(subagent_type="scan-ops", prompt="Find current system architecture and patterns...", run_in_background=true)
-delegate_task(subagent_type="data-dive", prompt="Find architectural best practices for [domain]...", run_in_background=true)
+delegate_task(subagent_type="researcher-codebase", prompt="Find current system architecture and patterns...", run_in_background=true)
+delegate_task(subagent_type="researcher-data", prompt="Find architectural best practices for [domain]...", run_in_background=true)
 \`\`\`
 
 **Seer Advisor Consultation** (recommend when stakes are high):
@@ -496,9 +496,9 @@ delegate_task(subagent_type="advisor-plan", prompt="Architecture consultation ne
 
 **Parallel Investigation:**
 \`\`\`typescript
-delegate_task(subagent_type="scan-ops", prompt="Find how X is currently handled...", run_in_background=true)
-delegate_task(subagent_type="data-dive", prompt="Find official docs for Y...", run_in_background=true)
-delegate_task(subagent_type="data-dive", prompt="Find OSS implementations of Z...", run_in_background=true)
+delegate_task(subagent_type="researcher-codebase", prompt="Find how X is currently handled...", run_in_background=true)
+delegate_task(subagent_type="researcher-data", prompt="Find official docs for Y...", run_in_background=true)
+delegate_task(subagent_type="researcher-data", prompt="Find OSS implementations of Z...", run_in_background=true)
 \`\`\`
 
 **Interview Focus:**
@@ -515,26 +515,26 @@ delegate_task(subagent_type="data-dive", prompt="Find OSS implementations of Z..
 
 | Situation | Action |
 |-----------|--------|
-| User mentions unfamiliar technology | \`data-dive\`: Find official docs and best practices |
-| User wants to modify existing code | \`scan-ops\`: Find current implementation and patterns |
+| User mentions unfamiliar technology | \`researcher-data\`: Find official docs and best practices |
+| User wants to modify existing code | \`researcher-codebase\`: Find current implementation and patterns |
 | User asks "how should I..." | Both: Find examples + best practices |
-| User describes new feature | \`scan-ops\`: Find similar features in codebase |
+| User describes new feature | \`researcher-codebase\`: Find similar features in codebase |
 
 ### Research Patterns
 
 **For Understanding Codebase:**
 \`\`\`typescript
-delegate_task(subagent_type="scan-ops", prompt="Find all files related to [topic]. Show patterns, conventions, and structure.", run_in_background=true)
+delegate_task(subagent_type="researcher-codebase", prompt="Find all files related to [topic]. Show patterns, conventions, and structure.", run_in_background=true)
 \`\`\`
 
 **For External Knowledge:**
 \`\`\`typescript
-delegate_task(subagent_type="data-dive", prompt="Find official documentation for [library]. Focus on [specific feature] and best practices.", run_in_background=true)
+delegate_task(subagent_type="researcher-data", prompt="Find official documentation for [library]. Focus on [specific feature] and best practices.", run_in_background=true)
 \`\`\`
 
 **For Implementation Examples:**
 \`\`\`typescript
-delegate_task(subagent_type="data-dive", prompt="Find open source implementations of [feature]. Look for production-quality examples.", run_in_background=true)
+delegate_task(subagent_type="researcher-data", prompt="Find open source implementations of [feature]. Look for production-quality examples.", run_in_background=true)
 \`\`\`
 
 ## Interview Mode Anti-Patterns

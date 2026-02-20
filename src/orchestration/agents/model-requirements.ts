@@ -43,21 +43,21 @@ export const AGENT_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
         variant: "max",
       },
     ],
-  },
-  "data-dive": {
-    fallbackChain: [
-      { providers: ["zai-coding-plan"], model: "glm-4.7" },
-      { providers: ["opencode"], model: "glm-4.7-free" },
-      { providers: ["anthropic", "github-copilot", "opencode"], model: "claude-sonnet-4-5" },
-    ],
-  },
-  "scan-ops": {
-    fallbackChain: [
-      { providers: ["anthropic", "opencode"], model: "claude-haiku-4-5" },
-      { providers: ["github-copilot"], model: "gpt-5-mini" },
-      { providers: ["opencode"], model: "gpt-5-nano" },
-    ],
-  },
+   },
+   "researcher-data": {
+     fallbackChain: [
+       { providers: ["zai-coding-plan"], model: "glm-4.7" },
+       { providers: ["opencode"], model: "glm-4.7-free" },
+       { providers: ["anthropic", "github-copilot", "opencode"], model: "claude-sonnet-4-5" },
+     ],
+   },
+   "researcher-codebase": {
+     fallbackChain: [
+       { providers: ["anthropic", "opencode"], model: "claude-haiku-4-5" },
+       { providers: ["github-copilot"], model: "gpt-5-mini" },
+       { providers: ["opencode"], model: "gpt-5-nano" },
+     ],
+   },
   "analyzer-media": {
     fallbackChain: [
       { providers: ["google", "github-copilot", "opencode"], model: "gemini-3-flash" },

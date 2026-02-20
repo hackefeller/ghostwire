@@ -135,21 +135,21 @@ agents:
         - Research: Investigation focus, exit criteria
       Mandatory Actions: Launch agents BEFORE asking questions, flag AI-slop patterns, QA must be agent-executable.
 
-  - id: validator-audit
-    display_name: Glitch Auditor
-    model: anthropic/claude-opus-4-5
-    purpose: Expert reviewer for evaluating work plans against clarity and executability
-    fallbacks:
-      - kimi-k2.5
-      - gpt-5.2
-    description: |
-      Named after Momus - Greek god of satire/criticism.
-      Only checks:
-        1. Reference Verification: Do files exist? Line numbers valid?
-        2. Executability: Can developer START each task?
-        3. Critical Blockers: Only blocking issues, NOT perfectionism
-      Approval Bias: "80% clear is good enough" - developers can figure minor gaps.
-      Max 3 issues per rejection - specific, actionable, blocking.
+   - id: validator-audit
+     display_name: audit.validate
+     model: anthropic/claude-opus-4-5
+     purpose: Expert reviewer for evaluating work plans against clarity and executability
+     fallbacks:
+       - kimi-k2.5
+       - gpt-5.2
+     description: |
+       Named after Momus - Greek god of satire/criticism.
+       Only checks:
+         1. Reference Verification: Do files exist? Line numbers valid?
+         2. Executability: Can developer START each task?
+         3. Critical Blockers: Only blocking issues, NOT perfectionism
+       Approval Bias: "80% clear is good enough" - developers can figure minor gaps.
+       Max 3 issues per rejection - specific, actionable, blocking.
 
   # === Compound Agents (Integrated from ghostwire) ===
 
@@ -237,35 +237,58 @@ agents:
     purpose: Spec flow analyzer
     fallbacks: []
 
-  - id: advisor-architecture
-    display_name: agent.arch
-    model: anthropic/claude-opus-4-5
-    purpose: Agent native architecture specialist
-    fallbacks: []
+   - id: advisor-architecture
+     display_name: architecture.agent
+     model: anthropic/claude-opus-4-5
+     purpose: Agent native architecture specialist
+     fallbacks: []
 
-  - id: validator-deployment
-    display_name: deploy.check
-    model: anthropic/claude-sonnet-4-5
-    purpose: Deployment verification
-    fallbacks: []
+   - id: validator-deployment
+     display_name: deployment.verify
+     model: anthropic/claude-sonnet-4-5
+     purpose: Deployment verification
+     fallbacks: []
 
-  - id: writer-readme
-    display_name: docs.write-readme
-    model: anthropic/claude-sonnet-4-5
-    purpose: Ankane-style README writer
-    fallbacks: []
+   - id: writer-readme
+     display_name: readme.write
+     model: anthropic/claude-sonnet-4-5
+     purpose: Ankane-style README writer
+     fallbacks: []
 
   - id: docs-edit-style
-    display_name: docs.edit-style
+    display_name: style.edit
     model: anthropic/claude-sonnet-4-5
     purpose: Style guide editor
     fallbacks: []
 
   - id: docs-write-gem
-    display_name: docs.write-gem
+    display_name: gem.write
     model: anthropic/claude-sonnet-4-5
     purpose: Ruby gem documentation writer
     fallbacks: []
+
+  - id: researcher-codebase
+    display_name: codebase.search
+    model: github-copilot/claude-haiku-4.5
+    purpose: Codebase search specialist that finds files and code patterns
+    fallbacks:
+      - gpt-5-mini
+      - gpt-5-nano
+    description: |
+      Contextual grep for codebases. Answers "Where is X?", "Which file has Y?", "Find the code that does Z".
+      Fire multiple in parallel for broad searches.
+      Key capabilities: Semantic search (LSP), structural patterns (ast-grep), text patterns (grep), file patterns (glob), git history.
+
+  - id: researcher-data
+    display_name: library.research
+    model: zai-coding-plan/glm-4.7
+    purpose: External library and documentation researcher
+    fallbacks:
+      - glm-4.7-free
+    description: |
+      Specialized for open-source codebase understanding and official documentation discovery.
+      Searches remote codebases, fetches official documentation, finds implementation examples.
+      Tools: context7, websearch, webfetch, grep_app, gh CLI.
 
 notes:
   - Add new agents here first, then update docs to reference this file.

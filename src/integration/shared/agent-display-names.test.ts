@@ -2,7 +2,7 @@ import { describe, it, expect } from "bun:test";
 import { AGENT_DISPLAY_NAMES, getAgentDisplayName } from "./agent-display-names";
 
 describe("getAgentDisplayName", () => {
-  it("returns display name for lowercase config key (new format)", () => {
+  it("returns display name for operator", () => {
     // #given config key "operator"
     const configKey = "operator";
 
@@ -10,17 +10,6 @@ describe("getAgentDisplayName", () => {
     const result = getAgentDisplayName(configKey);
 
     // #then returns "operator"
-    expect(result).toBe("operator");
-  });
-
-  it("returns display name for uppercase config key (old format - case-insensitive)", () => {
-    // #given config key "operator" (old format)
-    const configKey = "operator";
-
-    // #when getAgentDisplayName called
-    const result = getAgentDisplayName(configKey);
-
-    // #then returns "operator" (case-insensitive lookup)
     expect(result).toBe("operator");
   });
 
@@ -35,138 +24,75 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("custom-agent");
   });
 
-  it("returns display name for orchestrator", () => {
-    // #given config key "orchestrator"
-    const configKey = "orchestrator";
+  it("returns display name for researcher-codebase", () => {
+    // #given config key "researcher-codebase"
+    const configKey = "researcher-codebase";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "orchestrator"
-    expect(result).toBe("orchestrator");
+    // #then returns "researcher-codebase"
+    expect(result).toBe("researcher-codebase");
   });
 
-  it("returns display name for planner", () => {
-    // #given config key "planner"
-    const configKey = "planner";
+  it("returns display name for researcher-data", () => {
+    // #given config key "researcher-data"
+    const configKey = "researcher-data";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "planner"
-    expect(result).toBe("planner");
-  });
-
-  it("returns display name for executor", () => {
-    // #given config key "executor"
-    const configKey = "executor";
-
-    // #when getAgentDisplayName called
-    const result = getAgentDisplayName(configKey);
-
-    // #then returns "executor"
-    expect(result).toBe("executor");
-  });
-
-  it("returns display name for advisor-strategy", () => {
-    // #given config key "advisor-strategy"
-    const configKey = "advisor-strategy";
-
-    // #when getAgentDisplayName called
-    const result = getAgentDisplayName(configKey);
-
-    // #then returns "advisor-strategy"
-    expect(result).toBe("advisor-strategy");
-  });
-
-  it("returns display name for validator-audit", () => {
-    // #given config key "validator-audit"
-    const configKey = "validator-audit";
-
-    // #when getAgentDisplayName called
-    const result = getAgentDisplayName(configKey);
-
-    // #then returns "validator-audit"
-    expect(result).toBe("validator-audit");
-  });
-
-  it("returns display name for advisor-plan", () => {
-    // #given config key "advisor-plan"
-    const configKey = "advisor-plan";
-
-    // #when getAgentDisplayName called
-    const result = getAgentDisplayName(configKey);
-
-    // #then returns "advisor-plan"
-    expect(result).toBe("advisor-plan");
-  });
-
-  it("returns display name for data-dive", () => {
-    // #given config key "data-dive"
-    const configKey = "data-dive";
-
-    // #when getAgentDisplayName called
-    const result = getAgentDisplayName(configKey);
-
-    // #then returns "data-dive"
-    expect(result).toBe("data-dive");
-  });
-
-  it("returns display name for scan-ops", () => {
-    // #given config key "scan-ops"
-    const configKey = "scan-ops";
-
-    // #when getAgentDisplayName called
-    const result = getAgentDisplayName(configKey);
-
-    // #then returns "scan-ops"
-    expect(result).toBe("scan-ops");
-  });
-
-  it("returns display name for analyzer-media", () => {
-    // #given config key "analyzer-media"
-    const configKey = "analyzer-media";
-
-    // #when getAgentDisplayName called
-    const result = getAgentDisplayName(configKey);
-
-    // #then returns "analyzer-media"
-    expect(result).toBe("analyzer-media");
+    // #then returns "researcher-data"
+    expect(result).toBe("researcher-data");
   });
 });
 
 describe("AGENT_DISPLAY_NAMES", () => {
-  it("contains all expected agent mappings", () => {
-    // #given expected mappings (including legacy aliases)
-    const expectedMappings = {
-      // Current agent names (file-based)
-      "operator": "operator",
-      "orchestrator": "orchestrator",
-      "planner": "planner",
-      "executor": "executor",
-      "advisor-strategy": "advisor-strategy",
-      "validator-audit": "validator-audit",
-      "advisor-plan": "advisor-plan",
-      "data-dive": "data-dive",
-      "scan-ops": "scan-ops",
-      "analyzer-media": "analyzer-media",
-      // Legacy aliases for backward compatibility
-      "cipher-operator": "operator",
-      "nexus-orchestrator": "orchestrator",
-      "augur-planner": "planner",
-      "cipher-runner": "executor",
-      "tactician-strategist": "advisor-strategy",
-      "glitch-auditor": "validator-audit",
-      "seer-advisor": "advisor-plan",
-      "archive-researcher": "data-dive",
-      "scout-recon": "scan-ops",
-      "optic-analyst": "analyzer-media",
-    };
+  it("contains all 29 renamed agents", () => {
+    // #given all agent names from Phases 1-6
+    const expectedAgents = [
+      // Phase 1
+      "operator",
+      "orchestrator",
+      "planner",
+      "executor",
+      // Phase 2
+      "reviewer-rails",
+      "reviewer-python",
+      "reviewer-typescript",
+      "reviewer-rails-dh",
+      "reviewer-simplicity",
+      // Phase 3
+      "researcher-docs",
+      "researcher-learnings",
+      "researcher-practices",
+      "researcher-git",
+      "analyzer-media",
+      // Phase 4
+      "designer-flow",
+      "designer-sync",
+      "designer-iterator",
+      "analyzer-design",
+      "designer-builder",
+      // Phase 5
+      "advisor-architecture",
+      "advisor-strategy",
+      "advisor-plan",
+      "validator-audit",
+      "validator-deployment",
+      "writer-readme",
+      "writer-gem",
+      "editor-style",
+      // Phase 6
+      "researcher-codebase",
+      "researcher-data",
+    ];
 
     // #when checking the constant
-    // #then contains all expected mappings (and potentially more)
-    for (const [key, value] of Object.entries(expectedMappings)) {
-      expect(AGENT_DISPLAY_NAMES[key]).toBe(value);
+    // #then contains all agents
+    for (const agent of expectedAgents) {
+      expect(AGENT_DISPLAY_NAMES[agent]).toBeDefined();
+      expect(AGENT_DISPLAY_NAMES[agent]).toBe(agent);
     }
   });
 });

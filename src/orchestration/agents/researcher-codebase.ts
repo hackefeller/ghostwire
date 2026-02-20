@@ -4,13 +4,13 @@ import { createAgentToolRestrictions } from "../../platform/config/permission-co
 
 const MODE: AgentMode = "subagent";
 
-export const EXPLORE_PROMPT_METADATA: AgentPromptMetadata = {
+export const RESEARCHER_CODEBASE_PROMPT_METADATA: AgentPromptMetadata = {
   category: "exploration",
   cost: "FREE",
-  promptAlias: "Scout Recon",
-  keyTrigger: "2+ modules involved → fire `scan-ops` background",
+  promptAlias: "researcher-codebase",
+  keyTrigger: "2+ modules involved → fire `researcher-codebase` background",
   triggers: [
-    { domain: "Scout Recon", trigger: "Find existing codebase structure, patterns and styles" },
+    { domain: "researcher-codebase", trigger: "Find existing codebase structure, patterns and styles" },
   ],
   useWhen: [
     "Multiple search angles needed",
@@ -24,7 +24,7 @@ export const EXPLORE_PROMPT_METADATA: AgentPromptMetadata = {
   ],
 };
 
-export function createExploreAgent(model: string): AgentConfig {
+export function createResearcherCodebaseAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
     "write",
     "edit",
@@ -35,7 +35,7 @@ export function createExploreAgent(model: string): AgentConfig {
 
   return {
     description:
-      'Contextual grep for codebases. Answers "Where is X?", "Which file has Y?", "Find the code that does Z". Fire multiple in parallel for broad searches. Specify thoroughness: "quick" for basic, "medium" for moderate, "very thorough" for comprehensive analysis. (Scout Recon - Ghostwire)',
+      'Contextual grep for codebases. Answers "Where is X?", "Which file has Y?", "Find the code that does Z". Fire multiple in parallel for broad searches. Specify thoroughness: "quick" for basic, "medium" for moderate, "very thorough" for comprehensive analysis. (researcher-codebase - Ghostwire)',
     mode: MODE,
     model,
     temperature: 0.1,
@@ -121,4 +121,4 @@ Use the right tool for the job:
 Flood with parallel calls. Cross-validate findings across multiple tools.`,
   };
 }
-createExploreAgent.mode = MODE;
+createResearcherCodebaseAgent.mode = MODE;

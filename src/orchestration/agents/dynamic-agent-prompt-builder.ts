@@ -119,24 +119,24 @@ export function buildToolSelectionTable(
 }
 
 export function buildExploreSection(agents: AvailableAgent[]): string {
-  const exploreAgent = agents.find((a) => a.name === "scan-ops");
+  const exploreAgent = agents.find((a) => a.name === "researcher-codebase");
   if (!exploreAgent) return "";
 
   const useWhen = exploreAgent.metadata.useWhen || [];
   const avoidWhen = exploreAgent.metadata.avoidWhen || [];
 
-  return `### Scout Recon Agent = Contextual Grep
+  return `### Codebase Search Agent = Contextual Grep
 
 Use it as a **peer tool**, not a fallback. Fire liberally.
 
-| Use Direct Tools | Use Scout Recon Agent |
+| Use Direct Tools | Use Codebase Search Agent |
 |------------------|-------------------|
 ${avoidWhen.map((w) => `| ${w} |  |`).join("\n")}
 ${useWhen.map((w) => `|  | ${w} |`).join("\n")}`;
 }
 
 export function buildLibrarianSection(agents: AvailableAgent[]): string {
-  const archiveAgent = agents.find((a) => a.name === "data-dive");
+  const archiveAgent = agents.find((a) => a.name === "researcher-data");
   if (!archiveAgent) return "";
 
   const useWhen = archiveAgent.metadata.useWhen || [];
@@ -349,7 +349,7 @@ export function buildUltraworkSection(
   }
 
   if (agents.length > 0) {
-    const ultraworkAgentPriority = ["scan-ops", "data-dive", "plan", "advisor-plan"];
+    const ultraworkAgentPriority = ["researcher-codebase", "researcher-data", "plan", "advisor-plan"];
     const sortedAgents = [...agents].sort((a, b) => {
       const aIdx = ultraworkAgentPriority.indexOf(a.name);
       const bIdx = ultraworkAgentPriority.indexOf(b.name);
@@ -362,7 +362,7 @@ export function buildUltraworkSection(
     lines.push("**Agents** (for specialized consultation/exploration):");
     for (const agent of sortedAgents) {
       const shortDesc = agent.description.split(".")[0] || agent.description;
-      const suffix = agent.name === "scan-ops" || agent.name === "data-dive" ? " (multiple)" : "";
+      const suffix = agent.name === "researcher-codebase" || agent.name === "researcher-data" ? " (multiple)" : "";
       lines.push(`- \`${agent.name}${suffix}\`: ${shortDesc}`);
     }
   }

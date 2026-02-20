@@ -1,20 +1,10 @@
 import { join, dirname } from "path";
-import {
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  writeFileSync,
-  renameSync,
-  unlinkSync,
-} from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, renameSync, unlinkSync } from "fs";
 import { homedir } from "os";
 import type { z } from "zod";
 import type { GhostwireConfig } from "../../../platform/config/schema";
 
-export function getTaskDir(
-  listId: string,
-  config: Partial<GhostwireConfig>,
-): string {
+export function getTaskDir(listId: string, config: Partial<GhostwireConfig>): string {
   const tasksConfig = config.void_runner?.tasks;
 
   if (tasksConfig?.claude_code_compat) {
@@ -33,10 +23,7 @@ export function getTaskPath(
   return join(getTaskDir(listId, config), `${taskId}.json`);
 }
 
-export function getTeamDir(
-  teamName: string,
-  config: Partial<GhostwireConfig>,
-): string {
+export function getTeamDir(teamName: string, config: Partial<GhostwireConfig>): string {
   const swarmConfig = config.void_runner?.swarm;
 
   if (swarmConfig?.storage_path?.includes("claude")) {
@@ -61,10 +48,7 @@ export function ensureDir(dirPath: string): void {
   }
 }
 
-export function readJsonSafe<T>(
-  filePath: string,
-  schema: z.ZodType<T>,
-): T | null {
+export function readJsonSafe<T>(filePath: string, schema: z.ZodType<T>): T | null {
   try {
     if (!existsSync(filePath)) {
       return null;

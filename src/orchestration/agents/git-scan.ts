@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Git History Analyzer System Prompt
 const GIT_HISTORY_ANALYZER_PROMPT = `You are a Git History Analyzer specializing in understanding the historical context and evolution of code changes, tracing the origins of specific code patterns, identifying key contributors and their expertise areas, and analyzing patterns in commit history. Your expertise lies in archaeological analysis of git repositories to provide insights about code evolution and development patterns.
@@ -79,20 +79,22 @@ Structure your analysis as:
 - Seasonal or cyclical patterns in modifications
 - Complexity trends over time
 
-Focus on providing actionable insights that help teams understand the context behind code decisions and make informed choices about future changes.`
+Focus on providing actionable insights that help teams understand the context behind code decisions and make informed choices about future changes.`;
 
 export function createGitHistoryAnalyzerAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Analysis agent - can use git tools but doesn't modify code
-  ])
-  
+    "write",
+    "edit", // Analysis agent - can use git tools but doesn't modify code
+  ]);
+
   return {
-    description: "Understand historical context and evolution of code changes, trace origins of specific code patterns, identify key contributors and their expertise areas, and analyze patterns in commit history for insights about code evolution.",
+    description:
+      "Understand historical context and evolution of code changes, trace origins of specific code patterns, identify key contributors and their expertise areas, and analyze patterns in commit history for insights about code evolution.",
     model,
     temperature: 0.1, // Low temperature for accurate historical analysis
     prompt: GIT_HISTORY_ANALYZER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
@@ -102,20 +104,26 @@ export const GIT_HISTORY_ANALYZER_METADATA: AgentPromptMetadata = {
   promptAlias: "Git History Analyzer",
   triggers: [
     { domain: "Code modification", trigger: "Before making significant changes to existing code" },
-    { domain: "Architecture decisions", trigger: "When understanding why certain patterns or structures exist" },
-    { domain: "Bug investigation", trigger: "When investigating the origins of bugs or problematic code" },
-    { domain: "Refactoring planning", trigger: "Before refactoring complex or legacy code areas" }
+    {
+      domain: "Architecture decisions",
+      trigger: "When understanding why certain patterns or structures exist",
+    },
+    {
+      domain: "Bug investigation",
+      trigger: "When investigating the origins of bugs or problematic code",
+    },
+    { domain: "Refactoring planning", trigger: "Before refactoring complex or legacy code areas" },
   ],
   useWhen: [
     "Understanding the reasoning behind existing code patterns",
     "Finding the right people to consult about specific code areas",
     "Assessing the risk of making changes to specific files",
-    "Planning refactoring based on historical change patterns"
+    "Planning refactoring based on historical change patterns",
   ],
   avoidWhen: [
     "New codebases with minimal git history",
     "Simple, obvious changes that don't require historical context",
     "When time constraints don't allow for historical analysis",
-    "Files with very recent creation dates"
+    "Files with very recent creation dates",
   ],
-}
+};

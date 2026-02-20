@@ -1,54 +1,54 @@
 /**
  * Migration Tool for Configuration Upgrades
- * 
+ *
  * Helps users migrate from older configuration formats to the current ghostwire
  * unified architecture in v3.2.0+.
- * 
+ *
  * Note: All ghostwire components are now natively integrated and available
  * through the `grid:` namespace prefix.
  */
 
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from "fs"
-import { join, dirname } from "path"
-import { homedir } from "os"
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from "fs";
+import { join, dirname } from "path";
+import { homedir } from "os";
 
 export interface MigrationConfig {
-  fromPath: string
-  toPath: string
-  backupExisting: boolean
-  dryRun: boolean
+  fromPath: string;
+  toPath: string;
+  backupExisting: boolean;
+  dryRun: boolean;
 }
 
 export interface MigrationResult {
-  success: boolean
-  migrated: boolean
-  backupPath?: string
-  changes: string[]
-  errors: string[]
-  warnings: string[]
+  success: boolean;
+  migrated: boolean;
+  backupPath?: string;
+  changes: string[];
+  errors: string[];
+  warnings: string[];
 }
 
 /**
  * Check if migration is needed
  */
 export function checkMigrationNeeded(configPath?: string): {
-  needed: boolean
-  reason?: string
-  existingConfig?: string
+  needed: boolean;
+  reason?: string;
+  existingConfig?: string;
 } {
-  const opencodeConfigPath = configPath ?? join(homedir(), ".config", "opencode", "config.json")
-  
+  const opencodeConfigPath = configPath ?? join(homedir(), ".config", "opencode", "config.json");
+
   if (!existsSync(opencodeConfigPath)) {
-    return { needed: false, reason: "No existing config found" }
+    return { needed: false, reason: "No existing config found" };
   }
 
   try {
-    const content = readFileSync(opencodeConfigPath, "utf-8")
-    const config = JSON.parse(content)
+    const content = readFileSync(opencodeConfigPath, "utf-8");
+    const config = JSON.parse(content);
 
     // Check if already migrated
     if (config.imports?.claude?.enabled || config.features?.compound_engineering?.enabled) {
-      return { needed: false, reason: "Already using unified plugin architecture" }
+      return { needed: false, reason: "Already using unified plugin architecture" };
     }
 
     // Check if using old separate config
@@ -57,12 +57,12 @@ export function checkMigrationNeeded(configPath?: string): {
         needed: true,
         reason: "Using legacy configuration format",
         existingConfig: opencodeConfigPath,
-      }
+      };
     }
 
-    return { needed: false, reason: "No legacy configuration detected" }
+    return { needed: false, reason: "No legacy configuration detected" };
   } catch {
-    return { needed: false, reason: "Could not parse existing config" }
+    return { needed: false, reason: "Could not parse existing config" };
   }
 }
 
@@ -76,74 +76,77 @@ export function migrateConfig(config: MigrationConfig): MigrationResult {
     changes: [],
     errors: [],
     warnings: [],
-  }
+  };
 
   if (!existsSync(config.fromPath)) {
-    result.errors.push(`Source config not found: ${config.fromPath}`)
-    return result
+    result.errors.push(`Source config not found: ${config.fromPath}`);
+    return result;
   }
 
   try {
     // Read existing config
-    const content = readFileSync(config.fromPath, "utf-8")
-    const oldConfig = JSON.parse(content)
+    const content = readFileSync(config.fromPath, "utf-8");
+    const oldConfig = JSON.parse(content);
 
     // Create backup if requested
     if (config.backupExisting && !config.dryRun) {
-      const backupPath = `${config.fromPath}.backup-${Date.now()}`
-      writeFileSync(backupPath, content)
-      result.backupPath = backupPath
-      result.changes.push(`Created backup at ${backupPath}`)
+      const backupPath = `${config.fromPath}.backup-${Date.now()}`;
+      writeFileSync(backupPath, content);
+      result.backupPath = backupPath;
+      result.changes.push(`Created backup at ${backupPath}`);
     }
 
     // Transform config
-    const newConfig = transformConfig(oldConfig)
+    const newConfig = transformConfig(oldConfig);
 
     // Write new config if not dry run
     if (!config.dryRun) {
       // Ensure directory exists
-      const dir = dirname(config.toPath)
+      const dir = dirname(config.toPath);
       if (!existsSync(dir)) {
-        mkdirSync(dir, { recursive: true })
+        mkdirSync(dir, { recursive: true });
       }
 
-      writeFileSync(config.toPath, JSON.stringify(newConfig, null, 2))
-      result.migrated = true
+      writeFileSync(config.toPath, JSON.stringify(newConfig, null, 2));
+      result.migrated = true;
     }
 
-    result.changes.push("Migrated from legacy configuration format")
-    result.changes.push("Added imports.claude section")
-    result.changes.push("Added features.compound_engineering section")
-    result.success = true
+    result.changes.push("Migrated from legacy configuration format");
+    result.changes.push("Added imports.claude section");
+    result.changes.push("Added features.compound_engineering section");
+    result.success = true;
 
     // Add warnings for deprecated fields
     if (oldConfig.compound_engineering) {
-      result.warnings.push("Legacy 'compound_engineering' field migrated to 'features.compound_engineering'")
+      result.warnings.push(
+        "Legacy 'compound_engineering' field migrated to 'features.compound_engineering'",
+      );
     }
     if (oldConfig.claude_import) {
-      result.warnings.push("Legacy 'claude_import' field migrated to 'imports.claude'")
+      result.warnings.push("Legacy 'claude_import' field migrated to 'imports.claude'");
     }
-
   } catch (error) {
-    result.errors.push(`Migration failed: ${error instanceof Error ? error.message : String(error)}`)
+    result.errors.push(
+      `Migration failed: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 
-  return result
+  return result;
 }
 
 /**
  * Transform legacy config to new unified format
  */
 function transformConfig(oldConfig: Record<string, unknown>): Record<string, unknown> {
-  const newConfig: Record<string, unknown> = { ...oldConfig }
+  const newConfig: Record<string, unknown> = { ...oldConfig };
 
   // Move compound_engineering to features.compound_engineering
   if (oldConfig.compound_engineering) {
     newConfig.features = {
       ...(newConfig.features as Record<string, unknown>),
       compound_engineering: oldConfig.compound_engineering,
-    }
-    delete newConfig.compound_engineering
+    };
+    delete newConfig.compound_engineering;
   }
 
   // Move claude_import to imports.claude
@@ -154,12 +157,12 @@ function transformConfig(oldConfig: Record<string, unknown>): Record<string, unk
         enabled: true,
         ...(oldConfig.claude_import as Record<string, unknown>),
       },
-    }
-    delete newConfig.claude_import
+    };
+    delete newConfig.claude_import;
   }
 
   // Add unified plugin settings if not present
-  const importsConfig = newConfig.imports as Record<string, unknown> | undefined
+  const importsConfig = newConfig.imports as Record<string, unknown> | undefined;
   if (!importsConfig?.claude) {
     newConfig.imports = {
       ...importsConfig,
@@ -168,10 +171,10 @@ function transformConfig(oldConfig: Record<string, unknown>): Record<string, unk
         strict: false,
         warnings: true,
       },
-    }
+    };
   }
 
-  return newConfig
+  return newConfig;
 }
 
 /**
@@ -186,80 +189,80 @@ export function generateMigrationReport(result: MigrationResult): string {
     `Status: ${result.success ? "✓ SUCCESS" : "✗ FAILED"}`,
     `Migrated: ${result.migrated ? "Yes" : "No"}`,
     "",
-  ]
+  ];
 
   if (result.backupPath) {
-    lines.push(`Backup created: ${result.backupPath}`, "")
+    lines.push(`Backup created: ${result.backupPath}`, "");
   }
 
   if (result.changes.length > 0) {
-    lines.push("Changes Made:", "-".repeat(70))
+    lines.push("Changes Made:", "-".repeat(70));
     for (const change of result.changes) {
-      lines.push(`  • ${change}`)
+      lines.push(`  • ${change}`);
     }
-    lines.push("")
+    lines.push("");
   }
 
   if (result.warnings.length > 0) {
-    lines.push("Warnings:", "-".repeat(70))
+    lines.push("Warnings:", "-".repeat(70));
     for (const warning of result.warnings) {
-      lines.push(`  ⚠ ${warning}`)
+      lines.push(`  ⚠ ${warning}`);
     }
-    lines.push("")
+    lines.push("");
   }
 
   if (result.errors.length > 0) {
-    lines.push("Errors:", "-".repeat(70))
+    lines.push("Errors:", "-".repeat(70));
     for (const error of result.errors) {
-      lines.push(`  ✗ ${error}`)
+      lines.push(`  ✗ ${error}`);
     }
-    lines.push("")
+    lines.push("");
   }
 
-  lines.push("=".repeat(70))
-  return lines.join("\n")
+  lines.push("=".repeat(70));
+  return lines.join("\n");
 }
 
 /**
  * Validate migrated configuration
  */
 export function validateMigratedConfig(configPath: string): {
-  valid: boolean
-  errors: string[]
+  valid: boolean;
+  errors: string[];
 } {
-  const errors: string[] = []
+  const errors: string[] = [];
 
   if (!existsSync(configPath)) {
-    return { valid: false, errors: [`Config file not found: ${configPath}`] }
+    return { valid: false, errors: [`Config file not found: ${configPath}`] };
   }
 
   try {
-    const content = readFileSync(configPath, "utf-8")
-    const config = JSON.parse(content)
+    const content = readFileSync(configPath, "utf-8");
+    const config = JSON.parse(content);
 
     // Check required sections
     if (!config.imports?.claude) {
-      errors.push("Missing 'imports.claude' section")
+      errors.push("Missing 'imports.claude' section");
     }
 
     if (!config.features?.compound_engineering) {
-      errors.push("Missing 'features.compound_engineering' section")
+      errors.push("Missing 'features.compound_engineering' section");
     }
 
     // Validate imports.claude structure
     if (config.imports?.claude) {
-      const claude = config.imports.claude
+      const claude = config.imports.claude;
       if (typeof claude.enabled !== "boolean") {
-        errors.push("imports.claude.enabled must be a boolean")
+        errors.push("imports.claude.enabled must be a boolean");
       }
     }
 
-    return { valid: errors.length === 0, errors }
+    return { valid: errors.length === 0, errors };
   } catch (error) {
     return {
       valid: false,
       errors: [`Failed to parse config: ${error instanceof Error ? error.message : String(error)}`],
-    }
+    };
   }
 }
 
@@ -268,18 +271,18 @@ export function validateMigratedConfig(configPath: string): {
  */
 export function rollbackMigration(backupPath: string, configPath: string): boolean {
   if (!existsSync(backupPath)) {
-    console.error(`Backup not found: ${backupPath}`)
-    return false
+    console.error(`Backup not found: ${backupPath}`);
+    return false;
   }
 
   try {
-    const backup = readFileSync(backupPath, "utf-8")
-    writeFileSync(configPath, backup)
-    console.log(`Rolled back to backup: ${backupPath}`)
-    return true
+    const backup = readFileSync(backupPath, "utf-8");
+    writeFileSync(configPath, backup);
+    console.log(`Rolled back to backup: ${backupPath}`);
+    return true;
   } catch (error) {
-    console.error(`Rollback failed: ${error instanceof Error ? error.message : String(error)}`)
-    return false
+    console.error(`Rollback failed: ${error instanceof Error ? error.message : String(error)}`);
+    return false;
   }
 }
 
@@ -287,36 +290,36 @@ export function rollbackMigration(backupPath: string, configPath: string): boole
  * Interactive migration wizard
  */
 export async function runMigrationWizard(): Promise<void> {
-  console.log("=".repeat(70))
-  console.log("Unified Plugin Migration Wizard")
-  console.log("=".repeat(70))
-  console.log("")
+  console.log("=".repeat(70));
+  console.log("Unified Plugin Migration Wizard");
+  console.log("=".repeat(70));
+  console.log("");
 
   // Check if migration is needed
-  const check = checkMigrationNeeded()
-  
+  const check = checkMigrationNeeded();
+
   if (!check.needed) {
-    console.log("✓ No migration needed:", check.reason)
-    return
+    console.log("✓ No migration needed:", check.reason);
+    return;
   }
 
-  console.log("Migration needed:", check.reason)
-  console.log("Config path:", check.existingConfig)
-  console.log("")
+  console.log("Migration needed:", check.reason);
+  console.log("Config path:", check.existingConfig);
+  console.log("");
 
   // Perform dry run first
-  console.log("Performing dry run migration...")
+  console.log("Performing dry run migration...");
   const dryRunResult = migrateConfig({
     fromPath: check.existingConfig!,
     toPath: check.existingConfig!,
     backupExisting: false,
     dryRun: true,
-  })
+  });
 
-  console.log(generateMigrationReport(dryRunResult))
-  console.log("")
+  console.log(generateMigrationReport(dryRunResult));
+  console.log("");
 
   if (dryRunResult.success) {
-    console.log("Dry run successful. Run with dryRun: false to apply changes.")
+    console.log("Dry run successful. Run with dryRun: false to apply changes.");
   }
 }

@@ -1,9 +1,14 @@
-import type { AgentConfig } from "@opencode-ai/sdk"
-import type { AgentMode } from "./types"
-import { isGptModel } from "./types"
+import type { AgentConfig } from "@opencode-ai/sdk";
+import type { AgentMode } from "./types";
+import { isGptModel } from "./types";
 
-const MODE: AgentMode = "primary"
-import type { AvailableAgent, AvailableTool, AvailableSkill, AvailableCategory } from "./dynamic-agent-prompt-builder"
+const MODE: AgentMode = "primary";
+import type {
+  AvailableAgent,
+  AvailableTool,
+  AvailableSkill,
+  AvailableCategory,
+} from "./dynamic-agent-prompt-builder";
 import {
   buildKeyTriggersSection,
   buildToolSelectionTable,
@@ -15,23 +20,26 @@ import {
   buildHardBlocksSection,
   buildAntiPatternsSection,
   categorizeTools,
-} from "./dynamic-agent-prompt-builder"
+} from "./dynamic-agent-prompt-builder";
 
 function buildDynamicSisyphusPrompt(
   availableAgents: AvailableAgent[],
   availableTools: AvailableTool[] = [],
   availableSkills: AvailableSkill[] = [],
-  availableCategories: AvailableCategory[] = []
+  availableCategories: AvailableCategory[] = [],
 ): string {
-  const keyTriggers = buildKeyTriggersSection(availableAgents, availableSkills)
-  const toolSelection = buildToolSelectionTable(availableAgents, availableTools, availableSkills)
-  const exploreSection = buildExploreSection(availableAgents)
-  const archiveSection = buildLibrarianSection(availableAgents)
-  const categorySkillsGuide = buildCategorySkillsDelegationGuide(availableCategories, availableSkills)
-  const delegationTable = buildDelegationTable(availableAgents)
-  const seerSection = buildOracleSection(availableAgents)
-  const hardBlocks = buildHardBlocksSection()
-  const antiPatterns = buildAntiPatternsSection()
+  const keyTriggers = buildKeyTriggersSection(availableAgents, availableSkills);
+  const toolSelection = buildToolSelectionTable(availableAgents, availableTools, availableSkills);
+  const exploreSection = buildExploreSection(availableAgents);
+  const archiveSection = buildLibrarianSection(availableAgents);
+  const categorySkillsGuide = buildCategorySkillsDelegationGuide(
+    availableCategories,
+    availableSkills,
+  );
+  const delegationTable = buildDelegationTable(availableAgents);
+  const seerSection = buildOracleSection(availableAgents);
+  const hardBlocks = buildHardBlocksSection();
+  const antiPatterns = buildAntiPatternsSection();
 
   return `<Role>
 You are "Cipher Operator" - Powerful AI Agent with orchestration capabilities from Ghostwire.
@@ -416,7 +424,7 @@ ${antiPatterns}
 - Prefer small, focused changes over large refactors
 - When uncertain about scope, ask
 </Constraints>
-`
+`;
 }
 
 export function createVoidRunnerAgent(
@@ -424,16 +432,16 @@ export function createVoidRunnerAgent(
   availableAgents?: AvailableAgent[],
   availableToolNames?: string[],
   availableSkills?: AvailableSkill[],
-  availableCategories?: AvailableCategory[]
+  availableCategories?: AvailableCategory[],
 ): AgentConfig {
-  const tools = availableToolNames ? categorizeTools(availableToolNames) : []
-  const skills = availableSkills ?? []
-  const categories = availableCategories ?? []
+  const tools = availableToolNames ? categorizeTools(availableToolNames) : [];
+  const skills = availableSkills ?? [];
+  const categories = availableCategories ?? [];
   const prompt = availableAgents
     ? buildDynamicSisyphusPrompt(availableAgents, tools, skills, categories)
-    : buildDynamicSisyphusPrompt([], tools, skills, categories)
+    : buildDynamicSisyphusPrompt([], tools, skills, categories);
 
-  const permission = { question: "allow", call_grid_agent: "deny" } as AgentConfig["permission"]
+  const permission = { question: "allow", call_grid_agent: "deny" } as AgentConfig["permission"];
   const base = {
     description:
       "Powerful AI orchestrator. Plans obsessively with todos, assesses search complexity before exploration, delegates strategically via category+skills combinations. Uses scoutRecon for internal code (parallel-friendly), archiveResearcher for external docs. (Cipher Operator - Ghostwire)",
@@ -443,12 +451,12 @@ export function createVoidRunnerAgent(
     prompt,
     color: "#00CED1",
     permission,
-  }
+  };
 
   if (isGptModel(model)) {
-    return { ...base, reasoningEffort: "medium" }
+    return { ...base, reasoningEffort: "medium" };
   }
 
-  return { ...base, thinking: { type: "enabled", budgetTokens: 32000 } }
+  return { ...base, thinking: { type: "enabled", budgetTokens: 32000 } };
 }
-createVoidRunnerAgent.mode = MODE
+createVoidRunnerAgent.mode = MODE;

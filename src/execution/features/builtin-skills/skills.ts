@@ -1,9 +1,10 @@
-import type { BuiltinSkill } from "./types"
-import type { BrowserAutomationProvider } from "../../../platform/config/schema"
+import type { BuiltinSkill } from "./types";
+import type { BrowserAutomationProvider } from "../../../platform/config/schema";
 
 const playwrightSkill: BuiltinSkill = {
   name: "playwright",
-  description: "MUST USE for any browser-related tasks. Browser automation via Playwright MCP - verification, browsing, information gathering, web scraping, testing, screenshots, and all browser interactions.",
+  description:
+    "MUST USE for any browser-related tasks. Browser automation via Playwright MCP - verification, browsing, information gathering, web scraping, testing, screenshots, and all browser interactions.",
   template: `# Playwright Browser Automation
 
 This skill provides browser automation capabilities via the Playwright MCP server.`,
@@ -13,11 +14,12 @@ This skill provides browser automation capabilities via the Playwright MCP serve
       args: ["@playwright/mcp@latest"],
     },
   },
-}
+};
 
 const agentBrowserSkill: BuiltinSkill = {
   name: "agent-browser",
-  description: "MUST USE for any browser-related tasks. Browser automation via agent-browser CLI - verification, browsing, information gathering, web scraping, testing, screenshots, and all browser interactions.",
+  description:
+    "MUST USE for any browser-related tasks. Browser automation via agent-browser CLI - verification, browsing, information gathering, web scraping, testing, screenshots, and all browser interactions.",
   template: `# Browser Automation with agent-browser
 
 ## Quick start
@@ -310,7 +312,7 @@ agent-browser trace stop trace.zip                   # Stop and save trace
 ---
 Install: \`bun add -g agent-browser && agent-browser install\`. Run \`agent-browser --help\` for all commands. Repo: https://github.com/vercel-labs/agent-browser`,
   allowedTools: ["Bash(agent-browser:*)"],
-}
+};
 
 const frontendUiUxSkill: BuiltinSkill = {
   name: "frontend-ui-ux",
@@ -388,7 +390,7 @@ Match implementation complexity to aesthetic vision:
 - **Minimalist** → Restraint, precision, careful spacing and typography
 
 Interpret creatively and make unexpected choices that feel genuinely designed for the context. No design should be the same. Vary between light and dark themes, different fonts, different aesthetics. You are capable of extraordinary creative work—don't hold back.`,
-}
+};
 
 const gitMasterSkill: BuiltinSkill = {
   name: "git-master",
@@ -1494,7 +1496,7 @@ POTENTIAL ACTIONS:
 - \`-S\` when \`-G\` is appropriate -> Wrong results
 - Blame without \`-C\` on moved code -> Wrong attribution
 - Bisect without proper good/bad boundaries -> Wasted time`,
-}
+};
 
 const devBrowserSkill: BuiltinSkill = {
   name: "dev-browser",
@@ -1714,16 +1716,16 @@ console.log({
 await client.disconnect();
 EOF
 \`\`\``,
-}
+};
 
 export interface CreateBuiltinSkillsOptions {
-  browserProvider?: BrowserAutomationProvider
+  browserProvider?: BrowserAutomationProvider;
 }
 
 export function createBuiltinSkills(options: CreateBuiltinSkillsOptions = {}): BuiltinSkill[] {
-  const { browserProvider = "playwright" } = options
+  const { browserProvider = "playwright" } = options;
 
-  const browserSkill = browserProvider === "agent-browser" ? agentBrowserSkill : playwrightSkill
+  const browserSkill = browserProvider === "agent-browser" ? agentBrowserSkill : playwrightSkill;
 
-  return [browserSkill, frontendUiUxSkill, gitMasterSkill, devBrowserSkill]
+  return [browserSkill, frontendUiUxSkill, gitMasterSkill, devBrowserSkill];
 }

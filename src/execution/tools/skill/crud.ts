@@ -1,46 +1,57 @@
-import { tool, type ToolDefinition } from "@opencode-ai/plugin/tool"
-import { existsSync } from "node:fs"
-import { readFile, writeFile, unlink, readdir, mkdir } from "node:fs/promises"
-import { join, dirname } from "node:path"
-import { getOpenCodeConfigDir } from "../../../platform/opencode/config-dir"
-import type { SkillScope } from "../../features/opencode-skill-loader/types"
-import { discoverSkills } from "../../features/opencode-skill-loader/loader"
-import { clearSkillCache } from "../../features/opencode-skill-loader/skill-content"
-import { parseFrontmatter } from "../../../integration/shared/frontmatter"
-import type { SkillCreateArgs, SkillUpdateArgs, SkillDeleteArgs, SkillListArgs, SkillInfo } from "./types"
+import { tool, type ToolDefinition } from "@opencode-ai/plugin/tool";
+import { existsSync } from "node:fs";
+import { readFile, writeFile, unlink, readdir, mkdir } from "node:fs/promises";
+import { join, dirname } from "node:path";
+import { getOpenCodeConfigDir } from "../../../platform/opencode/config-dir";
+import type { SkillScope } from "../../features/opencode-skill-loader/types";
+import { discoverSkills } from "../../features/opencode-skill-loader/loader";
+import { clearSkillCache } from "../../features/opencode-skill-loader/skill-content";
+import { parseFrontmatter } from "../../../integration/shared/frontmatter";
+import type {
+  SkillCreateArgs,
+  SkillUpdateArgs,
+  SkillDeleteArgs,
+  SkillListArgs,
+  SkillInfo,
+} from "./types";
 
-const BUILTIN_PREFIX = "builtin"
+const BUILTIN_PREFIX = "builtin";
 
 function isBuiltinSkill(name: string): boolean {
-  return name.startsWith(BUILTIN_PREFIX) || name === "playwright" || name === "agent-browser" || name === "git-master"
+  return (
+    name.startsWith(BUILTIN_PREFIX) ||
+    name === "playwright" ||
+    name === "agent-browser" ||
+    name === "git-master"
+  );
 }
 
 function getSkillDirs(): { project: string; user: string } {
-  const configDir = getOpenCodeConfigDir({ binary: "opencode" })
+  const configDir = getOpenCodeConfigDir({ binary: "opencode" });
   return {
     project: join(process.cwd(), ".opencode", "skills"),
     user: join(configDir, "skills"),
-  }
+  };
 }
 
 async function findSkillFile(name: string): Promise<{ path: string; scope: SkillScope } | null> {
-  const dirs = getSkillDirs()
+  const dirs = getSkillDirs();
 
   // Check project skills
   if (existsSync(dirs.project)) {
     try {
-      const files = await readdir(dirs.project)
+      const files = await readdir(dirs.project);
       for (const file of files) {
-        if (!file.endsWith(".md")) continue
-        const skillPath = join(dirs.project, file)
+        if (!file.endsWith(".md")) continue;
+        const skillPath = join(dirs.project, file);
         try {
-          const content = await readFile(skillPath, "utf-8")
-          const { data } = parseFrontmatter<Record<string, string>>(content)
+          const content = await readFile(skillPath, "utf-8");
+          const { data } = parseFrontmatter<Record<string, string>>(content);
           if (data.name === name) {
-            return { path: skillPath, scope: "opencode-project" }
+            return { path: skillPath, scope: "opencode-project" };
           }
         } catch {
-          continue
+          continue;
         }
       }
     } catch {
@@ -51,18 +62,18 @@ async function findSkillFile(name: string): Promise<{ path: string; scope: Skill
   // Check user skills
   if (existsSync(dirs.user)) {
     try {
-      const files = await readdir(dirs.user)
+      const files = await readdir(dirs.user);
       for (const file of files) {
-        if (!file.endsWith(".md")) continue
-        const skillPath = join(dirs.user, file)
+        if (!file.endsWith(".md")) continue;
+        const skillPath = join(dirs.user, file);
         try {
-          const content = await readFile(skillPath, "utf-8")
-          const { data } = parseFrontmatter<Record<string, string>>(content)
+          const content = await readFile(skillPath, "utf-8");
+          const { data } = parseFrontmatter<Record<string, string>>(content);
           if (data.name === name) {
-            return { path: skillPath, scope: "user" }
+            return { path: skillPath, scope: "user" };
           }
         } catch {
-          continue
+          continue;
         }
       }
     } catch {
@@ -70,44 +81,44 @@ async function findSkillFile(name: string): Promise<{ path: string; scope: Skill
     }
   }
 
-  return null
+  return null;
 }
 
 function formatSkillList(skills: SkillInfo[]): string {
   if (skills.length === 0) {
-    return "No skills found"
+    return "No skills found";
   }
 
-  let result = "Available Skills:\n\n"
+  let result = "Available Skills:\n\n";
 
-  const builtin = skills.filter(s => s.scope === "builtin")
-  const project = skills.filter(s => s.scope === "opencode-project")
-  const user = skills.filter(s => s.scope === "user")
+  const builtin = skills.filter((s) => s.scope === "builtin");
+  const project = skills.filter((s) => s.scope === "opencode-project");
+  const user = skills.filter((s) => s.scope === "user");
 
   if (builtin.length > 0) {
-    result += "### Built-in\n"
+    result += "### Built-in\n";
     for (const skill of builtin) {
-      result += `- **${skill.name}**: ${skill.description}\n`
+      result += `- **${skill.name}**: ${skill.description}\n`;
     }
-    result += "\n"
+    result += "\n";
   }
 
   if (project.length > 0) {
-    result += "### Project\n"
+    result += "### Project\n";
     for (const skill of project) {
-      result += `- **${skill.name}**: ${skill.description}\n`
+      result += `- **${skill.name}**: ${skill.description}\n`;
     }
-    result += "\n"
+    result += "\n";
   }
 
   if (user.length > 0) {
-    result += "### User\n"
+    result += "### User\n";
     for (const skill of user) {
-      result += `- **${skill.name}**: ${skill.description}\n`
+      result += `- **${skill.name}**: ${skill.description}\n`;
     }
   }
 
-  return result
+  return result;
 }
 
 function generateSkillTemplate(name: string, description: string, templateType: string): string {
@@ -170,9 +181,9 @@ description: ${description}
 
 ## Configuration
 `,
-  }
+  };
 
-  return templates[templateType] || templates.agent
+  return templates[templateType] || templates.agent;
 }
 
 export const skill_list: ToolDefinition = tool({
@@ -187,40 +198,43 @@ Example:
 skill_list()
 Lists all available skills`,
   args: {
-    scope: tool.schema.enum(["builtin", "project", "user", "all"]).optional().describe("Filter by scope"),
+    scope: tool.schema
+      .enum(["builtin", "project", "user", "all"])
+      .optional()
+      .describe("Filter by scope"),
   },
   execute: async (args: SkillListArgs) => {
     try {
-      const loadedSkills = await discoverSkills({ includeClaudeCodePaths: true })
+      const loadedSkills = await discoverSkills({ includeClaudeCodePaths: true });
 
       // Also get builtin skills
-      const { createBuiltinSkills } = await import("../../features/builtin-skills/skills")
-      const builtinDefs = createBuiltinSkills({})
-      const builtinSkills: SkillInfo[] = builtinDefs.map(s => ({
+      const { createBuiltinSkills } = await import("../../features/builtin-skills/skills");
+      const builtinDefs = createBuiltinSkills({});
+      const builtinSkills: SkillInfo[] = builtinDefs.map((s) => ({
         name: s.name,
         description: s.description,
         scope: "builtin" as SkillScope,
         metadata: s.metadata as Record<string, string> | undefined,
-      }))
+      }));
 
       // Convert loaded skills to SkillInfo
-      const discoveredSkills: SkillInfo[] = loadedSkills.map(s => ({
+      const discoveredSkills: SkillInfo[] = loadedSkills.map((s) => ({
         name: s.name,
         description: s.definition.description || "",
         scope: s.scope,
         metadata: s.metadata as Record<string, string> | undefined,
-      }))
+      }));
 
       // Combine and filter
-      let allSkills = [...builtinSkills, ...discoveredSkills]
+      let allSkills = [...builtinSkills, ...discoveredSkills];
 
       // Remove duplicates (discovered overrides builtin with same name)
-      const seen = new Set<string>()
-      allSkills = allSkills.filter(s => {
-        if (seen.has(s.name)) return false
-        seen.add(s.name)
-        return true
-      })
+      const seen = new Set<string>();
+      allSkills = allSkills.filter((s) => {
+        if (seen.has(s.name)) return false;
+        seen.add(s.name);
+        return true;
+      });
 
       // Filter by scope
       if (args.scope && args.scope !== "all") {
@@ -228,17 +242,17 @@ Lists all available skills`,
           builtin: ["builtin"],
           project: ["opencode-project"],
           user: ["user", "opencode"],
-        }
-        const allowed = scopeMap[args.scope] || []
-        allSkills = allSkills.filter(s => allowed.includes(s.scope))
+        };
+        const allowed = scopeMap[args.scope] || [];
+        allSkills = allSkills.filter((s) => allowed.includes(s.scope));
       }
 
-      return formatSkillList(allSkills)
+      return formatSkillList(allSkills);
     } catch (e) {
-      return `Error: ${e instanceof Error ? e.message : String(e)}`
+      return `Error: ${e instanceof Error ? e.message : String(e)}`;
     }
   },
-})
+});
 
 export const skill_create: ToolDefinition = tool({
   description: `Create a new skill from a template.
@@ -257,7 +271,10 @@ skill_create(name="security-audit", description="Analyze code for security issue
   args: {
     name: tool.schema.string().describe("Skill name (kebab-case)"),
     description: tool.schema.string().describe("Skill description (10-200 chars)"),
-    template: tool.schema.enum(["agent", "tool", "analysis", "hook"]).optional().describe("Template type (default: agent)"),
+    template: tool.schema
+      .enum(["agent", "tool", "analysis", "hook"])
+      .optional()
+      .describe("Template type (default: agent)"),
     scope: tool.schema.enum(["project", "user"]).optional().describe("Scope (default: project)"),
     content: tool.schema.string().optional().describe("Full SKILL.md content (replaces template)"),
   },
@@ -265,49 +282,51 @@ skill_create(name="security-audit", description="Analyze code for security issue
     try {
       // Validate name
       if (!/^[a-z0-9-]+$/.test(args.name)) {
-        return "Error: Name must be kebab-case (lowercase alphanumeric with hyphens)"
+        return "Error: Name must be kebab-case (lowercase alphanumeric with hyphens)";
       }
 
       if (isBuiltinSkill(args.name)) {
-        return `Error: Cannot create skill with reserved name "${args.name}"`
+        return `Error: Cannot create skill with reserved name "${args.name}"`;
       }
 
       // Validate description
       if (args.description.length < 10 || args.description.length > 200) {
-        return "Error: Description must be 10-200 characters"
+        return "Error: Description must be 10-200 characters";
       }
 
       // Determine directory
-      const dirs = getSkillDirs()
-      const targetDir = args.scope === "user" ? dirs.user : dirs.project
+      const dirs = getSkillDirs();
+      const targetDir = args.scope === "user" ? dirs.user : dirs.project;
 
       // Create directory if needed
       if (!existsSync(targetDir)) {
-        await mkdir(targetDir, { recursive: true })
+        await mkdir(targetDir, { recursive: true });
       }
 
       // Check if skill already exists
-      const existing = await findSkillFile(args.name)
+      const existing = await findSkillFile(args.name);
       if (existing) {
-        return `Error: Skill "${args.name}" already exists at ${existing.path}`
+        return `Error: Skill "${args.name}" already exists at ${existing.path}`;
       }
 
       // Generate content
-      const content = args.content || generateSkillTemplate(args.name, args.description, args.template || "agent")
+      const content =
+        args.content ||
+        generateSkillTemplate(args.name, args.description, args.template || "agent");
 
       // Write file
-      const filePath = join(targetDir, `${args.name}.md`)
-      await writeFile(filePath, content)
+      const filePath = join(targetDir, `${args.name}.md`);
+      await writeFile(filePath, content);
 
       // Invalidate cache
-      clearSkillCache()
+      clearSkillCache();
 
-      return `Created skill "${args.name}" at ${filePath}`
+      return `Created skill "${args.name}" at ${filePath}`;
     } catch (e) {
-      return `Error: ${e instanceof Error ? e.message : String(e)}`
+      return `Error: ${e instanceof Error ? e.message : String(e)}`;
     }
   },
-})
+});
 
 export const skill_update: ToolDefinition = tool({
   description: `Update an existing skill's metadata or content.
@@ -333,80 +352,80 @@ skill_update(skill_name="security-audit", description="Enhanced security analysi
   execute: async (args: SkillUpdateArgs) => {
     try {
       // Find skill
-      const skillInfo = await findSkillFile(args.skill_name)
+      const skillInfo = await findSkillFile(args.skill_name);
       if (!skillInfo) {
-        return `Error: Skill "${args.skill_name}" not found in project or user skills`
+        return `Error: Skill "${args.skill_name}" not found in project or user skills`;
       }
 
       // Check if renaming
-      const newName = args.name || args.skill_name
+      const newName = args.name || args.skill_name;
 
       // Validate new name
       if (args.name && args.name !== args.skill_name) {
         if (!/^[a-z0-9-]+$/.test(args.name)) {
-          return "Error: Name must be kebab-case (lowercase alphanumeric with hyphens)"
+          return "Error: Name must be kebab-case (lowercase alphanumeric with hyphens)";
         }
 
         if (isBuiltinSkill(args.name)) {
-          return `Error: Cannot rename to reserved name "${args.name}"`
+          return `Error: Cannot rename to reserved name "${args.name}"`;
         }
 
-        const existing = await findSkillFile(args.name)
+        const existing = await findSkillFile(args.name);
         if (existing) {
-          return `Error: Skill "${args.name}" already exists`
+          return `Error: Skill "${args.name}" already exists`;
         }
       }
 
       // Read current content
-      let content = await readFile(skillInfo.path, "utf-8")
-      const { data: frontmatter, body } = parseFrontmatter<Record<string, string>>(content)
+      let content = await readFile(skillInfo.path, "utf-8");
+      const { data: frontmatter, body } = parseFrontmatter<Record<string, string>>(content);
 
       // Update frontmatter
       if (args.name) {
-        frontmatter.name = args.name
+        frontmatter.name = args.name;
       }
       if (args.description) {
         if (args.description.length < 10 || args.description.length > 200) {
-          return "Error: Description must be 10-200 characters"
+          return "Error: Description must be 10-200 characters";
         }
-        frontmatter.description = args.description
+        frontmatter.description = args.description;
       }
 
       // Rebuild content
-      let newContent: string
+      let newContent: string;
       if (args.content) {
-        newContent = args.content
+        newContent = args.content;
       } else if (args.append) {
-        newContent = content + "\n\n" + args.append
+        newContent = content + "\n\n" + args.append;
       } else {
         // Just update frontmatter
         const frontmatterStr = Object.entries(frontmatter)
           .map(([k, v]) => `${k}: ${v}`)
-          .join("\n")
-        newContent = `---\n${frontmatterStr}\n---\n\n${body}`
+          .join("\n");
+        newContent = `---\n${frontmatterStr}\n---\n\n${body}`;
       }
 
       // Handle rename
       if (args.name && args.name !== args.skill_name) {
         // Delete old file
-        await unlink(skillInfo.path)
+        await unlink(skillInfo.path);
         // Write new file
-        const newPath = join(dirname(skillInfo.path), `${args.name}.md`)
-        await writeFile(newPath, newContent)
+        const newPath = join(dirname(skillInfo.path), `${args.name}.md`);
+        await writeFile(newPath, newContent);
       } else {
         // Write to same file
-        await writeFile(skillInfo.path, newContent)
+        await writeFile(skillInfo.path, newContent);
       }
 
       // Invalidate cache
-      clearSkillCache()
+      clearSkillCache();
 
-      return `Updated skill "${args.skill_name}"`
+      return `Updated skill "${args.skill_name}"`;
     } catch (e) {
-      return `Error: ${e instanceof Error ? e.message : String(e)}`
+      return `Error: ${e instanceof Error ? e.message : String(e)}`;
     }
   },
-})
+});
 
 export const skill_delete: ToolDefinition = tool({
   description: `Delete a custom skill.
@@ -427,24 +446,24 @@ skill_delete(skill_name="security-audit")`,
     try {
       // Check builtin
       if (isBuiltinSkill(args.skill_name)) {
-        return `Error: Cannot delete builtin skill "${args.skill_name}"`
+        return `Error: Cannot delete builtin skill "${args.skill_name}"`;
       }
 
       // Find skill
-      const skillInfo = await findSkillFile(args.skill_name)
+      const skillInfo = await findSkillFile(args.skill_name);
       if (!skillInfo) {
-        return `Error: Skill "${args.skill_name}" not found in project or user skills`
+        return `Error: Skill "${args.skill_name}" not found in project or user skills`;
       }
 
       // Delete file
-      await unlink(skillInfo.path)
+      await unlink(skillInfo.path);
 
       // Invalidate cache
-      clearSkillCache()
+      clearSkillCache();
 
-      return `Deleted skill "${args.skill_name}" from ${skillInfo.scope}`
+      return `Deleted skill "${args.skill_name}" from ${skillInfo.scope}`;
     } catch (e) {
-      return `Error: ${e instanceof Error ? e.message : String(e)}`
+      return `Error: ${e instanceof Error ? e.message : String(e)}`;
     }
   },
-})
+});

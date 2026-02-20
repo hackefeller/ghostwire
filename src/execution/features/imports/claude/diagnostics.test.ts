@@ -2,8 +2,8 @@
  * Diagnostics Tests
  */
 
-import { describe, it, expect } from "bun:test"
-import { diagnoseImport, generateTroubleshootingGuide, quickHealthCheck } from "./diagnostics"
+import { describe, it, expect } from "bun:test";
+import { diagnoseImport, generateTroubleshootingGuide, quickHealthCheck } from "./diagnostics";
 
 describe("Import Diagnostics", () => {
   it("diagnoses successful import", () => {
@@ -25,15 +25,15 @@ describe("Import Diagnostics", () => {
         warnings: [],
         errors: [],
       },
-    }
+    };
 
     //#when diagnosing
-    const diagnostics = diagnoseImport(result as any)
+    const diagnostics = diagnoseImport(result as any);
 
     //#then success
-    expect(diagnostics.success).toBe(true)
-    expect(diagnostics.summary.totalComponents).toBe(1)
-  })
+    expect(diagnostics.success).toBe(true);
+    expect(diagnostics.summary.totalComponents).toBe(1);
+  });
 
   it("diagnoses import with no components", () => {
     //#given empty result but expected components
@@ -54,14 +54,16 @@ describe("Import Diagnostics", () => {
         warnings: [],
         errors: [],
       },
-    }
+    };
 
     //#when diagnosing
-    const diagnostics = diagnoseImport(result as any)
+    const diagnostics = diagnoseImport(result as any);
 
     //#then warning (not error, since the logic checks expected > actual)
-    expect(diagnostics.issues.some((i) => i.code === "IMPORT_NO_COMPONENTS" || i.severity === "warning")).toBe(true)
-  })
+    expect(
+      diagnostics.issues.some((i) => i.code === "IMPORT_NO_COMPONENTS" || i.severity === "warning"),
+    ).toBe(true);
+  });
 
   it("detects security issues", () => {
     //#given result with privileged MCP
@@ -84,14 +86,14 @@ describe("Import Diagnostics", () => {
         warnings: [],
         errors: [],
       },
-    }
+    };
 
     //#when diagnosing
-    const diagnostics = diagnoseImport(result as any)
+    const diagnostics = diagnoseImport(result as any);
 
     //#then security issue found
-    expect(diagnostics.issues.some((i) => i.code === "SECURITY_PRIVILEGED_MCP")).toBe(true)
-  })
+    expect(diagnostics.issues.some((i) => i.code === "SECURITY_PRIVILEGED_MCP")).toBe(true);
+  });
 
   it("generates troubleshooting guide", () => {
     //#given diagnostics
@@ -112,16 +114,16 @@ describe("Import Diagnostics", () => {
         warnings: 0,
       },
       recommendations: ["Test recommendation"],
-    }
+    };
 
     //#when generating guide
-    const guide = generateTroubleshootingGuide(diagnostics)
+    const guide = generateTroubleshootingGuide(diagnostics);
 
     //#then guide generated
-    expect(guide).toContain("Import Troubleshooting Guide")
-    expect(guide).toContain("TEST_ERROR")
-    expect(guide).toContain("Test recommendation")
-  })
+    expect(guide).toContain("Import Troubleshooting Guide");
+    expect(guide).toContain("TEST_ERROR");
+    expect(guide).toContain("Test recommendation");
+  });
 
   it("provides quick health check - green", () => {
     //#given healthy result
@@ -142,15 +144,15 @@ describe("Import Diagnostics", () => {
         warnings: [],
         errors: [],
       },
-    }
+    };
 
     //#when checking
-    const health = quickHealthCheck(result as any)
+    const health = quickHealthCheck(result as any);
 
     //#then green
-    expect(health.healthy).toBe(true)
-    expect(health.status).toBe("green")
-  })
+    expect(health.healthy).toBe(true);
+    expect(health.status).toBe("green");
+  });
 
   it("provides quick health check - yellow", () => {
     //#given result with warnings
@@ -171,15 +173,15 @@ describe("Import Diagnostics", () => {
         warnings: ["Warning 1", "Warning 2"],
         errors: [],
       },
-    }
+    };
 
     //#when checking
-    const health = quickHealthCheck(result as any)
+    const health = quickHealthCheck(result as any);
 
     //#then yellow
-    expect(health.healthy).toBe(true)
-    expect(health.status).toBe("yellow")
-  })
+    expect(health.healthy).toBe(true);
+    expect(health.status).toBe("yellow");
+  });
 
   it("provides quick health check - red", () => {
     //#given result with errors
@@ -200,13 +202,13 @@ describe("Import Diagnostics", () => {
         warnings: [],
         errors: ["Error 1"],
       },
-    }
+    };
 
     //#when checking
-    const health = quickHealthCheck(result as any)
+    const health = quickHealthCheck(result as any);
 
     //#then red
-    expect(health.healthy).toBe(false)
-    expect(health.status).toBe("red")
-  })
-})
+    expect(health.healthy).toBe(false);
+    expect(health.status).toBe("red");
+  });
+});

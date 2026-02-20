@@ -34,7 +34,7 @@ Uses Conventional Commits standard:
 - References related issues
 - Notes breaking changes when applicable
 - Provides commit history coherence
-`
+`;
 
 export const GIT_BRANCH_TEMPLATE = `# Git:Branch Command
 
@@ -68,7 +68,7 @@ Examples:
 - Track remote branches
 - List branches with filtering
 - Cleanup stale branches
-`
+`;
 
 export const GIT_MERGE_TEMPLATE = `# Git:Merge Command
 
@@ -96,7 +96,7 @@ Merge branches safely with conflict resolution and validation.
 - Run tests before merge
 - Preserve commit history
 - Rollback on validation failure
-`
+`;
 
 export const GIT_CLEANUP_TEMPLATE = `# Git:Cleanup Command
 
@@ -124,4 +124,4 @@ Remove stale branches and optimize repository state.
 - Verify branches are merged before deletion
 - Preserve main/master and release branches
 - Maintain branch history for reference
-`
+`;

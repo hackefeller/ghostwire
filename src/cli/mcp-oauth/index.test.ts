@@ -1,123 +1,122 @@
-import { describe, it, expect } from "bun:test"
-import { Command } from "commander"
-import { createMcpOAuthCommand } from "./index"
+import { describe, it, expect } from "bun:test";
+import { Command } from "commander";
+import { createMcpOAuthCommand } from "./index";
 
 describe("mcp oauth command", () => {
-
   describe("command structure", () => {
     it("creates mcp command group with oauth subcommand", () => {
       // given
-      const mcpCommand = createMcpOAuthCommand()
+      const mcpCommand = createMcpOAuthCommand();
 
       // when
-      const subcommands = mcpCommand.commands.map((cmd: Command) => cmd.name())
+      const subcommands = mcpCommand.commands.map((cmd: Command) => cmd.name());
 
       // then
-      expect(subcommands).toContain("oauth")
-    })
+      expect(subcommands).toContain("oauth");
+    });
 
     it("oauth subcommand has login, logout, and status subcommands", () => {
       // given
-      const mcpCommand = createMcpOAuthCommand()
-      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth")
+      const mcpCommand = createMcpOAuthCommand();
+      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth");
 
       // when
-      const subcommands = oauthCommand?.commands.map((cmd: Command) => cmd.name()) ?? []
+      const subcommands = oauthCommand?.commands.map((cmd: Command) => cmd.name()) ?? [];
 
       // then
-      expect(subcommands).toContain("login")
-      expect(subcommands).toContain("logout")
-      expect(subcommands).toContain("status")
-    })
-  })
+      expect(subcommands).toContain("login");
+      expect(subcommands).toContain("logout");
+      expect(subcommands).toContain("status");
+    });
+  });
 
   describe("login subcommand", () => {
     it("exists and has description", () => {
       // given
-      const mcpCommand = createMcpOAuthCommand()
-      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth")
-      const loginCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "login")
+      const mcpCommand = createMcpOAuthCommand();
+      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth");
+      const loginCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "login");
 
       // when
-      const description = loginCommand?.description() ?? ""
+      const description = loginCommand?.description() ?? "";
 
       // then
-      expect(loginCommand).toBeDefined()
-      expect(description).toContain("OAuth")
-    })
+      expect(loginCommand).toBeDefined();
+      expect(description).toContain("OAuth");
+    });
 
     it("accepts --server-url option", () => {
       // given
-      const mcpCommand = createMcpOAuthCommand()
-      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth")
-      const loginCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "login")
+      const mcpCommand = createMcpOAuthCommand();
+      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth");
+      const loginCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "login");
 
       // when
-      const options = loginCommand?.options ?? []
-      const serverUrlOption = options.find((opt: { long?: string }) => opt.long === "--server-url")
+      const options = loginCommand?.options ?? [];
+      const serverUrlOption = options.find((opt: { long?: string }) => opt.long === "--server-url");
 
       // then
-      expect(serverUrlOption).toBeDefined()
-    })
+      expect(serverUrlOption).toBeDefined();
+    });
 
     it("accepts --client-id option", () => {
       // given
-      const mcpCommand = createMcpOAuthCommand()
-      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth")
-      const loginCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "login")
+      const mcpCommand = createMcpOAuthCommand();
+      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth");
+      const loginCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "login");
 
       // when
-      const options = loginCommand?.options ?? []
-      const clientIdOption = options.find((opt: { long?: string }) => opt.long === "--client-id")
+      const options = loginCommand?.options ?? [];
+      const clientIdOption = options.find((opt: { long?: string }) => opt.long === "--client-id");
 
       // then
-      expect(clientIdOption).toBeDefined()
-    })
+      expect(clientIdOption).toBeDefined();
+    });
 
     it("accepts --scopes option", () => {
       // given
-      const mcpCommand = createMcpOAuthCommand()
-      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth")
-      const loginCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "login")
+      const mcpCommand = createMcpOAuthCommand();
+      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth");
+      const loginCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "login");
 
       // when
-      const options = loginCommand?.options ?? []
-      const scopesOption = options.find((opt: { long?: string }) => opt.long === "--scopes")
+      const options = loginCommand?.options ?? [];
+      const scopesOption = options.find((opt: { long?: string }) => opt.long === "--scopes");
 
       // then
-      expect(scopesOption).toBeDefined()
-    })
-  })
+      expect(scopesOption).toBeDefined();
+    });
+  });
 
   describe("logout subcommand", () => {
     it("exists and has description", () => {
       // given
-      const mcpCommand = createMcpOAuthCommand()
-      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth")
-      const logoutCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "logout")
+      const mcpCommand = createMcpOAuthCommand();
+      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth");
+      const logoutCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "logout");
 
       // when
-      const description = logoutCommand?.description() ?? ""
+      const description = logoutCommand?.description() ?? "";
 
       // then
-      expect(logoutCommand).toBeDefined()
-      expect(description).toContain("tokens")
-    })
-  })
+      expect(logoutCommand).toBeDefined();
+      expect(description).toContain("tokens");
+    });
+  });
 
   describe("status subcommand", () => {
     it("exists and has description", () => {
       // given
-      const mcpCommand = createMcpOAuthCommand()
-      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth")
-      const statusCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "status")
+      const mcpCommand = createMcpOAuthCommand();
+      const oauthCommand = mcpCommand.commands.find((cmd: Command) => cmd.name() === "oauth");
+      const statusCommand = oauthCommand?.commands.find((cmd: Command) => cmd.name() === "status");
 
       // when
-      const description = statusCommand?.description() ?? ""
+      const description = statusCommand?.description() ?? "";
 
       // then
-      expect(statusCommand).toBeDefined()
-      expect(description).toContain("status")
-    })
-  })
-})
+      expect(statusCommand).toBeDefined();
+      expect(description).toContain("status");
+    });
+  });
+});

@@ -1,7 +1,7 @@
-import { join } from "node:path"
-import { getClaudeConfigDir } from "../../../platform/claude/config-dir"
+import { join } from "node:path";
+import { getClaudeConfigDir } from "../../../platform/claude/config-dir";
 
-export const TODO_DIR = join(getClaudeConfigDir(), "todos")
+export const TODO_DIR = join(getClaudeConfigDir(), "todos");
 
 export const TODO_CREATE_DESCRIPTION = `Create a new todo item in a session.
 
@@ -14,7 +14,7 @@ Arguments:
 - note (optional): Additional notes (max 1000 chars)
 
 Example:
-todo_create(content="Review authentication module", priority="high", note="Check for SQL injection vulnerabilities")`
+todo_create(content="Review authentication module", priority="high", note="Check for SQL injection vulnerabilities")`;
 
 export const TODO_LIST_DESCRIPTION = `List todos in a session with optional filtering.
 
@@ -28,7 +28,7 @@ Arguments:
 
 Example:
 todo_list(status="pending", priority="high")
-Lists all high-priority pending todos`
+Lists all high-priority pending todos`;
 
 export const TODO_UPDATE_DESCRIPTION = `Update an existing todo item.
 
@@ -49,7 +49,7 @@ Status transitions:
 
 Example:
 todo_update(todo_id="todo_123", status="completed")
-Marks todo as completed`
+Marks todo as completed`;
 
 export const TODO_DELETE_DESCRIPTION = `Delete a todo item from a session.
 
@@ -66,4 +66,4 @@ Safety behavior:
 
 Example:
 todo_delete(todo_id="todo_123")
-Deletes the todo`
+Deletes the todo`;

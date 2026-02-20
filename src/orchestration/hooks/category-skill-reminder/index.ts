@@ -1,38 +1,23 @@
-import type { PluginInput } from "@opencode-ai/plugin"
-import { getSessionAgent } from "../../../execution/features/claude-code-session-state"
-import { log } from "../../../integration/shared"
+import type { PluginInput } from "@opencode-ai/plugin";
+import { getSessionAgent } from "../../../execution/features/claude-code-session-state";
+import { log } from "../../../integration/shared";
 
 /**
  * Target agents that should receive category+skill reminders.
  * These are orchestrator agents that delegate work to specialized agents.
  */
-const TARGET_AGENTS = new Set([
-  "void-runner",
-  "dark-runner",
-  "grid-sync",
-])
+const TARGET_AGENTS = new Set(["void-runner", "dark-runner", "grid-sync"]);
 
 /**
  * Tools that indicate the agent is doing work that could potentially be delegated.
  * When these tools are used, we remind the agent about the category+skill system.
  */
-const DELEGATABLE_WORK_TOOLS = new Set([
-  "edit",
-  "write",
-  "bash",
-  "read",
-  "grep",
-  "glob",
-])
+const DELEGATABLE_WORK_TOOLS = new Set(["edit", "write", "bash", "read", "grep", "glob"]);
 
 /**
  * Tools that indicate the agent is already using delegation properly.
  */
-const DELEGATION_TOOLS = new Set([
-  "delegate_task",
-  "call_grid_agent",
-  "task",
-])
+const DELEGATION_TOOLS = new Set(["delegate_task", "call_grid_agent", "task"]);
 
 const REMINDER_MESSAGE = `
 [Category+Skill Reminder]
@@ -60,29 +45,29 @@ delegate_task(
   run_in_background=true
 )
 \`\`\`
-`
+`;
 
 interface ToolExecuteInput {
-  tool: string
-  sessionID: string
-  callID: string
-  agent?: string
+  tool: string;
+  sessionID: string;
+  callID: string;
+  agent?: string;
 }
 
 interface ToolExecuteOutput {
-  title: string
-  output: string
-  metadata: unknown
+  title: string;
+  output: string;
+  metadata: unknown;
 }
 
 interface SessionState {
-  delegationUsed: boolean
-  reminderShown: boolean
-  toolCallCount: number
+  delegationUsed: boolean;
+  reminderShown: boolean;
+  toolCallCount: number;
 }
 
 export function createCategorySkillReminderHook(_ctx: PluginInput) {
-  const sessionStates = new Map<string, SessionState>()
+  const sessionStates = new Map<string, SessionState>();
 
   function getOrCreateState(sessionID: string): SessionState {
     if (!sessionStates.has(sessionID)) {
@@ -90,82 +75,79 @@ export function createCategorySkillReminderHook(_ctx: PluginInput) {
         delegationUsed: false,
         reminderShown: false,
         toolCallCount: 0,
-      })
+      });
     }
-    return sessionStates.get(sessionID)!
+    return sessionStates.get(sessionID)!;
   }
 
-function isTargetAgent(sessionID: string, inputAgent?: string): boolean {
-    const agent = getSessionAgent(sessionID) ?? inputAgent
-    if (!agent) return false
-    const agentLower = agent
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/_+/g, "-")
-    const canonical = agentLower.replace(/\(.*?\)/g, "").trim()
-    return TARGET_AGENTS.has(agentLower) || 
-           TARGET_AGENTS.has(canonical) ||
-           canonical.includes("void-runner") || 
-           canonical.includes("grid-sync") ||
-           canonical.includes("dark-runner")
+  function isTargetAgent(sessionID: string, inputAgent?: string): boolean {
+    const agent = getSessionAgent(sessionID) ?? inputAgent;
+    if (!agent) return false;
+    const agentLower = agent.toLowerCase().replace(/\s+/g, "-").replace(/_+/g, "-");
+    const canonical = agentLower.replace(/\(.*?\)/g, "").trim();
+    return (
+      TARGET_AGENTS.has(agentLower) ||
+      TARGET_AGENTS.has(canonical) ||
+      canonical.includes("void-runner") ||
+      canonical.includes("grid-sync") ||
+      canonical.includes("dark-runner")
+    );
   }
 
-  const toolExecuteAfter = async (
-    input: ToolExecuteInput,
-    output: ToolExecuteOutput,
-  ) => {
-    const { tool, sessionID } = input
-    const toolLower = tool.toLowerCase()
+  const toolExecuteAfter = async (input: ToolExecuteInput, output: ToolExecuteOutput) => {
+    const { tool, sessionID } = input;
+    const toolLower = tool.toLowerCase();
 
     if (!isTargetAgent(sessionID, input.agent)) {
-      return
+      return;
     }
 
-    const state = getOrCreateState(sessionID)
+    const state = getOrCreateState(sessionID);
 
     if (DELEGATION_TOOLS.has(toolLower)) {
-      state.delegationUsed = true
-      log("[grid-category-skill-reminder] Delegation tool used", { sessionID, tool })
-      return
+      state.delegationUsed = true;
+      log("[grid-category-skill-reminder] Delegation tool used", { sessionID, tool });
+      return;
     }
 
     if (!DELEGATABLE_WORK_TOOLS.has(toolLower)) {
-      return
+      return;
     }
 
-    state.toolCallCount++
+    state.toolCallCount++;
 
     if (state.toolCallCount >= 3 && !state.delegationUsed && !state.reminderShown) {
-      output.output += REMINDER_MESSAGE
-      state.reminderShown = true
-      log("[grid-category-skill-reminder] Reminder injected", { 
-        sessionID, 
-        toolCallCount: state.toolCallCount 
-      })
+      output.output += REMINDER_MESSAGE;
+      state.reminderShown = true;
+      log("[grid-category-skill-reminder] Reminder injected", {
+        sessionID,
+        toolCallCount: state.toolCallCount,
+      });
     }
-  }
+  };
 
   const eventHandler = async ({ event }: { event: { type: string; properties?: unknown } }) => {
-    const props = event.properties as Record<string, unknown> | undefined
+    const props = event.properties as Record<string, unknown> | undefined;
 
     if (event.type === "session.deleted") {
-      const sessionInfo = props?.info as { id?: string } | undefined
+      const sessionInfo = props?.info as { id?: string } | undefined;
       if (sessionInfo?.id) {
-        sessionStates.delete(sessionInfo.id)
+        sessionStates.delete(sessionInfo.id);
       }
     }
 
     if (event.type === "session.compacted") {
-      const sessionID = (props?.sessionID ??
-        (props?.info as { id?: string } | undefined)?.id) as string | undefined
+      const sessionID = (props?.sessionID ?? (props?.info as { id?: string } | undefined)?.id) as
+        | string
+        | undefined;
       if (sessionID) {
-        sessionStates.delete(sessionID)
+        sessionStates.delete(sessionID);
       }
     }
-  }
+  };
 
   return {
     "tool.execute.after": toolExecuteAfter,
     event: eventHandler,
-  }
+  };
 }

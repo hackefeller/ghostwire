@@ -1,15 +1,15 @@
-import type { AgentConfig } from "@opencode-ai/sdk"
-import type { AgentMode } from "./types"
-import { isGptModel } from "./types"
-import type { AgentOverrideConfig } from "../../platform/config/schema"
+import type { AgentConfig } from "@opencode-ai/sdk";
+import type { AgentMode } from "./types";
+import { isGptModel } from "./types";
+import type { AgentOverrideConfig } from "../../platform/config/schema";
 import {
   createAgentToolRestrictions,
   type PermissionValue,
-} from "../../platform/config/permission-compat"
+} from "../../platform/config/permission-compat";
 
-const MODE: AgentMode = "subagent"
+const MODE: AgentMode = "subagent";
 
-const SISYPHUS_JUNIOR_PROMPT = `<Role>
+const DARK_RUNNER_PROMPT = `<Role>
 Cipher Operator-Junior - Focused executor from Ghostwire.
 Execute tasks directly. NEVER delegate or spawn other agents.
 </Role>
@@ -44,49 +44,50 @@ Task NOT complete without:
 - Start immediately. No acknowledgments.
 - Match user's communication style.
 - Dense > verbose.
-</Style>`
+</Style>`;
 
-function buildSisyphusJuniorPrompt(promptAppend?: string): string {
-  if (!promptAppend) return SISYPHUS_JUNIOR_PROMPT
-  return SISYPHUS_JUNIOR_PROMPT + "\n\n" + promptAppend
+function buildDarkRunnerPrompt(promptAppend?: string): string {
+  if (!promptAppend) return DARK_RUNNER_PROMPT;
+  return DARK_RUNNER_PROMPT + "\n\n" + promptAppend;
 }
 
 // Core tools that Cipher Operator-Junior must NEVER have access to
 // Note: call_grid_agent is ALLOWED so subagents can spawn scoutRecon/archiveResearcher
-const BLOCKED_TOOLS = ["task", "delegate_task"]
+const BLOCKED_TOOLS = ["task", "delegate_task"];
 
-export const SISYPHUS_JUNIOR_DEFAULTS = {
+export const DARK_RUNNER_DEFAULTS = {
   model: "anthropic/claude-sonnet-4-5",
   temperature: 0.1,
-} as const
+} as const;
 
-export function createSisyphusJuniorAgentWithOverrides(
+export function createDarkRunnerAgent(
   override: AgentOverrideConfig | undefined,
-  systemDefaultModel?: string
+  systemDefaultModel?: string,
 ): AgentConfig {
   if (override?.disable) {
-    override = undefined
+    override = undefined;
   }
 
-  const model = override?.model ?? systemDefaultModel ?? SISYPHUS_JUNIOR_DEFAULTS.model
-  const temperature = override?.temperature ?? SISYPHUS_JUNIOR_DEFAULTS.temperature
+  const model = override?.model ?? systemDefaultModel ?? DARK_RUNNER_DEFAULTS.model;
+  const temperature = override?.temperature ?? DARK_RUNNER_DEFAULTS.temperature;
 
-  const promptAppend = override?.prompt_append
-  const prompt = buildSisyphusJuniorPrompt(promptAppend)
+  const promptAppend = override?.prompt_append;
+  const prompt = buildDarkRunnerPrompt(promptAppend);
 
-  const baseRestrictions = createAgentToolRestrictions(BLOCKED_TOOLS)
+  const baseRestrictions = createAgentToolRestrictions(BLOCKED_TOOLS);
 
-  const userPermission = (override?.permission ?? {}) as Record<string, PermissionValue>
-  const basePermission = baseRestrictions.permission
-  const merged: Record<string, PermissionValue> = { ...userPermission }
+  const userPermission = (override?.permission ?? {}) as Record<string, PermissionValue>;
+  const basePermission = baseRestrictions.permission;
+  const merged: Record<string, PermissionValue> = { ...userPermission };
   for (const tool of BLOCKED_TOOLS) {
-    merged[tool] = "deny"
+    merged[tool] = "deny";
   }
-  merged.call_grid_agent = "allow"
-  const toolsConfig = { permission: { ...merged, ...basePermission } }
+  merged.call_grid_agent = "allow";
+  const toolsConfig = { permission: { ...merged, ...basePermission } };
 
   const base: AgentConfig = {
-    description: override?.description ??
+    description:
+      override?.description ??
       "Focused task executor. Same discipline, no delegation. (Cipher Operator-Junior - Ghostwire)",
     mode: MODE,
     model,
@@ -95,20 +96,20 @@ export function createSisyphusJuniorAgentWithOverrides(
     prompt,
     color: override?.color ?? "#20B2AA",
     ...toolsConfig,
-  }
+  };
 
   if (override?.top_p !== undefined) {
-    base.top_p = override.top_p
+    base.top_p = override.top_p;
   }
 
   if (isGptModel(model)) {
-    return { ...base, reasoningEffort: "medium" } as AgentConfig
+    return { ...base, reasoningEffort: "medium" } as AgentConfig;
   }
 
   return {
     ...base,
     thinking: { type: "enabled", budgetTokens: 32000 },
-  } as AgentConfig
+  } as AgentConfig;
 }
 
-createSisyphusJuniorAgentWithOverrides.mode = MODE
+createDarkRunnerAgent.mode = MODE;

@@ -1,5 +1,5 @@
 // Shared utilities
-export * from "./shared"
+export * from "./shared";
 
 // MCP integrations
-export * from "./mcp"
+export * from "./mcp";

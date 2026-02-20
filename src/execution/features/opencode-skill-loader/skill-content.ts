@@ -3,10 +3,7 @@ import { discoverSkills } from "./loader";
 import type { LoadedSkill } from "./types";
 import { parseFrontmatter } from "../../../integration/shared/frontmatter";
 import { readFileSync } from "node:fs";
-import type {
-  GitMasterConfig,
-  BrowserAutomationProvider,
-} from "../../../platform/config/schema";
+import type { GitMasterConfig, BrowserAutomationProvider } from "../../../platform/config/schema";
 
 export interface SkillResolutionOptions {
   gitMasterConfig?: GitMasterConfig;
@@ -19,18 +16,14 @@ function clearSkillCache(): void {
   cachedSkillsByProvider.clear();
 }
 
-async function getAllSkills(
-  options?: SkillResolutionOptions,
-): Promise<LoadedSkill[]> {
+async function getAllSkills(options?: SkillResolutionOptions): Promise<LoadedSkill[]> {
   const cacheKey = options?.browserProvider ?? "playwright";
   const cached = cachedSkillsByProvider.get(cacheKey);
   if (cached) return cached;
 
   const [discoveredSkills, builtinSkillDefs] = await Promise.all([
     discoverSkills({ includeClaudeCodePaths: true }),
-    Promise.resolve(
-      createBuiltinSkills({ browserProvider: options?.browserProvider }),
-    ),
+    Promise.resolve(createBuiltinSkills({ browserProvider: options?.browserProvider })),
   ]);
 
   // Always source browser skills from built-ins so provider selection stays deterministic.
@@ -38,30 +31,26 @@ async function getAllSkills(
     (skill) => skill.name !== "playwright" && skill.name !== "agent-browser",
   );
 
-  const builtinSkillsAsLoaded: LoadedSkill[] = builtinSkillDefs.map(
-    (skill) => ({
+  const builtinSkillsAsLoaded: LoadedSkill[] = builtinSkillDefs.map((skill) => ({
+    name: skill.name,
+    definition: {
       name: skill.name,
-      definition: {
-        name: skill.name,
-        description: skill.description,
-        template: skill.template,
-        model: skill.model,
-        agent: skill.agent,
-        subtask: skill.subtask,
-      },
-      scope: "builtin" as const,
-      license: skill.license,
-      compatibility: skill.compatibility,
-      metadata: skill.metadata as Record<string, string> | undefined,
-      allowedTools: skill.allowedTools,
-      mcpConfig: skill.mcpConfig,
-    }),
-  );
+      description: skill.description,
+      template: skill.template,
+      model: skill.model,
+      agent: skill.agent,
+      subtask: skill.subtask,
+    },
+    scope: "builtin" as const,
+    license: skill.license,
+    compatibility: skill.compatibility,
+    metadata: skill.metadata as Record<string, string> | undefined,
+    allowedTools: skill.allowedTools,
+    mcpConfig: skill.mcpConfig,
+  }));
 
   const discoveredNames = new Set(filteredDiscoveredSkills.map((s) => s.name));
-  const uniqueBuiltins = builtinSkillsAsLoaded.filter(
-    (s) => !discoveredNames.has(s.name),
-  );
+  const uniqueBuiltins = builtinSkillsAsLoaded.filter((s) => !discoveredNames.has(s.name));
 
   const allSkills = [...filteredDiscoveredSkills, ...uniqueBuiltins];
   cachedSkillsByProvider.set(cacheKey, allSkills);
@@ -79,10 +68,7 @@ async function extractSkillTemplate(skill: LoadedSkill): Promise<string> {
 
 export { clearSkillCache, getAllSkills, extractSkillTemplate };
 
-export function injectGitMasterConfig(
-  template: string,
-  config?: GitMasterConfig,
-): string {
+export function injectGitMasterConfig(template: string, config?: GitMasterConfig): string {
   const commitFooter = config?.commit_footer ?? true;
   const includeCoAuthoredBy = config?.include_co_authored_by ?? true;
 
@@ -100,9 +86,7 @@ export function injectGitMasterConfig(
   if (commitFooter) {
     sections.push(`1. **Footer in commit body:**`);
     sections.push("```");
-    sections.push(
-      `Ultraworked with [Cipher Operator](https://github.com/pontistudios/ghostwire)`,
-    );
+    sections.push(`Ultraworked with [Cipher Operator](https://github.com/pontistudios/ghostwire)`);
     sections.push("```");
     sections.push(``);
   }
@@ -190,10 +174,7 @@ export function resolveMultipleSkills(
     const template = skillMap.get(name);
     if (template) {
       if (name === "git-master") {
-        resolved.set(
-          name,
-          injectGitMasterConfig(template, options?.gitMasterConfig),
-        );
+        resolved.set(name, injectGitMasterConfig(template, options?.gitMasterConfig));
       } else {
         resolved.set(name, template);
       }
@@ -235,9 +216,10 @@ export async function resolveMultipleSkillsAsync(
     skillMap.set(skill.name, skill);
   }
   const builtinFallbackMap = new Map(
-    createBuiltinSkills({ browserProvider: options?.browserProvider }).map(
-      (skill) => [skill.name, skill.template],
-    ),
+    createBuiltinSkills({ browserProvider: options?.browserProvider }).map((skill) => [
+      skill.name,
+      skill.template,
+    ]),
   );
 
   const resolved = new Map<string, string>();
@@ -248,10 +230,7 @@ export async function resolveMultipleSkillsAsync(
     if (skill) {
       const template = await extractSkillTemplate(skill);
       if (name === "git-master") {
-        resolved.set(
-          name,
-          injectGitMasterConfig(template, options?.gitMasterConfig),
-        );
+        resolved.set(name, injectGitMasterConfig(template, options?.gitMasterConfig));
       } else {
         resolved.set(name, template);
       }
@@ -259,10 +238,7 @@ export async function resolveMultipleSkillsAsync(
       const builtinTemplate = builtinFallbackMap.get(name);
       if (builtinTemplate) {
         if (name === "git-master") {
-          resolved.set(
-            name,
-            injectGitMasterConfig(builtinTemplate, options?.gitMasterConfig),
-          );
+          resolved.set(name, injectGitMasterConfig(builtinTemplate, options?.gitMasterConfig));
         } else {
           resolved.set(name, builtinTemplate);
         }

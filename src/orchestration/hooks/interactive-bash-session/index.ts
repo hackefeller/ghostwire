@@ -33,44 +33,44 @@ interface EventInput {
  * Handles single/double quotes and backslash escapes
  */
 function tokenizeCommand(cmd: string): string[] {
-  const tokens: string[] = []
-  let current = ""
-  let inQuote = false
-  let quoteChar = ""
-  let escaped = false
+  const tokens: string[] = [];
+  let current = "";
+  let inQuote = false;
+  let quoteChar = "";
+  let escaped = false;
 
   for (let i = 0; i < cmd.length; i++) {
-    const char = cmd[i]
+    const char = cmd[i];
 
     if (escaped) {
-      current += char
-      escaped = false
-      continue
+      current += char;
+      escaped = false;
+      continue;
     }
 
     if (char === "\\") {
-      escaped = true
-      continue
+      escaped = true;
+      continue;
     }
 
     if ((char === "'" || char === '"') && !inQuote) {
-      inQuote = true
-      quoteChar = char
+      inQuote = true;
+      quoteChar = char;
     } else if (char === quoteChar && inQuote) {
-      inQuote = false
-      quoteChar = ""
+      inQuote = false;
+      quoteChar = "";
     } else if (char === " " && !inQuote) {
       if (current) {
-        tokens.push(current)
-        current = ""
+        tokens.push(current);
+        current = "";
       }
     } else {
-      current += char
+      current += char;
     }
   }
 
-  if (current) tokens.push(current)
-  return tokens
+  if (current) tokens.push(current);
+  return tokens;
 }
 
 /**
@@ -78,14 +78,14 @@ function tokenizeCommand(cmd: string): string[] {
  * e.g., "grid-x:1" -> "grid-x", "grid-x:1.2" -> "grid-x"
  */
 function normalizeSessionName(name: string): string {
-  return name.split(":")[0].split(".")[0]
+  return name.split(":")[0].split(".")[0];
 }
 
 function findFlagValue(tokens: string[], flag: string): string | null {
   for (let i = 0; i < tokens.length - 1; i++) {
-    if (tokens[i] === flag) return tokens[i + 1]
+    if (tokens[i] === flag) return tokens[i + 1];
   }
-  return null
+  return null;
 }
 
 /**
@@ -95,15 +95,15 @@ function findFlagValue(tokens: string[], flag: string): string | null {
  */
 function extractSessionNameFromTokens(tokens: string[], subCommand: string): string | null {
   if (subCommand === "new-session") {
-    const sFlag = findFlagValue(tokens, "-s")
-    if (sFlag) return normalizeSessionName(sFlag)
-    const tFlag = findFlagValue(tokens, "-t")
-    if (tFlag) return normalizeSessionName(tFlag)
+    const sFlag = findFlagValue(tokens, "-s");
+    if (sFlag) return normalizeSessionName(sFlag);
+    const tFlag = findFlagValue(tokens, "-t");
+    if (tFlag) return normalizeSessionName(tFlag);
   } else {
-    const tFlag = findFlagValue(tokens, "-t")
-    if (tFlag) return normalizeSessionName(tFlag)
+    const tFlag = findFlagValue(tokens, "-t");
+    if (tFlag) return normalizeSessionName(tFlag);
   }
-  return null
+  return null;
 }
 
 /**
@@ -116,35 +116,35 @@ function extractSessionNameFromTokens(tokens: string[], subCommand: string): str
  */
 function findSubcommand(tokens: string[]): string {
   // Options that require an argument: -L, -S, -f, -c, -T
-  const globalOptionsWithArgs = new Set(["-L", "-S", "-f", "-c", "-T"])
+  const globalOptionsWithArgs = new Set(["-L", "-S", "-f", "-c", "-T"]);
 
-  let i = 0
+  let i = 0;
   while (i < tokens.length) {
-    const token = tokens[i]
+    const token = tokens[i];
 
     // Handle end of options marker
     if (token === "--") {
       // Next token is the subcommand
-      return tokens[i + 1] ?? ""
+      return tokens[i + 1] ?? "";
     }
 
     if (globalOptionsWithArgs.has(token)) {
       // Skip the option and its argument
-      i += 2
-      continue
+      i += 2;
+      continue;
     }
 
     if (token.startsWith("-")) {
       // Skip standalone flags like -C, -v, -V
-      i++
-      continue
+      i++;
+      continue;
     }
 
     // Found the subcommand
-    return token
+    return token;
   }
 
-  return ""
+  return "";
 }
 
 export function createInteractiveBashSessionHook(ctx: PluginInput) {
@@ -167,9 +167,7 @@ export function createInteractiveBashSessionHook(ctx: PluginInput) {
     return sessionName !== null && sessionName.startsWith(OMO_SESSION_PREFIX);
   }
 
-  async function killAllTrackedSessions(
-    state: InteractiveBashSessionState,
-  ): Promise<void> {
+  async function killAllTrackedSessions(state: InteractiveBashSessionState): Promise<void> {
     for (const sessionName of state.tmuxSessions) {
       try {
         const proc = Bun.spawn(["tmux", "kill-session", "-t", sessionName], {
@@ -181,14 +179,11 @@ export function createInteractiveBashSessionHook(ctx: PluginInput) {
     }
 
     for (const sessionId of subagentSessions) {
-      ctx.client.session.abort({ path: { id: sessionId } }).catch(() => {})
+      ctx.client.session.abort({ path: { id: sessionId } }).catch(() => {});
     }
   }
 
-  const toolExecuteAfter = async (
-    input: ToolExecuteInput,
-    output: ToolExecuteOutput,
-  ) => {
+  const toolExecuteAfter = async (input: ToolExecuteInput, output: ToolExecuteOutput) => {
     const { tool, sessionID, args } = input;
     const toolLower = tool.toLowerCase();
 
@@ -206,9 +201,9 @@ export function createInteractiveBashSessionHook(ctx: PluginInput) {
     const state = getOrCreateState(sessionID);
     let stateChanged = false;
 
-    const toolOutput = output?.output ?? ""
+    const toolOutput = output?.output ?? "";
     if (toolOutput.startsWith("Error:")) {
-      return
+      return;
     }
 
     const isNewSession = subCommand === "new-session";
@@ -235,9 +230,7 @@ export function createInteractiveBashSessionHook(ctx: PluginInput) {
 
     const isSessionOperation = isNewSession || isKillSession || isKillServer;
     if (isSessionOperation) {
-      const reminder = buildSessionReminderMessage(
-        Array.from(state.tmuxSessions),
-      );
+      const reminder = buildSessionReminderMessage(Array.from(state.tmuxSessions));
       if (reminder) {
         output.output += reminder;
       }

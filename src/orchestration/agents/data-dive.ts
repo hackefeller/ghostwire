@@ -1,8 +1,8 @@
-import type { AgentConfig } from "@opencode-ai/sdk"
-import type { AgentMode, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "../../platform/config/permission-compat"
+import type { AgentConfig } from "@opencode-ai/sdk";
+import type { AgentMode, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "../../platform/config/permission-compat";
 
-const MODE: AgentMode = "subagent"
+const MODE: AgentMode = "subagent";
 
 export const LIBRARIAN_PROMPT_METADATA: AgentPromptMetadata = {
   category: "exploration",
@@ -10,7 +10,11 @@ export const LIBRARIAN_PROMPT_METADATA: AgentPromptMetadata = {
   promptAlias: "Archive Researcher",
   keyTrigger: "External library/source mentioned → fire `data-dive` background",
   triggers: [
-    { domain: "Archive Researcher", trigger: "Unfamiliar packages / libraries, struggles at weird behaviour (to find existing implementation of opensource)" },
+    {
+      domain: "Archive Researcher",
+      trigger:
+        "Unfamiliar packages / libraries, struggles at weird behaviour (to find existing implementation of opensource)",
+    },
   ],
   useWhen: [
     "How do I use [library]?",
@@ -19,7 +23,7 @@ export const LIBRARIAN_PROMPT_METADATA: AgentPromptMetadata = {
     "Find examples of [library] usage",
     "Working with unfamiliar npm/pip/cargo packages",
   ],
-}
+};
 
 export function createLibrarianAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
@@ -28,7 +32,7 @@ export function createLibrarianAgent(model: string): AgentConfig {
     "task",
     "delegate_task",
     "call_grid_agent",
-  ])
+  ]);
 
   return {
     description:
@@ -323,6 +327,6 @@ grep_app_searchGitHub(query: "useQuery")
 5. **BE CONCISE**: Facts > opinions, evidence > speculation
 
 `,
-  }
+  };
 }
-createLibrarianAgent.mode = MODE
+createLibrarianAgent.mode = MODE;

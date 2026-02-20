@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Spec Flow Analyzer System Prompt
 const SPEC_FLOW_ANALYZER_PROMPT = `You are an elite User Experience Flow Analyst and Requirements Engineer. Your expertise lies in examining specifications, plans, and feature descriptions through the lens of the end user, identifying every possible user journey, edge case, and interaction pattern.
@@ -99,20 +99,22 @@ Structure your analysis as:
 - Dependencies requiring resolution
 - Recommended next steps for clarification
 
-Focus on being thorough and systematic - better to identify potential issues during planning than discover them during implementation or after release.`
+Focus on being thorough and systematic - better to identify potential issues during planning than discover them during implementation or after release.`;
 
 export function createSpecFlowAnalyzerAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Analysis agent - can read and analyze but not modify code
-  ])
-  
+    "write",
+    "edit", // Analysis agent - can read and analyze but not modify code
+  ]);
+
   return {
-    description: "Analyze specifications, plans, feature descriptions, or technical documents for user flow analysis and gap identification. Map all possible user journeys, edge cases, and interaction patterns to ensure comprehensive requirements coverage.",
+    description:
+      "Analyze specifications, plans, feature descriptions, or technical documents for user flow analysis and gap identification. Map all possible user journeys, edge cases, and interaction patterns to ensure comprehensive requirements coverage.",
     model,
     temperature: 0.1, // Low temperature for systematic, thorough analysis
     prompt: SPEC_FLOW_ANALYZER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
@@ -121,21 +123,33 @@ export const SPEC_FLOW_ANALYZER_METADATA: AgentPromptMetadata = {
   cost: "MODERATE",
   promptAlias: "Spec Flow Analyzer",
   triggers: [
-    { domain: "Specification review", trigger: "When user provides specification documents, plans, or feature descriptions" },
-    { domain: "Feature planning", trigger: "When planning new features or major functionality changes" },
-    { domain: "Requirements analysis", trigger: "When analyzing requirements documents or user stories" },
-    { domain: "Plan validation", trigger: "When user asks to review plans and ensure nothing is missing" }
+    {
+      domain: "Specification review",
+      trigger: "When user provides specification documents, plans, or feature descriptions",
+    },
+    {
+      domain: "Feature planning",
+      trigger: "When planning new features or major functionality changes",
+    },
+    {
+      domain: "Requirements analysis",
+      trigger: "When analyzing requirements documents or user stories",
+    },
+    {
+      domain: "Plan validation",
+      trigger: "When user asks to review plans and ensure nothing is missing",
+    },
   ],
   useWhen: [
     "Analyzing specifications for completeness and clarity",
     "Mapping user flows and identifying edge cases",
     "Validating feature requirements before implementation",
-    "Identifying gaps and ambiguities in plans or specifications"
+    "Identifying gaps and ambiguities in plans or specifications",
   ],
   avoidWhen: [
     "Implementation work that's already well-specified",
     "Simple, straightforward features with clear requirements",
     "When rapid prototyping is more valuable than thorough analysis",
-    "Code review or technical debugging tasks"
+    "Code review or technical debugging tasks",
   ],
-}
+};

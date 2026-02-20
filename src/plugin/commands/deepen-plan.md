@@ -11,6 +11,7 @@ argument-hint: "[path to plan file]"
 **Note: The current year is 2026.** Use this when searching for recent documentation and best practices.
 
 This command takes an existing plan (from `/workflows:plan`) and enhances each section with parallel research agents. Each major element gets its own dedicated research sub-agent to find:
+
 - Best practices and industry patterns
 - Performance optimizations
 - UI/UX improvements (if applicable)
@@ -24,6 +25,7 @@ The result is a deeply grounded, production-ready plan with concrete implementat
 <plan_path> #$ARGUMENTS </plan_path>
 
 **If the plan path above is empty:**
+
 1. Check for recent plans: `ls -la docs/plans/`
 2. Ask the user: "Which plan would you like to deepen? Please provide the path (e.g., `docs/plans/2026-01-15-feat-my-feature-plan.md`)."
 
@@ -38,6 +40,7 @@ First, read and parse the plan to identify each major section that can be enhanc
 </thinking>
 
 **Read the plan file and extract:**
+
 - [ ] Overview/Problem Statement
 - [ ] Proposed Solution sections
 - [ ] Technical Approach/Architecture
@@ -49,6 +52,7 @@ First, read and parse the plan to identify each major section that can be enhanc
 - [ ] Domain areas (data models, APIs, UI, security, performance, etc.)
 
 **Create a section manifest:**
+
 ```
 Section 1: [Title] - [Brief description of what to research]
 Section 2: [Title] - [Brief description of what to research]
@@ -92,6 +96,7 @@ cat [skill-path]/SKILL.md
 **Step 3: Match skills to plan content**
 
 For each skill discovered:
+
 - Read its SKILL.md description
 - Check if any plan sections match the skill's domain
 - If there's a match, spawn a sub-agent to apply that skill's knowledge
@@ -101,6 +106,7 @@ For each skill discovered:
 **CRITICAL: For EACH skill that matches, spawn a separate sub-agent and instruct it to USE that skill.**
 
 For each matched skill:
+
 ```
 Task general-purpose: "You have the [skill-name] skill available at [skill-path].
 
@@ -118,18 +124,21 @@ The skill tells you what to do - follow it. Execute the skill completely."
 ```
 
 **Spawn ALL skill sub-agents in PARALLEL:**
+
 - 1 sub-agent per matched skill
 - Each sub-agent reads and uses its assigned skill
 - All run simultaneously
 - 10, 20, 30 skill sub-agents is fine
 
 **Each sub-agent:**
+
 1. Reads its skill's SKILL.md
 2. Follows the skill's workflow/instructions
 3. Applies the skill to the plan
 4. Returns whatever the skill produces (code, recommendations, patterns, reviews, etc.)
 
 **Example spawns:**
+
 ```
 Task general-purpose: "Use the dhh-rails-style skill at ~/.claude/plugins/.../dhh-rails-style. Read SKILL.md and apply it to: [Rails sections of plan]"
 
@@ -204,17 +213,20 @@ head -20 docs/solutions/**/*.md
 **Step 3: Filter - only spawn sub-agents for LIKELY relevant learnings**
 
 Compare each learning's frontmatter against the plan:
+
 - `tags:` - Do any tags match technologies/patterns in the plan?
 - `category:` - Is this category relevant? (e.g., skip deployment-issues if plan is UI-only)
 - `module:` - Does the plan touch this module?
 - `symptom:` / `root_cause:` - Could this problem occur with the plan?
 
 **SKIP learnings that are clearly not applicable:**
+
 - Plan is frontend-only → skip `database-migrations/` learnings
 - Plan is Python → skip `rails-specific/` learnings
 - Plan has no auth → skip `authentication-issues/` learnings
 
 **SPAWN sub-agents for learnings that MIGHT apply:**
+
 - Any tag overlap with plan technologies
 - Same category as plan domain
 - Similar patterns or concerns
@@ -247,6 +259,7 @@ If NOT relevant after deeper analysis:
 ```
 
 **Example filtering:**
+
 ```
 # Found 15 learning files, plan is about "Rails API caching"
 
@@ -286,6 +299,7 @@ Return concrete, actionable recommendations."
 **Also use Context7 MCP for framework documentation:**
 
 For any technologies/frameworks mentioned in the plan, query Context7:
+
 ```
 mcp__plugin_ghostwire_context7__resolve-library-id: Find library ID for [framework]
 mcp__plugin_ghostwire_context7__query-docs: Query documentation for specific patterns
@@ -310,8 +324,10 @@ Read the first few lines of each agent file to understand what it reviews/analyz
 For EVERY agent discovered, launch a Task in parallel:
 
 ```
+
 Task [agent-name]: "Review this plan using your expertise. Apply all your checks and patterns. Plan content: [full plan content]"
-```
+
+````
 
 **CRITICAL RULES:**
 - Do NOT filter agents by "relevance" - run them ALL
@@ -383,16 +399,19 @@ Merge research findings back into the plan, adding depth without changing the or
 **Implementation Details:**
 ```[language]
 // Concrete code example from research
-```
+````
 
 **Edge Cases:**
+
 - [Edge case 1 and how to handle]
 - [Edge case 2 and how to handle]
 
 **References:**
+
 - [Documentation URL 1]
 - [Documentation URL 2]
-```
+
+````
 
 ### 8. Add Enhancement Summary
 
@@ -413,11 +432,12 @@ At the top of the plan, add a summary section:
 ### New Considerations Discovered
 - [Important finding 1]
 - [Important finding 2]
-```
+````
 
 ### 9. Update Plan File
 
 **Write the enhanced plan:**
+
 - Preserve original filename
 - Add `-deepened` suffix if user prefers a new file
 - Update any timestamps or metadata
@@ -429,6 +449,7 @@ Update the plan file in place (or if user requests a separate file, append `-dee
 ## Quality Checks
 
 Before finalizing:
+
 - [ ] All original content preserved
 - [ ] Research insights clearly marked and attributed
 - [ ] Code examples are syntactically correct
@@ -443,6 +464,7 @@ After writing the enhanced plan, use the **AskUserQuestion tool** to present the
 **Question:** "Plan deepened at `[plan_path]`. What would you like to do next?"
 
 **Options:**
+
 1. **View diff** - Show what was added/changed
 2. **Run `/plan_review`** - Get feedback from reviewers on enhanced plan
 3. **Start `/workflows:work`** - Begin implementing this enhanced plan
@@ -450,6 +472,7 @@ After writing the enhanced plan, use the **AskUserQuestion tool** to present the
 5. **Revert** - Restore original plan (if backup exists)
 
 Based on selection:
+
 - **View diff** → Run `git diff [plan_path]` or show before/after
 - **`/plan_review`** → Call the /plan_review command with the plan file path
 - **`/workflows:work`** → Call the /workflows:work command with the plan file path
@@ -459,6 +482,7 @@ Based on selection:
 ## Example Enhancement
 
 **Before (from /workflows:plan):**
+
 ```markdown
 ## Technical Approach
 
@@ -466,7 +490,8 @@ Use React Query for data fetching with optimistic updates.
 ```
 
 **After (from /workflows:deepen-plan):**
-```markdown
+
+````markdown
 ## Technical Approach
 
 Use React Query for data fetching with optimistic updates.
@@ -474,16 +499,19 @@ Use React Query for data fetching with optimistic updates.
 ### Research Insights
 
 **Best Practices:**
+
 - Configure `staleTime` and `cacheTime` based on data freshness requirements
 - Use `queryKey` factories for consistent cache invalidation
 - Implement error boundaries around query-dependent components
 
 **Performance Considerations:**
+
 - Enable `refetchOnWindowFocus: false` for stable data to reduce unnecessary requests
 - Use `select` option to transform and memoize data at query level
 - Consider `placeholderData` for instant perceived loading
 
 **Implementation Details:**
+
 ```typescript
 // Recommended query configuration
 const queryClient = new QueryClient({
@@ -496,15 +524,20 @@ const queryClient = new QueryClient({
   },
 });
 ```
+````
 
 **Edge Cases:**
+
 - Handle race conditions with `cancelQueries` on component unmount
 - Implement retry logic for transient network failures
 - Consider offline support with `persistQueryClient`
 
 **References:**
+
 - https://tanstack.com/query/latest/docs/react/guides/optimistic-updates
 - https://tkdodo.eu/blog/practical-react-query
+
 ```
 
 NEVER CODE! Just research and enhance the plan.
+```

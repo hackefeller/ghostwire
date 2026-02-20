@@ -59,7 +59,6 @@ Do you want to add this to the todo list?
 1. **Update existing todo file** (if it exists) or **Create new filename:**
 
    If todo already exists (from code review):
-
    - Rename file from `{id}-pending-{priority}-{desc}.md` → `{id}-ready-{priority}-{desc}.md`
    - Update YAML frontmatter: `status: pending` → `status: ready`
    - Keep issue_id, priority, and description unchanged
@@ -71,7 +70,6 @@ Do you want to add this to the todo list?
    ```
 
    Priority mapping:
-
    - 🔴 P1 (CRITICAL) → `p1`
    - 🟡 P2 (IMPORTANT) → `p2`
    - 🔵 P3 (NICE-TO-HAVE) → `p3`

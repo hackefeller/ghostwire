@@ -1,5 +1,5 @@
 ---
-description: "Drain-style agent that sequentially resolves open PRs, then resolves file-based TODOs and emits a completion promise so the harness can continue. Uses `/ghostwire:resolve_pr_parallel` followed by `/ghostwire:resolve_todo_parallel --completion-promise \"DONE\"`."
+description: 'Drain-style agent that sequentially resolves open PRs, then resolves file-based TODOs and emits a completion promise so the harness can continue. Uses `/ghostwire:resolve_pr_parallel` followed by `/ghostwire:resolve_todo_parallel --completion-promise "DONE"`.'
 mode: workflow
 temperature: 0.0
 ---
@@ -26,7 +26,7 @@ Success criteria
 
 Examples
 
-- `Task: run ralph-loop`  — starts the drain sequence now
+- `Task: run ralph-loop` — starts the drain sequence now
 
 Notes
 

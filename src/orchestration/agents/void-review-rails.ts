@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Kieran Rails Reviewer System Prompt
 const KIERAN_RAILS_REVIEWER_PROMPT = `You are Kieran, a super senior Rails developer with impeccable taste and an exceptionally high bar for Rails code quality. You review all code changes with a keen eye for Rails conventions, clarity, and maintainability.
@@ -81,20 +81,22 @@ When reviewing code:
 5. Be strict on existing code modifications, pragmatic on new isolated code
 6. Always explain WHY something doesn't meet the bar
 
-Your reviews should be thorough but actionable, with clear examples of how to improve the code. Remember: you're not just finding problems, you're teaching Rails excellence.`
+Your reviews should be thorough but actionable, with clear examples of how to improve the code. Remember: you're not just finding problems, you're teaching Rails excellence.`;
 
 export function createKieranRailsReviewerAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Read-only for code review, can use LSP tools for analysis
-  ])
-  
+    "write",
+    "edit", // Read-only for code review, can use LSP tools for analysis
+  ]);
+
   return {
-    description: "Rails code review with Kieran's strict conventions and taste preferences. Use after implementing features, modifying existing code, or creating new Rails components to ensure exceptional code quality.",
+    description:
+      "Rails code review with Kieran's strict conventions and taste preferences. Use after implementing features, modifying existing code, or creating new Rails components to ensure exceptional code quality.",
     model,
     temperature: 0.1, // Low temperature for consistent, focused code review
     prompt: KIERAN_RAILS_REVIEWER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
@@ -102,21 +104,25 @@ export const KIERAN_RAILS_REVIEWER_METADATA: AgentPromptMetadata = {
   category: "specialist",
   cost: "EXPENSIVE",
   triggers: [
-    { domain: "Rails code implementation", trigger: "After implementing features, modifying existing code, or creating new Rails components" },
+    {
+      domain: "Rails code implementation",
+      trigger:
+        "After implementing features, modifying existing code, or creating new Rails components",
+    },
     { domain: "Controller actions", trigger: "New controller actions with turbo streams" },
     { domain: "Service refactoring", trigger: "Refactored existing service objects" },
-    { domain: "Component creation", trigger: "New view components or Rails components" }
+    { domain: "Component creation", trigger: "New view components or Rails components" },
   ],
   useWhen: [
     "Rails code review needed",
-    "Ensuring Rails convention compliance", 
+    "Ensuring Rails convention compliance",
     "Evaluating code testability and clarity",
-    "Checking for anti-patterns in Rails code"
+    "Checking for anti-patterns in Rails code",
   ],
   avoidWhen: [
     "Non-Rails codebases",
     "Initial exploration or prototyping",
     "Simple file operations",
-    "Documentation-only changes"
+    "Documentation-only changes",
   ],
-}
+};

@@ -1,6 +1,6 @@
-import type { PluginInput } from "@opencode-ai/plugin"
-import type { createOpencodeClient } from "@opencode-ai/sdk"
-import type { ExperimentalConfig } from "../../../platform/config"
+import type { PluginInput } from "@opencode-ai/plugin";
+import type { createOpencodeClient } from "@opencode-ai/sdk";
+import type { ExperimentalConfig } from "../../../platform/config";
 import {
   findEmptyMessages,
   findEmptyMessageByIndex,
@@ -14,63 +14,66 @@ import {
   readParts,
   replaceEmptyTextParts,
   stripThinkingParts,
-} from "./storage"
-import type { MessageData, ResumeConfig } from "./types"
-import { log } from "../../../integration/shared/logger"
+} from "./storage";
+import type { MessageData, ResumeConfig } from "./types";
+import { log } from "../../../integration/shared/logger";
 
 export interface SessionRecoveryOptions {
-  experimental?: ExperimentalConfig
+  experimental?: ExperimentalConfig;
 }
 
-type Client = ReturnType<typeof createOpencodeClient>
+type Client = ReturnType<typeof createOpencodeClient>;
 
 type RecoveryErrorType =
   | "tool_result_missing"
   | "thinking_block_order"
   | "thinking_disabled_violation"
-  | null
+  | null;
 
 interface MessageInfo {
-  id?: string
-  role?: string
-  sessionID?: string
-  parentID?: string
-  error?: unknown
+  id?: string;
+  role?: string;
+  sessionID?: string;
+  parentID?: string;
+  error?: unknown;
 }
 
 interface ToolUsePart {
-  type: "tool_use"
-  id: string
-  name: string
-  input: Record<string, unknown>
+  type: "tool_use";
+  id: string;
+  name: string;
+  input: Record<string, unknown>;
 }
 
 interface MessagePart {
-  type: string
-  id?: string
-  text?: string
-  thinking?: string
-  name?: string
-  input?: Record<string, unknown>
+  type: string;
+  id?: string;
+  text?: string;
+  thinking?: string;
+  name?: string;
+  input?: Record<string, unknown>;
 }
 
-const RECOVERY_RESUME_TEXT = "[session recovered - continuing previous task]"
+const RECOVERY_RESUME_TEXT = "[session recovered - continuing previous task]";
 
 function findLastUserMessage(messages: MessageData[]): MessageData | undefined {
   for (let i = messages.length - 1; i >= 0; i--) {
     if (messages[i].info?.role === "user") {
-      return messages[i]
+      return messages[i];
     }
   }
-  return undefined
+  return undefined;
 }
 
-function extractResumeConfig(userMessage: MessageData | undefined, sessionID: string): ResumeConfig {
+function extractResumeConfig(
+  userMessage: MessageData | undefined,
+  sessionID: string,
+): ResumeConfig {
   return {
     sessionID,
     agent: userMessage?.info?.agent,
     model: userMessage?.info?.model,
-  }
+  };
 }
 
 async function resumeSession(client: Client, config: ResumeConfig): Promise<boolean> {
@@ -82,49 +85,49 @@ async function resumeSession(client: Client, config: ResumeConfig): Promise<bool
         agent: config.agent,
         model: config.model,
       },
-    })
-    return true
+    });
+    return true;
   } catch {
-    return false
+    return false;
   }
 }
 
 function getErrorMessage(error: unknown): string {
-  if (!error) return ""
-  if (typeof error === "string") return error.toLowerCase()
+  if (!error) return "";
+  if (typeof error === "string") return error.toLowerCase();
 
-  const errorObj = error as Record<string, unknown>
+  const errorObj = error as Record<string, unknown>;
   const paths = [
     errorObj.data,
     errorObj.error,
     errorObj,
     (errorObj.data as Record<string, unknown>)?.error,
-  ]
+  ];
 
   for (const obj of paths) {
     if (obj && typeof obj === "object") {
-      const msg = (obj as Record<string, unknown>).message
+      const msg = (obj as Record<string, unknown>).message;
       if (typeof msg === "string" && msg.length > 0) {
-        return msg.toLowerCase()
+        return msg.toLowerCase();
       }
     }
   }
 
   try {
-    return JSON.stringify(error).toLowerCase()
+    return JSON.stringify(error).toLowerCase();
   } catch {
-    return ""
+    return "";
   }
 }
 
 function extractMessageIndex(error: unknown): number | null {
-  const message = getErrorMessage(error)
-  const match = message.match(/messages\.(\d+)/)
-  return match ? parseInt(match[1], 10) : null
+  const message = getErrorMessage(error);
+  const match = message.match(/messages\.(\d+)/);
+  return match ? parseInt(match[1], 10) : null;
 }
 
 export function detectErrorType(error: unknown): RecoveryErrorType {
-  const message = getErrorMessage(error)
+  const message = getErrorMessage(error);
 
   // IMPORTANT: Check thinking_block_order BEFORE tool_result_missing
   // because Anthropic's extended thinking error messages contain "tool_use" and "tool_result"
@@ -138,62 +141,65 @@ export function detectErrorType(error: unknown): RecoveryErrorType {
       message.includes("cannot be thinking") ||
       (message.includes("expected") && message.includes("found")))
   ) {
-    return "thinking_block_order"
+    return "thinking_block_order";
   }
 
   if (message.includes("thinking is disabled") && message.includes("cannot contain")) {
-    return "thinking_disabled_violation"
+    return "thinking_disabled_violation";
   }
 
   if (message.includes("tool_use") && message.includes("tool_result")) {
-    return "tool_result_missing"
+    return "tool_result_missing";
   }
 
-  return null
+  return null;
 }
 
 function extractToolUseIds(parts: MessagePart[]): string[] {
-  return parts.filter((p): p is ToolUsePart => p.type === "tool_use" && !!p.id).map((p) => p.id)
+  return parts.filter((p): p is ToolUsePart => p.type === "tool_use" && !!p.id).map((p) => p.id);
 }
 
 async function recoverToolResultMissing(
   client: Client,
   sessionID: string,
-  failedAssistantMsg: MessageData
+  failedAssistantMsg: MessageData,
 ): Promise<boolean> {
   // Try API parts first, fallback to filesystem if empty
-  let parts = failedAssistantMsg.parts || []
+  let parts = failedAssistantMsg.parts || [];
   if (parts.length === 0 && failedAssistantMsg.info?.id) {
-    const storedParts = readParts(failedAssistantMsg.info.id)
+    const storedParts = readParts(failedAssistantMsg.info.id);
     parts = storedParts.map((p) => ({
       type: p.type === "tool" ? "tool_use" : p.type,
       id: "callID" in p ? (p as { callID?: string }).callID : p.id,
       name: "tool" in p ? (p as { tool?: string }).tool : undefined,
-      input: "state" in p ? (p as { state?: { input?: Record<string, unknown> } }).state?.input : undefined,
-    }))
+      input:
+        "state" in p
+          ? (p as { state?: { input?: Record<string, unknown> } }).state?.input
+          : undefined,
+    }));
   }
-  const toolUseIds = extractToolUseIds(parts)
+  const toolUseIds = extractToolUseIds(parts);
 
   if (toolUseIds.length === 0) {
-    return false
+    return false;
   }
 
   const toolResultParts = toolUseIds.map((id) => ({
     type: "tool_result" as const,
     tool_use_id: id,
     content: "Operation cancelled by user (ESC pressed)",
-  }))
+  }));
 
   try {
     await client.session.prompt({
       path: { id: sessionID },
       // @ts-expect-error - SDK types may not include tool_result parts
       body: { parts: toolResultParts },
-    })
+    });
 
-    return true
+    return true;
   } catch {
-    return false
+    return false;
   }
 }
 
@@ -202,112 +208,112 @@ async function recoverThinkingBlockOrder(
   sessionID: string,
   _failedAssistantMsg: MessageData,
   _directory: string,
-  error: unknown
+  error: unknown,
 ): Promise<boolean> {
-  const targetIndex = extractMessageIndex(error)
+  const targetIndex = extractMessageIndex(error);
   if (targetIndex !== null) {
-    const targetMessageID = findMessageByIndexNeedingThinking(sessionID, targetIndex)
+    const targetMessageID = findMessageByIndexNeedingThinking(sessionID, targetIndex);
     if (targetMessageID) {
-      return prependThinkingPart(sessionID, targetMessageID)
+      return prependThinkingPart(sessionID, targetMessageID);
     }
   }
 
-  const orphanMessages = findMessagesWithOrphanThinking(sessionID)
+  const orphanMessages = findMessagesWithOrphanThinking(sessionID);
 
   if (orphanMessages.length === 0) {
-    return false
+    return false;
   }
 
-  let anySuccess = false
+  let anySuccess = false;
   for (const messageID of orphanMessages) {
     if (prependThinkingPart(sessionID, messageID)) {
-      anySuccess = true
+      anySuccess = true;
     }
   }
 
-  return anySuccess
+  return anySuccess;
 }
 
 async function recoverThinkingDisabledViolation(
   _client: Client,
   sessionID: string,
-  _failedAssistantMsg: MessageData
+  _failedAssistantMsg: MessageData,
 ): Promise<boolean> {
-  const messagesWithThinking = findMessagesWithThinkingBlocks(sessionID)
+  const messagesWithThinking = findMessagesWithThinkingBlocks(sessionID);
 
   if (messagesWithThinking.length === 0) {
-    return false
+    return false;
   }
 
-  let anySuccess = false
+  let anySuccess = false;
   for (const messageID of messagesWithThinking) {
     if (stripThinkingParts(messageID)) {
-      anySuccess = true
+      anySuccess = true;
     }
   }
 
-  return anySuccess
+  return anySuccess;
 }
 
-const PLACEHOLDER_TEXT = "[user interrupted]"
+const PLACEHOLDER_TEXT = "[user interrupted]";
 
 async function recoverEmptyContentMessage(
   _client: Client,
   sessionID: string,
   failedAssistantMsg: MessageData,
   _directory: string,
-  error: unknown
+  error: unknown,
 ): Promise<boolean> {
-  const targetIndex = extractMessageIndex(error)
-  const failedID = failedAssistantMsg.info?.id
-  let anySuccess = false
+  const targetIndex = extractMessageIndex(error);
+  const failedID = failedAssistantMsg.info?.id;
+  let anySuccess = false;
 
-  const messagesWithEmptyText = findMessagesWithEmptyTextParts(sessionID)
+  const messagesWithEmptyText = findMessagesWithEmptyTextParts(sessionID);
   for (const messageID of messagesWithEmptyText) {
     if (replaceEmptyTextParts(messageID, PLACEHOLDER_TEXT)) {
-      anySuccess = true
+      anySuccess = true;
     }
   }
 
-  const thinkingOnlyIDs = findMessagesWithThinkingOnly(sessionID)
+  const thinkingOnlyIDs = findMessagesWithThinkingOnly(sessionID);
   for (const messageID of thinkingOnlyIDs) {
     if (injectTextPart(sessionID, messageID, PLACEHOLDER_TEXT)) {
-      anySuccess = true
+      anySuccess = true;
     }
   }
 
   if (targetIndex !== null) {
-    const targetMessageID = findEmptyMessageByIndex(sessionID, targetIndex)
+    const targetMessageID = findEmptyMessageByIndex(sessionID, targetIndex);
     if (targetMessageID) {
       if (replaceEmptyTextParts(targetMessageID, PLACEHOLDER_TEXT)) {
-        return true
+        return true;
       }
       if (injectTextPart(sessionID, targetMessageID, PLACEHOLDER_TEXT)) {
-        return true
+        return true;
       }
     }
   }
 
   if (failedID) {
     if (replaceEmptyTextParts(failedID, PLACEHOLDER_TEXT)) {
-      return true
+      return true;
     }
     if (injectTextPart(sessionID, failedID, PLACEHOLDER_TEXT)) {
-      return true
+      return true;
     }
   }
 
-  const emptyMessageIDs = findEmptyMessages(sessionID)
+  const emptyMessageIDs = findEmptyMessages(sessionID);
   for (const messageID of emptyMessageIDs) {
     if (replaceEmptyTextParts(messageID, PLACEHOLDER_TEXT)) {
-      anySuccess = true
+      anySuccess = true;
     }
     if (injectTextPart(sessionID, messageID, PLACEHOLDER_TEXT)) {
-      anySuccess = true
+      anySuccess = true;
     }
   }
 
-  return anySuccess
+  return anySuccess;
 }
 
 // NOTE: fallbackRevertStrategy was removed (2025-12-08)
@@ -316,71 +322,74 @@ async function recoverEmptyContentMessage(
 // recoverThinkingBlockOrder, recoverThinkingDisabledViolation, recoverEmptyContentMessage).
 
 export interface SessionRecoveryHook {
-  handleSessionRecovery: (info: MessageInfo) => Promise<boolean>
-  isRecoverableError: (error: unknown) => boolean
-  setOnAbortCallback: (callback: (sessionID: string) => void) => void
-  setOnRecoveryCompleteCallback: (callback: (sessionID: string) => void) => void
+  handleSessionRecovery: (info: MessageInfo) => Promise<boolean>;
+  isRecoverableError: (error: unknown) => boolean;
+  setOnAbortCallback: (callback: (sessionID: string) => void) => void;
+  setOnRecoveryCompleteCallback: (callback: (sessionID: string) => void) => void;
 }
 
-export function createSessionRecoveryHook(ctx: PluginInput, options?: SessionRecoveryOptions): SessionRecoveryHook {
-  const processingErrors = new Set<string>()
-  const experimental = options?.experimental
-  let onAbortCallback: ((sessionID: string) => void) | null = null
-  let onRecoveryCompleteCallback: ((sessionID: string) => void) | null = null
+export function createSessionRecoveryHook(
+  ctx: PluginInput,
+  options?: SessionRecoveryOptions,
+): SessionRecoveryHook {
+  const processingErrors = new Set<string>();
+  const experimental = options?.experimental;
+  let onAbortCallback: ((sessionID: string) => void) | null = null;
+  let onRecoveryCompleteCallback: ((sessionID: string) => void) | null = null;
 
   const setOnAbortCallback = (callback: (sessionID: string) => void): void => {
-    onAbortCallback = callback
-  }
+    onAbortCallback = callback;
+  };
 
   const setOnRecoveryCompleteCallback = (callback: (sessionID: string) => void): void => {
-    onRecoveryCompleteCallback = callback
-  }
+    onRecoveryCompleteCallback = callback;
+  };
 
   const isRecoverableError = (error: unknown): boolean => {
-    return detectErrorType(error) !== null
-  }
+    return detectErrorType(error) !== null;
+  };
 
   const handleSessionRecovery = async (info: MessageInfo): Promise<boolean> => {
-    if (!info || info.role !== "assistant" || !info.error) return false
+    if (!info || info.role !== "assistant" || !info.error) return false;
 
-    const errorType = detectErrorType(info.error)
-    if (!errorType) return false
+    const errorType = detectErrorType(info.error);
+    if (!errorType) return false;
 
-    const sessionID = info.sessionID
-    const assistantMsgID = info.id
+    const sessionID = info.sessionID;
+    const assistantMsgID = info.id;
 
-    if (!sessionID || !assistantMsgID) return false
-    if (processingErrors.has(assistantMsgID)) return false
-    processingErrors.add(assistantMsgID)
+    if (!sessionID || !assistantMsgID) return false;
+    if (processingErrors.has(assistantMsgID)) return false;
+    processingErrors.add(assistantMsgID);
 
     try {
       if (onAbortCallback) {
-        onAbortCallback(sessionID)  // Mark recovering BEFORE abort
+        onAbortCallback(sessionID); // Mark recovering BEFORE abort
       }
 
-      await ctx.client.session.abort({ path: { id: sessionID } }).catch(() => {})
+      await ctx.client.session.abort({ path: { id: sessionID } }).catch(() => {});
 
       const messagesResp = await ctx.client.session.messages({
         path: { id: sessionID },
         query: { directory: ctx.directory },
-      })
-      const msgs = (messagesResp as { data?: MessageData[] }).data
+      });
+      const msgs = (messagesResp as { data?: MessageData[] }).data;
 
-      const failedMsg = msgs?.find((m) => m.info?.id === assistantMsgID)
+      const failedMsg = msgs?.find((m) => m.info?.id === assistantMsgID);
       if (!failedMsg) {
-        return false
+        return false;
       }
 
       const toastTitles: Record<RecoveryErrorType & string, string> = {
         tool_result_missing: "Tool Crash Recovery",
         thinking_block_order: "Thinking Block Recovery",
         thinking_disabled_violation: "Thinking Strip Recovery",
-      }
+      };
       const toastMessages: Record<RecoveryErrorType & string, string> = {
         tool_result_missing: "Injecting cancelled tool results...",
         thinking_block_order: "Fixing message structure...",
         thinking_disabled_violation: "Stripping thinking blocks...",
-      }
+      };
 
       await ctx.client.tui
         .showToast({
@@ -391,46 +400,52 @@ export function createSessionRecoveryHook(ctx: PluginInput, options?: SessionRec
             duration: 3000,
           },
         })
-        .catch(() => {})
+        .catch(() => {});
 
-      let success = false
+      let success = false;
 
       if (errorType === "tool_result_missing") {
-        success = await recoverToolResultMissing(ctx.client, sessionID, failedMsg)
+        success = await recoverToolResultMissing(ctx.client, sessionID, failedMsg);
       } else if (errorType === "thinking_block_order") {
-        success = await recoverThinkingBlockOrder(ctx.client, sessionID, failedMsg, ctx.directory, info.error)
+        success = await recoverThinkingBlockOrder(
+          ctx.client,
+          sessionID,
+          failedMsg,
+          ctx.directory,
+          info.error,
+        );
         if (success && experimental?.auto_resume) {
-          const lastUser = findLastUserMessage(msgs ?? [])
-          const resumeConfig = extractResumeConfig(lastUser, sessionID)
-          await resumeSession(ctx.client, resumeConfig)
+          const lastUser = findLastUserMessage(msgs ?? []);
+          const resumeConfig = extractResumeConfig(lastUser, sessionID);
+          await resumeSession(ctx.client, resumeConfig);
         }
       } else if (errorType === "thinking_disabled_violation") {
-        success = await recoverThinkingDisabledViolation(ctx.client, sessionID, failedMsg)
+        success = await recoverThinkingDisabledViolation(ctx.client, sessionID, failedMsg);
         if (success && experimental?.auto_resume) {
-          const lastUser = findLastUserMessage(msgs ?? [])
-          const resumeConfig = extractResumeConfig(lastUser, sessionID)
-          await resumeSession(ctx.client, resumeConfig)
+          const lastUser = findLastUserMessage(msgs ?? []);
+          const resumeConfig = extractResumeConfig(lastUser, sessionID);
+          await resumeSession(ctx.client, resumeConfig);
         }
       }
 
-      return success
-  } catch (err) {
-    log("[grid-session-recovery] Recovery failed:", err)
-    return false
-  } finally {
-    processingErrors.delete(assistantMsgID)
+      return success;
+    } catch (err) {
+      log("[grid-session-recovery] Recovery failed:", err);
+      return false;
+    } finally {
+      processingErrors.delete(assistantMsgID);
 
-    // Always notify recovery complete, regardless of success or failure
-    if (sessionID && onRecoveryCompleteCallback) {
-      onRecoveryCompleteCallback(sessionID)
+      // Always notify recovery complete, regardless of success or failure
+      if (sessionID && onRecoveryCompleteCallback) {
+        onRecoveryCompleteCallback(sessionID);
+      }
     }
-  }
-  }
+  };
 
   return {
     handleSessionRecovery,
     isRecoverableError,
     setOnAbortCallback,
     setOnRecoveryCompleteCallback,
-  }
+  };
 }

@@ -76,12 +76,13 @@ Run ALL or most of these agents at the same time:
 
 These agents are run ONLY when the PR matches specific criteria. Check the PR files list to determine if they apply:
 
-**If PR contains database migrations (db/migrate/*.rb files) or data backfills:**
+**If PR contains database migrations (db/migrate/\*.rb files) or data backfills:**
 
 14. Task data-migration-expert(PR content) - Validates ID mappings match production, checks for swapped values, verifies rollback safety
 15. Task deployment-verification-agent(PR content) - Creates Go/No-Go deployment checklist with SQL verification queries
 
 **When to run migration agents:**
+
 - PR includes files matching `db/migrate/*.rb`
 - PR modifies columns that store IDs, enums, or mappings
 - PR includes data backfill scripts or rake tasks
@@ -89,6 +90,7 @@ These agents are run ONLY when the PR matches specific criteria. Check the PR fi
 - PR title/body mentions: migration, backfill, data transformation, ID mapping
 
 **What these agents check:**
+
 - `data-migration-expert`: Verifies hard-coded mappings match production reality (prevents swapped IDs), checks for orphaned associations, validates dual-write patterns
 - `deployment-verification-agent`: Produces executable pre/post-deploy checklists with SQL queries, rollback procedures, and monitoring plans
 
@@ -109,28 +111,24 @@ Complete system context map with component interactions
 <stakeholder_perspectives>
 
 1. **Developer Perspective** <questions>
-
    - How easy is this to understand and modify?
    - Are the APIs intuitive?
    - Is debugging straightforward?
    - Can I test this easily? </questions>
 
 2. **Operations Perspective** <questions>
-
    - How do I deploy this safely?
    - What metrics and logs are available?
    - How do I troubleshoot issues?
    - What are the resource requirements? </questions>
 
 3. **End User Perspective** <questions>
-
    - Is the feature intuitive?
    - Are error messages helpful?
    - Is performance acceptable?
    - Does it solve my problem? </questions>
 
 4. **Security Team Perspective** <questions>
-
    - What's the attack surface?
    - Are there compliance requirements?
    - How is data protected?
@@ -257,7 +255,6 @@ Sub-agents can:
 **Process (Using file-todos Skill):**
 
 1. For each finding:
-
    - Determine severity (P1/P2/P3)
    - Write detailed Problem Statement and Findings
    - Create 2-3 Proposed Solutions with pros/cons/effort/risk
@@ -271,7 +268,6 @@ Sub-agents can:
    ```
 
    The skill provides:
-
    - Template location: `.claude/skills/file-todos/assets/todo-template.md`
    - Naming convention: `{issue_id}-{status}-{priority}-{description}.md`
    - YAML frontmatter structure: status, priority, issue_id, tags, dependencies
@@ -377,7 +373,6 @@ After creating all todo files, present comprehensive summary:
 ### Next Steps:
 
 1. **Address P1 Findings**: CRITICAL - must be fixed before merge
-
    - Review each P1 todo in detail
    - Implement fixes or request exemption
    - Verify fixes before merging PR
@@ -423,7 +418,7 @@ After creating all todo files, present comprehensive summary:
 - Optimization opportunities
 - Documentation updates
 
-```
+````
 
 ### 7. End-to-End Testing (Optional)
 
@@ -448,18 +443,22 @@ After presenting the Summary Report, offer appropriate testing based on project 
 **"Want to run browser tests on the affected pages?"**
 1. Yes - run `/test-browser`
 2. No - skip
-```
+````
 
 **For iOS Projects:**
+
 ```markdown
 **"Want to run Xcode simulator tests on the app?"**
+
 1. Yes - run `/xcode-test`
 2. No - skip
 ```
 
 **For Hybrid Projects (e.g., Rails + Hotwire Native):**
+
 ```markdown
 **"Want to run end-to-end tests?"**
+
 1. Web only - run `/test-browser`
 2. iOS only - run `/xcode-test`
 3. Both - run both commands
@@ -477,6 +476,7 @@ Task general-purpose("Run /test-browser for PR #[number]. Test all affected page
 ```
 
 The subagent will:
+
 1. Identify pages affected by the PR
 2. Navigate to each page and capture snapshots (using Playwright MCP or agent-browser CLI)
 3. Check for console errors
@@ -496,6 +496,7 @@ Task general-purpose("Run /xcode-test for scheme [name]. Build for simulator, in
 ```
 
 The subagent will:
+
 1. Verify XcodeBuildMCP is installed
 2. Discover project and schemes
 3. Build for iOS Simulator
@@ -511,4 +512,7 @@ The subagent will:
 ### Important: P1 Findings Block Merge
 
 Any **🔴 P1 (CRITICAL)** findings must be addressed before merging the PR. Present these prominently and ensure they're resolved before accepting the PR.
+
+```
+
 ```

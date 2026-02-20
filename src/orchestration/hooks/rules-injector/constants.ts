@@ -19,9 +19,7 @@ export const PROJECT_RULE_SUBDIRS: [string, string][] = [
   [".claude", "rules"],
 ];
 
-export const PROJECT_RULE_FILES: string[] = [
-  ".github/copilot-instructions.md",
-];
+export const PROJECT_RULE_FILES: string[] = [".github/copilot-instructions.md"];
 
 export const GITHUB_INSTRUCTIONS_PATTERN = /\.instructions\.md$/;
 

@@ -1,37 +1,39 @@
-import { existsSync, readFileSync } from "node:fs"
-import type { CheckResult, CheckDefinition, PluginInfo } from "../types"
-import { CHECK_IDS, CHECK_NAMES, PACKAGE_NAME } from "../constants"
-import { parseJsonc } from "../../../integration/shared"
-import { getOpenCodeConfigPaths } from "../../../platform/opencode/config-dir"
+import { existsSync, readFileSync } from "node:fs";
+import type { CheckResult, CheckDefinition, PluginInfo } from "../types";
+import { CHECK_IDS, CHECK_NAMES, PACKAGE_NAME } from "../constants";
+import { parseJsonc } from "../../../integration/shared";
+import { getOpenCodeConfigPaths } from "../../../platform/opencode/config-dir";
 
 function detectConfigPath(): { path: string; format: "json" | "jsonc" } | null {
-  const paths = getOpenCodeConfigPaths({ binary: "opencode", version: null })
+  const paths = getOpenCodeConfigPaths({ binary: "opencode", version: null });
 
   if (existsSync(paths.configJsonc)) {
-    return { path: paths.configJsonc, format: "jsonc" }
+    return { path: paths.configJsonc, format: "jsonc" };
   }
   if (existsSync(paths.configJson)) {
-    return { path: paths.configJson, format: "json" }
+    return { path: paths.configJson, format: "json" };
   }
-  return null
+  return null;
 }
 
-function findPluginEntry(plugins: string[]): { entry: string; isPinned: boolean; version: string | null } | null {
+function findPluginEntry(
+  plugins: string[],
+): { entry: string; isPinned: boolean; version: string | null } | null {
   for (const plugin of plugins) {
     if (plugin === PACKAGE_NAME || plugin.startsWith(`${PACKAGE_NAME}@`)) {
-      const isPinned = plugin.includes("@")
-      const version = isPinned ? plugin.split("@")[1] : null
-      return { entry: plugin, isPinned, version }
+      const isPinned = plugin.includes("@");
+      const version = isPinned ? plugin.split("@")[1] : null;
+      return { entry: plugin, isPinned, version };
     }
     if (plugin.startsWith("file://") && plugin.includes(PACKAGE_NAME)) {
-      return { entry: plugin, isPinned: false, version: "local-dev" }
+      return { entry: plugin, isPinned: false, version: "local-dev" };
     }
   }
-  return null
+  return null;
 }
 
 export function getPluginInfo(): PluginInfo {
-  const configInfo = detectConfigPath()
+  const configInfo = detectConfigPath();
 
   if (!configInfo) {
     return {
@@ -40,14 +42,14 @@ export function getPluginInfo(): PluginInfo {
       entry: null,
       isPinned: false,
       pinnedVersion: null,
-    }
+    };
   }
 
   try {
-    const content = readFileSync(configInfo.path, "utf-8")
-    const config = parseJsonc<{ plugin?: string[] }>(content)
-    const plugins = config.plugin ?? []
-    const pluginEntry = findPluginEntry(plugins)
+    const content = readFileSync(configInfo.path, "utf-8");
+    const config = parseJsonc<{ plugin?: string[] }>(content);
+    const plugins = config.plugin ?? [];
+    const pluginEntry = findPluginEntry(plugins);
 
     if (!pluginEntry) {
       return {
@@ -56,7 +58,7 @@ export function getPluginInfo(): PluginInfo {
         entry: null,
         isPinned: false,
         pinnedVersion: null,
-      }
+      };
     }
 
     return {
@@ -65,7 +67,7 @@ export function getPluginInfo(): PluginInfo {
       entry: pluginEntry.entry,
       isPinned: pluginEntry.isPinned,
       pinnedVersion: pluginEntry.version,
-    }
+    };
   } catch {
     return {
       registered: false,
@@ -73,15 +75,15 @@ export function getPluginInfo(): PluginInfo {
       entry: null,
       isPinned: false,
       pinnedVersion: null,
-    }
+    };
   }
 }
 
 export async function checkPluginRegistration(): Promise<CheckResult> {
-  const info = getPluginInfo()
+  const info = getPluginInfo();
 
   if (!info.configPath) {
-    const expectedPaths = getOpenCodeConfigPaths({ binary: "opencode", version: null })
+    const expectedPaths = getOpenCodeConfigPaths({ binary: "opencode", version: null });
     return {
       name: CHECK_NAMES[CHECK_IDS.PLUGIN_REGISTRATION],
       status: "fail",
@@ -90,7 +92,7 @@ export async function checkPluginRegistration(): Promise<CheckResult> {
         "Run: bunx ghostwire install",
         `Expected: ${expectedPaths.configJson} or ${expectedPaths.configJsonc}`,
       ],
-    }
+    };
   }
 
   if (!info.registered) {
@@ -98,23 +100,18 @@ export async function checkPluginRegistration(): Promise<CheckResult> {
       name: CHECK_NAMES[CHECK_IDS.PLUGIN_REGISTRATION],
       status: "fail",
       message: "Plugin not registered in config",
-      details: [
-        "Run: bunx ghostwire install",
-        `Config: ${info.configPath}`,
-      ],
-    }
+      details: ["Run: bunx ghostwire install", `Config: ${info.configPath}`],
+    };
   }
 
-  const message = info.isPinned
-    ? `Registered (pinned: ${info.pinnedVersion})`
-    : "Registered"
+  const message = info.isPinned ? `Registered (pinned: ${info.pinnedVersion})` : "Registered";
 
   return {
     name: CHECK_NAMES[CHECK_IDS.PLUGIN_REGISTRATION],
     status: "pass",
     message,
     details: [`Config: ${info.configPath}`],
-  }
+  };
 }
 
 export function getPluginCheckDefinition(): CheckDefinition {
@@ -124,5 +121,5 @@ export function getPluginCheckDefinition(): CheckDefinition {
     category: "installation",
     check: checkPluginRegistration,
     critical: true,
-  }
+  };
 }

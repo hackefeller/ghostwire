@@ -1,5 +1,5 @@
-import { existsSync, readFileSync } from "fs"
-import { basename, join } from "path"
+import { existsSync, readFileSync } from "fs";
+import { basename, join } from "path";
 import {
   loadPluginCommands,
   loadPluginSkillsAsCommands,
@@ -9,9 +9,9 @@ import {
   type LoadedPlugin,
   type PluginManifest,
   type PluginComponentsResult,
-} from "../../claude-code-plugin-loader"
-import type { ClaudeImportOptions, ClaudeImportResult } from "./types"
-import { buildNamespacedName, shouldIncludeComponent } from "./security"
+} from "../../claude-code-plugin-loader";
+import type { ClaudeImportOptions, ClaudeImportResult } from "./types";
+import { buildNamespacedName, shouldIncludeComponent } from "./security";
 
 function buildEmptyComponents(): PluginComponentsResult {
   return {
@@ -22,24 +22,24 @@ function buildEmptyComponents(): PluginComponentsResult {
     hooksConfigs: [],
     plugins: [],
     errors: [],
-  }
+  };
 }
 
 function loadManifest(pluginRoot: string): PluginManifest | null {
-  const manifestPath = join(pluginRoot, ".claude-plugin", "plugin.json")
-  if (!existsSync(manifestPath)) return null
+  const manifestPath = join(pluginRoot, ".claude-plugin", "plugin.json");
+  if (!existsSync(manifestPath)) return null;
   try {
-    const content = readFileSync(manifestPath, "utf-8")
-    return JSON.parse(content) as PluginManifest
+    const content = readFileSync(manifestPath, "utf-8");
+    return JSON.parse(content) as PluginManifest;
   } catch {
-    return null
+    return null;
   }
 }
 
 function buildLoadedPlugin(pluginRoot: string, pluginName?: string): LoadedPlugin {
-  const manifest = loadManifest(pluginRoot)
-  const name = manifest?.name || pluginName || basename(pluginRoot)
-  const version = manifest?.version || "local"
+  const manifest = loadManifest(pluginRoot);
+  const name = manifest?.name || pluginName || basename(pluginRoot);
+  const version = manifest?.version || "local";
 
   const loaded: LoadedPlugin = {
     name,
@@ -48,22 +48,22 @@ function buildLoadedPlugin(pluginRoot: string, pluginName?: string): LoadedPlugi
     installPath: pluginRoot,
     pluginKey: `${name}@local`,
     manifest: manifest ?? undefined,
-  }
+  };
 
-  const commandsDir = join(pluginRoot, "commands")
-  if (existsSync(commandsDir)) loaded.commandsDir = commandsDir
-  const agentsDir = join(pluginRoot, "agents")
-  if (existsSync(agentsDir)) loaded.agentsDir = agentsDir
-  const skillsDir = join(pluginRoot, "skills")
-  if (existsSync(skillsDir)) loaded.skillsDir = skillsDir
+  const commandsDir = join(pluginRoot, "commands");
+  if (existsSync(commandsDir)) loaded.commandsDir = commandsDir;
+  const agentsDir = join(pluginRoot, "agents");
+  if (existsSync(agentsDir)) loaded.agentsDir = agentsDir;
+  const skillsDir = join(pluginRoot, "skills");
+  if (existsSync(skillsDir)) loaded.skillsDir = skillsDir;
 
-  const hooksPath = join(pluginRoot, "hooks", "hooks.json")
-  if (existsSync(hooksPath)) loaded.hooksPath = hooksPath
+  const hooksPath = join(pluginRoot, "hooks", "hooks.json");
+  if (existsSync(hooksPath)) loaded.hooksPath = hooksPath;
 
-  const mcpPath = join(pluginRoot, ".mcp.json")
-  if (existsSync(mcpPath)) loaded.mcpPath = mcpPath
+  const mcpPath = join(pluginRoot, ".mcp.json");
+  if (existsSync(mcpPath)) loaded.mcpPath = mcpPath;
 
-  return loaded
+  return loaded;
 }
 
 /**
@@ -74,34 +74,32 @@ function applyNamespace<T extends Record<string, unknown>>(
   namespace: string,
   overrides: Record<string, string> = {},
   include?: string[],
-  exclude?: string[]
+  exclude?: string[],
 ): { namespaced: T; warnings: string[]; skipped: number } {
-  const namespaced = {} as T
-  const warnings: string[] = []
-  let skipped = 0
+  const namespaced = {} as T;
+  const warnings: string[] = [];
+  let skipped = 0;
 
   for (const [name, component] of Object.entries(components)) {
-    const normalizedName = name.includes(":")
-      ? name.slice(name.indexOf(":") + 1)
-      : name
+    const normalizedName = name.includes(":") ? name.slice(name.indexOf(":") + 1) : name;
 
     // Check include/exclude filters
     if (!shouldIncludeComponent(normalizedName, include, exclude)) {
-      skipped++
-      continue
+      skipped++;
+      continue;
     }
 
-    const namespacedName = buildNamespacedName(namespace, normalizedName, overrides)
+    const namespacedName = buildNamespacedName(namespace, normalizedName, overrides);
 
     // Check for conflicts
     if (namespacedName !== name && namespaced[namespacedName as keyof T]) {
-      warnings.push(`Namespace conflict for "${name}": "${namespacedName}" already exists`)
+      warnings.push(`Namespace conflict for "${name}": "${namespacedName}" already exists`);
     }
 
-    ;(namespaced as Record<string, unknown>)[namespacedName] = component
+    (namespaced as Record<string, unknown>)[namespacedName] = component;
   }
 
-  return { namespaced, warnings, skipped }
+  return { namespaced, warnings, skipped };
 }
 
 /**
@@ -109,12 +107,12 @@ function applyNamespace<T extends Record<string, unknown>>(
  * namespace conflict resolution, and dry-run support.
  */
 export async function importClaudePluginFromPath(
-  options: ClaudeImportOptions
+  options: ClaudeImportOptions,
 ): Promise<ClaudeImportResult> {
-  const pluginPath = options.path
-  const pluginName = options.pluginName || basename(pluginPath)
-  const warnings: string[] = []
-  const errors: string[] = []
+  const pluginPath = options.path;
+  const pluginName = options.pluginName || basename(pluginPath);
+  const warnings: string[] = [];
+  const errors: string[] = [];
 
   // Security: reject obvious traversal/null-byte patterns even before path existence checks.
   if (pluginPath.includes("..") || pluginPath.includes("\0")) {
@@ -127,7 +125,7 @@ export async function importClaudePluginFromPath(
         warnings: [],
         errors: ["Security error: Path contains potentially dangerous patterns"],
       },
-    }
+    };
   }
   if (pluginPath.includes("/etc/") || pluginPath.includes("\\etc\\passwd")) {
     return {
@@ -139,7 +137,7 @@ export async function importClaudePluginFromPath(
         warnings: [],
         errors: ["Security error: Path targets a sensitive system location"],
       },
-    }
+    };
   }
 
   // Validate path exists
@@ -153,57 +151,51 @@ export async function importClaudePluginFromPath(
         warnings: [`Plugin path does not exist: ${pluginPath}`],
         errors: [],
       },
-    }
+    };
   }
 
-  const plugin = buildLoadedPlugin(pluginPath, options.pluginName)
+  const plugin = buildLoadedPlugin(pluginPath, options.pluginName);
 
   // Get configuration options
-  const namespace = options.namespacePrefix || pluginName
-  const overrides = options.namespaceOverrides || {}
-  const include = options.include
-  const exclude = options.exclude
-  const dryRun = options.dryRun || false
+  const namespace = options.namespacePrefix || pluginName;
+  const overrides = options.namespaceOverrides || {};
+  const include = options.include;
+  const exclude = options.exclude;
+  const dryRun = options.dryRun || false;
 
   // Load components
-  const [
-    rawCommands,
-    rawSkills,
-    rawAgents,
-    rawMcpServers,
-    hooksConfigs,
-  ] = await Promise.all([
+  const [rawCommands, rawSkills, rawAgents, rawMcpServers, hooksConfigs] = await Promise.all([
     Promise.resolve(loadPluginCommands([plugin])),
     Promise.resolve(loadPluginSkillsAsCommands([plugin])),
     Promise.resolve(loadPluginAgents([plugin])),
     loadPluginMcpServers([plugin]),
     Promise.resolve(loadPluginHooksConfigs([plugin])),
-  ])
+  ]);
 
   // Apply namespace and filtering
   const {
     namespaced: commands,
     warnings: commandWarnings,
     skipped: commandsSkipped,
-  } = applyNamespace(rawCommands, namespace, overrides, include, exclude)
-  warnings.push(...commandWarnings)
+  } = applyNamespace(rawCommands, namespace, overrides, include, exclude);
+  warnings.push(...commandWarnings);
 
   const {
     namespaced: skills,
     warnings: skillWarnings,
     skipped: skillsSkipped,
-  } = applyNamespace(rawSkills, namespace, overrides, include, exclude)
-  warnings.push(...skillWarnings)
+  } = applyNamespace(rawSkills, namespace, overrides, include, exclude);
+  warnings.push(...skillWarnings);
 
   const {
     namespaced: agents,
     warnings: agentWarnings,
     skipped: agentsSkipped,
-  } = applyNamespace(rawAgents, namespace, overrides, include, exclude)
-  warnings.push(...agentWarnings)
+  } = applyNamespace(rawAgents, namespace, overrides, include, exclude);
+  warnings.push(...agentWarnings);
 
   // MCP servers don't get namespaced (they have their own identity)
-  const mcpServers = rawMcpServers
+  const mcpServers = rawMcpServers;
 
   // Handle atomic mode: if any errors, don't return partial results
   if (options.atomic && errors.length > 0) {
@@ -216,7 +208,7 @@ export async function importClaudePluginFromPath(
         warnings,
         errors,
       },
-    }
+    };
   }
 
   // Build final components (or empty if dry-run)
@@ -230,17 +222,17 @@ export async function importClaudePluginFromPath(
         hooksConfigs,
         plugins: [plugin],
         errors: [],
-      }
+      };
 
   // Add dry-run notice to warnings
   if (dryRun) {
-    warnings.push("DRY RUN: No components were actually imported")
+    warnings.push("DRY RUN: No components were actually imported");
   }
 
   // Add filtering notice
-  const totalSkipped = commandsSkipped + skillsSkipped + agentsSkipped
+  const totalSkipped = commandsSkipped + skillsSkipped + agentsSkipped;
   if (totalSkipped > 0) {
-    warnings.push(`${totalSkipped} component(s) skipped due to include/exclude filters`)
+    warnings.push(`${totalSkipped} component(s) skipped due to include/exclude filters`);
   }
 
   // Handle strict mode after all warning generation.
@@ -256,7 +248,7 @@ export async function importClaudePluginFromPath(
           `Strict mode: Import failed with ${warnings.length} warning(s): ${warnings.join(", ")}`,
         ],
       },
-    }
+    };
   }
 
   return {
@@ -274,5 +266,5 @@ export async function importClaudePluginFromPath(
       warnings,
       errors,
     },
-  }
+  };
 }

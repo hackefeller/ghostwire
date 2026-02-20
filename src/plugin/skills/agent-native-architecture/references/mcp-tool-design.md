@@ -8,37 +8,51 @@ How to design MCP tools following prompt-native principles. Tools should be prim
 ## Tools Are Primitives, Not Workflows
 
 **Wrong approach:** Tools that encode business logic
+
 ```typescript
-tool("process_feedback", {
-  feedback: z.string(),
-  category: z.enum(["bug", "feature", "question"]),
-  priority: z.enum(["low", "medium", "high"]),
-}, async ({ feedback, category, priority }) => {
-  // Tool decides how to process
-  const processed = categorize(feedback);
-  const stored = await saveToDatabase(processed);
-  const notification = await notify(priority);
-  return { processed, stored, notification };
-});
+tool(
+  "process_feedback",
+  {
+    feedback: z.string(),
+    category: z.enum(["bug", "feature", "question"]),
+    priority: z.enum(["low", "medium", "high"]),
+  },
+  async ({ feedback, category, priority }) => {
+    // Tool decides how to process
+    const processed = categorize(feedback);
+    const stored = await saveToDatabase(processed);
+    const notification = await notify(priority);
+    return { processed, stored, notification };
+  },
+);
 ```
 
 **Right approach:** Primitives that enable any workflow
-```typescript
-tool("store_item", {
-  key: z.string(),
-  value: z.any(),
-}, async ({ key, value }) => {
-  await db.set(key, value);
-  return { text: `Stored ${key}` };
-});
 
-tool("send_message", {
-  channel: z.string(),
-  content: z.string(),
-}, async ({ channel, content }) => {
-  await messenger.send(channel, content);
-  return { text: "Sent" };
-});
+```typescript
+tool(
+  "store_item",
+  {
+    key: z.string(),
+    value: z.any(),
+  },
+  async ({ key, value }) => {
+    await db.set(key, value);
+    return { text: `Stored ${key}` };
+  },
+);
+
+tool(
+  "send_message",
+  {
+    channel: z.string(),
+    content: z.string(),
+  },
+  async ({ channel, content }) => {
+    await messenger.send(channel, content);
+    return { text: "Sent" };
+  },
+);
 ```
 
 The agent decides categorization, priority, and when to notify based on the system prompt.
@@ -49,14 +63,14 @@ The agent decides categorization, priority, and when to notify based on the syst
 
 Names should describe the capability, not the use case:
 
-| Wrong | Right |
-|-------|-------|
-| `process_user_feedback` | `store_item` |
-| `create_feedback_summary` | `write_file` |
-| `send_notification` | `send_message` |
-| `deploy_to_production` | `git_push` |
+| Wrong                     | Right          |
+| ------------------------- | -------------- |
+| `process_user_feedback`   | `store_item`   |
+| `create_feedback_summary` | `write_file`   |
+| `send_notification`       | `send_message` |
+| `deploy_to_production`    | `git_push`     |
 
-The prompt tells the agent *when* to use primitives. The tool just provides *capability*.
+The prompt tells the agent _when_ to use primitives. The tool just provides _capability_.
 </principle>
 
 <principle name="simple-inputs">
@@ -65,6 +79,7 @@ The prompt tells the agent *when* to use primitives. The tool just provides *cap
 Tools accept data. They don't accept decisions.
 
 **Wrong:** Tool accepts decisions
+
 ```typescript
 tool("format_content", {
   content: z.string(),
@@ -74,6 +89,7 @@ tool("format_content", {
 ```
 
 **Right:** Tool accepts data, agent decides format
+
 ```typescript
 tool("write_file", {
   path: z.string(),
@@ -81,6 +97,7 @@ tool("write_file", {
 }, ...)
 // Agent decides to write index.html with HTML content, or data.json with JSON
 ```
+
 </principle>
 
 <principle name="rich-outputs">
@@ -89,14 +106,16 @@ tool("write_file", {
 Return enough information for the agent to verify and iterate.
 
 **Wrong:** Minimal output
+
 ```typescript
 async ({ key }) => {
   await db.delete(key);
   return { text: "Deleted" };
-}
+};
 ```
 
 **Right:** Rich output
+
 ```typescript
 async ({ key }) => {
   const existed = await db.has(key);
@@ -105,11 +124,13 @@ async ({ key }) => {
   }
   await db.delete(key);
   return { text: `Deleted ${key}. ${await db.count()} items remaining.` };
-}
+};
 ```
+
 </principle>
 
 <design_template>
+
 ## Tool Design Template
 
 ```typescript
@@ -128,13 +149,15 @@ export const serverName = createSdkMcpServer({
       async ({ key }) => {
         const item = await storage.get(key);
         return {
-          content: [{
-            type: "text",
-            text: item ? JSON.stringify(item, null, 2) : `Not found: ${key}`,
-          }],
+          content: [
+            {
+              type: "text",
+              text: item ? JSON.stringify(item, null, 2) : `Not found: ${key}`,
+            },
+          ],
           isError: !item,
         };
-      }
+      },
     ),
 
     tool(
@@ -147,12 +170,14 @@ export const serverName = createSdkMcpServer({
       async ({ prefix, limit }) => {
         const items = await storage.list({ prefix, limit });
         return {
-          content: [{
-            type: "text",
-            text: `Found ${items.length} items:\n${items.map(i => i.key).join("\n")}`,
-          }],
+          content: [
+            {
+              type: "text",
+              text: `Found ${items.length} items:\n${items.map((i) => i.key).join("\n")}`,
+            },
+          ],
         };
-      }
+      },
     ),
 
     // WRITE operations
@@ -168,7 +193,7 @@ export const serverName = createSdkMcpServer({
         return {
           content: [{ type: "text", text: `Stored ${key}` }],
         };
-      }
+      },
     ),
 
     tool(
@@ -178,12 +203,14 @@ export const serverName = createSdkMcpServer({
       async ({ key }) => {
         const existed = await storage.delete(key);
         return {
-          content: [{
-            type: "text",
-            text: existed ? `Deleted ${key}` : `${key} did not exist`,
-          }],
+          content: [
+            {
+              type: "text",
+              text: existed ? `Deleted ${key}` : `${key} did not exist`,
+            },
+          ],
         };
-      }
+      },
     ),
 
     // EXTERNAL operations
@@ -199,17 +226,20 @@ export const serverName = createSdkMcpServer({
         const response = await fetch(url, { method, body: JSON.stringify(body) });
         const text = await response.text();
         return {
-          content: [{
-            type: "text",
-            text: `${response.status} ${response.statusText}\n\n${text}`,
-          }],
+          content: [
+            {
+              type: "text",
+              text: `${response.status} ${response.statusText}\n\n${text}`,
+            },
+          ],
           isError: !response.ok,
         };
-      }
+      },
     ),
   ],
 });
 ```
+
 </design_template>
 
 <example name="feedback-server">
@@ -226,26 +256,30 @@ export const feedbackMcpServer = createSdkMcpServer({
       "store_feedback",
       "Store a feedback item",
       {
-        item: z.object({
-          id: z.string(),
-          author: z.string(),
-          content: z.string(),
-          importance: z.number().min(1).max(5),
-          timestamp: z.string(),
-          status: z.string().optional(),
-          urls: z.array(z.string()).optional(),
-          metadata: z.any().optional(),
-        }).describe("Feedback item"),
+        item: z
+          .object({
+            id: z.string(),
+            author: z.string(),
+            content: z.string(),
+            importance: z.number().min(1).max(5),
+            timestamp: z.string(),
+            status: z.string().optional(),
+            urls: z.array(z.string()).optional(),
+            metadata: z.any().optional(),
+          })
+          .describe("Feedback item"),
       },
       async ({ item }) => {
         await db.feedback.insert(item);
         return {
-          content: [{
-            type: "text",
-            text: `Stored feedback ${item.id} from ${item.author}`,
-          }],
+          content: [
+            {
+              type: "text",
+              text: `Stored feedback ${item.id} from ${item.author}`,
+            },
+          ],
         };
-      }
+      },
     ),
 
     tool(
@@ -258,12 +292,14 @@ export const feedbackMcpServer = createSdkMcpServer({
       async ({ limit, status }) => {
         const items = await db.feedback.list({ limit, status });
         return {
-          content: [{
-            type: "text",
-            text: JSON.stringify(items, null, 2),
-          }],
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(items, null, 2),
+            },
+          ],
         };
-      }
+      },
     ),
 
     tool(
@@ -282,18 +318,19 @@ export const feedbackMcpServer = createSdkMcpServer({
         return {
           content: [{ type: "text", text: `Updated ${id}` }],
         };
-      }
+      },
     ),
   ],
 });
 ```
 
-The system prompt then tells the agent *how* to use these primitives:
+The system prompt then tells the agent _how_ to use these primitives:
 
 ```markdown
 ## Feedback Processing
 
 When someone shares feedback:
+
 1. Extract author, content, and any URLs
 2. Rate importance 1-5 based on actionability
 3. Store using feedback.store_feedback
@@ -301,6 +338,7 @@ When someone shares feedback:
 
 Use your judgment about importance ratings.
 ```
+
 </example>
 
 <principle name="dynamic-capability-discovery">
@@ -342,34 +380,39 @@ tool("list_available_capabilities", async () => {
   const categoryTypes = await healthKit.availableCategoryTypes();
 
   return {
-    text: `Available health metrics:\n` +
-          `Quantity types: ${quantityTypes.join(", ")}\n` +
-          `Category types: ${categoryTypes.join(", ")}\n` +
-          `\nUse read_health_data with any of these types.`
+    text:
+      `Available health metrics:\n` +
+      `Quantity types: ${quantityTypes.join(", ")}\n` +
+      `Category types: ${categoryTypes.join(", ")}\n` +
+      `\nUse read_health_data with any of these types.`,
   };
 });
 
 // Generic access tool - type is a string, API validates
-tool("read_health_data", {
-  dataType: z.string(),  // NOT z.enum - let HealthKit validate
-  startDate: z.string(),
-  endDate: z.string(),
-  aggregation: z.enum(["sum", "average", "samples"]).optional()
-}, async ({ dataType, startDate, endDate, aggregation }) => {
-  // HealthKit validates the type, returns helpful error if invalid
-  const result = await healthKit.query(dataType, startDate, endDate, aggregation);
-  return { text: JSON.stringify(result, null, 2) };
-});
+tool(
+  "read_health_data",
+  {
+    dataType: z.string(), // NOT z.enum - let HealthKit validate
+    startDate: z.string(),
+    endDate: z.string(),
+    aggregation: z.enum(["sum", "average", "samples"]).optional(),
+  },
+  async ({ dataType, startDate, endDate, aggregation }) => {
+    // HealthKit validates the type, returns helpful error if invalid
+    const result = await healthKit.query(dataType, startDate, endDate, aggregation);
+    return { text: JSON.stringify(result, null, 2) };
+  },
+);
 ```
 
 **When to Use Each Approach:**
 
-| Dynamic (Agent-Native) | Static (Constrained Agent) |
-|------------------------|---------------------------|
-| Agent should access anything user can | Agent has intentionally limited scope |
+| Dynamic (Agent-Native)                                         | Static (Constrained Agent)            |
+| -------------------------------------------------------------- | ------------------------------------- |
+| Agent should access anything user can                          | Agent has intentionally limited scope |
 | External API with many endpoints (HealthKit, HomeKit, GraphQL) | Internal domain with fixed operations |
-| API evolves independently of your code | Tightly coupled domain logic |
-| You want full action parity | You want strict guardrails |
+| API evolves independently of your code                         | Tightly coupled domain logic          |
+| You want full action parity                                    | You want strict guardrails            |
 
 **The agent-native default is Dynamic.** Only use Static when you're intentionally limiting the agent's capabilities.
 
@@ -436,12 +479,13 @@ func buildSystemPrompt() -> String {
 ```
 
 **Benefits:**
+
 - Agent can use any API capability, including ones added after your code shipped
 - API is the validator, not your enum definition
 - Smaller tool surface (2-3 tools vs N tools)
 - Agent naturally discovers capabilities by asking
 - Works with any API that has introspection (HealthKit, GraphQL, OpenAPI)
-</principle>
+  </principle>
 
 <principle name="crud-completeness">
 ## CRUD Completeness
@@ -449,14 +493,16 @@ func buildSystemPrompt() -> String {
 Every data type the agent can create, it should be able to read, update, and delete. Incomplete CRUD = broken action parity.
 
 **Anti-pattern: Create-only tools**
+
 ```typescript
 // ❌ Can create but not modify or delete
-tool("create_experiment", { hypothesis, variable, metric })
-tool("write_journal_entry", { content, author, tags })
+tool("create_experiment", { hypothesis, variable, metric });
+tool("write_journal_entry", { content, author, tags });
 // User: "Delete that experiment" → Agent: "I can't do that"
 ```
 
 **Correct: Full CRUD for each entity**
+
 ```typescript
 // ✅ Complete CRUD
 tool("create_experiment", { hypothesis, variable, metric })
@@ -472,6 +518,7 @@ tool("delete_journal_entry", { id })
 
 **The CRUD Audit:**
 For each entity type in your app, verify:
+
 - [ ] Create: Agent can create new instances
 - [ ] Read: Agent can query/search/list instances
 - [ ] Update: Agent can modify existing instances
@@ -484,6 +531,7 @@ If any operation is missing, users will eventually ask for it and the agent will
 ## MCP Tool Design Checklist
 
 **Fundamentals:**
+
 - [ ] Tool names describe capability, not use case
 - [ ] Inputs are data, not decisions
 - [ ] Outputs are rich (enough for agent to verify)
@@ -493,6 +541,7 @@ If any operation is missing, users will eventually ask for it and the agent will
 - [ ] Descriptions explain what the tool does, not when to use it
 
 **Dynamic Capability Discovery (for agent-native apps):**
+
 - [ ] For external APIs where agent should have full access, use dynamic discovery
 - [ ] Include a `list_*` or `discover_*` tool for each API surface
 - [ ] Use string inputs (not enums) when the API validates
@@ -500,7 +549,8 @@ If any operation is missing, users will eventually ask for it and the agent will
 - [ ] Only use static tool mapping if intentionally limiting agent scope
 
 **CRUD Completeness:**
+
 - [ ] Every entity has create, read, update, delete operations
 - [ ] Every UI action has a corresponding agent tool
 - [ ] Test: "Can the agent undo what it just did?"
-</checklist>
+      </checklist>

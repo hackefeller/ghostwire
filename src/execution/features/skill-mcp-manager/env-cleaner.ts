@@ -5,23 +5,23 @@ export const EXCLUDED_ENV_PATTERNS: RegExp[] = [
   /^YARN_/,
   /^PNPM_/,
   /^NO_UPDATE_NOTIFIER$/,
-]
+];
 
 export function createCleanMcpEnvironment(
-  customEnv: Record<string, string> = {}
+  customEnv: Record<string, string> = {},
 ): Record<string, string> {
-  const cleanEnv: Record<string, string> = {}
+  const cleanEnv: Record<string, string> = {};
 
   for (const [key, value] of Object.entries(process.env)) {
-    if (value === undefined) continue
+    if (value === undefined) continue;
 
-    const shouldExclude = EXCLUDED_ENV_PATTERNS.some((pattern) => pattern.test(key))
+    const shouldExclude = EXCLUDED_ENV_PATTERNS.some((pattern) => pattern.test(key));
     if (!shouldExclude) {
-      cleanEnv[key] = value
+      cleanEnv[key] = value;
     }
   }
 
-  Object.assign(cleanEnv, customEnv)
+  Object.assign(cleanEnv, customEnv);
 
-  return cleanEnv
+  return cleanEnv;
 }

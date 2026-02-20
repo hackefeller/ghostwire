@@ -1,42 +1,50 @@
-import { tool, type ToolDefinition } from "@opencode-ai/plugin/tool"
-import { existsSync } from "node:fs"
-import { readFile, writeFile, unlink, readdir } from "node:fs/promises"
-import { join } from "node:path"
-import { TODO_DIR } from "./constants"
-import type { Todo, TodoCreateArgs, TodoListArgs, TodoUpdateArgs, TodoDeleteArgs, TodoStatus, TodoPriority } from "./types"
-import { generateTodoId, validateTodoContent, formatTodoList, formatTodo } from "./utils"
-import { sessionExists } from "../session-manager/storage"
+import { tool, type ToolDefinition } from "@opencode-ai/plugin/tool";
+import { existsSync } from "node:fs";
+import { readFile, writeFile, unlink, readdir } from "node:fs/promises";
+import { join } from "node:path";
+import { TODO_DIR } from "./constants";
+import type {
+  Todo,
+  TodoCreateArgs,
+  TodoListArgs,
+  TodoUpdateArgs,
+  TodoDeleteArgs,
+  TodoStatus,
+  TodoPriority,
+} from "./types";
+import { generateTodoId, validateTodoContent, formatTodoList, formatTodo } from "./utils";
+import { sessionExists } from "../session-manager/storage";
 
-const VALID_STATUSES: TodoStatus[] = ["pending", "in_progress", "completed", "cancelled"]
-const VALID_PRIORITIES: TodoPriority[] = ["low", "medium", "high", "critical"]
+const VALID_STATUSES: TodoStatus[] = ["pending", "in_progress", "completed", "cancelled"];
+const VALID_PRIORITIES: TodoPriority[] = ["low", "medium", "high", "critical"];
 
 function isValidStatus(status: string): status is TodoStatus {
-  return VALID_STATUSES.includes(status as TodoStatus)
+  return VALID_STATUSES.includes(status as TodoStatus);
 }
 
 function isValidPriority(priority: string): priority is TodoPriority {
-  return VALID_PRIORITIES.includes(priority as TodoPriority)
+  return VALID_PRIORITIES.includes(priority as TodoPriority);
 }
 
 // Helper to get todo file path
 function getTodoFilePath(sessionID: string): string {
-  return join(TODO_DIR, `${sessionID}.json`)
+  return join(TODO_DIR, `${sessionID}.json`);
 }
 
 // Helper to read todos for a session
 async function readTodos(sessionID: string): Promise<Todo[]> {
-  const todoPath = getTodoFilePath(sessionID)
-  
+  const todoPath = getTodoFilePath(sessionID);
+
   if (!existsSync(todoPath)) {
-    return []
+    return [];
   }
 
   try {
-    const content = await readFile(todoPath, "utf-8")
-    const data = JSON.parse(content)
-    
+    const content = await readFile(todoPath, "utf-8");
+    const data = JSON.parse(content);
+
     if (Array.isArray(data)) {
-      return data.map(item => ({
+      return data.map((item) => ({
         id: item.id || generateTodoId(),
         content: item.content || "",
         status: isValidStatus(item.status) ? item.status : "pending",
@@ -46,35 +54,38 @@ async function readTodos(sessionID: string): Promise<Todo[]> {
         updated_at: item.updated_at || Date.now(),
         completed_at: item.completed_at,
         session_id: sessionID,
-      }))
+      }));
     }
   } catch {
     // Return empty array on error
   }
 
-  return []
+  return [];
 }
 
 // Helper to write todos for a session
 async function writeTodos(sessionID: string, todos: Todo[]): Promise<void> {
   if (!existsSync(TODO_DIR)) {
-    return
+    return;
   }
 
-  const todoPath = getTodoFilePath(sessionID)
-  await writeFile(todoPath, JSON.stringify(todos, null, 2))
+  const todoPath = getTodoFilePath(sessionID);
+  await writeFile(todoPath, JSON.stringify(todos, null, 2));
 }
 
 // Helper to find a todo by ID
-async function findTodo(sessionID: string, todoID: string): Promise<{ todo: Todo | null, todos: Todo[], index: number }> {
-  const todos = await readTodos(sessionID)
-  const index = todos.findIndex(t => t.id === todoID)
-  
+async function findTodo(
+  sessionID: string,
+  todoID: string,
+): Promise<{ todo: Todo | null; todos: Todo[]; index: number }> {
+  const todos = await readTodos(sessionID);
+  const index = todos.findIndex((t) => t.id === todoID);
+
   return {
     todo: index >= 0 ? todos[index] : null,
     todos,
     index,
-  }
+  };
 }
 
 export const todo_create: ToolDefinition = tool({
@@ -93,31 +104,34 @@ todo_create(content="Review authentication module", priority="high", note="Check
   args: {
     session_id: tool.schema.string().optional().describe("Session ID (default: current session)"),
     content: tool.schema.string().describe("Todo content (max 500 characters)"),
-    priority: tool.schema.enum(["low", "medium", "high", "critical"]).optional().describe("Priority level (default: medium)"),
+    priority: tool.schema
+      .enum(["low", "medium", "high", "critical"])
+      .optional()
+      .describe("Priority level (default: medium)"),
     note: tool.schema.string().optional().describe("Additional notes (max 1000 characters)"),
   },
   execute: async (args: TodoCreateArgs, context) => {
     try {
-      const sessionID = args.session_id || context.sessionID
+      const sessionID = args.session_id || context.sessionID;
 
       // Validate session exists
       if (!sessionExists(sessionID)) {
-        return `Error: Session not found: ${sessionID}`
+        return `Error: Session not found: ${sessionID}`;
       }
 
       // Validate content
-      const contentValidation = validateTodoContent(args.content)
+      const contentValidation = validateTodoContent(args.content);
       if (!contentValidation.valid) {
-        return `Error: ${contentValidation.error}`
+        return `Error: ${contentValidation.error}`;
       }
 
       // Validate note length
       if (args.note && args.note.length > 1000) {
-        return `Error: Note exceeds maximum length of 1000 characters`
+        return `Error: Note exceeds maximum length of 1000 characters`;
       }
 
       // Read existing todos
-      const todos = await readTodos(sessionID)
+      const todos = await readTodos(sessionID);
 
       // Create new todo
       const newTodo: Todo = {
@@ -129,20 +143,20 @@ todo_create(content="Review authentication module", priority="high", note="Check
         created_at: Date.now(),
         updated_at: Date.now(),
         session_id: sessionID,
-      }
+      };
 
       // Add to list
-      todos.push(newTodo)
+      todos.push(newTodo);
 
       // Write back
-      await writeTodos(sessionID, todos)
+      await writeTodos(sessionID, todos);
 
-      return `Created todo ${newTodo.id}\nContent: ${newTodo.content}\nPriority: ${newTodo.priority}\nStatus: ${newTodo.status}`
+      return `Created todo ${newTodo.id}\nContent: ${newTodo.content}\nPriority: ${newTodo.priority}\nStatus: ${newTodo.status}`;
     } catch (e) {
-      return `Error: ${e instanceof Error ? e.message : String(e)}`
+      return `Error: ${e instanceof Error ? e.message : String(e)}`;
     }
   },
-})
+});
 
 export const todo_list: ToolDefinition = tool({
   description: `List todos in a session with optional filtering.
@@ -160,49 +174,63 @@ todo_list(status="pending", priority="high")
 Lists all high-priority pending todos`,
   args: {
     session_id: tool.schema.string().optional().describe("Session ID (default: current session)"),
-    status: tool.schema.enum(["pending", "in_progress", "completed", "cancelled"]).optional().describe("Filter by status"),
-    priority: tool.schema.enum(["low", "medium", "high", "critical"]).optional().describe("Filter by priority"),
-    include_completed: tool.schema.boolean().optional().describe("Include completed todos (default: true)"),
+    status: tool.schema
+      .enum(["pending", "in_progress", "completed", "cancelled"])
+      .optional()
+      .describe("Filter by status"),
+    priority: tool.schema
+      .enum(["low", "medium", "high", "critical"])
+      .optional()
+      .describe("Filter by priority"),
+    include_completed: tool.schema
+      .boolean()
+      .optional()
+      .describe("Include completed todos (default: true)"),
   },
   execute: async (args: TodoListArgs, context) => {
     try {
-      const sessionID = args.session_id || context.sessionID
+      const sessionID = args.session_id || context.sessionID;
 
       // Validate session exists
       if (!sessionExists(sessionID)) {
-        return `Error: Session not found: ${sessionID}`
+        return `Error: Session not found: ${sessionID}`;
       }
 
       // Read todos
-      let todos = await readTodos(sessionID)
+      let todos = await readTodos(sessionID);
 
       // Apply filters
       if (args.status && isValidStatus(args.status)) {
-        todos = todos.filter(t => t.status === args.status)
+        todos = todos.filter((t) => t.status === args.status);
       }
 
       if (args.priority && isValidPriority(args.priority)) {
-        todos = todos.filter(t => t.priority === args.priority)
+        todos = todos.filter((t) => t.priority === args.priority);
       }
 
       if (args.include_completed === false) {
-        todos = todos.filter(t => t.status !== "completed" && t.status !== "cancelled")
+        todos = todos.filter((t) => t.status !== "completed" && t.status !== "cancelled");
       }
 
       // Sort by priority (high -> low) then creation time
-      const priorityOrder: Record<TodoPriority, number> = { critical: 0, high: 1, medium: 2, low: 3 }
+      const priorityOrder: Record<TodoPriority, number> = {
+        critical: 0,
+        high: 1,
+        medium: 2,
+        low: 3,
+      };
       todos.sort((a, b) => {
-        const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority]
-        if (priorityDiff !== 0) return priorityDiff
-        return a.created_at - b.created_at
-      })
+        const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
+        if (priorityDiff !== 0) return priorityDiff;
+        return a.created_at - b.created_at;
+      });
 
-      return formatTodoList(todos, sessionID)
+      return formatTodoList(todos, sessionID);
     } catch (e) {
-      return `Error: ${e instanceof Error ? e.message : String(e)}`
+      return `Error: ${e instanceof Error ? e.message : String(e)}`;
     }
   },
-})
+});
 
 export const todo_update: ToolDefinition = tool({
   description: `Update an existing todo item.
@@ -229,95 +257,101 @@ Marks todo as completed`,
     session_id: tool.schema.string().optional().describe("Session ID (default: current session)"),
     todo_id: tool.schema.string().describe("Todo ID to update"),
     content: tool.schema.string().optional().describe("New content (max 500 characters)"),
-    status: tool.schema.enum(["pending", "in_progress", "completed", "cancelled"]).optional().describe("New status"),
-    priority: tool.schema.enum(["low", "medium", "high", "critical"]).optional().describe("New priority"),
+    status: tool.schema
+      .enum(["pending", "in_progress", "completed", "cancelled"])
+      .optional()
+      .describe("New status"),
+    priority: tool.schema
+      .enum(["low", "medium", "high", "critical"])
+      .optional()
+      .describe("New priority"),
     note: tool.schema.string().optional().describe("New notes (max 1000 characters)"),
   },
   execute: async (args: TodoUpdateArgs, context) => {
     try {
-      const sessionID = args.session_id || context.sessionID
+      const sessionID = args.session_id || context.sessionID;
 
       // Validate session exists
       if (!sessionExists(sessionID)) {
-        return `Error: Session not found: ${sessionID}`
+        return `Error: Session not found: ${sessionID}`;
       }
 
       // Find todo
-      const { todo, todos, index } = await findTodo(sessionID, args.todo_id)
+      const { todo, todos, index } = await findTodo(sessionID, args.todo_id);
 
       if (!todo) {
-        return `Error: Todo not found: ${args.todo_id}`
+        return `Error: Todo not found: ${args.todo_id}`;
       }
 
       // Track if anything changed
-      let updated = false
+      let updated = false;
 
       // Update content if provided
       if (args.content !== undefined && args.content !== todo.content) {
-        const contentValidation = validateTodoContent(args.content)
+        const contentValidation = validateTodoContent(args.content);
         if (!contentValidation.valid) {
-          return `Error: ${contentValidation.error}`
+          return `Error: ${contentValidation.error}`;
         }
-        todo.content = args.content
-        updated = true
+        todo.content = args.content;
+        updated = true;
       }
 
       // Update status if provided
       if (args.status !== undefined && args.status !== todo.status) {
         if (!isValidStatus(args.status)) {
-          return `Error: Invalid status: ${args.status}`
+          return `Error: Invalid status: ${args.status}`;
         }
-        
-        const oldStatus = todo.status
-        todo.status = args.status
-        
+
+        const oldStatus = todo.status;
+        todo.status = args.status;
+
         // Handle completed_at timestamp
         if (args.status === "completed" && oldStatus !== "completed") {
-          todo.completed_at = Date.now()
+          todo.completed_at = Date.now();
         } else if (args.status !== "completed") {
-          todo.completed_at = undefined
+          todo.completed_at = undefined;
         }
-        
-        updated = true
+
+        updated = true;
       }
 
       // Update priority if provided
       if (args.priority !== undefined && args.priority !== todo.priority) {
         if (!isValidPriority(args.priority)) {
-          return `Error: Invalid priority: ${args.priority}`
+          return `Error: Invalid priority: ${args.priority}`;
         }
-        todo.priority = args.priority
-        updated = true
+        todo.priority = args.priority;
+        updated = true;
       }
 
       // Update note if provided
       if (args.note !== undefined && args.note !== todo.note) {
         if (args.note.length > 1000) {
-          return `Error: Note exceeds maximum length of 1000 characters`
+          return `Error: Note exceeds maximum length of 1000 characters`;
         }
-        todo.note = args.note
-        updated = true
+        todo.note = args.note;
+        updated = true;
       }
 
       if (!updated) {
-        return `No changes to apply to todo ${args.todo_id}`
+        return `No changes to apply to todo ${args.todo_id}`;
       }
 
       // Update timestamp
-      todo.updated_at = Date.now()
+      todo.updated_at = Date.now();
 
       // Update in array
-      todos[index] = todo
+      todos[index] = todo;
 
       // Write back
-      await writeTodos(sessionID, todos)
+      await writeTodos(sessionID, todos);
 
-      return `Updated todo ${args.todo_id}\n${formatTodo(todo)}`
+      return `Updated todo ${args.todo_id}\n${formatTodo(todo)}`;
     } catch (e) {
-      return `Error: ${e instanceof Error ? e.message : String(e)}`
+      return `Error: ${e instanceof Error ? e.message : String(e)}`;
     }
   },
-})
+});
 
 export const todo_delete: ToolDefinition = tool({
   description: `Delete a todo item from a session.
@@ -339,39 +373,42 @@ Deletes the todo`,
   args: {
     session_id: tool.schema.string().optional().describe("Session ID (default: current session)"),
     todo_id: tool.schema.string().describe("Todo ID to delete"),
-    force: tool.schema.boolean().optional().describe("Force deletion even if in progress (default: false)"),
+    force: tool.schema
+      .boolean()
+      .optional()
+      .describe("Force deletion even if in progress (default: false)"),
   },
   execute: async (args: TodoDeleteArgs, context) => {
     try {
-      const sessionID = args.session_id || context.sessionID
-      const force = args.force || false
+      const sessionID = args.session_id || context.sessionID;
+      const force = args.force || false;
 
       // Validate session exists
       if (!sessionExists(sessionID)) {
-        return `Error: Session not found: ${sessionID}`
+        return `Error: Session not found: ${sessionID}`;
       }
 
       // Find todo
-      const { todo, todos, index } = await findTodo(sessionID, args.todo_id)
+      const { todo, todos, index } = await findTodo(sessionID, args.todo_id);
 
       if (!todo) {
-        return `Error: Todo not found: ${args.todo_id}`
+        return `Error: Todo not found: ${args.todo_id}`;
       }
 
       // Safety check: don't delete in-progress todos without force
       if (todo.status === "in_progress" && !force) {
-        return `Error: Cannot delete todo ${args.todo_id} - it is currently in progress. Use force=true to override or update status to "cancelled" instead.`
+        return `Error: Cannot delete todo ${args.todo_id} - it is currently in progress. Use force=true to override or update status to "cancelled" instead.`;
       }
 
       // Remove from array
-      todos.splice(index, 1)
+      todos.splice(index, 1);
 
       // Write back
-      await writeTodos(sessionID, todos)
+      await writeTodos(sessionID, todos);
 
-      return `Deleted todo ${args.todo_id}: ${todo.content}`
+      return `Deleted todo ${args.todo_id}: ${todo.content}`;
     } catch (e) {
-      return `Error: ${e instanceof Error ? e.message : String(e)}`
+      return `Error: ${e instanceof Error ? e.message : String(e)}`;
     }
   },
-})
+});

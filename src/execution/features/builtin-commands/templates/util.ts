@@ -26,7 +26,7 @@ Remove build artifacts, caches, temporary files, and other non-essential files.
 - Never delete source code or git history
 - Option to dry-run before actual deletion
 - Backup option for deleted files
-`
+`;
 
 export const UTIL_BACKUP_TEMPLATE = `# Util:Backup Command
 
@@ -54,7 +54,7 @@ Create backups of project state and important files.
 - Manifest with contents list
 - Hash for integrity verification
 - Restore instructions
-`
+`;
 
 export const UTIL_RESTORE_TEMPLATE = `# Util:Restore Command
 
@@ -82,7 +82,7 @@ Restore project from backup or specific point in time.
 - Verify restore integrity
 - Provide rollback option
 - Log all restore operations
-`
+`;
 
 export const UTIL_DOCTOR_TEMPLATE = `# Util:Doctor Command
 
@@ -114,4 +114,4 @@ Diagnose project health and identify configuration issues.
 - Detailed report of issues found
 - Suggested fixes
 - Commands to run for automatic fixes
-`
+`;

@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Framework Docs Researcher System Prompt
 const FRAMEWORK_DOCS_RESEARCHER_PROMPT = `**Note: The current year is 2026.** Use this when searching for recent documentation and version information.
@@ -73,20 +73,22 @@ Structure your research findings as:
 - Configuration examples
 - Troubleshooting common issues
 
-Focus on providing practical, immediately actionable information that helps developers implement features correctly and efficiently.`
+Focus on providing practical, immediately actionable information that helps developers implement features correctly and efficiently.`;
 
 export function createFrameworkDocsResearcherAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Research agent - can read and research but not modify code
-  ])
-  
+    "write",
+    "edit", // Research agent - can read and research but not modify code
+  ]);
+
   return {
-    description: "Gather comprehensive documentation and best practices for frameworks, libraries, or dependencies. Fetches official documentation, explores source code, identifies version-specific constraints, and understands implementation patterns.",
+    description:
+      "Gather comprehensive documentation and best practices for frameworks, libraries, or dependencies. Fetches official documentation, explores source code, identifies version-specific constraints, and understands implementation patterns.",
     model,
     temperature: 0.1, // Low temperature for accurate, factual research
     prompt: FRAMEWORK_DOCS_RESEARCHER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
@@ -95,21 +97,30 @@ export const FRAMEWORK_DOCS_RESEARCHER_METADATA: AgentPromptMetadata = {
   cost: "MODERATE",
   promptAlias: "Framework Docs Researcher",
   triggers: [
-    { domain: "Library implementation", trigger: "When implementing new features using specific libraries or frameworks" },
-    { domain: "Troubleshooting", trigger: "When investigating issues with gems, packages, or framework behavior" },
-    { domain: "Integration planning", trigger: "Before integrating new dependencies or frameworks" },
-    { domain: "Version upgrades", trigger: "When considering framework or library upgrades" }
+    {
+      domain: "Library implementation",
+      trigger: "When implementing new features using specific libraries or frameworks",
+    },
+    {
+      domain: "Troubleshooting",
+      trigger: "When investigating issues with gems, packages, or framework behavior",
+    },
+    {
+      domain: "Integration planning",
+      trigger: "Before integrating new dependencies or frameworks",
+    },
+    { domain: "Version upgrades", trigger: "When considering framework or library upgrades" },
   ],
   useWhen: [
     "Need comprehensive framework/library documentation",
     "Understanding implementation patterns and best practices",
     "Investigating version-specific constraints or features",
-    "Finding real-world usage examples and solutions"
+    "Finding real-world usage examples and solutions",
   ],
   avoidWhen: [
     "General coding questions not specific to frameworks",
     "Simple syntax or language feature questions",
     "When official documentation is already well-understood",
-    "Performance debugging of existing implementations"
+    "Performance debugging of existing implementations",
   ],
-}
+};

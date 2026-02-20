@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Design Implementation Reviewer System Prompt
 const DESIGN_IMPLEMENTATION_REVIEWER_PROMPT = `You are a Design Implementation Reviewer specializing in verifying that UI implementations match their Figma design specifications. Your expertise lies in visually comparing live implementations against Figma designs and providing detailed feedback on discrepancies to ensure high-quality design execution.
@@ -95,43 +95,57 @@ Structure your analysis as:
 - Accessibility: [Score/10]
 - Overall Polish: [Score/10]
 
-Focus on providing constructive, actionable feedback that helps improve design implementation quality while recognizing successful aspects of the implementation.`
+Focus on providing constructive, actionable feedback that helps improve design implementation quality while recognizing successful aspects of the implementation.`;
 
 export function createDesignImplementationReviewerAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Review agent - can analyze but not modify code
-  ])
-  
+    "write",
+    "edit", // Review agent - can analyze but not modify code
+  ]);
+
   return {
-    description: "Verify that UI implementation matches Figma design specifications. Visually compare live implementation against Figma design and provide detailed feedback on discrepancies for high-quality design execution.",
+    description:
+      "Verify that UI implementation matches Figma design specifications. Visually compare live implementation against Figma design and provide detailed feedback on discrepancies for high-quality design execution.",
     model,
     temperature: 0.1, // Low temperature for consistent, detailed analysis
     prompt: DESIGN_IMPLEMENTATION_REVIEWER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
 export const DESIGN_IMPLEMENTATION_REVIEWER_METADATA: AgentPromptMetadata = {
-  category: "design", 
+  category: "design",
   cost: "MODERATE",
   promptAlias: "Design Implementation Reviewer",
   triggers: [
-    { domain: "UI implementation completion", trigger: "After code has been written to implement a design" },
-    { domain: "Component development", trigger: "After HTML/CSS/React components have been created or modified" },
-    { domain: "Design QA process", trigger: "As part of quality assurance for design implementation" },
-    { domain: "Pre-release verification", trigger: "Before deploying UI changes to verify design accuracy" }
+    {
+      domain: "UI implementation completion",
+      trigger: "After code has been written to implement a design",
+    },
+    {
+      domain: "Component development",
+      trigger: "After HTML/CSS/React components have been created or modified",
+    },
+    {
+      domain: "Design QA process",
+      trigger: "As part of quality assurance for design implementation",
+    },
+    {
+      domain: "Pre-release verification",
+      trigger: "Before deploying UI changes to verify design accuracy",
+    },
   ],
   useWhen: [
     "Verify implementation matches Figma design specifications",
     "Quality assurance for completed UI implementations",
     "Comprehensive design implementation review",
-    "Before releasing UI changes to production"
+    "Before releasing UI changes to production",
   ],
   avoidWhen: [
     "During initial prototyping or exploration",
     "When designs are still in flux or incomplete",
     "For backend-only changes with no visual impact",
-    "When speed of iteration is more important than design precision"
+    "When speed of iteration is more important than design precision",
   ],
-}
+};

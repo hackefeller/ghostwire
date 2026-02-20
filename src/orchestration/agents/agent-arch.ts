@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 const AGENT_NATIVE_ARCHITECTURE_PROMPT = `You are an Agent-Native Architecture specialist focused on ensuring features are agent-native - that any action a user can take, an agent can also take, and anything a user can see, an agent can see. This enforces the principle that agents should have parity with users in capability and context.
 
@@ -59,20 +59,22 @@ Structure your analysis as:
 - Tool/API additions to enable agent parity
 - Architecture improvements for better agent integration
 
-Focus on ensuring agents can operate with the same capabilities and context as human users.`
+Focus on ensuring agents can operate with the same capabilities and context as human users.`;
 
 export function createAgentNativeArchitectureAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Can modify code to implement agent-native patterns
-  ])
-  
+    "write",
+    "edit", // Can modify code to implement agent-native patterns
+  ]);
+
   return {
-    description: "Review code to ensure features are agent-native - that any action a user can take, an agent can also take, and anything a user can see, an agent can see. Enforces agent-user capability parity.",
+    description:
+      "Review code to ensure features are agent-native - that any action a user can take, an agent can also take, and anything a user can see, an agent can see. Enforces agent-user capability parity.",
     model,
     temperature: 0.1,
     prompt: AGENT_NATIVE_ARCHITECTURE_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 export const AGENT_NATIVE_ARCHITECTURE_METADATA: AgentPromptMetadata = {
@@ -81,17 +83,16 @@ export const AGENT_NATIVE_ARCHITECTURE_METADATA: AgentPromptMetadata = {
   promptAlias: "Agent-Native Architecture",
   triggers: [
     { domain: "New feature development", trigger: "When adding features that users interact with" },
-    { domain: "UI workflow creation", trigger: "When creating multi-step user interfaces or wizards" },
-    { domain: "API design", trigger: "When designing APIs alongside user interfaces" }
+    {
+      domain: "UI workflow creation",
+      trigger: "When creating multi-step user interfaces or wizards",
+    },
+    { domain: "API design", trigger: "When designing APIs alongside user interfaces" },
   ],
   useWhen: [
     "Ensuring new features are accessible to agents",
     "Reviewing UI workflows for automation potential",
-    "Validating agent-user capability parity"
+    "Validating agent-user capability parity",
   ],
-  avoidWhen: [
-    "Backend-only development",
-    "Simple read-only interfaces",
-    "Prototype development"
-  ],
-}
+  avoidWhen: ["Backend-only development", "Simple read-only interfaces", "Prototype development"],
+};

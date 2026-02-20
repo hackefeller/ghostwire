@@ -1,16 +1,8 @@
-import type {
-  AutoCompactState,
-  RetryState,
-  TruncateState,
-} from "./types";
+import type { AutoCompactState, RetryState, TruncateState } from "./types";
 import type { ExperimentalConfig } from "../../../platform/config";
 import { RETRY_CONFIG, TRUNCATE_CONFIG } from "./types";
 
-import {
-  findLargestToolResult,
-  truncateToolResult,
-  truncateUntilTargetTokens,
-} from "./storage";
+import { findLargestToolResult, truncateToolResult, truncateUntilTargetTokens } from "./storage";
 import {
   findEmptyMessages,
   findEmptyMessageByIndex,
@@ -23,10 +15,7 @@ const PLACEHOLDER_TEXT = "[user interrupted]";
 
 type Client = {
   session: {
-    messages: (opts: {
-      path: { id: string };
-      query?: { directory?: string };
-    }) => Promise<unknown>;
+    messages: (opts: { path: { id: string }; query?: { directory?: string } }) => Promise<unknown>;
     summarize: (opts: {
       path: { id: string };
       body: { providerID: string; modelID: string };
@@ -55,10 +44,7 @@ type Client = {
   };
 };
 
-function getOrCreateRetryState(
-  autoCompactState: AutoCompactState,
-  sessionID: string,
-): RetryState {
+function getOrCreateRetryState(autoCompactState: AutoCompactState, sessionID: string): RetryState {
   let state = autoCompactState.retryStateBySession.get(sessionID);
   if (!state) {
     state = { attempt: 0, lastAttemptTime: 0 };
@@ -66,8 +52,6 @@ function getOrCreateRetryState(
   }
   return state;
 }
-
-
 
 function getOrCreateTruncateState(
   autoCompactState: AutoCompactState,
@@ -80,8 +64,6 @@ function getOrCreateTruncateState(
   }
   return state;
 }
-
-
 
 function sanitizeEmptyMessagesBeforeSummarize(sessionID: string): number {
   const emptyMessageIds = findEmptyMessages(sessionID);
@@ -147,12 +129,7 @@ export async function getLastAssistant(
   }
 }
 
-
-
-function clearSessionState(
-  autoCompactState: AutoCompactState,
-  sessionID: string,
-): void {
+function clearSessionState(autoCompactState: AutoCompactState, sessionID: string): void {
   autoCompactState.pendingCompact.delete(sessionID);
   autoCompactState.errorDataBySession.delete(sessionID);
   autoCompactState.retryStateBySession.delete(sessionID);
@@ -183,19 +160,12 @@ async function fixEmptyMessages(
   if (messageIndex !== undefined) {
     const targetMessageId = findEmptyMessageByIndex(sessionID, messageIndex);
     if (targetMessageId) {
-      const replaced = replaceEmptyTextParts(
-        targetMessageId,
-        "[user interrupted]",
-      );
+      const replaced = replaceEmptyTextParts(targetMessageId, "[user interrupted]");
       if (replaced) {
         fixed = true;
         fixedMessageIds.push(targetMessageId);
       } else {
-        const injected = injectTextPart(
-          sessionID,
-          targetMessageId,
-          "[user interrupted]",
-        );
+        const injected = injectTextPart(sessionID, targetMessageId, "[user interrupted]");
         if (injected) {
           fixed = true;
           fixedMessageIds.push(targetMessageId);
@@ -226,11 +196,7 @@ async function fixEmptyMessages(
         fixed = true;
         fixedMessageIds.push(messageID);
       } else {
-        const injected = injectTextPart(
-          sessionID,
-          messageID,
-          "[user interrupted]",
-        );
+        const injected = injectTextPart(sessionID, messageID, "[user interrupted]");
         if (injected) {
           fixed = true;
           fixedMessageIds.push(messageID);
@@ -269,8 +235,7 @@ export async function executeCompact(
       .showToast({
         body: {
           title: "Compact In Progress",
-          message:
-            "Recovery already running. Please wait or start new session if stuck.",
+          message: "Recovery already running. Please wait or start new session if stuck.",
           variant: "warning",
           duration: 5000,
         },
@@ -290,10 +255,7 @@ export async function executeCompact(
       errorData.currentTokens > errorData.maxTokens;
 
     // Aggressive Truncation - always try when over limit
-    if (
-      isOverLimit &&
-      truncateState.truncateAttempt < TRUNCATE_CONFIG.maxTruncateAttempts
-    ) {
+    if (isOverLimit && truncateState.truncateAttempt < TRUNCATE_CONFIG.maxTruncateAttempts) {
       log("[auto-compact] PHASE 2: aggressive truncation triggered", {
         currentTokens: errorData.currentTokens,
         maxTokens: errorData.maxTokens,
@@ -311,9 +273,7 @@ export async function executeCompact(
       if (aggressiveResult.truncatedCount > 0) {
         truncateState.truncateAttempt += aggressiveResult.truncatedCount;
 
-        const toolNames = aggressiveResult.truncatedTools
-          .map((t) => t.toolName)
-          .join(", ");
+        const toolNames = aggressiveResult.truncatedTools.map((t) => t.toolName).join(", ");
         const statusMsg = aggressiveResult.sufficient
           ? `Truncated ${aggressiveResult.truncatedCount} outputs (${formatBytes(aggressiveResult.totalBytesRemoved)})`
           : `Truncated ${aggressiveResult.truncatedCount} outputs (${formatBytes(aggressiveResult.totalBytesRemoved)}) - continuing to summarize...`;
@@ -321,9 +281,7 @@ export async function executeCompact(
         await (client as Client).tui
           .showToast({
             body: {
-              title: aggressiveResult.sufficient
-                ? "Truncation Complete"
-                : "Partial Truncation",
+              title: aggressiveResult.sufficient ? "Truncation Complete" : "Partial Truncation",
               message: `${statusMsg}: ${toolNames}`,
               variant: aggressiveResult.sufficient ? "success" : "warning",
               duration: 4000,
@@ -361,10 +319,7 @@ export async function executeCompact(
     const retryState = getOrCreateRetryState(autoCompactState, sessionID);
 
     if (errorData?.errorType?.includes("non-empty content")) {
-      const attempt = getOrCreateEmptyContentAttempt(
-        autoCompactState,
-        sessionID,
-      );
+      const attempt = getOrCreateEmptyContentAttempt(autoCompactState, sessionID);
       if (attempt < 3) {
         const fixed = await fixEmptyMessages(
           sessionID,
@@ -374,14 +329,7 @@ export async function executeCompact(
         );
         if (fixed) {
           setTimeout(() => {
-            executeCompact(
-              sessionID,
-              msg,
-              autoCompactState,
-              client,
-              directory,
-              experimental,
-            );
+            executeCompact(sessionID, msg, autoCompactState, client, directory, experimental);
           }, 500);
           return;
         }
@@ -428,7 +376,7 @@ export async function executeCompact(
             })
             .catch(() => {});
 
-          const summarizeBody = { providerID, modelID, auto: true }
+          const summarizeBody = { providerID, modelID, auto: true };
           await (client as Client).session.summarize({
             path: { id: sessionID },
             body: summarizeBody as never,
@@ -442,14 +390,7 @@ export async function executeCompact(
           const cappedDelay = Math.min(delay, RETRY_CONFIG.maxDelayMs);
 
           setTimeout(() => {
-            executeCompact(
-              sessionID,
-              msg,
-              autoCompactState,
-              client,
-              directory,
-              experimental,
-            );
+            executeCompact(sessionID, msg, autoCompactState, client, directory, experimental);
           }, cappedDelay);
           return;
         }

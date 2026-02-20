@@ -1,60 +1,60 @@
 /// <reference types="bun-types" />
-import { describe, expect, test } from "bun:test"
-import { McpOauthSchema } from "./schema"
+import { describe, expect, test } from "bun:test";
+import { McpOauthSchema } from "./schema";
 
 describe("McpOauthSchema", () => {
   test("parses empty oauth config", () => {
     //#given
-    const input = {}
+    const input = {};
 
     //#when
-    const result = McpOauthSchema.parse(input)
+    const result = McpOauthSchema.parse(input);
 
     //#then
-    expect(result).toEqual({})
-  })
+    expect(result).toEqual({});
+  });
 
   test("parses oauth config with clientId", () => {
     //#given
-    const input = { clientId: "client-123" }
+    const input = { clientId: "client-123" };
 
     //#when
-    const result = McpOauthSchema.parse(input)
+    const result = McpOauthSchema.parse(input);
 
     //#then
-    expect(result).toEqual({ clientId: "client-123" })
-  })
+    expect(result).toEqual({ clientId: "client-123" });
+  });
 
   test("parses oauth config with scopes", () => {
     //#given
-    const input = { scopes: ["openid", "profile"] }
+    const input = { scopes: ["openid", "profile"] };
 
     //#when
-    const result = McpOauthSchema.parse(input)
+    const result = McpOauthSchema.parse(input);
 
     //#then
-    expect(result).toEqual({ scopes: ["openid", "profile"] })
-  })
+    expect(result).toEqual({ scopes: ["openid", "profile"] });
+  });
 
   test("rejects non-string clientId", () => {
     //#given
-    const input = { clientId: 123 }
+    const input = { clientId: 123 };
 
     //#when
-    const result = McpOauthSchema.safeParse(input)
+    const result = McpOauthSchema.safeParse(input);
 
     //#then
-    expect(result.success).toBe(false)
-  })
+    expect(result.success).toBe(false);
+  });
 
   test("rejects non-string scopes", () => {
     //#given
-    const input = { scopes: ["openid", 42] }
+    const input = { scopes: ["openid", 42] };
 
     //#when
-    const result = McpOauthSchema.safeParse(input)
+    const result = McpOauthSchema.safeParse(input);
 
     //#then
-    expect(result.success).toBe(false)
-  })
-})
+    expect(result.success).toBe(false);
+  });
+});

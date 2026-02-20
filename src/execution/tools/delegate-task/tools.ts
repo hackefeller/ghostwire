@@ -1,8 +1,4 @@
-import {
-  tool,
-  type PluginInput,
-  type ToolDefinition,
-} from "@opencode-ai/plugin";
+import { tool, type PluginInput, type ToolDefinition } from "@opencode-ai/plugin";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import type { BackgroundManager } from "../../features/background-agent";
@@ -30,10 +26,7 @@ import { resolveMultipleSkillsAsync } from "../../features/opencode-skill-loader
 import { discoverSkills } from "../../features/opencode-skill-loader";
 import { getTaskToastManager } from "../../features/task-toast-manager";
 import type { ModelFallbackInfo } from "../../features/task-toast-manager/types";
-import {
-  subagentSessions,
-  getSessionAgent,
-} from "../../features/claude-code-session-state";
+import { subagentSessions, getSessionAgent } from "../../features/claude-code-session-state";
 import {
   log,
   findByNameCaseInsensitive,
@@ -55,9 +48,7 @@ type OpencodeClient = PluginInput["client"];
 
 const SISYPHUS_JUNIOR_AGENT = "dark-runner";
 
-function parseModelString(
-  model: string,
-): { providerID: string; modelID: string } | undefined {
+function parseModelString(model: string): { providerID: string; modelID: string } | undefined {
   const parts = model.split("/");
   if (parts.length >= 2) {
     return { providerID: parts[0], modelID: parts.slice(1).join("/") };
@@ -102,20 +93,14 @@ function formatDetailedError(error: unknown, ctx: ErrorContext): string {
   const message = error instanceof Error ? error.message : String(error);
   const stack = error instanceof Error ? error.stack : undefined;
 
-  const lines: string[] = [
-    `${ctx.operation} failed`,
-    "",
-    `**Error**: ${message}`,
-  ];
+  const lines: string[] = [`${ctx.operation} failed`, "", `**Error**: ${message}`];
 
   if (ctx.sessionID) {
     lines.push(`**Session ID**: ${ctx.sessionID}`);
   }
 
   if (ctx.agent) {
-    lines.push(
-      `**Agent**: ${ctx.agent}${ctx.category ? ` (category: ${ctx.category})` : ""}`,
-    );
+    lines.push(`**Agent**: ${ctx.agent}${ctx.category ? ` (category: ${ctx.category})` : ""}`);
   }
 
   if (ctx.args) {
@@ -145,10 +130,7 @@ type ToolContextWithMetadata = {
   messageID: string;
   agent: string;
   abort: AbortSignal;
-  metadata?: (input: {
-    title?: string;
-    metadata?: Record<string, unknown>;
-  }) => void;
+  metadata?: (input: { title?: string; metadata?: Record<string, unknown> }) => void;
 };
 
 export function resolveCategoryConfig(
@@ -164,12 +146,7 @@ export function resolveCategoryConfig(
   promptAppend: string;
   model: string | undefined;
 } | null {
-  const {
-    userCategories,
-    inheritedModel,
-    systemDefaultModel,
-    availableModels,
-  } = options;
+  const { userCategories, inheritedModel, systemDefaultModel, availableModels } = options;
 
   // Check if category requires a specific model
   const categoryReq = CATEGORY_MODEL_REQUIREMENTS[categoryName];
@@ -237,14 +214,10 @@ export interface BuildSystemContentInput {
   agentName?: string;
 }
 
-export function buildSystemContent(
-  input: BuildSystemContentInput,
-): string | undefined {
+export function buildSystemContent(input: BuildSystemContentInput): string | undefined {
   const { skillContent, categoryPromptAppend, agentName } = input;
 
-  const planAgentPrepend = isPlanAgent(agentName)
-    ? PLAN_AGENT_SYSTEM_PREPEND
-    : "";
+  const planAgentPrepend = isPlanAgent(agentName) ? PLAN_AGENT_SYSTEM_PREPEND : "";
 
   if (!skillContent && !categoryPromptAppend && !planAgentPrepend) {
     return undefined;
@@ -267,9 +240,7 @@ export function buildSystemContent(
   return parts.join("\n\n") || undefined;
 }
 
-export function createDelegateTask(
-  options: DelegateTaskToolOptions,
-): ToolDefinition {
+export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefinition {
   const {
     manager,
     client,
@@ -322,37 +293,21 @@ Prompts MUST be in English.`;
         .describe(
           'Skill names to inject. REQUIRED - pass [] if no skills needed, but IT IS HIGHLY RECOMMENDED to pass proper skills like ["playwright"], ["git-master"] for best results.',
         ),
-      description: tool.schema
-        .string()
-        .describe("Short task description (3-5 words)"),
-      prompt: tool.schema
-        .string()
-        .describe("Full detailed prompt for the agent"),
+      description: tool.schema.string().describe("Short task description (3-5 words)"),
+      prompt: tool.schema.string().describe("Full detailed prompt for the agent"),
       run_in_background: tool.schema
         .boolean()
-        .describe(
-          "true=async (returns task_id), false=sync (waits). Default: false",
-        ),
+        .describe("true=async (returns task_id), false=sync (waits). Default: false"),
       category: tool.schema
         .string()
         .optional()
-        .describe(
-          `Category (e.g., ${categoryExamples}). Mutually exclusive with subagent_type.`,
-        ),
+        .describe(`Category (e.g., ${categoryExamples}). Mutually exclusive with subagent_type.`),
       subagent_type: tool.schema
         .string()
         .optional()
-        .describe(
-          "Agent name (e.g., 'eye-ops', 'scan-ops'). Mutually exclusive with category.",
-        ),
-      session_id: tool.schema
-        .string()
-        .optional()
-        .describe("Existing Task session to continue"),
-      command: tool.schema
-        .string()
-        .optional()
-        .describe("The command that triggered this task"),
+        .describe("Agent name (e.g., 'eye-ops', 'scan-ops'). Mutually exclusive with category."),
+      session_id: tool.schema.string().optional().describe("Existing Task session to continue"),
+      command: tool.schema.string().optional().describe("The command that triggered this task"),
     },
     async execute(args: DelegateTaskArgs, toolContext) {
       const ctx = toolContext as ToolContextWithMetadata;
@@ -375,10 +330,10 @@ Prompts MUST be in English.`;
 
       let skillContent: string | undefined;
       if (args.load_skills.length > 0) {
-        const { resolved, notFound } = await resolveMultipleSkillsAsync(
-          args.load_skills,
-          { gitMasterConfig, browserProvider },
-        );
+        const { resolved, notFound } = await resolveMultipleSkillsAsync(args.load_skills, {
+          gitMasterConfig,
+          browserProvider,
+        });
         if (notFound.length > 0) {
           const allSkills = await discoverSkills({
             includeClaudeCodePaths: true,
@@ -390,15 +345,10 @@ Prompts MUST be in English.`;
       }
 
       const messageDir = getMessageDir(ctx.sessionID);
-      const prevMessage = messageDir
-        ? findNearestMessageWithFields(messageDir)
-        : null;
-      const firstMessageAgent = messageDir
-        ? findFirstMessageWithAgent(messageDir)
-        : null;
+      const prevMessage = messageDir ? findNearestMessageWithFields(messageDir) : null;
+      const firstMessageAgent = messageDir ? findFirstMessageWithAgent(messageDir) : null;
       const sessionAgent = getSessionAgent(ctx.sessionID);
-      const parentAgent =
-        ctx.agent ?? sessionAgent ?? firstMessageAgent ?? prevMessage?.agent;
+      const parentAgent = ctx.agent ?? sessionAgent ?? firstMessageAgent ?? prevMessage?.agent;
 
       log("[delegate_task] parentAgent resolution", {
         sessionID: ctx.sessionID,
@@ -414,9 +364,7 @@ Prompts MUST be in English.`;
           ? {
               providerID: prevMessage.model.providerID,
               modelID: prevMessage.model.modelID,
-              ...(prevMessage.model.variant
-                ? { variant: prevMessage.model.variant }
-                : {}),
+              ...(prevMessage.model.variant ? { variant: prevMessage.model.variant } : {}),
             }
           : undefined;
 
@@ -508,11 +456,7 @@ Use \`background_output\` with task_id="${task.id}" to check progress.`;
             }>;
             for (let i = messages.length - 1; i >= 0; i--) {
               const info = messages[i].info;
-              if (
-                info?.agent ||
-                info?.model ||
-                (info?.modelID && info?.providerID)
-              ) {
+              if (info?.agent || info?.model || (info?.modelID && info?.providerID)) {
                 resumeAgent = info.agent;
                 resumeModel =
                   info.model ??
@@ -557,9 +501,7 @@ Use \`background_output\` with task_id="${task.id}" to check progress.`;
             toastManager.removeTask(taskId);
           }
           const errorMessage =
-            promptError instanceof Error
-              ? promptError.message
-              : String(promptError);
+            promptError instanceof Error ? promptError.message : String(promptError);
           return `Failed to send continuation prompt: ${errorMessage}\n\nSession ID: ${args.session_id}`;
         }
 
@@ -605,18 +547,14 @@ Use \`background_output\` with task_id="${task.id}" to check progress.`;
           return `Error fetching result: ${messagesResult.error}\n\nSession ID: ${args.session_id}`;
         }
 
-        const messages = ((messagesResult as { data?: unknown }).data ??
-          messagesResult) as Array<{
+        const messages = ((messagesResult as { data?: unknown }).data ?? messagesResult) as Array<{
           info?: { role?: string; time?: { created?: number } };
           parts?: Array<{ type?: string; text?: string }>;
         }>;
 
         const assistantMessages = messages
           .filter((m) => m.info?.role === "assistant")
-          .sort(
-            (a, b) =>
-              (b.info?.time?.created ?? 0) - (a.info?.time?.created ?? 0),
-          );
+          .sort((a, b) => (b.info?.time?.created ?? 0) - (a.info?.time?.created ?? 0));
         const lastMessage = assistantMessages[0];
 
         if (toastManager) {
@@ -629,9 +567,7 @@ Use \`background_output\` with task_id="${task.id}" to check progress.`;
 
         // Extract text from both "text" and "reasoning" parts (thinking models use "reasoning")
         const textParts =
-          lastMessage?.parts?.filter(
-            (p) => p.type === "text" || p.type === "reasoning",
-          ) ?? [];
+          lastMessage?.parts?.filter((p) => p.type === "text" || p.type === "reasoning") ?? [];
         const textContent = textParts
           .map((p) => p.text ?? "")
           .filter(Boolean)
@@ -663,17 +599,14 @@ To continue this session: session_id="${args.session_id}"`;
       let systemDefaultModel: string | undefined;
       try {
         const openCodeConfig = await client.config.get();
-        systemDefaultModel = (openCodeConfig as { data?: { model?: string } })
-          ?.data?.model;
+        systemDefaultModel = (openCodeConfig as { data?: { model?: string } })?.data?.model;
       } catch {
         // Config fetch failed, proceed without system default
         systemDefaultModel = undefined;
       }
 
       let agentToUse: string;
-      let categoryModel:
-        | { providerID: string; modelID: string; variant?: string }
-        | undefined;
+      let categoryModel: { providerID: string; modelID: string; variant?: string } | undefined;
       let categoryPromptAppend: string | undefined;
 
       const inheritedModel = parentModel
@@ -720,22 +653,14 @@ To continue this session: session_id="${args.session_id}"`;
           });
 
           if (resolution) {
-            const {
-              model: resolvedModel,
-              source,
-              variant: resolvedVariant,
-            } = resolution;
+            const { model: resolvedModel, source, variant: resolvedVariant } = resolution;
             actualModel = resolvedModel;
 
             if (!parseModelString(actualModel)) {
               return `Invalid model format "${actualModel}". Expected "provider/model" format (e.g., "anthropic/claude-sonnet-4-5").`;
             }
 
-            let type:
-              | "user-defined"
-              | "inherited"
-              | "category-default"
-              | "system-default";
+            let type: "user-defined" | "inherited" | "category-default" | "system-default";
             switch (source) {
               case "override":
                 type = "user-defined";
@@ -802,8 +727,7 @@ Available categories: ${categoryNames.join(", ")}`;
           run_in_background_value: args.run_in_background,
           run_in_background_type: typeof args.run_in_background,
           isRunInBackgroundExplicitlyFalse,
-          willForceBackground:
-            isUnstableAgent && isRunInBackgroundExplicitlyFalse,
+          willForceBackground: isUnstableAgent && isRunInBackgroundExplicitlyFalse,
         });
 
         if (isUnstableAgent && isRunInBackgroundExplicitlyFalse) {
@@ -823,8 +747,7 @@ Available categories: ${categoryNames.join(", ")}`;
               parentModel,
               parentAgent,
               model: categoryModel,
-              skills:
-                args.load_skills.length > 0 ? args.load_skills : undefined,
+              skills: args.load_skills.length > 0 ? args.load_skills : undefined,
               skillContent: systemContent,
             });
 
@@ -833,16 +756,11 @@ Available categories: ${categoryNames.join(", ")}`;
             const WAIT_FOR_SESSION_INTERVAL_MS = 100;
             const WAIT_FOR_SESSION_TIMEOUT_MS = 30000;
             const waitStart = Date.now();
-            while (
-              !task.sessionID &&
-              Date.now() - waitStart < WAIT_FOR_SESSION_TIMEOUT_MS
-            ) {
+            while (!task.sessionID && Date.now() - waitStart < WAIT_FOR_SESSION_TIMEOUT_MS) {
               if (ctx.abort?.aborted) {
                 return `Task aborted while waiting for session to start.\n\nTask ID: ${task.id}`;
               }
-              await new Promise((resolve) =>
-                setTimeout(resolve, WAIT_FOR_SESSION_INTERVAL_MS),
-              );
+              await new Promise((resolve) => setTimeout(resolve, WAIT_FOR_SESSION_INTERVAL_MS));
             }
 
             const sessionID = task.sessionID;
@@ -891,15 +809,10 @@ Available categories: ${categoryNames.join(", ")}`;
                 return `Task aborted (was running in background mode).\n\nSession ID: ${sessionID}`;
               }
 
-              await new Promise((resolve) =>
-                setTimeout(resolve, POLL_INTERVAL_MS),
-              );
+              await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
 
               const statusResult = await client.session.status();
-              const allStatuses = (statusResult.data ?? {}) as Record<
-                string,
-                { type: string }
-              >;
+              const allStatuses = (statusResult.data ?? {}) as Record<string, { type: string }>;
               const sessionStatus = allStatuses[sessionID];
 
               if (sessionStatus && sessionStatus.type !== "idle") {
@@ -937,10 +850,7 @@ Available categories: ${categoryNames.join(", ")}`;
 
             const assistantMessages = messages
               .filter((m) => m.info?.role === "assistant")
-              .sort(
-                (a, b) =>
-                  (b.info?.time?.created ?? 0) - (a.info?.time?.created ?? 0),
-              );
+              .sort((a, b) => (b.info?.time?.created ?? 0) - (a.info?.time?.created ?? 0));
             const lastMessage = assistantMessages[0];
 
             if (!lastMessage) {
@@ -948,9 +858,7 @@ Available categories: ${categoryNames.join(", ")}`;
             }
 
             const textParts =
-              lastMessage?.parts?.filter(
-                (p) => p.type === "text" || p.type === "reasoning",
-              ) ?? [];
+              lastMessage?.parts?.filter((p) => p.type === "text" || p.type === "reasoning") ?? [];
             const textContent = textParts
               .map((p) => p.text ?? "")
               .filter(Boolean)
@@ -1024,10 +932,7 @@ Create the work plan directly - that's your job as the planning agent.`;
 
           const callableAgents = agents.filter((a) => a.mode !== "primary");
 
-          const matchedAgent = findByNameCaseInsensitive(
-            callableAgents,
-            agentToUse,
-          );
+          const matchedAgent = findByNameCaseInsensitive(callableAgents, agentToUse);
           if (!matchedAgent) {
             const isPrimaryAgent = findByNameCaseInsensitive(
               agents.filter((a) => a.mode === "primary"),
@@ -1119,9 +1024,7 @@ To continue this session: session_id="${task.sessionID}"`;
 
       try {
         const parentSession = client.session.get
-          ? await client.session
-              .get({ path: { id: ctx.sessionID } })
-              .catch(() => null)
+          ? await client.session.get({ path: { id: ctx.sessionID } }).catch(() => null)
           : null;
         const parentDirectory = parentSession?.data?.directory ?? directory;
 
@@ -1129,9 +1032,7 @@ To continue this session: session_id="${task.sessionID}"`;
           body: {
             parentID: ctx.sessionID,
             title: `Task: ${args.description}`,
-            permission: [
-              { permission: "question", action: "deny" as const, pattern: "*" },
-            ],
+            permission: [{ permission: "question", action: "deny" as const, pattern: "*" }],
           } as any,
           query: {
             directory: parentDirectory,
@@ -1215,9 +1116,7 @@ To continue this session: session_id="${task.sessionID}"`;
                     },
                   }
                 : {}),
-              ...(categoryModel?.variant
-                ? { variant: categoryModel.variant }
-                : {}),
+              ...(categoryModel?.variant ? { variant: categoryModel.variant } : {}),
             },
           });
         } catch (promptError) {
@@ -1225,13 +1124,8 @@ To continue this session: session_id="${task.sessionID}"`;
             toastManager.removeTask(taskId);
           }
           const errorMessage =
-            promptError instanceof Error
-              ? promptError.message
-              : String(promptError);
-          if (
-            errorMessage.includes("agent.name") ||
-            errorMessage.includes("undefined")
-          ) {
+            promptError instanceof Error ? promptError.message : String(promptError);
+          if (errorMessage.includes("agent.name") || errorMessage.includes("undefined")) {
             return formatDetailedError(
               new Error(
                 `Agent "${agentToUse}" not found. Make sure the agent is registered in your opencode.json or provided by a plugin.`,
@@ -1279,10 +1173,7 @@ To continue this session: session_id="${task.sessionID}"`;
           pollCount++;
 
           const statusResult = await client.session.status();
-          const allStatuses = (statusResult.data ?? {}) as Record<
-            string,
-            { type: string }
-          >;
+          const allStatuses = (statusResult.data ?? {}) as Record<string, { type: string }>;
           const sessionStatus = allStatuses[sessionID];
 
           if (pollCount % 10 === 0) {
@@ -1347,18 +1238,14 @@ To continue this session: session_id="${task.sessionID}"`;
           return `Error fetching result: ${messagesResult.error}\n\nSession ID: ${sessionID}`;
         }
 
-        const messages = ((messagesResult as { data?: unknown }).data ??
-          messagesResult) as Array<{
+        const messages = ((messagesResult as { data?: unknown }).data ?? messagesResult) as Array<{
           info?: { role?: string; time?: { created?: number } };
           parts?: Array<{ type?: string; text?: string }>;
         }>;
 
         const assistantMessages = messages
           .filter((m) => m.info?.role === "assistant")
-          .sort(
-            (a, b) =>
-              (b.info?.time?.created ?? 0) - (a.info?.time?.created ?? 0),
-          );
+          .sort((a, b) => (b.info?.time?.created ?? 0) - (a.info?.time?.created ?? 0));
         const lastMessage = assistantMessages[0];
 
         if (!lastMessage) {
@@ -1367,9 +1254,7 @@ To continue this session: session_id="${task.sessionID}"`;
 
         // Extract text from both "text" and "reasoning" parts (thinking models use "reasoning")
         const textParts =
-          lastMessage?.parts?.filter(
-            (p) => p.type === "text" || p.type === "reasoning",
-          ) ?? [];
+          lastMessage?.parts?.filter((p) => p.type === "text" || p.type === "reasoning") ?? [];
         const textContent = textParts
           .map((p) => p.text ?? "")
           .filter(Boolean)

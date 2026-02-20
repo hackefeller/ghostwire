@@ -1,8 +1,8 @@
-import type { AgentConfig } from "@opencode-ai/sdk"
-import type { AgentMode, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "../../platform/config/permission-compat"
+import type { AgentConfig } from "@opencode-ai/sdk";
+import type { AgentMode, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "../../platform/config/permission-compat";
 
-const MODE: AgentMode = "subagent"
+const MODE: AgentMode = "subagent";
 
 /**
  * Tactician Strategist - Plan Consultant Agent
@@ -18,7 +18,7 @@ const MODE: AgentMode = "subagent"
  * - Prepare directives for the planner agent
  */
 
-export const METIS_SYSTEM_PROMPT = `# Tactician Strategist - Pre-Planning Consultant
+export const TACTICIAN_SYSTEM_PROMPT = `# Tactician Strategist - Pre-Planning Consultant
 
 ## CONSTRAINTS
 
@@ -300,16 +300,16 @@ User confirms the button works as expected.
 - Provide actionable directives for Augur Planner
 - Include QA automation directives in every output
 - Ensure acceptance criteria are agent-executable (commands, not human actions)
-`
+`;
 
 const tacticianRestrictions = createAgentToolRestrictions([
   "write",
   "edit",
   "task",
   "delegate_task",
-])
+]);
 
-export function createMetisAgent(model: string): AgentConfig {
+export function createWarMindAgent(model: string): AgentConfig {
   return {
     description:
       "Pre-planning consultant that analyzes requests to identify hidden intentions, ambiguities, and AI failure points. (Tactician Strategist - Ghostwire)",
@@ -317,11 +317,11 @@ export function createMetisAgent(model: string): AgentConfig {
     model,
     temperature: 0.3,
     ...tacticianRestrictions,
-    prompt: METIS_SYSTEM_PROMPT,
+    prompt: TACTICIAN_SYSTEM_PROMPT,
     thinking: { type: "enabled", budgetTokens: 32000 },
-  } as AgentConfig
+  } as AgentConfig;
 }
-createMetisAgent.mode = MODE
+createWarMindAgent.mode = MODE;
 
 export const tacticianPromptMetadata: AgentPromptMetadata = {
   category: "advisor",
@@ -337,10 +337,7 @@ export const tacticianPromptMetadata: AgentPromptMetadata = {
     "When user request is ambiguous or open-ended",
     "To prevent AI over-engineering patterns",
   ],
-  avoidWhen: [
-    "Simple, well-defined tasks",
-    "User has already provided detailed requirements",
-  ],
+  avoidWhen: ["Simple, well-defined tasks", "User has already provided detailed requirements"],
   promptAlias: "Tactician Strategist",
   keyTrigger: "Ambiguous or complex request → consult Tactician Strategist before Augur Planner",
-}
+};

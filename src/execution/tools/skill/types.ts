@@ -1,57 +1,57 @@
-import type { SkillScope, LoadedSkill } from "../../features/opencode-skill-loader/types"
-import type { SkillMcpManager } from "../../features/skill-mcp-manager"
-import type { GitMasterConfig } from "../../../platform/config/schema"
+import type { SkillScope, LoadedSkill } from "../../features/opencode-skill-loader/types";
+import type { SkillMcpManager } from "../../features/skill-mcp-manager";
+import type { GitMasterConfig } from "../../../platform/config/schema";
 
 export interface SkillArgs {
-  name: string
+  name: string;
 }
 
 export interface SkillInfo {
-  name: string
-  description: string
-  location?: string
-  scope: SkillScope
-  license?: string
-  compatibility?: string
-  metadata?: Record<string, string>
-  allowedTools?: string[]
+  name: string;
+  description: string;
+  location?: string;
+  scope: SkillScope;
+  license?: string;
+  compatibility?: string;
+  metadata?: Record<string, string>;
+  allowedTools?: string[];
 }
 
 export interface SkillLoadOptions {
   /** When true, only load from OpenCode paths (.opencode/skills/, ~/.config/opencode/skills/) */
-  opencodeOnly?: boolean
+  opencodeOnly?: boolean;
   /** Pre-merged skills to use instead of discovering */
-  skills?: LoadedSkill[]
+  skills?: LoadedSkill[];
   /** MCP manager for querying skill-embedded MCP servers */
-  mcpManager?: SkillMcpManager
+  mcpManager?: SkillMcpManager;
   /** Session ID getter for MCP client identification */
-  getSessionID?: () => string
+  getSessionID?: () => string;
   /** Git master configuration for watermark/co-author settings */
-  gitMasterConfig?: GitMasterConfig
+  gitMasterConfig?: GitMasterConfig;
 }
 
 // CRUD Types
 export interface SkillListArgs {
-  scope?: "builtin" | "project" | "user" | "all"
+  scope?: "builtin" | "project" | "user" | "all";
 }
 
 export interface SkillCreateArgs {
-  name: string
-  description: string
-  template?: "agent" | "tool" | "analysis" | "hook"
-  scope?: "project" | "user"
-  content?: string
+  name: string;
+  description: string;
+  template?: "agent" | "tool" | "analysis" | "hook";
+  scope?: "project" | "user";
+  content?: string;
 }
 
 export interface SkillUpdateArgs {
-  skill_name: string
-  name?: string
-  description?: string
-  content?: string
-  append?: string
+  skill_name: string;
+  name?: string;
+  description?: string;
+  content?: string;
+  append?: string;
 }
 
 export interface SkillDeleteArgs {
-  skill_name: string
-  force?: boolean
+  skill_name: string;
+  force?: boolean;
 }

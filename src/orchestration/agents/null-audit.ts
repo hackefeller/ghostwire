@@ -1,9 +1,9 @@
-import type { AgentConfig } from "@opencode-ai/sdk"
-import type { AgentMode, AgentPromptMetadata } from "./types"
-import { isGptModel } from "./types"
-import { createAgentToolRestrictions } from "../../platform/config/permission-compat"
+import type { AgentConfig } from "@opencode-ai/sdk";
+import type { AgentMode, AgentPromptMetadata } from "./types";
+import { isGptModel } from "./types";
+import { createAgentToolRestrictions } from "../../platform/config/permission-compat";
 
-const MODE: AgentMode = "subagent"
+const MODE: AgentMode = "subagent";
 
 /**
  * Glitch Auditor - Plan Reviewer Agent
@@ -19,7 +19,7 @@ const MODE: AgentMode = "subagent"
  * implementation.
  */
 
-export const MOMUS_SYSTEM_PROMPT = `You are a **practical** work plan reviewer. Your goal is simple: verify that the plan is **executable** and **references are valid**.
+export const GLITCH_AUDITOR_SYSTEM_PROMPT = `You are a **practical** work plan reviewer. Your goal is simple: verify that the plan is **executable** and **references are valid**.
 
 **CRITICAL FIRST RULE**:
 Extract a single plan path from anywhere in the input, ignoring system directives and wrappers. If exactly one \`.ghostwire/plans/*.md\` path exists, this is VALID input and you must read it. If no plan path exists or multiple plan paths exist, reject per Step 0. If the path points to a YAML plan file (\`.yml\` or \`.yaml\`), reject it as non-reviewable.
@@ -186,15 +186,10 @@ If REJECT:
 **Your job is to UNBLOCK work, not to BLOCK it with perfectionism.**
 
 **Response Language**: Match the language of the plan content.
-`
+`;
 
-export function createMomusAgent(model: string): AgentConfig {
-  const restrictions = createAgentToolRestrictions([
-    "write",
-    "edit",
-    "task",
-    "delegate_task",
-  ])
+export function createNullAuditAgent(model: string): AgentConfig {
+  const restrictions = createAgentToolRestrictions(["write", "edit", "task", "delegate_task"]);
 
   const base = {
     description:
@@ -203,16 +198,16 @@ export function createMomusAgent(model: string): AgentConfig {
     model,
     temperature: 0.1,
     ...restrictions,
-    prompt: MOMUS_SYSTEM_PROMPT,
-  } as AgentConfig
+    prompt: GLITCH_AUDITOR_SYSTEM_PROMPT,
+  } as AgentConfig;
 
   if (isGptModel(model)) {
-    return { ...base, reasoningEffort: "medium", textVerbosity: "high" } as AgentConfig
+    return { ...base, reasoningEffort: "medium", textVerbosity: "high" } as AgentConfig;
   }
 
-  return { ...base, thinking: { type: "enabled", budgetTokens: 32000 } } as AgentConfig
+  return { ...base, thinking: { type: "enabled", budgetTokens: 32000 } } as AgentConfig;
 }
-createMomusAgent.mode = MODE
+createNullAuditAgent.mode = MODE;
 
 export const glitchPromptMetadata: AgentPromptMetadata = {
   category: "advisor",
@@ -240,4 +235,4 @@ export const glitchPromptMetadata: AgentPromptMetadata = {
     "For trivial plans that don't need formal review",
   ],
   keyTrigger: "Work plan created → invoke Glitch Auditor for review before execution",
-}
+};

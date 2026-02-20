@@ -32,10 +32,11 @@ function truncateQuestionLabels(args: AskUserQuestionArgs): AskUserQuestionArgs 
     ...args,
     questions: args.questions.map((question) => ({
       ...question,
-      options: question.options?.map((option) => ({
-        ...option,
-        label: truncateLabel(option.label),
-      })) ?? [],
+      options:
+        question.options?.map((option) => ({
+          ...option,
+          label: truncateLabel(option.label),
+        })) ?? [],
     })),
   };
 }
@@ -44,7 +45,7 @@ export function createQuestionLabelTruncatorHook() {
   return {
     "tool.execute.before": async (
       input: { tool: string },
-      output: { args: Record<string, unknown> }
+      output: { args: Record<string, unknown> },
     ): Promise<void> => {
       const toolName = input.tool?.toLowerCase();
 

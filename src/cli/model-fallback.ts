@@ -52,10 +52,7 @@ function toProviderAvailability(config: InstallConfig): ProviderAvailability {
   };
 }
 
-function isProviderAvailable(
-  provider: string,
-  avail: ProviderAvailability,
-): boolean {
+function isProviderAvailable(provider: string, avail: ProviderAvailability): boolean {
   const mapping: Record<string, boolean> = {
     openai: avail.native.openai,
     google: avail.native.gemini,
@@ -85,10 +82,7 @@ function resolveModelFromChain(
   for (const entry of fallbackChain) {
     for (const provider of entry.providers) {
       if (isProviderAvailable(provider, avail)) {
-        const transformedModel = transformModelForProvider(
-          provider,
-          entry.model,
-        );
+        const transformedModel = transformModelForProvider(provider, entry.model);
         return {
           model: `${provider}/${transformedModel}`,
           variant: entry.variant,
@@ -113,16 +107,10 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
     return {
       $schema: SCHEMA_URL,
       agents: Object.fromEntries(
-        Object.keys(AGENT_MODEL_REQUIREMENTS).map((role) => [
-          role,
-          { model: ULTIMATE_FALLBACK },
-        ]),
+        Object.keys(AGENT_MODEL_REQUIREMENTS).map((role) => [role, { model: ULTIMATE_FALLBACK }]),
       ),
       categories: Object.fromEntries(
-        Object.keys(CATEGORY_MODEL_REQUIREMENTS).map((cat) => [
-          cat,
-          { model: ULTIMATE_FALLBACK },
-        ]),
+        Object.keys(CATEGORY_MODEL_REQUIREMENTS).map((cat) => [cat, { model: ULTIMATE_FALLBACK }]),
       ),
     };
   }
@@ -155,9 +143,7 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
     const resolved = resolveModelFromChain(fallbackChain, avail);
     if (resolved) {
       const variant = resolved.variant ?? req.variant;
-      agents[role] = variant
-        ? { model: resolved.model, variant }
-        : { model: resolved.model };
+      agents[role] = variant ? { model: resolved.model, variant } : { model: resolved.model };
     } else {
       agents[role] = { model: ULTIMATE_FALLBACK };
     }
@@ -170,9 +156,7 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
     const resolved = resolveModelFromChain(fallbackChain, avail);
     if (resolved) {
       const variant = resolved.variant ?? req.variant;
-      categories[cat] = variant
-        ? { model: resolved.model, variant }
-        : { model: resolved.model };
+      categories[cat] = variant ? { model: resolved.model, variant } : { model: resolved.model };
     } else {
       categories[cat] = { model: ULTIMATE_FALLBACK };
     }

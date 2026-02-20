@@ -38,23 +38,31 @@ ls -d plugin/mcp-servers/*/ 2>/dev/null | wc -l
 Read all component files to get their metadata:
 
 ### Agents
+
 For each agent file in `plugin/agents/*.md`:
+
 - Extract the frontmatter (name, description)
 - Note the category (Review, Research, Workflow, Design, Docs)
 - Get key responsibilities from the content
 
 ### Commands
+
 For each command file in `plugin/commands/*.md`:
+
 - Extract the frontmatter (name, description, argument-hint)
 - Categorize as Workflow or Utility command
 
 ### Skills
+
 For each skill directory in `plugin/skills/*/`:
+
 - Read the SKILL.md file for frontmatter (name, description)
 - Note any scripts or supporting files
 
 ### MCP Servers
+
 For each MCP server in `plugin/mcp-servers/*/`:
+
 - Read the configuration and README
 - List the tools provided
 
@@ -63,6 +71,7 @@ For each MCP server in `plugin/mcp-servers/*/`:
 ### 2a. Update `docs/index.html`
 
 Update the stats section with accurate counts:
+
 ```html
 <div class="stats-grid">
   <div class="stat-card">
@@ -78,6 +87,7 @@ Ensure the component summary sections list key components accurately.
 ### 2b. Update `docs/pages/agents.html`
 
 Regenerate the complete agents reference page:
+
 - Group agents by category (Review, Research, Workflow, Design, Docs)
 - Include for each agent:
   - Name and description
@@ -88,6 +98,7 @@ Regenerate the complete agents reference page:
 ### 2c. Update `docs/pages/commands.html`
 
 Regenerate the complete commands reference page:
+
 - Group commands by type (Workflow, Utility)
 - Include for each command:
   - Name and description
@@ -98,6 +109,7 @@ Regenerate the complete commands reference page:
 ### 2d. Update `docs/pages/skills.html`
 
 Regenerate the complete skills reference page:
+
 - Group skills by category (Development Tools, Content & Workflow, Image Generation)
 - Include for each skill:
   - Name and description
@@ -107,6 +119,7 @@ Regenerate the complete skills reference page:
 ### 2e. Update `docs/pages/mcp-servers.html`
 
 Regenerate the MCP servers reference page:
+
 - For each server:
   - Name and purpose
   - Tools provided
@@ -179,6 +192,7 @@ Provide a summary of what was updated:
 ## Dry Run Mode
 
 If `--dry-run` is specified:
+
 - Perform all inventory and validation steps
 - Report what WOULD be updated
 - Do NOT write any files
@@ -193,6 +207,7 @@ If `--dry-run` is specified:
 ## Post-Release
 
 After successful release:
+
 1. Suggest updating CHANGELOG.md with documentation changes
 2. Remind to commit with message: `docs: Update documentation site to match plugin components`
 3. Remind to push changes

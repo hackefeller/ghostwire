@@ -1,13 +1,16 @@
-import { injectHookMessage } from "../../../execution/features/hook-message-injector"
-import { log } from "../../../integration/shared/logger"
-import { createSystemDirective, SystemDirectiveTypes } from "../../../integration/shared/system-directive"
+import { injectHookMessage } from "../../../execution/features/hook-message-injector";
+import { log } from "../../../integration/shared/logger";
+import {
+  createSystemDirective,
+  SystemDirectiveTypes,
+} from "../../../integration/shared/system-directive";
 
 export interface SummarizeContext {
-  sessionID: string
-  providerID: string
-  modelID: string
-  usageRatio: number
-  directory: string
+  sessionID: string;
+  providerID: string;
+  modelID: string;
+  usageRatio: number;
+  directory: string;
 }
 
 const SUMMARIZE_CONTEXT_PROMPT = `${createSystemDirective(SystemDirectiveTypes.COMPACTION_CONTEXT)}
@@ -55,22 +58,22 @@ When summarizing this session, you MUST include the following sections in your s
 This section is CRITICAL for reviewer agents (glitchAuditor, seerAdvisor) to maintain continuity.
 
 This context is critical for maintaining continuity after compaction.
-`
+`;
 
 export function createCompactionContextInjector() {
   return async (ctx: SummarizeContext): Promise<void> => {
-    log("[grid-compaction-context-injector] injecting context", { sessionID: ctx.sessionID })
+    log("[grid-compaction-context-injector] injecting context", { sessionID: ctx.sessionID });
 
     const success = injectHookMessage(ctx.sessionID, SUMMARIZE_CONTEXT_PROMPT, {
       agent: "general",
       model: { providerID: ctx.providerID, modelID: ctx.modelID },
       path: { cwd: ctx.directory },
-    })
+    });
 
     if (success) {
-      log("[grid-compaction-context-injector] context injected", { sessionID: ctx.sessionID })
+      log("[grid-compaction-context-injector] context injected", { sessionID: ctx.sessionID });
     } else {
-      log("[grid-compaction-context-injector] injection failed", { sessionID: ctx.sessionID })
+      log("[grid-compaction-context-injector] injection failed", { sessionID: ctx.sessionID });
     }
-  }
+  };
 }

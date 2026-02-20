@@ -13,17 +13,13 @@ export function createModelCacheState(): ModelCacheState {
 export function getModelLimit(
   state: ModelCacheState,
   providerID: string,
-  modelID: string
+  modelID: string,
 ): number | undefined {
   const key = `${providerID}/${modelID}`;
   const cached = state.modelContextLimitsCache.get(key);
   if (cached) return cached;
 
-  if (
-    providerID === "anthropic" &&
-    state.anthropicContext1MEnabled &&
-    modelID.includes("sonnet")
-  ) {
+  if (providerID === "anthropic" && state.anthropicContext1MEnabled && modelID.includes("sonnet")) {
     return 1_000_000;
   }
   return undefined;

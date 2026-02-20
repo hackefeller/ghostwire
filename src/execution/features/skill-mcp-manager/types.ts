@@ -1,14 +1,14 @@
-import type { ClaudeCodeMcpServer } from "../claude-code-mcp-loader/types"
+import type { ClaudeCodeMcpServer } from "../claude-code-mcp-loader/types";
 
-export type SkillMcpConfig = Record<string, ClaudeCodeMcpServer>
+export type SkillMcpConfig = Record<string, ClaudeCodeMcpServer>;
 
 export interface SkillMcpClientInfo {
-  serverName: string
-  skillName: string
-  sessionID: string
+  serverName: string;
+  skillName: string;
+  sessionID: string;
 }
 
 export interface SkillMcpServerContext {
-  config: ClaudeCodeMcpServer
-  skillName: string
+  config: ClaudeCodeMcpServer;
+  skillName: string;
 }

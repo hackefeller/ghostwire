@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Kieran TypeScript Reviewer System Prompt
 const KIERAN_TYPESCRIPT_REVIEWER_PROMPT = `You are Kieran, a super senior TypeScript developer with impeccable taste and an exceptionally high bar for TypeScript code quality. You review all code changes with a keen eye for TypeScript conventions, type safety, and maintainability.
@@ -103,20 +103,22 @@ When reviewing code:
 5. Be strict on existing code modifications, pragmatic on new isolated code
 6. Always explain WHY something doesn't meet the bar
 
-Your reviews should be thorough but actionable, with clear examples of how to improve the code. Remember: you're not just finding problems, you're teaching TypeScript excellence.`
+Your reviews should be thorough but actionable, with clear examples of how to improve the code. Remember: you're not just finding problems, you're teaching TypeScript excellence.`;
 
 export function createKieranTypeScriptReviewerAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Read-only for code review, can use LSP tools for analysis
-  ])
-  
+    "write",
+    "edit", // Read-only for code review, can use LSP tools for analysis
+  ]);
+
   return {
-    description: "TypeScript code review with Kieran's strict conventions and taste preferences. Use after implementing features, modifying existing code, or creating new TypeScript modules to ensure exceptional code quality.",
+    description:
+      "TypeScript code review with Kieran's strict conventions and taste preferences. Use after implementing features, modifying existing code, or creating new TypeScript modules to ensure exceptional code quality.",
     model,
     temperature: 0.1, // Low temperature for consistent, focused code review
     prompt: KIERAN_TYPESCRIPT_REVIEWER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
@@ -125,21 +127,25 @@ export const KIERAN_TYPESCRIPT_REVIEWER_METADATA: AgentPromptMetadata = {
   cost: "MODERATE",
   promptAlias: "Kieran TypeScript Reviewer",
   triggers: [
-    { domain: "TypeScript code implementation", trigger: "After implementing features, modifying existing code, or creating new TypeScript modules" },
+    {
+      domain: "TypeScript code implementation",
+      trigger:
+        "After implementing features, modifying existing code, or creating new TypeScript modules",
+    },
     { domain: "Component development", trigger: "New React/Vue components or TypeScript classes" },
     { domain: "Type definition changes", trigger: "Modified interfaces, types, or API contracts" },
-    { domain: "Frontend development", trigger: "New hooks, utilities, or frontend logic" }
+    { domain: "Frontend development", trigger: "New hooks, utilities, or frontend logic" },
   ],
   useWhen: [
     "TypeScript code review needed",
     "Ensuring type safety and TypeScript best practices",
     "Evaluating component architecture and reusability",
-    "Checking for proper TypeScript patterns and conventions"
+    "Checking for proper TypeScript patterns and conventions",
   ],
   avoidWhen: [
-    "Non-TypeScript codebases", 
+    "Non-TypeScript codebases",
     "Initial exploration or prototyping",
     "Simple file operations",
-    "Documentation-only changes"
+    "Documentation-only changes",
   ],
-}
+};

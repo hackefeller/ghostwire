@@ -186,9 +186,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then scoutRecon should use opencode/claude-haiku-4-5
-      expect(result.agents?.["scan-ops"]?.model).toBe(
-        "opencode/claude-haiku-4-5",
-      );
+      expect(result.agents?.["scan-ops"]?.model).toBe("opencode/claude-haiku-4-5");
     });
 
     test("scan-ops uses gpt-5-nano when only OpenAI available", () => {
@@ -210,9 +208,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then scoutRecon should use gpt-5-mini (Copilot fallback)
-      expect(result.agents?.["scan-ops"]?.model).toBe(
-        "github-copilot/gpt-5-mini",
-      );
+      expect(result.agents?.["scan-ops"]?.model).toBe("github-copilot/gpt-5-mini");
     });
   });
 
@@ -228,9 +224,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config);
 
       // #then archiveResearcher should use ZAI_MODEL
-      expect(result.agents?.["data-dive"]?.model).toBe(
-        "zai-coding-plan/glm-4.7",
-      );
+      expect(result.agents?.["data-dive"]?.model).toBe("zai-coding-plan/glm-4.7");
     });
   });
 

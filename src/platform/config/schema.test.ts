@@ -37,11 +37,7 @@ describe("disabled_mcps schema", () => {
     //#then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.disabled_mcps).toEqual([
-        "playwright",
-        "sqlite",
-        "custom-mcp",
-      ]);
+      expect(result.data.disabled_mcps).toEqual(["playwright", "sqlite", "custom-mcp"]);
     }
   });
 
@@ -57,11 +53,7 @@ describe("disabled_mcps schema", () => {
     //#then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.disabled_mcps).toEqual([
-        "context7",
-        "playwright",
-        "custom-server",
-      ]);
+      expect(result.data.disabled_mcps).toEqual(["context7", "playwright", "custom-server"]);
     }
   });
 
@@ -426,9 +418,7 @@ describe("Cipher Operator-Junior agent override", () => {
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.agents?.["dark-runner"]).toBeDefined();
-      expect(result.data.agents?.["dark-runner"]?.model).toBe(
-        "openai/gpt-5.2",
-      );
+      expect(result.data.agents?.["dark-runner"]?.model).toBe("openai/gpt-5.2");
       expect(result.data.agents?.["dark-runner"]?.temperature).toBe(0.2);
     }
   });
@@ -528,9 +518,7 @@ describe("Cipher Operator-Junior agent override", () => {
     // #then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.agents?.["war-mind"]?.category).toBe(
-        "ultrabrain",
-      );
+      expect(result.data.agents?.["war-mind"]?.category).toBe("ultrabrain");
       expect(result.data.agents?.["null-audit"]?.category).toBe("quick");
     }
   });
@@ -611,9 +599,7 @@ describe("GhostwireConfigSchema - browser_automation_engine", () => {
 
     // #then
     expect(result.success).toBe(true);
-    expect(result.data?.browser_automation_engine?.provider).toBe(
-      "agent-browser",
-    );
+    expect(result.data?.browser_automation_engine?.provider).toBe("agent-browser");
   });
 
   test("accepts config without browser_automation_engine", () => {

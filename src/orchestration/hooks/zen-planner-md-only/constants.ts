@@ -1,15 +1,18 @@
-import { createSystemDirective, SystemDirectiveTypes } from "../../../integration/shared/system-directive"
-import { getAgentDisplayName } from "../../../integration/shared/agent-display-names"
+import {
+  createSystemDirective,
+  SystemDirectiveTypes,
+} from "../../../integration/shared/system-directive";
+import { getAgentDisplayName } from "../../../integration/shared/agent-display-names";
 
-export const HOOK_NAME = "zen-planner-md-only"
+export const HOOK_NAME = "zen-planner-md-only";
 
-export const AUGUR_PLANNER_AGENTS = ["zen-planner"]
+export const AUGUR_PLANNER_AGENTS = ["zen-planner"];
 
-export const ALLOWED_EXTENSIONS = [".md"]
+export const ALLOWED_EXTENSIONS = [".md"];
 
-export const ALLOWED_PATH_PREFIX = ".void-runner"
+export const ALLOWED_PATH_PREFIX = ".void-runner";
 
-export const BLOCKED_TOOLS = ["Write", "Edit", "write", "edit"]
+export const BLOCKED_TOOLS = ["Write", "Edit", "write", "edit"];
 
 export const PLANNING_CONSULT_WARNING = `
 
@@ -30,7 +33,7 @@ Return your findings and recommendations. The actual implementation will be hand
 
 ---
 
-`
+`;
 
 export const AUGUR_PLANNER_WORKFLOW_REMINDER = `
 
@@ -75,4 +78,4 @@ If you skipped steps, STOP NOW. Go back and complete them.
 
 ---
 
-`
+`;

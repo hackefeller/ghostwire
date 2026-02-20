@@ -103,7 +103,7 @@ while (hasMore) {
       const res = await fetch(url, { headers });
       return res.json();
     },
-    { url, headers }
+    { url, headers },
   );
 
   // Extract data and cursor (adjust paths for your API)

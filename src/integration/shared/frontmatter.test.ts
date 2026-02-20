@@ -1,5 +1,5 @@
-import { describe, test, expect } from "bun:test"
-import { parseFrontmatter } from "./frontmatter"
+import { describe, test, expect } from "bun:test";
+import { parseFrontmatter } from "./frontmatter";
 
 describe("parseFrontmatter", () => {
   // #region backward compatibility
@@ -9,16 +9,16 @@ describe("parseFrontmatter", () => {
 description: Test command
 agent: build
 ---
-Body content`
+Body content`;
 
     // #when
-    const result = parseFrontmatter(content)
+    const result = parseFrontmatter(content);
 
     // #then
-    expect(result.data.description).toBe("Test command")
-    expect(result.data.agent).toBe("build")
-    expect(result.body).toBe("Body content")
-  })
+    expect(result.data.description).toBe("Test command");
+    expect(result.data.agent).toBe("build");
+    expect(result.body).toBe("Body content");
+  });
 
   test("parses boolean values", () => {
     // #given
@@ -26,15 +26,15 @@ Body content`
 subtask: true
 enabled: false
 ---
-Body`
+Body`;
 
     // #when
-    const result = parseFrontmatter<{ subtask: boolean; enabled: boolean }>(content)
+    const result = parseFrontmatter<{ subtask: boolean; enabled: boolean }>(content);
 
     // #then
-    expect(result.data.subtask).toBe(true)
-    expect(result.data.enabled).toBe(false)
-  })
+    expect(result.data.subtask).toBe(true);
+    expect(result.data.enabled).toBe(false);
+  });
   // #endregion
 
   // #region complex YAML (handoffs support)
@@ -51,25 +51,25 @@ handoffs:
     agent: speckit.checklist
     prompt: Create a checklist
 ---
-Workflow instructions`
+Workflow instructions`;
 
     interface TestMeta {
-      description: string
-      handoffs: Array<{ label: string; agent: string; prompt: string; send?: boolean }>
+      description: string;
+      handoffs: Array<{ label: string; agent: string; prompt: string; send?: boolean }>;
     }
 
     // #when
-    const result = parseFrontmatter<TestMeta>(content)
+    const result = parseFrontmatter<TestMeta>(content);
 
     // #then
-    expect(result.data.description).toBe("Execute planning workflow")
-    expect(result.data.handoffs).toHaveLength(2)
-    expect(result.data.handoffs[0].label).toBe("Create Tasks")
-    expect(result.data.handoffs[0].agent).toBe("speckit.tasks")
-    expect(result.data.handoffs[0].send).toBe(true)
-    expect(result.data.handoffs[1].agent).toBe("speckit.checklist")
-    expect(result.data.handoffs[1].send).toBeUndefined()
-  })
+    expect(result.data.description).toBe("Execute planning workflow");
+    expect(result.data.handoffs).toHaveLength(2);
+    expect(result.data.handoffs[0].label).toBe("Create Tasks");
+    expect(result.data.handoffs[0].agent).toBe("speckit.tasks");
+    expect(result.data.handoffs[0].send).toBe(true);
+    expect(result.data.handoffs[1].agent).toBe("speckit.checklist");
+    expect(result.data.handoffs[1].send).toBeUndefined();
+  });
 
   test("parses nested objects in frontmatter", () => {
     // #given
@@ -81,54 +81,54 @@ config:
   options:
     verbose: false
 ---
-Content`
+Content`;
 
     interface TestMeta {
-      name: string
+      name: string;
       config: {
-        timeout: number
-        retry: boolean
-        options: { verbose: boolean }
-      }
+        timeout: number;
+        retry: boolean;
+        options: { verbose: boolean };
+      };
     }
 
     // #when
-    const result = parseFrontmatter<TestMeta>(content)
+    const result = parseFrontmatter<TestMeta>(content);
 
     // #then
-    expect(result.data.name).toBe("test")
-    expect(result.data.config.timeout).toBe(5000)
-    expect(result.data.config.retry).toBe(true)
-    expect(result.data.config.options.verbose).toBe(false)
-  })
+    expect(result.data.name).toBe("test");
+    expect(result.data.config.timeout).toBe(5000);
+    expect(result.data.config.retry).toBe(true);
+    expect(result.data.config.options.verbose).toBe(false);
+  });
   // #endregion
 
   // #region edge cases
   test("handles content without frontmatter", () => {
     // #given
-    const content = "Just body content"
+    const content = "Just body content";
 
     // #when
-    const result = parseFrontmatter(content)
+    const result = parseFrontmatter(content);
 
     // #then
-    expect(result.data).toEqual({})
-    expect(result.body).toBe("Just body content")
-  })
+    expect(result.data).toEqual({});
+    expect(result.body).toBe("Just body content");
+  });
 
   test("handles empty frontmatter", () => {
     // #given
     const content = `---
 ---
-Body`
+Body`;
 
     // #when
-    const result = parseFrontmatter(content)
+    const result = parseFrontmatter(content);
 
     // #then
-    expect(result.data).toEqual({})
-    expect(result.body).toBe("Body")
-  })
+    expect(result.data).toEqual({});
+    expect(result.body).toBe("Body");
+  });
 
   test("handles invalid YAML gracefully", () => {
     // #given
@@ -136,30 +136,30 @@ Body`
 invalid: yaml: syntax: here
   bad indentation
 ---
-Body`
+Body`;
 
     // #when
-    const result = parseFrontmatter(content)
+    const result = parseFrontmatter(content);
 
     // #then - should not throw, return empty data
-    expect(result.data).toEqual({})
-    expect(result.body).toBe("Body")
-  })
+    expect(result.data).toEqual({});
+    expect(result.body).toBe("Body");
+  });
 
   test("handles frontmatter with only whitespace", () => {
     // #given
     const content = `---
    
 ---
-Body with whitespace-only frontmatter`
+Body with whitespace-only frontmatter`;
 
     // #when
-    const result = parseFrontmatter(content)
+    const result = parseFrontmatter(content);
 
     // #then
-    expect(result.data).toEqual({})
-    expect(result.body).toBe("Body with whitespace-only frontmatter")
-  })
+    expect(result.data).toEqual({});
+    expect(result.body).toBe("Body with whitespace-only frontmatter");
+  });
   // #endregion
 
   // #region mixed content
@@ -171,27 +171,27 @@ title: Test
 Line 1
 Line 2
 
-Line 4 after blank`
+Line 4 after blank`;
 
     // #when
-    const result = parseFrontmatter<{ title: string }>(content)
+    const result = parseFrontmatter<{ title: string }>(content);
 
     // #then
-    expect(result.data.title).toBe("Test")
-    expect(result.body).toBe("Line 1\nLine 2\n\nLine 4 after blank")
-  })
+    expect(result.data.title).toBe("Test");
+    expect(result.body).toBe("Line 1\nLine 2\n\nLine 4 after blank");
+  });
 
   test("handles CRLF line endings", () => {
     // #given
-    const content = "---\r\ndescription: Test\r\n---\r\nBody"
+    const content = "---\r\ndescription: Test\r\n---\r\nBody";
 
     // #when
-    const result = parseFrontmatter<{ description: string }>(content)
+    const result = parseFrontmatter<{ description: string }>(content);
 
     // #then
-    expect(result.data.description).toBe("Test")
-    expect(result.body).toBe("Body")
-  })
+    expect(result.data.description).toBe("Test");
+    expect(result.body).toBe("Body");
+  });
   // #endregion
 
   // #region extra fields tolerance
@@ -209,29 +209,29 @@ another_extra:
 custom_boolean: true
 custom_number: 42
 ---
-Body content`
+Body content`;
 
     interface MinimalMeta {
-      description: string
-      agent: string
+      description: string;
+      agent: string;
     }
 
     // #when
-    const result = parseFrontmatter<MinimalMeta>(content)
+    const result = parseFrontmatter<MinimalMeta>(content);
 
     // #then
-    expect(result.data.description).toBe("Test command")
-    expect(result.data.agent).toBe("build")
-    expect(result.body).toBe("Body content")
+    expect(result.data.description).toBe("Test command");
+    expect(result.data.agent).toBe("build");
+    expect(result.body).toBe("Body content");
     // @ts-expect-error - accessing extra field not in MinimalMeta
-    expect(result.data.extra_field).toBe("should not fail")
+    expect(result.data.extra_field).toBe("should not fail");
     // @ts-expect-error - accessing extra field not in MinimalMeta
-    expect(result.data.another_extra).toEqual({ nested: "value", array: ["item1", "item2"] })
+    expect(result.data.another_extra).toEqual({ nested: "value", array: ["item1", "item2"] });
     // @ts-expect-error - accessing extra field not in MinimalMeta
-    expect(result.data.custom_boolean).toBe(true)
+    expect(result.data.custom_boolean).toBe(true);
     // @ts-expect-error - accessing extra field not in MinimalMeta
-    expect(result.data.custom_number).toBe(42)
-  })
+    expect(result.data.custom_number).toBe(42);
+  });
 
   test("extra fields do not interfere with expected fields", () => {
     // #given
@@ -242,21 +242,21 @@ handoffs:
   - label: Task 1
     agent: test.agent
 ---
-Content`
+Content`;
 
     interface HandoffMeta {
-      description: string
-      handoffs: Array<{ label: string; agent: string }>
+      description: string;
+      handoffs: Array<{ label: string; agent: string }>;
     }
 
     // #when
-    const result = parseFrontmatter<HandoffMeta>(content)
+    const result = parseFrontmatter<HandoffMeta>(content);
 
     // #then
-    expect(result.data.description).toBe("Original description")
-    expect(result.data.handoffs).toHaveLength(1)
-    expect(result.data.handoffs[0].label).toBe("Task 1")
-    expect(result.data.handoffs[0].agent).toBe("test.agent")
-  })
+    expect(result.data.description).toBe("Original description");
+    expect(result.data.handoffs).toHaveLength(1);
+    expect(result.data.handoffs[0].label).toBe("Task 1");
+    expect(result.data.handoffs[0].agent).toBe("test.agent");
+  });
   // #endregion
-})
+});

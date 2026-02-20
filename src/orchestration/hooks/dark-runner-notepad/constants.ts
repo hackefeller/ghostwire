@@ -1,4 +1,4 @@
-export const HOOK_NAME = "dark-runner-notepad"
+export const HOOK_NAME = "dark-runner-notepad";
 
 export const NOTEPAD_DIRECTIVE = `
 <Work_Context>
@@ -26,4 +26,4 @@ The plan file (.ghostwire/plans/*.md) is SACRED and READ-ONLY.
 
 VIOLATION = IMMEDIATE FAILURE. The Orchestrator tracks plan state.
 </Work_Context>
-`
+`;

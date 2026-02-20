@@ -1,18 +1,18 @@
-import type { AgentConfig } from "@opencode-ai/sdk"
-import type { AgentMode, AgentPromptMetadata } from "./types"
-import { createAgentToolAllowlist } from "../../platform/config/permission-compat"
+import type { AgentConfig } from "@opencode-ai/sdk";
+import type { AgentMode, AgentPromptMetadata } from "./types";
+import { createAgentToolAllowlist } from "../../platform/config/permission-compat";
 
-const MODE: AgentMode = "subagent"
+const MODE: AgentMode = "subagent";
 
 export const MULTIMODAL_LOOKER_PROMPT_METADATA: AgentPromptMetadata = {
   category: "utility",
   cost: "CHEAP",
   promptAlias: "Multimodal Looker",
   triggers: [],
-}
+};
 
 export function createMultimodalLookerAgent(model: string): AgentConfig {
-  const restrictions = createAgentToolAllowlist(["read"])
+  const restrictions = createAgentToolAllowlist(["read"]);
 
   return {
     description:
@@ -53,6 +53,6 @@ Response rules:
 - Be thorough on the goal, concise on everything else
 
 Your output goes straight to the main agent for continued work.`,
-  }
+  };
 }
-createMultimodalLookerAgent.mode = MODE
+createMultimodalLookerAgent.mode = MODE;

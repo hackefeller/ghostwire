@@ -26,7 +26,7 @@ Systematically refactor code while maintaining functionality and improving clari
 - **Move** - Reorganize code for better structure
 - **Simplify** - Remove duplication and complexity
 - **Performance** - Optimize without changing behavior
-`
+`;
 
 export const CODE_REVIEW_TEMPLATE = `# Code:Review Command
 
@@ -57,7 +57,7 @@ Conduct comprehensive code reviews leveraging multiple specialist agents.
 - Priority-ordered issues
 - Actionable suggestions
 - References to relevant patterns or best practices
-`
+`;
 
 export const CODE_OPTIMIZE_TEMPLATE = `# Code:Optimize Command
 
@@ -86,7 +86,7 @@ Improve performance, reduce bundle size, or enhance runtime efficiency.
 - Run full test suite
 - Check production-like environment behavior
 - Monitor for regressions
-`
+`;
 
 export const CODE_FORMAT_TEMPLATE = `# Code:Format Command
 
@@ -112,4 +112,4 @@ Apply consistent formatting and style standards across codebase.
 - Formatting changes should be separate from functional changes
 - Always get team consensus on formatting rules before bulk formatting
 - Don't mix formatting with functional changes
-`
+`;

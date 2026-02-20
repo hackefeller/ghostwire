@@ -26,48 +26,56 @@ Captures problem solutions while context is fresh, creating structured documenta
 This command launches multiple specialized subagents IN PARALLEL to maximize efficiency:
 
 ### 1. **Context Analyzer** (Parallel)
-   - Extracts conversation history
-   - Identifies problem type, component, symptoms
-   - Validates against solution schema
-   - Returns: YAML frontmatter skeleton
+
+- Extracts conversation history
+- Identifies problem type, component, symptoms
+- Validates against solution schema
+- Returns: YAML frontmatter skeleton
 
 ### 2. **Solution Extractor** (Parallel)
-   - Analyzes all investigation steps
-   - Identifies root cause
-   - Extracts working solution with code examples
-   - Returns: Solution content block
+
+- Analyzes all investigation steps
+- Identifies root cause
+- Extracts working solution with code examples
+- Returns: Solution content block
 
 ### 3. **Related Docs Finder** (Parallel)
-   - Searches `docs/solutions/` for related documentation
-   - Identifies cross-references and links
-   - Finds related GitHub issues
-   - Returns: Links and relationships
+
+- Searches `docs/solutions/` for related documentation
+- Identifies cross-references and links
+- Finds related GitHub issues
+- Returns: Links and relationships
 
 ### 4. **Prevention Strategist** (Parallel)
-   - Develops prevention strategies
-   - Creates best practices guidance
-   - Generates test cases if applicable
-   - Returns: Prevention/testing content
+
+- Develops prevention strategies
+- Creates best practices guidance
+- Generates test cases if applicable
+- Returns: Prevention/testing content
 
 ### 5. **Category Classifier** (Parallel)
-   - Determines optimal `docs/solutions/` category
-   - Validates category against schema
-   - Suggests filename based on slug
-   - Returns: Final path and filename
+
+- Determines optimal `docs/solutions/` category
+- Validates category against schema
+- Suggests filename based on slug
+- Returns: Final path and filename
 
 ### 6. **Documentation Writer** (Parallel)
-   - Assembles complete markdown file
-   - Validates YAML frontmatter
-   - Formats content for readability
-   - Creates the file in correct location
+
+- Assembles complete markdown file
+- Validates YAML frontmatter
+- Formats content for readability
+- Creates the file in correct location
 
 ### 7. **Optional: Specialized Agent Invocation** (Post-Documentation)
-   Based on problem type detected, automatically invoke applicable agents:
-   - **performance_issue** → `performance-seer-advisor`
-   - **security_issue** → `security-sentinel`
-   - **database_issue** → `data-integrity-guardian`
-   - **test_failure** → `cora-test-reviewer`
-   - Any code-heavy issue → `kieran-rails-reviewer` + `code-simplicity-reviewer`
+
+Based on problem type detected, automatically invoke applicable agents:
+
+- **performance_issue** → `performance-seer-advisor`
+- **security_issue** → `security-sentinel`
+- **database_issue** → `data-integrity-guardian`
+- **test_failure** → `cora-test-reviewer`
+- Any code-heavy issue → `kieran-rails-reviewer` + `code-simplicity-reviewer`
 
 ## What It Captures
 
@@ -177,22 +185,26 @@ Build → Test → Find Issue → Research → Improve → Document → Validate
 Based on problem type, these agents can enhance documentation:
 
 ### Code Quality & Review
+
 - **kieran-rails-reviewer**: Reviews code examples for Rails best practices
 - **code-simplicity-reviewer**: Ensures solution code is minimal and clear
 - **pattern-recognition-specialist**: Identifies anti-patterns or repeating issues
 
 ### Specific Domain Experts
+
 - **performance-seer-advisor**: Analyzes performance_issue category solutions
 - **security-sentinel**: Reviews security_issue solutions for vulnerabilities
 - **cora-test-reviewer**: Creates test cases for prevention strategies
 - **data-integrity-guardian**: Reviews database_issue migrations and queries
 
 ### Enhancement & Documentation
+
 - **best-practices-researcher**: Enriches solution with industry best practices
 - **every-style-editor**: Reviews documentation style and clarity
 - **framework-docs-researcher**: Links to Rails/gem documentation references
 
 ### When to Invoke
+
 - **Auto-triggered** (optional): Agents can run post-documentation for enhancement
 - **Manual trigger**: User can invoke agents after /workflows:compound completes for deeper review
 

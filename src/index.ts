@@ -30,7 +30,7 @@ import {
   createStartWorkHook,
   createAtlasHook,
   createAugurPlannerMdOnlyHook,
-  createSisyphusJuniorNotepadHook,
+  createDarkRunnerNotepadHook,
   createQuestionLabelTruncatorHook,
   createSubagentQuestionBlockerHook,
   createStopContinuationGuardHook,
@@ -155,13 +155,10 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     if (externalNotifier.detected && !forceEnable) {
       // External notification plugin detected - skip our notification to avoid conflicts
       log(getNotificationConflictWarning(externalNotifier.pluginName!));
-      log(
-        "grid-session-notification disabled due to external notifier conflict",
-        {
-          detected: externalNotifier.pluginName,
-          allPlugins: externalNotifier.allPlugins,
-        },
-      );
+      log("grid-session-notification disabled due to external notifier conflict", {
+        detected: externalNotifier.pluginName,
+        allPlugins: externalNotifier.allPlugins,
+      });
     } else {
       sessionNotification = createSessionNotification(ctx);
     }
@@ -180,39 +177,28 @@ const GhostwirePlugin: Plugin = async (ctx) => {
   if (isHookEnabled("grid-directory-agents-injector")) {
     const currentVersion = getOpenCodeVersion();
     const hasNativeSupport =
-      currentVersion !== null &&
-      isOpenCodeVersionAtLeast(OPENCODE_NATIVE_AGENTS_INJECTION_VERSION);
+      currentVersion !== null && isOpenCodeVersionAtLeast(OPENCODE_NATIVE_AGENTS_INJECTION_VERSION);
 
     if (hasNativeSupport) {
-      log(
-        "grid-directory-agents-injector auto-disabled due to native OpenCode support",
-        {
-          currentVersion,
-          nativeVersion: OPENCODE_NATIVE_AGENTS_INJECTION_VERSION,
-        },
-      );
+      log("grid-directory-agents-injector auto-disabled due to native OpenCode support", {
+        currentVersion,
+        nativeVersion: OPENCODE_NATIVE_AGENTS_INJECTION_VERSION,
+      });
     } else {
       directoryAgentsInjector = createDirectoryAgentsInjectorHook(ctx);
     }
   }
-  const directoryReadmeInjector = isHookEnabled(
-    "grid-directory-readme-injector",
-  )
+  const directoryReadmeInjector = isHookEnabled("grid-directory-readme-injector")
     ? createDirectoryReadmeInjectorHook(ctx)
     : null;
-  const emptyTaskResponseDetector = isHookEnabled(
-    "grid-empty-task-response-detector",
-  )
+  const emptyTaskResponseDetector = isHookEnabled("grid-empty-task-response-detector")
     ? createEmptyTaskResponseDetectorHook(ctx)
     : null;
-  const thinkMode = isHookEnabled("grid-think-mode")
-    ? createThinkModeHook()
-    : null;
+  const thinkMode = isHookEnabled("grid-think-mode") ? createThinkModeHook() : null;
   const claudeCodeHooks = createClaudeCodeHooksHook(
     ctx,
     {
-      disabledHooks:
-        (pluginConfig.claude_code?.hooks ?? true) ? undefined : true,
+      disabledHooks: (pluginConfig.claude_code?.hooks ?? true) ? undefined : true,
       keywordDetectorDisabled: !isHookEnabled("grid-keyword-detector"),
     },
     contextCollector,
@@ -224,14 +210,10 @@ const GhostwirePlugin: Plugin = async (ctx) => {
         experimental: pluginConfig.experimental,
       })
     : null;
-  const compactionContextInjector = isHookEnabled(
-    "grid-compaction-context-injector",
-  )
+  const compactionContextInjector = isHookEnabled("grid-compaction-context-injector")
     ? createCompactionContextInjector()
     : undefined;
-  const rulesInjector = isHookEnabled("grid-rules-injector")
-    ? createRulesInjectorHook(ctx)
-    : null;
+  const rulesInjector = isHookEnabled("grid-rules-injector") ? createRulesInjectorHook(ctx) : null;
   const autoUpdateChecker = isHookEnabled("grid-auto-update-checker")
     ? createAutoUpdateCheckerHook(ctx, {
         showStartupToast: isHookEnabled("grid-startup-toast"),
@@ -277,16 +259,14 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     ? createDelegateTaskRetryHook(ctx)
     : null;
 
-  const startWork = isHookEnabled("jack-in-work")
-    ? createStartWorkHook(ctx)
-    : null;
+  const startWork = isHookEnabled("jack-in-work") ? createStartWorkHook(ctx) : null;
 
   const augurMdOnly = isHookEnabled("zen-planner-md-only")
     ? createAugurPlannerMdOnlyHook(ctx)
     : null;
 
   const cipherJuniorNotepad = isHookEnabled("dark-runner-notepad")
-    ? createSisyphusJuniorNotepadHook(ctx)
+    ? createDarkRunnerNotepadHook(ctx)
     : null;
 
   const questionLabelTruncator = createQuestionLabelTruncatorHook();
@@ -296,36 +276,32 @@ const GhostwirePlugin: Plugin = async (ctx) => {
 
   const tmuxSessionManager = new TmuxSessionManager(ctx, tmuxConfig);
 
-  const backgroundManager = new BackgroundManager(
-    ctx,
-    pluginConfig.background_task,
-    {
-      tmuxConfig,
-      onSubagentSessionCreated: async (event) => {
-        log("[index] onSubagentSessionCreated callback received", {
-          sessionID: event.sessionID,
-          parentID: event.parentID,
-          title: event.title,
-        });
-        await tmuxSessionManager.onSessionCreated({
-          type: "session.created",
-          properties: {
-            info: {
-              id: event.sessionID,
-              parentID: event.parentID,
-              title: event.title,
-            },
+  const backgroundManager = new BackgroundManager(ctx, pluginConfig.background_task, {
+    tmuxConfig,
+    onSubagentSessionCreated: async (event) => {
+      log("[index] onSubagentSessionCreated callback received", {
+        sessionID: event.sessionID,
+        parentID: event.parentID,
+        title: event.title,
+      });
+      await tmuxSessionManager.onSessionCreated({
+        type: "session.created",
+        properties: {
+          info: {
+            id: event.sessionID,
+            parentID: event.parentID,
+            title: event.title,
           },
-        });
-        log("[index] onSubagentSessionCreated callback completed");
-      },
-      onShutdown: () => {
-        tmuxSessionManager.cleanup().catch((error) => {
-          log("[index] tmux cleanup error during shutdown:", error);
-        });
-      },
+        },
+      });
+      log("[index] onSubagentSessionCreated callback completed");
     },
-  );
+    onShutdown: () => {
+      tmuxSessionManager.cleanup().catch((error) => {
+        log("[index] tmux cleanup error during shutdown:", error);
+      });
+    },
+  });
 
   const nexusHook = isHookEnabled("grid-sync")
     ? createAtlasHook(ctx, { directory: ctx.directory, backgroundManager })
@@ -337,9 +313,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     ? createStopContinuationGuardHook(ctx)
     : null;
 
-  const todoContinuationEnforcer = isHookEnabled(
-    "grid-todo-continuation-enforcer",
-  )
+  const todoContinuationEnforcer = isHookEnabled("grid-todo-continuation-enforcer")
     ? createTodoContinuationEnforcer(ctx, {
         backgroundManager,
         isContinuationStopped: stopContinuationGuard?.isStopped,
@@ -348,14 +322,10 @@ const GhostwirePlugin: Plugin = async (ctx) => {
 
   if (sessionRecovery && todoContinuationEnforcer) {
     sessionRecovery.setOnAbortCallback(todoContinuationEnforcer.markRecovering);
-    sessionRecovery.setOnRecoveryCompleteCallback(
-      todoContinuationEnforcer.markRecoveryComplete,
-    );
+    sessionRecovery.setOnRecoveryCompleteCallback(todoContinuationEnforcer.markRecoveryComplete);
   }
 
-  const backgroundNotificationHook = isHookEnabled(
-    "grid-background-notification",
-  )
+  const backgroundNotificationHook = isHookEnabled("grid-background-notification")
     ? createBackgroundNotificationHook(backgroundManager)
     : null;
   const backgroundTools = createBackgroundTools(backgroundManager, ctx.client);
@@ -366,8 +336,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     "eye-scan",
   );
   const lookAt = isMultimodalLookerEnabled ? createLookAt(ctx) : null;
-  const browserProvider =
-    pluginConfig.browser_automation_engine?.provider ?? "playwright";
+  const browserProvider = pluginConfig.browser_automation_engine?.provider ?? "playwright";
   const delegateTask = createDelegateTask({
     manager: backgroundManager,
     client: ctx.client,
@@ -396,25 +365,22 @@ const GhostwirePlugin: Plugin = async (ctx) => {
   });
   const disabledSkills = new Set(pluginConfig.disabled_skills ?? []);
   const systemMcpNames = getSystemMcpServerNames();
-  const builtinSkills = createBuiltinSkills({ browserProvider }).filter(
-    (skill) => {
-      if (disabledSkills.has(skill.name as never)) return false;
-      if (skill.mcpConfig) {
-        for (const mcpName of Object.keys(skill.mcpConfig)) {
-          if (systemMcpNames.has(mcpName)) return false;
-        }
+  const builtinSkills = createBuiltinSkills({ browserProvider }).filter((skill) => {
+    if (disabledSkills.has(skill.name as never)) return false;
+    if (skill.mcpConfig) {
+      for (const mcpName of Object.keys(skill.mcpConfig)) {
+        if (systemMcpNames.has(mcpName)) return false;
       }
-      return true;
-    },
-  );
+    }
+    return true;
+  });
   const includeClaudeSkills = pluginConfig.claude_code?.skills !== false;
-  const [userSkills, globalSkills, projectSkills, opencodeProjectSkills] =
-    await Promise.all([
-      includeClaudeSkills ? discoverUserClaudeSkills() : Promise.resolve([]),
-      discoverOpencodeGlobalSkills(),
-      includeClaudeSkills ? discoverProjectClaudeSkills() : Promise.resolve([]),
-      discoverOpencodeProjectSkills(),
-    ]);
+  const [userSkills, globalSkills, projectSkills, opencodeProjectSkills] = await Promise.all([
+    includeClaudeSkills ? discoverUserClaudeSkills() : Promise.resolve([]),
+    discoverOpencodeGlobalSkills(),
+    includeClaudeSkills ? discoverProjectClaudeSkills() : Promise.resolve([]),
+    discoverOpencodeProjectSkills(),
+  ]);
   const mergedSkills = mergeSkills(
     builtinSkills,
     pluginConfig.skills,
@@ -483,11 +449,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
         firstMessageVariantGate.markApplied(input.sessionID);
       } else {
         if (input.model && input.agent && message.variant === undefined) {
-          const variant = resolveVariantForModel(
-            pluginConfig,
-            input.agent,
-            input.model,
-          );
+          const variant = resolveVariantForModel(pluginConfig, input.agent, input.model);
           if (variant !== undefined) {
             message.variant = variant;
           }
@@ -517,8 +479,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
           .showToast({
             body: {
               title: "⚠️ Provider Cache Missing",
-              message:
-                "Model filtering disabled. RESTART OpenCode to enable full functionality.",
+              message: "Model filtering disabled. RESTART OpenCode to enable full functionality.",
               variant: "warning" as const,
               duration: 6000,
             },
@@ -527,9 +488,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       }
 
       if (ralphLoop) {
-        const parts = (
-          output as { parts?: Array<{ type: string; text?: string }> }
-        ).parts;
+        const parts = (output as { parts?: Array<{ type: string; text?: string }> }).parts;
         const promptText =
           parts
             ?.filter((p) => p.type === "text" && p.text)
@@ -540,14 +499,10 @@ const GhostwirePlugin: Plugin = async (ctx) => {
         const isRalphLoopTemplate =
           promptText.includes("You are starting a Ralph Loop") &&
           promptText.includes("<user-task>");
-        const isCancelRalphTemplate = promptText.includes(
-          "Cancel the currently active Ralph Loop",
-        );
+        const isCancelRalphTemplate = promptText.includes("Cancel the currently active Ralph Loop");
 
         if (isRalphLoopTemplate) {
-          const taskMatch = promptText.match(
-            /<user-task>\s*([\s\S]*?)\s*<\/user-task>/i,
-          );
+          const taskMatch = promptText.match(/<user-task>\s*([\s\S]*?)\s*<\/user-task>/i);
           const rawTask = taskMatch?.[1]?.trim() || "";
 
           const quotedMatch = rawTask.match(/^["'](.+?)["']/);
@@ -557,18 +512,14 @@ const GhostwirePlugin: Plugin = async (ctx) => {
             "Complete the task as instructed";
 
           const maxIterMatch = rawTask.match(/--max-iterations=(\d+)/i);
-          const promiseMatch = rawTask.match(
-            /--completion-promise=["']?([^"'\s]+)["']?/i,
-          );
+          const promiseMatch = rawTask.match(/--completion-promise=["']?([^"'\s]+)["']?/i);
 
           log("[overclock-loop] Starting loop from chat.message", {
             sessionID: input.sessionID,
             prompt,
           });
           ralphLoop.startLoop(input.sessionID, prompt, {
-            maxIterations: maxIterMatch
-              ? parseInt(maxIterMatch[1], 10)
-              : undefined,
+            maxIterations: maxIterMatch ? parseInt(maxIterMatch[1], 10) : undefined,
             completionPromise: promiseMatch?.[1],
           });
         } else if (isCancelRalphTemplate) {
@@ -585,42 +536,28 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       output: { messages: Array<{ info: unknown; parts: unknown[] }> },
     ) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await runHook(
-        "experimental.chat.messages.transform",
-        "context-injector",
-        () =>
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          contextInjectorMessagesTransform?.[
-            "experimental.chat.messages.transform"
-          ]?.(input, output as any),
+      await runHook("experimental.chat.messages.transform", "context-injector", () =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        contextInjectorMessagesTransform?.["experimental.chat.messages.transform"]?.(
+          input,
+          output as any,
+        ),
       );
-      await runHook(
-        "experimental.chat.messages.transform",
-        "grid-thinking-block-validator",
-        () =>
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          thinkingBlockValidator?.["experimental.chat.messages.transform"]?.(
-            input,
-            output as any,
-          ),
+      await runHook("experimental.chat.messages.transform", "grid-thinking-block-validator", () =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        thinkingBlockValidator?.["experimental.chat.messages.transform"]?.(input, output as any),
       );
     },
 
     config: configHandler,
 
     event: async (input) => {
-      await runHook("event", "grid-auto-update-checker", () =>
-        autoUpdateChecker?.event(input),
-      );
-      await runHook("event", "grid-claude-code-hooks", () =>
-        claudeCodeHooks.event(input),
-      );
+      await runHook("event", "grid-auto-update-checker", () => autoUpdateChecker?.event(input));
+      await runHook("event", "grid-claude-code-hooks", () => claudeCodeHooks.event(input));
       await runHook("event", "grid-background-notification", () =>
         backgroundNotificationHook?.event(input),
       );
-      await runHook("event", "grid-session-notification", () =>
-        sessionNotification?.(input),
-      );
+      await runHook("event", "grid-session-notification", () => sessionNotification?.(input));
       await runHook("event", "grid-todo-continuation-enforcer", () =>
         todoContinuationEnforcer?.handler(input),
       );
@@ -633,18 +570,12 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("event", "grid-directory-readme-injector", () =>
         directoryReadmeInjector?.event(input),
       );
-      await runHook("event", "grid-rules-injector", () =>
-        rulesInjector?.event(input),
-      );
+      await runHook("event", "grid-rules-injector", () => rulesInjector?.event(input));
       await runHook("event", "grid-think-mode", () => thinkMode?.event(input));
-      await runHook(
-        "event",
-        "grid-anthropic-context-window-limit-recovery",
-        () => anthropicContextWindowLimitRecovery?.event(input),
+      await runHook("event", "grid-anthropic-context-window-limit-recovery", () =>
+        anthropicContextWindowLimitRecovery?.event(input),
       );
-      await runHook("event", "grid-agent-usage-reminder", () =>
-        agentUsageReminder?.event(input),
-      );
+      await runHook("event", "grid-agent-usage-reminder", () => agentUsageReminder?.event(input));
       await runHook("event", "grid-category-skill-reminder", () =>
         categorySkillReminder?.event(input),
       );
@@ -655,9 +586,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("event", "grid-stop-continuation-guard", () =>
         stopContinuationGuard?.event(input),
       );
-      await runHook("event", "grid-sync", () =>
-        nexusHook?.handler(input),
-      );
+      await runHook("event", "grid-sync", () => nexusHook?.handler(input));
 
       const { event } = input;
       const props = event.properties as Record<string, unknown> | undefined;
@@ -719,8 +648,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
             sessionID,
             error,
           };
-          const recovered =
-            await sessionRecovery.handleSessionRecovery(messageInfo);
+          const recovered = await sessionRecovery.handleSessionRecovery(messageInfo);
 
           if (
             recovered &&
@@ -756,15 +684,11 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("tool.execute.before", "grid-comment-checker", () =>
         commentChecker?.["tool.execute.before"](input, output),
       );
-      await runHook(
-        "tool.execute.before",
-        "grid-directory-agents-injector",
-        () => directoryAgentsInjector?.["tool.execute.before"]?.(input, output),
+      await runHook("tool.execute.before", "grid-directory-agents-injector", () =>
+        directoryAgentsInjector?.["tool.execute.before"]?.(input, output),
       );
-      await runHook(
-        "tool.execute.before",
-        "grid-directory-readme-injector",
-        () => directoryReadmeInjector?.["tool.execute.before"]?.(input, output),
+      await runHook("tool.execute.before", "grid-directory-readme-injector", () =>
+        directoryReadmeInjector?.["tool.execute.before"]?.(input, output),
       );
       await runHook("tool.execute.before", "grid-rules-injector", () =>
         rulesInjector?.["tool.execute.before"]?.(input, output),
@@ -800,8 +724,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
         const sessionID = input.sessionID || getMainSessionID();
 
         if (command === "overclock-loop" && sessionID) {
-          const rawArgs =
-            args?.command?.replace(/^\/?(overclock-loop)\s*/i, "") || "";
+          const rawArgs = args?.command?.replace(/^\/?(overclock-loop)\s*/i, "") || "";
           const taskMatch = rawArgs.match(/^["'](.+?)["']/);
           const prompt =
             taskMatch?.[1] ||
@@ -809,21 +732,16 @@ const GhostwirePlugin: Plugin = async (ctx) => {
             "Complete the task as instructed";
 
           const maxIterMatch = rawArgs.match(/--max-iterations=(\d+)/i);
-          const promiseMatch = rawArgs.match(
-            /--completion-promise=["']?([^"'\s]+)["']?/i,
-          );
+          const promiseMatch = rawArgs.match(/--completion-promise=["']?([^"'\s]+)["']?/i);
 
           ralphLoop.startLoop(sessionID, prompt, {
-            maxIterations: maxIterMatch
-              ? parseInt(maxIterMatch[1], 10)
-              : undefined,
+            maxIterations: maxIterMatch ? parseInt(maxIterMatch[1], 10) : undefined,
             completionPromise: promiseMatch?.[1],
           });
         } else if (command === "cancel-overclock" && sessionID) {
           ralphLoop.cancelLoop(sessionID);
         } else if (command === "ulw-overclock" && sessionID) {
-          const rawArgs =
-            args?.command?.replace(/^\/?(ulw-overclock)\s*/i, "") || "";
+          const rawArgs = args?.command?.replace(/^\/?(ulw-overclock)\s*/i, "") || "";
           const taskMatch = rawArgs.match(/^["'](.+?)["']/);
           const prompt =
             taskMatch?.[1] ||
@@ -831,15 +749,11 @@ const GhostwirePlugin: Plugin = async (ctx) => {
             "Complete the task as instructed";
 
           const maxIterMatch = rawArgs.match(/--max-iterations=(\d+)/i);
-          const promiseMatch = rawArgs.match(
-            /--completion-promise=["']?([^"'\s]+)["']?/i,
-          );
+          const promiseMatch = rawArgs.match(/--completion-promise=["']?([^"'\s]+)["']?/i);
 
           ralphLoop.startLoop(sessionID, prompt, {
             ultrawork: true,
-            maxIterations: maxIterMatch
-              ? parseInt(maxIterMatch[1], 10)
-              : undefined,
+            maxIterations: maxIterMatch ? parseInt(maxIterMatch[1], 10) : undefined,
             completionPromise: promiseMatch?.[1],
           });
         }
@@ -879,23 +793,17 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("tool.execute.after", "grid-comment-checker", () =>
         commentChecker?.["tool.execute.after"](input, output),
       );
-      await runHook(
-        "tool.execute.after",
-        "grid-directory-agents-injector",
-        () => directoryAgentsInjector?.["tool.execute.after"](input, output),
+      await runHook("tool.execute.after", "grid-directory-agents-injector", () =>
+        directoryAgentsInjector?.["tool.execute.after"](input, output),
       );
-      await runHook(
-        "tool.execute.after",
-        "grid-directory-readme-injector",
-        () => directoryReadmeInjector?.["tool.execute.after"](input, output),
+      await runHook("tool.execute.after", "grid-directory-readme-injector", () =>
+        directoryReadmeInjector?.["tool.execute.after"](input, output),
       );
       await runHook("tool.execute.after", "grid-rules-injector", () =>
         rulesInjector?.["tool.execute.after"](input, output),
       );
-      await runHook(
-        "tool.execute.after",
-        "grid-empty-task-response-detector",
-        () => emptyTaskResponseDetector?.["tool.execute.after"](input, output),
+      await runHook("tool.execute.after", "grid-empty-task-response-detector", () =>
+        emptyTaskResponseDetector?.["tool.execute.after"](input, output),
       );
       await runHook("tool.execute.after", "grid-agent-usage-reminder", () =>
         agentUsageReminder?.["tool.execute.after"](input, output),

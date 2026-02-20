@@ -15,21 +15,25 @@ Create a new slash command in `.claude/commands/` for the requested task.
 ## Key Capabilities to Leverage
 
 **File Operations:**
+
 - Read, Edit, Write - modify files precisely
 - Glob, Grep - search codebase
 - MultiEdit - atomic multi-part changes
 
 **Development:**
+
 - Bash - run commands (git, tests, linters)
 - Task - launch specialized agents for complex tasks
 - TodoWrite - track progress with todo lists
 
 **Web & APIs:**
+
 - WebFetch, WebSearch - research documentation
 - GitHub (gh cli) - PRs, issues, reviews
 - Playwright - browser automation, screenshots
 
 **Integrations:**
+
 - AppSignal - logs and monitoring
 - Context7 - framework docs
 - Stripe, Todoist, Featurebase (if relevant)
@@ -56,6 +60,7 @@ argument-hint: "[what arguments the command accepts]"
 ```
 
 **Fields:**
+
 - `name`: Lowercase command identifier (used internally)
 - `description`: Clear, concise summary of command purpose
 - `argument-hint`: Shows user what arguments are expected (e.g., `[file path]`, `[PR number]`, `[optional: format]`)

@@ -16,9 +16,7 @@ export function resolveAgentVariant(
   const agentOverrides = config.agents as
     | Record<string, { variant?: string; category?: string }>
     | undefined;
-  const agentOverride = agentOverrides
-    ? findCaseInsensitive(agentOverrides, agentName)
-    : undefined;
+  const agentOverride = agentOverrides ? findCaseInsensitive(agentOverrides, agentName) : undefined;
   if (!agentOverride) {
     return undefined;
   }
@@ -42,26 +40,16 @@ export function resolveVariantForModel(
 ): string | undefined {
   const agentRequirement = AGENT_MODEL_REQUIREMENTS[agentName];
   if (agentRequirement) {
-    return findVariantInChain(
-      agentRequirement.fallbackChain,
-      currentModel.providerID,
-    );
+    return findVariantInChain(agentRequirement.fallbackChain, currentModel.providerID);
   }
 
-  const agentOverrides = config.agents as
-    | Record<string, { category?: string }>
-    | undefined;
-  const agentOverride = agentOverrides
-    ? findCaseInsensitive(agentOverrides, agentName)
-    : undefined;
+  const agentOverrides = config.agents as Record<string, { category?: string }> | undefined;
+  const agentOverride = agentOverrides ? findCaseInsensitive(agentOverrides, agentName) : undefined;
   const categoryName = agentOverride?.category;
   if (categoryName) {
     const categoryRequirement = CATEGORY_MODEL_REQUIREMENTS[categoryName];
     if (categoryRequirement) {
-      return findVariantInChain(
-        categoryRequirement.fallbackChain,
-        currentModel.providerID,
-      );
+      return findVariantInChain(categoryRequirement.fallbackChain, currentModel.providerID);
     }
   }
 

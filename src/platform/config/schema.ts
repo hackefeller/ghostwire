@@ -3,10 +3,7 @@ import { AnyMcpNameSchema, McpNameSchema } from "../../integration/mcp/types";
 
 const PermissionValue = z.enum(["ask", "allow", "deny"]);
 
-const BashPermission = z.union([
-  PermissionValue,
-  z.record(z.string(), PermissionValue),
-]);
+const BashPermission = z.union([PermissionValue, z.record(z.string(), PermissionValue)]);
 
 const AgentPermissionSchema = z.object({
   edit: PermissionValue.optional(),
@@ -370,10 +367,7 @@ export const BuiltinCategoryNameSchema = z.enum([
   "writing",
 ]);
 
-export const CategoriesConfigSchema = z.record(
-  z.string(),
-  CategoryConfigSchema,
-);
+export const CategoriesConfigSchema = z.record(z.string(), CategoryConfigSchema);
 
 export const CommentCheckerConfigSchema = z.object({
   /** Custom prompt to replace the default warning message. Use {{comments}} placeholder for detected comments XML. */
@@ -603,9 +597,7 @@ export type BuiltinSkillName = z.infer<typeof BuiltinSkillNameSchema>;
 export type VoidRunnerConfig = z.infer<typeof VoidRunnerConfigSchema>;
 export type CommentCheckerConfig = z.infer<typeof CommentCheckerConfigSchema>;
 export type ExperimentalConfig = z.infer<typeof ExperimentalConfigSchema>;
-export type DynamicContextPruningConfig = z.infer<
-  typeof DynamicContextPruningConfigSchema
->;
+export type DynamicContextPruningConfig = z.infer<typeof DynamicContextPruningConfigSchema>;
 export type SkillsConfig = z.infer<typeof SkillsConfigSchema>;
 export type SkillDefinition = z.infer<typeof SkillDefinitionSchema>;
 export type RalphLoopConfig = z.infer<typeof RalphLoopConfigSchema>;
@@ -614,12 +606,8 @@ export type CategoryConfig = z.infer<typeof CategoryConfigSchema>;
 export type CategoriesConfig = z.infer<typeof CategoriesConfigSchema>;
 export type BuiltinCategoryName = z.infer<typeof BuiltinCategoryNameSchema>;
 export type GitMasterConfig = z.infer<typeof GitMasterConfigSchema>;
-export type BrowserAutomationProvider = z.infer<
-  typeof BrowserAutomationProviderSchema
->;
-export type BrowserAutomationConfig = z.infer<
-  typeof BrowserAutomationConfigSchema
->;
+export type BrowserAutomationProvider = z.infer<typeof BrowserAutomationProviderSchema>;
+export type BrowserAutomationConfig = z.infer<typeof BrowserAutomationConfigSchema>;
 export type TmuxConfig = z.infer<typeof TmuxConfigSchema>;
 export type TmuxLayout = z.infer<typeof TmuxLayoutSchema>;
 export type TaskQueueConfig = z.infer<typeof TaskQueueConfigSchema>;

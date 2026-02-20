@@ -1,169 +1,175 @@
-import { describe, test, expect } from "bun:test"
+import { describe, test, expect } from "bun:test";
 import {
   findCaseInsensitive,
   includesCaseInsensitive,
   findByNameCaseInsensitive,
   equalsIgnoreCase,
-} from "./case-insensitive"
+} from "./case-insensitive";
 
 describe("findCaseInsensitive", () => {
   test("returns undefined for empty/undefined object", () => {
     // #given - undefined object
-    const obj = undefined
-    
+    const obj = undefined;
+
     // #when - lookup any key
-    const result = findCaseInsensitive(obj, "key")
-    
+    const result = findCaseInsensitive(obj, "key");
+
     // #then - returns undefined
-    expect(result).toBeUndefined()
-  })
+    expect(result).toBeUndefined();
+  });
 
   test("finds exact match first", () => {
     // #given - object with exact key
-    const obj = { "Seer Advisor": "value1", "eye-ops": "value2" }
-    
+    const obj = { "Seer Advisor": "value1", "eye-ops": "value2" };
+
     // #when - lookup with exact case
-    const result = findCaseInsensitive(obj, "Seer Advisor")
-    
+    const result = findCaseInsensitive(obj, "Seer Advisor");
+
     // #then - returns exact match
-    expect(result).toBe("value1")
-  })
+    expect(result).toBe("value1");
+  });
 
   test("finds case-insensitive match when no exact match", () => {
     // #given - object with lowercase key
-    const obj = { "eye-ops": "value" }
-    
+    const obj = { "eye-ops": "value" };
+
     // #when - lookup with uppercase
-    const result = findCaseInsensitive(obj, "EYE-OPS")
-    
+    const result = findCaseInsensitive(obj, "EYE-OPS");
+
     // #then - returns case-insensitive match
-    expect(result).toBe("value")
-  })
+    expect(result).toBe("value");
+  });
 
   test("returns undefined when key not found", () => {
     // #given - object without target key
-    const obj = { other: "value" }
-    
+    const obj = { other: "value" };
+
     // #when - lookup missing key
-    const result = findCaseInsensitive(obj, "eye-ops")
-    
+    const result = findCaseInsensitive(obj, "eye-ops");
+
     // #then - returns undefined
-    expect(result).toBeUndefined()
-  })
-})
+    expect(result).toBeUndefined();
+  });
+});
 
 describe("includesCaseInsensitive", () => {
   test("returns true for exact match", () => {
     // #given - array with exact value
-    const arr = ["scan-ops", "data-dive"]
-    
+    const arr = ["scan-ops", "data-dive"];
+
     // #when - check exact match
-    const result = includesCaseInsensitive(arr, "scan-ops")
-    
+    const result = includesCaseInsensitive(arr, "scan-ops");
+
     // #then - returns true
-    expect(result).toBe(true)
-  })
+    expect(result).toBe(true);
+  });
 
   test("returns true for case-insensitive match", () => {
     // #given - array with lowercase values
-    const arr = ["scan-ops", "data-dive"]
-    
+    const arr = ["scan-ops", "data-dive"];
+
     // #when - check uppercase value
-    const result = includesCaseInsensitive(arr, "SCAN-OPS")
-    
+    const result = includesCaseInsensitive(arr, "SCAN-OPS");
+
     // #then - returns true
-    expect(result).toBe(true)
-  })
+    expect(result).toBe(true);
+  });
 
   test("returns true for mixed case match", () => {
     // #given - array with mixed case values
-    const arr = ["eye-ops", "void-runner"]
-    
+    const arr = ["eye-ops", "void-runner"];
+
     // #when - check different case
-    const result = includesCaseInsensitive(arr, "EYE-OPS")
-    
+    const result = includesCaseInsensitive(arr, "EYE-OPS");
+
     // #then - returns true
-    expect(result).toBe(true)
-  })
+    expect(result).toBe(true);
+  });
 
   test("returns false when value not found", () => {
     // #given - array without target value
-    const arr = ["scan-ops", "data-dive"]
-    
+    const arr = ["scan-ops", "data-dive"];
+
     // #when - check missing value
-    const result = includesCaseInsensitive(arr, "eye-ops")
-    
+    const result = includesCaseInsensitive(arr, "eye-ops");
+
     // #then - returns false
-    expect(result).toBe(false)
-  })
+    expect(result).toBe(false);
+  });
 
   test("returns false for empty array", () => {
     // #given - empty array
-    const arr: string[] = []
-    
+    const arr: string[] = [];
+
     // #when - check any value
-    const result = includesCaseInsensitive(arr, "scan-ops")
-    
+    const result = includesCaseInsensitive(arr, "scan-ops");
+
     // #then - returns false
-    expect(result).toBe(false)
-  })
-})
+    expect(result).toBe(false);
+  });
+});
 
 describe("findByNameCaseInsensitive", () => {
   test("finds element by exact name", () => {
     // #given - array with named objects
-    const arr = [{ name: "eye-ops", value: 1 }, { name: "scan-ops", value: 2 }]
-    
+    const arr = [
+      { name: "eye-ops", value: 1 },
+      { name: "scan-ops", value: 2 },
+    ];
+
     // #when - find by exact name
-    const result = findByNameCaseInsensitive(arr, "eye-ops")
-    
+    const result = findByNameCaseInsensitive(arr, "eye-ops");
+
     // #then - returns matching element
-    expect(result).toEqual({ name: "eye-ops", value: 1 })
-  })
+    expect(result).toEqual({ name: "eye-ops", value: 1 });
+  });
 
   test("finds element by case-insensitive name", () => {
     // #given - array with named objects
-    const arr = [{ name: "eye-ops", value: 1 }, { name: "scan-ops", value: 2 }]
-    
+    const arr = [
+      { name: "eye-ops", value: 1 },
+      { name: "scan-ops", value: 2 },
+    ];
+
     // #when - find by different case
-    const result = findByNameCaseInsensitive(arr, "EYE-OPS")
-    
+    const result = findByNameCaseInsensitive(arr, "EYE-OPS");
+
     // #then - returns matching element
-    expect(result).toEqual({ name: "eye-ops", value: 1 })
-  })
+    expect(result).toEqual({ name: "eye-ops", value: 1 });
+  });
 
   test("returns undefined when name not found", () => {
     // #given - array without target name
-    const arr = [{ name: "eye-ops", value: 1 }]
-    
+    const arr = [{ name: "eye-ops", value: 1 }];
+
     // #when - find missing name
-    const result = findByNameCaseInsensitive(arr, "data-dive")
-    
+    const result = findByNameCaseInsensitive(arr, "data-dive");
+
     // #then - returns undefined
-    expect(result).toBeUndefined()
-  })
-})
+    expect(result).toBeUndefined();
+  });
+});
 
 describe("equalsIgnoreCase", () => {
   test("returns true for same case", () => {
     // #given - same strings
     // #when - compare
     // #then - returns true
-    expect(equalsIgnoreCase("eye-ops", "eye-ops")).toBe(true)
-  })
+    expect(equalsIgnoreCase("eye-ops", "eye-ops")).toBe(true);
+  });
 
   test("returns true for different case", () => {
     // #given - strings with different case
     // #when - compare
     // #then - returns true
-    expect(equalsIgnoreCase("eye-ops", "EYE-OPS")).toBe(true)
-    expect(equalsIgnoreCase("void-runner", "VOID-RUNNER")).toBe(true)
-  })
+    expect(equalsIgnoreCase("eye-ops", "EYE-OPS")).toBe(true);
+    expect(equalsIgnoreCase("void-runner", "VOID-RUNNER")).toBe(true);
+  });
 
   test("returns false for different strings", () => {
     // #given - different strings
     // #when - compare
     // #then - returns false
-    expect(equalsIgnoreCase("eye-ops", "scan-ops")).toBe(false)
-  })
-})
+    expect(equalsIgnoreCase("eye-ops", "scan-ops")).toBe(false);
+  });
+});

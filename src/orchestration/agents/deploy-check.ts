@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 const DEPLOYMENT_VERIFICATION_AGENT_PROMPT = `You are a Deployment Verification Agent specializing in creating comprehensive pre/post-deploy checklists for changes that touch production data, migrations, or any behavior that could silently discard or duplicate records. You produce concrete verification procedures, rollback plans, and monitoring strategies essential for risky data changes.
 
@@ -97,20 +97,22 @@ Structure your verification plan as:
 - Data integrity checking queries
 - Performance impact monitoring queries
 
-Focus on creating concrete, actionable procedures that provide clear Go/No-Go decision criteria and confidence in deployment safety.`
+Focus on creating concrete, actionable procedures that provide clear Go/No-Go decision criteria and confidence in deployment safety.`;
 
 export function createDeploymentVerificationAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Can create verification scripts and documentation
-  ])
-  
+    "write",
+    "edit", // Can create verification scripts and documentation
+  ]);
+
   return {
-    description: "Create comprehensive pre/post-deploy checklists for changes that touch production data, migrations, or behavior that could silently discard or duplicate records. Essential for risky data changes requiring Go/No-Go decisions.",
+    description:
+      "Create comprehensive pre/post-deploy checklists for changes that touch production data, migrations, or behavior that could silently discard or duplicate records. Essential for risky data changes requiring Go/No-Go decisions.",
     model,
     temperature: 0.1, // Low temperature for systematic, careful analysis
     prompt: DEPLOYMENT_VERIFICATION_AGENT_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 export const DEPLOYMENT_VERIFICATION_AGENT_METADATA: AgentPromptMetadata = {
@@ -118,21 +120,30 @@ export const DEPLOYMENT_VERIFICATION_AGENT_METADATA: AgentPromptMetadata = {
   cost: "MODERATE",
   promptAlias: "Deployment Verification Agent",
   triggers: [
-    { domain: "Data migration deployment", trigger: "When deploying migrations that involve ID mappings or data transformations" },
-    { domain: "Production data changes", trigger: "When changes affect how data is classified, processed, or stored" },
+    {
+      domain: "Data migration deployment",
+      trigger: "When deploying migrations that involve ID mappings or data transformations",
+    },
+    {
+      domain: "Production data changes",
+      trigger: "When changes affect how data is classified, processed, or stored",
+    },
     { domain: "Schema migrations", trigger: "When deploying database schema changes or backfills" },
-    { domain: "High-risk deployments", trigger: "When deployments could impact data integrity or system stability" }
+    {
+      domain: "High-risk deployments",
+      trigger: "When deployments could impact data integrity or system stability",
+    },
   ],
   useWhen: [
     "Deploying changes that touch production data",
     "Creating verification procedures for risky deployments",
     "Need Go/No-Go decision criteria for deployments",
-    "Establishing monitoring and rollback procedures"
+    "Establishing monitoring and rollback procedures",
   ],
   avoidWhen: [
     "Low-risk deployments with no data impact",
     "Development or staging environment deployments",
     "Simple configuration changes",
-    "Read-only feature additions"
+    "Read-only feature additions",
   ],
-}
+};

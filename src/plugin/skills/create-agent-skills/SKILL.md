@@ -26,12 +26,15 @@ description: What it does and when to use it
 # My Skill Name
 
 ## Quick Start
+
 Immediate actionable guidance...
 
 ## Instructions
+
 Step-by-step procedures...
 
 ## Examples
+
 Concrete usage examples...
 ```
 
@@ -52,11 +55,13 @@ my-skill/
 The description field enables skill discovery. Include both what the skill does AND when to use it. Write in third person.
 
 **Good:**
+
 ```yaml
 description: Extracts text and tables from PDF files, fills forms, merges documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
 ```
 
 **Bad:**
+
 ```yaml
 description: Helps with documents
 ```
@@ -65,12 +70,12 @@ description: Helps with documents
 
 ### Required Frontmatter
 
-| Field | Required | Max Length | Description |
-|-------|----------|------------|-------------|
-| `name` | Yes | 64 chars | Lowercase letters, numbers, hyphens only |
-| `description` | Yes | 1024 chars | What it does AND when to use it |
-| `allowed-tools` | No | - | Tools Claude can use without asking |
-| `model` | No | - | Specific model to use |
+| Field           | Required | Max Length | Description                              |
+| --------------- | -------- | ---------- | ---------------------------------------- |
+| `name`          | Yes      | 64 chars   | Lowercase letters, numbers, hyphens only |
+| `description`   | Yes      | 1024 chars | What it does AND when to use it          |
+| `allowed-tools` | No       | -          | Tools Claude can use without asking      |
+| `model`         | No       | -          | Specific model to use                    |
 
 ### Naming Conventions
 
@@ -91,18 +96,23 @@ Use standard markdown headings:
 # Skill Name
 
 ## Quick Start
+
 Fastest path to value...
 
 ## Instructions
+
 Core guidance Claude follows...
 
 ## Examples
+
 Input/output pairs showing expected behavior...
 
 ## Advanced Features
+
 Additional capabilities (link to reference files)...
 
 ## Guidelines
+
 Rules and constraints...
 ```
 
@@ -118,18 +128,20 @@ Rules and constraints...
 ### Step 1: Choose Type
 
 **Simple skill (single file):**
+
 - Under 500 lines
 - Self-contained guidance
 - No complex workflows
 
 **Progressive disclosure skill (multiple files):**
+
 - SKILL.md as overview
 - Reference files for detailed docs
 - Scripts for utilities
 
 ### Step 2: Create SKILL.md
 
-```markdown
+````markdown
 ---
 name: your-skill-name
 description: [What it does]. Use when [trigger conditions].
@@ -144,6 +156,7 @@ description: [What it does]. Use when [trigger conditions].
 ```[language]
 [Code example]
 ```
+````
 
 ## Instructions
 
@@ -154,6 +167,7 @@ description: [What it does]. Use when [trigger conditions].
 **Example 1:**
 Input: [description]
 Output:
+
 ```
 [result]
 ```
@@ -162,7 +176,8 @@ Output:
 
 - [Constraint 1]
 - [Constraint 2]
-```
+
+````
 
 ### Step 3: Add Reference Files (If Needed)
 
@@ -171,7 +186,7 @@ Link from SKILL.md to detailed content:
 ```markdown
 For API reference, see [REFERENCE.md](REFERENCE.md).
 For form filling guide, see [FORMS.md](FORMS.md).
-```
+````
 
 Keep references **one level deep** from SKILL.md.
 
@@ -179,14 +194,17 @@ Keep references **one level deep** from SKILL.md.
 
 Scripts execute without loading into context:
 
-```markdown
+````markdown
 ## Utility Scripts
 
 Extract fields:
+
 ```bash
 python scripts/analyze.py input.pdf > fields.json
 ```
-```
+````
+
+````
 
 ### Step 5: Test With Real Usage
 
@@ -231,8 +249,9 @@ Provide output templates for consistent results:
 ## Recommendations
 1. [Action item]
 2. [Action item]
-```
-```
+````
+
+````
 
 ### Workflow Pattern
 
@@ -243,11 +262,13 @@ For complex multi-step tasks:
 
 Copy this checklist:
 
-```
+````
+
 - [ ] Step 1: Backup database
 - [ ] Step 2: Run migration script
 - [ ] Step 3: Validate output
 - [ ] Step 4: Update configuration
+
 ```
 
 **Step 1: Backup database**
@@ -286,6 +307,7 @@ For detailed guidance, see:
 ## Success Criteria
 
 A well-structured skill:
+
 - Has valid YAML frontmatter with descriptive name and description
 - Uses standard markdown headings (not XML tags)
 - Keeps SKILL.md under 500 lines
@@ -294,6 +316,7 @@ A well-structured skill:
 - Has been tested with real usage
 
 Sources:
+
 - [Agent Skills - Claude Code Docs](https://code.claude.com/docs/en/skills)
 - [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
 - [GitHub - anthropics/skills](https://github.com/anthropics/skills)

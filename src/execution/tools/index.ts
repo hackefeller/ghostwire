@@ -6,18 +6,15 @@ import {
   lsp_prepare_rename,
   lsp_rename,
   lspManager,
-} from "./lsp"
+} from "./lsp";
 
-export { lspManager }
+export { lspManager };
 
-import {
-  ast_grep_search,
-  ast_grep_replace,
-} from "./ast-grep"
+import { ast_grep_search, ast_grep_replace } from "./ast-grep";
 
-import { grep } from "./grep"
-import { glob } from "./glob"
-export { createSlashcommandTool, discoverCommandsSync } from "./slashcommand"
+import { grep } from "./grep";
+import { glob } from "./glob";
+export { createSlashcommandTool, discoverCommandsSync } from "./slashcommand";
 
 import {
   session_list,
@@ -27,27 +24,17 @@ import {
   session_create,
   session_update,
   session_delete,
-} from "./session-manager"
+} from "./session-manager";
 
-export { sessionExists } from "./session-manager/storage"
+export { sessionExists } from "./session-manager/storage";
 
-export { interactive_bash, startBackgroundCheck as startTmuxCheck } from "./interactive-bash"
-export { createSkillTool } from "./skill"
-export { createSkillMcpTool } from "./skill-mcp"
+export { interactive_bash, startBackgroundCheck as startTmuxCheck } from "./interactive-bash";
+export { createSkillTool } from "./skill";
+export { createSkillMcpTool } from "./skill-mcp";
 
-import {
-  todo_create,
-  todo_list,
-  todo_update,
-  todo_delete,
-} from "./todo-manager"
+import { todo_create, todo_list, todo_update, todo_delete } from "./todo-manager";
 
-import {
-  skill_list,
-  skill_create,
-  skill_update,
-  skill_delete,
-} from "./skill"
+import { skill_list, skill_create, skill_update, skill_delete } from "./skill";
 
 import {
   createBackgroundOutput,
@@ -55,25 +42,28 @@ import {
   createBackgroundTaskList,
   createBackgroundTaskInfo,
   createBackgroundTaskUpdate,
-} from "./background-task"
+} from "./background-task";
 
-import type { PluginInput, ToolDefinition } from "@opencode-ai/plugin"
-import type { BackgroundManager } from "../features/background-agent"
+import type { PluginInput, ToolDefinition } from "@opencode-ai/plugin";
+import type { BackgroundManager } from "../features/background-agent";
 
-type OpencodeClient = PluginInput["client"]
+type OpencodeClient = PluginInput["client"];
 
-export { createCallOmoAgent } from "./call-omo-agent"
-export { createLookAt } from "./look-at"
-export { createDelegateTask } from "./delegate-task"
+export { createCallOmoAgent } from "./call-omo-agent";
+export { createLookAt } from "./look-at";
+export { createDelegateTask } from "./delegate-task";
 
-export function createBackgroundTools(manager: BackgroundManager, client: OpencodeClient): Record<string, ToolDefinition> {
+export function createBackgroundTools(
+  manager: BackgroundManager,
+  client: OpencodeClient,
+): Record<string, ToolDefinition> {
   return {
     background_output: createBackgroundOutput(manager, client),
     background_cancel: createBackgroundCancel(manager, client),
     background_task_list: createBackgroundTaskList(manager),
     background_task_info: createBackgroundTaskInfo(manager),
     background_task_update: createBackgroundTaskUpdate(manager),
-  }
+  };
 }
 
 export const builtinTools: Record<string, ToolDefinition> = {
@@ -102,4 +92,4 @@ export const builtinTools: Record<string, ToolDefinition> = {
   skill_create,
   skill_update,
   skill_delete,
-}
+};

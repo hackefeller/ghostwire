@@ -25,14 +25,8 @@ describe("findRuleFiles", () => {
       // #given .github/instructions/ with valid files
       const instructionsDir = join(TEST_DIR, ".github", "instructions");
       mkdirSync(instructionsDir, { recursive: true });
-      writeFileSync(
-        join(instructionsDir, "typescript.instructions.md"),
-        "TS rules"
-      );
-      writeFileSync(
-        join(instructionsDir, "python.instructions.md"),
-        "PY rules"
-      );
+      writeFileSync(join(instructionsDir, "typescript.instructions.md"), "TS rules");
+      writeFileSync(join(instructionsDir, "python.instructions.md"), "PY rules");
 
       const srcDir = join(TEST_DIR, "src");
       mkdirSync(srcDir, { recursive: true });
@@ -44,22 +38,15 @@ describe("findRuleFiles", () => {
 
       // #then should find both instruction files
       const paths = candidates.map((c) => c.path);
-      expect(
-        paths.some((p) => p.includes("typescript.instructions.md"))
-      ).toBe(true);
-      expect(paths.some((p) => p.includes("python.instructions.md"))).toBe(
-        true
-      );
+      expect(paths.some((p) => p.includes("typescript.instructions.md"))).toBe(true);
+      expect(paths.some((p) => p.includes("python.instructions.md"))).toBe(true);
     });
 
     it("should ignore non-.instructions.md files in .github/instructions/", () => {
       // #given .github/instructions/ with invalid files
       const instructionsDir = join(TEST_DIR, ".github", "instructions");
       mkdirSync(instructionsDir, { recursive: true });
-      writeFileSync(
-        join(instructionsDir, "valid.instructions.md"),
-        "valid"
-      );
+      writeFileSync(join(instructionsDir, "valid.instructions.md"), "valid");
       writeFileSync(join(instructionsDir, "invalid.md"), "invalid");
       writeFileSync(join(instructionsDir, "readme.txt"), "readme");
 
@@ -71,9 +58,7 @@ describe("findRuleFiles", () => {
 
       // #then should only find .instructions.md file
       const paths = candidates.map((c) => c.path);
-      expect(paths.some((p) => p.includes("valid.instructions.md"))).toBe(
-        true
-      );
+      expect(paths.some((p) => p.includes("valid.instructions.md"))).toBe(true);
       expect(paths.some((p) => p.endsWith("invalid.md"))).toBe(false);
       expect(paths.some((p) => p.includes("readme.txt"))).toBe(false);
     });
@@ -83,10 +68,7 @@ describe("findRuleFiles", () => {
       const instructionsDir = join(TEST_DIR, ".github", "instructions");
       const frontendDir = join(instructionsDir, "frontend");
       mkdirSync(frontendDir, { recursive: true });
-      writeFileSync(
-        join(frontendDir, "react.instructions.md"),
-        "React rules"
-      );
+      writeFileSync(join(frontendDir, "react.instructions.md"), "React rules");
 
       const currentFile = join(TEST_DIR, "app.tsx");
       writeFileSync(currentFile, "code");
@@ -96,9 +78,7 @@ describe("findRuleFiles", () => {
 
       // #then should find nested instruction file
       const paths = candidates.map((c) => c.path);
-      expect(paths.some((p) => p.includes("react.instructions.md"))).toBe(
-        true
-      );
+      expect(paths.some((p) => p.includes("react.instructions.md"))).toBe(true);
     });
   });
 
@@ -107,10 +87,7 @@ describe("findRuleFiles", () => {
       // #given .github/copilot-instructions.md at root
       const githubDir = join(TEST_DIR, ".github");
       mkdirSync(githubDir, { recursive: true });
-      writeFileSync(
-        join(githubDir, "copilot-instructions.md"),
-        "Global instructions"
-      );
+      writeFileSync(join(githubDir, "copilot-instructions.md"), "Global instructions");
 
       const currentFile = join(TEST_DIR, "index.ts");
       writeFileSync(currentFile, "code");
@@ -119,9 +96,7 @@ describe("findRuleFiles", () => {
       const candidates = findRuleFiles(TEST_DIR, homeDir, currentFile);
 
       // #then should find the single file rule
-      const singleFile = candidates.find((c) =>
-        c.path.includes("copilot-instructions.md")
-      );
+      const singleFile = candidates.find((c) => c.path.includes("copilot-instructions.md"));
       expect(singleFile).toBeDefined();
       expect(singleFile?.isSingleFile).toBe(true);
     });
@@ -130,10 +105,7 @@ describe("findRuleFiles", () => {
       // #given copilot-instructions.md
       const githubDir = join(TEST_DIR, ".github");
       mkdirSync(githubDir, { recursive: true });
-      writeFileSync(
-        join(githubDir, "copilot-instructions.md"),
-        "Instructions"
-      );
+      writeFileSync(join(githubDir, "copilot-instructions.md"), "Instructions");
 
       const currentFile = join(TEST_DIR, "file.ts");
       writeFileSync(currentFile, "code");
@@ -151,10 +123,7 @@ describe("findRuleFiles", () => {
       // #given copilot-instructions.md at project root
       const githubDir = join(TEST_DIR, ".github");
       mkdirSync(githubDir, { recursive: true });
-      writeFileSync(
-        join(githubDir, "copilot-instructions.md"),
-        "Instructions"
-      );
+      writeFileSync(join(githubDir, "copilot-instructions.md"), "Instructions");
 
       const srcDir = join(TEST_DIR, "src", "deep", "nested");
       mkdirSync(srcDir, { recursive: true });
@@ -237,10 +206,7 @@ describe("findRuleFiles", () => {
 
       writeFileSync(join(claudeRules, "claude.md"), "claude");
       writeFileSync(join(cursorRules, "cursor.md"), "cursor");
-      writeFileSync(
-        join(githubInstructions, "copilot.instructions.md"),
-        "copilot"
-      );
+      writeFileSync(join(githubInstructions, "copilot.instructions.md"), "copilot");
       writeFileSync(join(githubDir, "copilot-instructions.md"), "global");
 
       const currentFile = join(TEST_DIR, "index.ts");
@@ -254,22 +220,15 @@ describe("findRuleFiles", () => {
       const paths = candidates.map((c) => c.path);
       expect(paths.some((p) => p.includes(".claude/rules/"))).toBe(true);
       expect(paths.some((p) => p.includes(".cursor/rules/"))).toBe(true);
-      expect(paths.some((p) => p.includes(".github/instructions/"))).toBe(
-        true
-      );
-      expect(paths.some((p) => p.includes("copilot-instructions.md"))).toBe(
-        true
-      );
+      expect(paths.some((p) => p.includes(".github/instructions/"))).toBe(true);
+      expect(paths.some((p) => p.includes("copilot-instructions.md"))).toBe(true);
     });
 
     it("should not duplicate single file rules", () => {
       // #given copilot-instructions.md
       const githubDir = join(TEST_DIR, ".github");
       mkdirSync(githubDir, { recursive: true });
-      writeFileSync(
-        join(githubDir, "copilot-instructions.md"),
-        "Instructions"
-      );
+      writeFileSync(join(githubDir, "copilot-instructions.md"), "Instructions");
 
       const currentFile = join(TEST_DIR, "file.ts");
       writeFileSync(currentFile, "code");
@@ -278,9 +237,7 @@ describe("findRuleFiles", () => {
       const candidates = findRuleFiles(TEST_DIR, homeDir, currentFile);
 
       // #then should only have one copilot-instructions.md entry
-      const copilotFiles = candidates.filter((c) =>
-        c.path.includes("copilot-instructions.md")
-      );
+      const copilotFiles = candidates.filter((c) => c.path.includes("copilot-instructions.md"));
       expect(copilotFiles.length).toBe(1);
     });
   });

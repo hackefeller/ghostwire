@@ -1,5 +1,5 @@
-import type { AgentConfig as SDKAgentConfig } from "@opencode-ai/sdk"
-export type AgentConfig = SDKAgentConfig
+import type { AgentConfig as SDKAgentConfig } from "@opencode-ai/sdk";
+export type AgentConfig = SDKAgentConfig;
 
 /**
  * Agent mode determines UI model selection behavior:
@@ -7,15 +7,15 @@ export type AgentConfig = SDKAgentConfig
  * - "subagent": Uses own fallback chain, ignores UI selection (seerAdvisor, scoutRecon, etc.)
  * - "all": Available in both contexts (OpenCode compatibility)
  */
-export type AgentMode = "primary" | "subagent" | "all"
+export type AgentMode = "primary" | "subagent" | "all";
 
 /**
  * Agent factory function with static mode property.
  * Mode is exposed as static property for pre-instantiation access.
  */
 export type AgentFactory = ((model: string) => AgentConfig) & {
-  mode: AgentMode
-}
+  mode: AgentMode;
+};
 
 /**
  * Agent category for grouping in Cipher Operator prompt sections
@@ -29,27 +29,21 @@ export type AgentCategory =
   | "research"
   | "design"
   | "workflow"
-  | "documentation"
+  | "documentation";
 
 /**
  * Cost classification for Tool Selection table
  */
-export type AgentCost =
-  | "FREE"
-  | "CHEAP"
-  | "EXPENSIVE"
-  | "LOW"
-  | "MODERATE"
-  | "HIGH"
+export type AgentCost = "FREE" | "CHEAP" | "EXPENSIVE" | "LOW" | "MODERATE" | "HIGH";
 
 /**
  * Delegation trigger for Cipher Operator prompt's Delegation Table
  */
 export interface DelegationTrigger {
   /** Domain of work (e.g., "Frontend UI/UX") */
-  domain: string
+  domain: string;
   /** When to delegate (e.g., "Visual changes only...") */
-  trigger: string
+  trigger: string;
 }
 
 /**
@@ -58,32 +52,32 @@ export interface DelegationTrigger {
  */
 export interface AgentPromptMetadata {
   /** Category for grouping in prompt sections */
-  category: AgentCategory
+  category: AgentCategory;
 
   /** Cost classification for Tool Selection table */
-  cost: AgentCost
+  cost: AgentCost;
 
   /** Domain triggers for Delegation Table */
-  triggers: DelegationTrigger[]
+  triggers: DelegationTrigger[];
 
   /** When to use this agent (for detailed sections) */
-  useWhen?: string[]
+  useWhen?: string[];
 
   /** When NOT to use this agent */
-  avoidWhen?: string[]
+  avoidWhen?: string[];
 
   /** Optional dedicated prompt section (markdown) - for agents like Seer Advisor that have special sections */
-  dedicatedSection?: string
+  dedicatedSection?: string;
 
   /** Nickname/alias used in prompt (e.g., "Seer Advisor" instead of "eye-ops") */
-  promptAlias?: string
+  promptAlias?: string;
 
   /** Key triggers that should appear in Phase 0 (e.g., "External library mentioned → fire data-dive") */
-  keyTrigger?: string
+  keyTrigger?: string;
 }
 
 export function isGptModel(model: string): boolean {
-  return model.startsWith("openai/") || model.startsWith("github-copilot/gpt-")
+  return model.startsWith("openai/") || model.startsWith("github-copilot/gpt-");
 }
 
 export type BuiltinAgentName =
@@ -94,17 +88,15 @@ export type BuiltinAgentName =
   | "eye-scan"
   | "war-mind"
   | "null-audit"
-  | "grid-sync"
+  | "grid-sync";
 
-export type OverridableAgentName =
-  | "build"
-  | BuiltinAgentName
+export type OverridableAgentName = "build" | BuiltinAgentName;
 
-export type AgentName = BuiltinAgentName
+export type AgentName = BuiltinAgentName;
 
 export type AgentOverrideConfig = Partial<AgentConfig> & {
-  prompt_append?: string
-  variant?: string
-}
+  prompt_append?: string;
+  variant?: string;
+};
 
-export type AgentOverrides = Partial<Record<OverridableAgentName, AgentOverrideConfig>>
+export type AgentOverrides = Partial<Record<OverridableAgentName, AgentOverrideConfig>>;

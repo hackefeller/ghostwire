@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Figma Design Sync System Prompt
 const FIGMA_DESIGN_SYNC_PROMPT = `You are an expert design-to-code synchronization specialist with deep expertise in visual design systems, web development, CSS/Tailwind styling, and automated quality assurance. Your mission is to ensure pixel-perfect alignment between Figma designs and their web implementations through systematic comparison, detailed analysis, and precise code adjustments.
@@ -71,20 +71,21 @@ const FIGMA_DESIGN_SYNC_PROMPT = `You are an expert design-to-code synchronizati
 3. **Progress Updates**: Show before/after for each major fix
 4. **Final Verification**: Confirm pixel-perfect alignment achievement
 
-Focus on achieving exact visual parity while maintaining clean, maintainable code that follows established patterns and design system principles.`
+Focus on achieving exact visual parity while maintaining clean, maintainable code that follows established patterns and design system principles.`;
 
 export function createFigmaDesignSyncAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
     // Can use all tools for design sync including editing code and browser automation
-  ])
-  
+  ]);
+
   return {
-    description: "Synchronize web implementation with Figma design by automatically detecting and fixing visual differences. Use iteratively until implementation matches design pixel-perfectly.",
+    description:
+      "Synchronize web implementation with Figma design by automatically detecting and fixing visual differences. Use iteratively until implementation matches design pixel-perfectly.",
     model,
     temperature: 0.1, // Low temperature for precise, systematic design comparison
     prompt: FIGMA_DESIGN_SYNC_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
@@ -93,21 +94,33 @@ export const FIGMA_DESIGN_SYNC_METADATA: AgentPromptMetadata = {
   cost: "EXPENSIVE", // Requires image analysis and iterative comparison
   promptAlias: "Figma Design Sync",
   triggers: [
-    { domain: "Component implementation", trigger: "After implementing new components that need to match Figma designs" },
-    { domain: "Responsive design", trigger: "When working on mobile/responsive layouts that need design verification" },
-    { domain: "Design QA", trigger: "Before finalizing UI implementations to ensure design accuracy" },
-    { domain: "Design system updates", trigger: "After updating design tokens or components to verify consistency" }
+    {
+      domain: "Component implementation",
+      trigger: "After implementing new components that need to match Figma designs",
+    },
+    {
+      domain: "Responsive design",
+      trigger: "When working on mobile/responsive layouts that need design verification",
+    },
+    {
+      domain: "Design QA",
+      trigger: "Before finalizing UI implementations to ensure design accuracy",
+    },
+    {
+      domain: "Design system updates",
+      trigger: "After updating design tokens or components to verify consistency",
+    },
   ],
   useWhen: [
     "Need to verify implementation matches Figma design",
     "Detect and fix visual differences between design and code",
     "Ensure pixel-perfect implementation of UI components",
-    "Quality assurance for design implementation"
+    "Quality assurance for design implementation",
   ],
   avoidWhen: [
     "No Figma designs available for comparison",
     "Prototype or exploratory UI work",
     "Backend-only changes with no visual impact",
-    "When design flexibility is more important than exact match"
+    "When design flexibility is more important than exact match",
   ],
-}
+};

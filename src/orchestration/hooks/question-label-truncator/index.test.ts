@@ -14,9 +14,7 @@ describe("createQuestionLabelTruncatorHook", () => {
           questions: [
             {
               question: "Choose an option",
-              options: [
-                { label: longLabel, description: "A long option" },
-              ],
+              options: [{ label: longLabel, description: "A long option" }],
             },
           ],
         },
@@ -41,9 +39,7 @@ describe("createQuestionLabelTruncatorHook", () => {
           questions: [
             {
               question: "Choose an option",
-              options: [
-                { label: shortLabel, description: "A short option" },
-              ],
+              options: [{ label: shortLabel, description: "A short option" }],
             },
           ],
         },
@@ -111,9 +107,7 @@ describe("createQuestionLabelTruncatorHook", () => {
             },
             {
               question: "Q2",
-              options: [
-                { label: "Another extremely long label for testing purposes" },
-              ],
+              options: [{ label: "Another extremely long label for testing purposes" }],
             },
           ],
         },
@@ -125,7 +119,7 @@ describe("createQuestionLabelTruncatorHook", () => {
       // #then
       const q1opts = (output.args as any).questions[0].options;
       const q2opts = (output.args as any).questions[1].options;
-      
+
       expect(q1opts[0].label).toBe("Very long label number one ...");
       expect(q1opts[0].label.length).toBeLessThanOrEqual(30);
       expect(q1opts[1].label).toBe("Short");

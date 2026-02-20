@@ -1,43 +1,43 @@
 /**
  * Import Diagnostics and Troubleshooting
- * 
+ *
  * Provides detailed diagnostics for Claude plugin import issues.
  */
 
-import type { ClaudeImportResult, ClaudeImportReport } from "./types"
-import type { PluginComponentsResult } from "../../claude-code-plugin-loader"
+import type { ClaudeImportResult, ClaudeImportReport } from "./types";
+import type { PluginComponentsResult } from "../../claude-code-plugin-loader";
 
 export interface DiagnosticIssue {
-  severity: "error" | "warning" | "info"
-  code: string
-  message: string
-  component?: string
-  suggestion?: string
-  documentation?: string
+  severity: "error" | "warning" | "info";
+  code: string;
+  message: string;
+  component?: string;
+  suggestion?: string;
+  documentation?: string;
 }
 
 export interface ImportDiagnostics {
-  success: boolean
-  issues: DiagnosticIssue[]
+  success: boolean;
+  issues: DiagnosticIssue[];
   summary: {
-    totalComponents: number
-    successful: number
-    failed: number
-    warnings: number
-  }
-  recommendations: string[]
+    totalComponents: number;
+    successful: number;
+    failed: number;
+    warnings: number;
+  };
+  recommendations: string[];
 }
 
 /**
  * Diagnose import result and generate detailed report
  */
 export function diagnoseImport(result: ClaudeImportResult): ImportDiagnostics {
-  const issues: DiagnosticIssue[] = []
-  const recommendations: string[] = []
+  const issues: DiagnosticIssue[] = [];
+  const recommendations: string[] = [];
 
   // Check for missing components
-  const expectedComponents = getExpectedComponentCount(result)
-  const actualComponents = getActualComponentCount(result.components)
+  const expectedComponents = getExpectedComponentCount(result);
+  const actualComponents = getActualComponentCount(result.components);
 
   if (actualComponents === 0 && expectedComponents > 0) {
     issues.push({
@@ -45,53 +45,53 @@ export function diagnoseImport(result: ClaudeImportResult): ImportDiagnostics {
       code: "IMPORT_NO_COMPONENTS",
       message: "No components were imported from the plugin",
       suggestion: "Check that the plugin path is correct and the plugin contains valid components",
-    })
-    recommendations.push("Verify the plugin is properly installed and the path is correct")
+    });
+    recommendations.push("Verify the plugin is properly installed and the path is correct");
   }
 
   // Analyze report warnings
   for (const warning of result.report.warnings) {
-    const issue = analyzeWarning(warning)
+    const issue = analyzeWarning(warning);
     if (issue) {
-      issues.push(issue)
+      issues.push(issue);
     }
   }
 
   // Analyze report errors
   for (const error of result.report.errors) {
-    const issue = analyzeError(error)
-    issues.push(issue)
+    const issue = analyzeError(error);
+    issues.push(issue);
   }
 
   // Check for namespace conflicts
-  const conflicts = detectNamespaceConflicts(result.components)
+  const conflicts = detectNamespaceConflicts(result.components);
   for (const conflict of conflicts) {
     issues.push({
       severity: "warning",
       code: "NAMESPACE_CONFLICT",
       message: `Namespace conflict detected: ${conflict}`,
       suggestion: "Use namespace_overrides in configuration to resolve conflicts",
-    })
-    recommendations.push("Configure namespace_overrides to rename conflicting components")
+    });
+    recommendations.push("Configure namespace_overrides to rename conflicting components");
   }
 
   // Check for security issues
-  const securityIssues = detectSecurityIssues(result)
+  const securityIssues = detectSecurityIssues(result);
   for (const issue of securityIssues) {
-    issues.push(issue)
+    issues.push(issue);
   }
 
   // Generate recommendations based on findings
   if (issues.some((i) => i.severity === "error")) {
-    recommendations.push("Review and fix all errors before using imported components")
+    recommendations.push("Review and fix all errors before using imported components");
   }
 
   if (result.report.warnings.length > 5) {
-    recommendations.push("Consider using strict mode to fail fast on warnings")
+    recommendations.push("Consider using strict mode to fail fast on warnings");
   }
 
   if (!result.components.mcpServers || Object.keys(result.components.mcpServers).length === 0) {
-    recommendations.push("No MCP servers imported - verify .mcp.json exists if expected")
+    recommendations.push("No MCP servers imported - verify .mcp.json exists if expected");
   }
 
   return {
@@ -104,7 +104,7 @@ export function diagnoseImport(result: ClaudeImportResult): ImportDiagnostics {
       warnings: issues.filter((i) => i.severity === "warning").length,
     },
     recommendations,
-  }
+  };
 }
 
 /**
@@ -119,7 +119,7 @@ function analyzeWarning(warning: string): DiagnosticIssue | null {
       message: warning,
       suggestion: "Use absolute paths or ensure paths don't contain '..' sequences",
       documentation: "https://docs.opencode.ai/security/path-validation",
-    }
+    };
   }
 
   // Missing manifest warning
@@ -129,7 +129,7 @@ function analyzeWarning(warning: string): DiagnosticIssue | null {
       code: "MISSING_MANIFEST",
       message: warning,
       suggestion: "Create a .claude-plugin/plugin.json file for better plugin metadata",
-    }
+    };
   }
 
   // Namespace conflict warning
@@ -139,7 +139,7 @@ function analyzeWarning(warning: string): DiagnosticIssue | null {
       code: "NAMESPACE_COLLISION",
       message: warning,
       suggestion: "Use namespace_overrides configuration to rename components",
-    }
+    };
   }
 
   // DRY RUN warning
@@ -149,7 +149,7 @@ function analyzeWarning(warning: string): DiagnosticIssue | null {
       code: "DRY_RUN_MODE",
       message: "Import ran in dry-run mode - no components were actually imported",
       suggestion: "Set dryRun: false to perform actual import",
-    }
+    };
   }
 
   // Filter warning
@@ -159,7 +159,7 @@ function analyzeWarning(warning: string): DiagnosticIssue | null {
       code: "COMPONENT_FILTERED",
       message: warning,
       suggestion: "Review include/exclude filters if components are missing",
-    }
+    };
   }
 
   // Generic warning
@@ -167,7 +167,7 @@ function analyzeWarning(warning: string): DiagnosticIssue | null {
     severity: "warning",
     code: "GENERIC_WARNING",
     message: warning,
-  }
+  };
 }
 
 /**
@@ -182,7 +182,7 @@ function analyzeError(error: string): DiagnosticIssue {
       message: error,
       suggestion: "Check path permissions and ensure plugin is from a trusted source",
       documentation: "https://docs.opencode.ai/security",
-    }
+    };
   }
 
   // Strict mode error
@@ -192,7 +192,7 @@ function analyzeError(error: string): DiagnosticIssue {
       code: "STRICT_MODE_FAILURE",
       message: error,
       suggestion: "Fix warnings or disable strict mode if partial import is acceptable",
-    }
+    };
   }
 
   // Atomic mode error
@@ -202,7 +202,7 @@ function analyzeError(error: string): DiagnosticIssue {
       code: "ATOMIC_MODE_FAILURE",
       message: error,
       suggestion: "All components must succeed in atomic mode - check individual errors",
-    }
+    };
   }
 
   // Parse error
@@ -212,7 +212,7 @@ function analyzeError(error: string): DiagnosticIssue {
       code: "PARSE_ERROR",
       message: error,
       suggestion: "Check plugin.json and component files for valid JSON/Markdown",
-    }
+    };
   }
 
   // Generic error
@@ -220,42 +220,42 @@ function analyzeError(error: string): DiagnosticIssue {
     severity: "error",
     code: "IMPORT_ERROR",
     message: error,
-  }
+  };
 }
 
 /**
  * Detect namespace conflicts in imported components
  */
 function detectNamespaceConflicts(components: PluginComponentsResult): string[] {
-  const conflicts: string[] = []
-  const seen = new Set<string>()
+  const conflicts: string[] = [];
+  const seen = new Set<string>();
 
   const allNames = [
     ...Object.keys(components.commands),
     ...Object.keys(components.skills),
     ...Object.keys(components.agents),
-  ]
+  ];
 
   for (const name of allNames) {
     if (seen.has(name)) {
-      conflicts.push(name)
+      conflicts.push(name);
     }
-    seen.add(name)
+    seen.add(name);
   }
 
-  return conflicts
+  return conflicts;
 }
 
 /**
  * Detect security issues in import result
  */
 function detectSecurityIssues(result: ClaudeImportResult): DiagnosticIssue[] {
-  const issues: DiagnosticIssue[] = []
+  const issues: DiagnosticIssue[] = [];
 
   // Check for unrestricted MCP servers
   for (const [name, mcp] of Object.entries(result.components.mcpServers ?? {})) {
-    const mcpConfig = mcp as { command?: string; url?: string }
-    
+    const mcpConfig = mcp as { command?: string; url?: string };
+
     if (mcpConfig.command?.includes("sudo") || mcpConfig.command?.includes("su")) {
       issues.push({
         severity: "error",
@@ -263,7 +263,7 @@ function detectSecurityIssues(result: ClaudeImportResult): DiagnosticIssue[] {
         message: `MCP server "${name}" uses privileged command: ${mcpConfig.command}`,
         component: name,
         suggestion: "Remove sudo/su from MCP commands or use a non-privileged alternative",
-      })
+      });
     }
 
     if (mcpConfig.url?.startsWith("http://")) {
@@ -273,11 +273,11 @@ function detectSecurityIssues(result: ClaudeImportResult): DiagnosticIssue[] {
         message: `MCP server "${name}" uses insecure HTTP connection`,
         component: name,
         suggestion: "Use HTTPS instead of HTTP for MCP server connections",
-      })
+      });
     }
   }
 
-  return issues
+  return issues;
 }
 
 /**
@@ -291,7 +291,7 @@ function getExpectedComponentCount(result: ClaudeImportResult): number {
     result.report.converted.skills +
     result.report.converted.agents +
     result.report.converted.mcps
-  )
+  );
 }
 
 /**
@@ -303,7 +303,7 @@ function getActualComponentCount(components: PluginComponentsResult): number {
     Object.keys(components.skills).length +
     Object.keys(components.agents).length +
     Object.keys(components.mcpServers).length
-  )
+  );
 }
 
 /**
@@ -323,64 +323,64 @@ export function generateTroubleshootingGuide(diagnostics: ImportDiagnostics): st
     `  - Failed: ${diagnostics.summary.failed}`,
     `  - Warnings: ${diagnostics.summary.warnings}`,
     "",
-  ]
+  ];
 
   if (diagnostics.issues.length > 0) {
-    lines.push("Issues Found:", "-".repeat(70))
-    
+    lines.push("Issues Found:", "-".repeat(70));
+
     for (const issue of diagnostics.issues) {
-      const icon = issue.severity === "error" ? "✗" : issue.severity === "warning" ? "⚠" : "ℹ"
-      lines.push(`${icon} [${issue.code}] ${issue.message}`)
-      
+      const icon = issue.severity === "error" ? "✗" : issue.severity === "warning" ? "⚠" : "ℹ";
+      lines.push(`${icon} [${issue.code}] ${issue.message}`);
+
       if (issue.component) {
-        lines.push(`   Component: ${issue.component}`)
+        lines.push(`   Component: ${issue.component}`);
       }
-      
+
       if (issue.suggestion) {
-        lines.push(`   Suggestion: ${issue.suggestion}`)
+        lines.push(`   Suggestion: ${issue.suggestion}`);
       }
-      
+
       if (issue.documentation) {
-        lines.push(`   Documentation: ${issue.documentation}`)
+        lines.push(`   Documentation: ${issue.documentation}`);
       }
-      
-      lines.push("")
+
+      lines.push("");
     }
   }
 
   if (diagnostics.recommendations.length > 0) {
-    lines.push("Recommendations:", "-".repeat(70))
-    
+    lines.push("Recommendations:", "-".repeat(70));
+
     for (let i = 0; i < diagnostics.recommendations.length; i++) {
-      lines.push(`${i + 1}. ${diagnostics.recommendations[i]}`)
+      lines.push(`${i + 1}. ${diagnostics.recommendations[i]}`);
     }
-    
-    lines.push("")
+
+    lines.push("");
   }
 
-  lines.push("=".repeat(70))
-  
-  return lines.join("\n")
+  lines.push("=".repeat(70));
+
+  return lines.join("\n");
 }
 
 /**
  * Quick health check for import result
  */
 export function quickHealthCheck(result: ClaudeImportResult): {
-  healthy: boolean
-  status: "green" | "yellow" | "red"
-  message: string
+  healthy: boolean;
+  status: "green" | "yellow" | "red";
+  message: string;
 } {
-  const errorCount = result.report.errors.length
-  const warningCount = result.report.warnings.length
-  const hasComponents = getActualComponentCount(result.components) > 0
+  const errorCount = result.report.errors.length;
+  const warningCount = result.report.warnings.length;
+  const hasComponents = getActualComponentCount(result.components) > 0;
 
   if (errorCount === 0 && warningCount === 0 && hasComponents) {
     return {
       healthy: true,
       status: "green",
       message: "Import completed successfully with no issues",
-    }
+    };
   }
 
   if (errorCount === 0 && hasComponents) {
@@ -388,12 +388,12 @@ export function quickHealthCheck(result: ClaudeImportResult): {
       healthy: true,
       status: "yellow",
       message: `Import completed with ${warningCount} warning(s)`,
-    }
+    };
   }
 
   return {
     healthy: false,
     status: "red",
     message: `Import failed with ${errorCount} error(s)`,
-  }
+  };
 }

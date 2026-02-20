@@ -1,11 +1,7 @@
 import type { PluginInput } from "@opencode-ai/plugin";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import {
-  loadInjectedPaths,
-  saveInjectedPaths,
-  clearInjectedPaths,
-} from "./storage";
+import { loadInjectedPaths, saveInjectedPaths, clearInjectedPaths } from "./storage";
 import { README_FILENAME } from "./constants";
 import { createDynamicTruncator } from "../../../integration/shared/dynamic-truncator";
 
@@ -105,10 +101,7 @@ export function createDirectoryReadmeInjectorHook(ctx: PluginInput) {
     saveInjectedPaths(sessionID, cache);
   }
 
-  const toolExecuteBefore = async (
-    input: ToolExecuteInput,
-    output: ToolExecuteBeforeOutput,
-  ) => {
+  const toolExecuteBefore = async (input: ToolExecuteInput, output: ToolExecuteBeforeOutput) => {
     if (input.tool.toLowerCase() !== "batch") return;
 
     const args = output.args as { tool_calls?: BatchToolCall[] } | undefined;
@@ -126,10 +119,7 @@ export function createDirectoryReadmeInjectorHook(ctx: PluginInput) {
     }
   };
 
-  const toolExecuteAfter = async (
-    input: ToolExecuteInput,
-    output: ToolExecuteOutput,
-  ) => {
+  const toolExecuteAfter = async (input: ToolExecuteInput, output: ToolExecuteOutput) => {
     const toolName = input.tool.toLowerCase();
 
     if (toolName === "read") {
@@ -160,8 +150,9 @@ export function createDirectoryReadmeInjectorHook(ctx: PluginInput) {
     }
 
     if (event.type === "session.compacted") {
-      const sessionID = (props?.sessionID ??
-        (props?.info as { id?: string } | undefined)?.id) as string | undefined;
+      const sessionID = (props?.sessionID ?? (props?.info as { id?: string } | undefined)?.id) as
+        | string
+        | undefined;
       if (sessionID) {
         sessionCaches.delete(sessionID);
         clearInjectedPaths(sessionID);

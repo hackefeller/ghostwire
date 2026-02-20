@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Design Iterator System Prompt
 const DESIGN_ITERATOR_PROMPT = `You are a Design Iterator specialist who takes screenshots, analyzes what's not working in designs, implements improvements, and repeats the process systematically to fix design issues. Your expertise lies in iterative design refinement through visual analysis and systematic improvement cycles.
@@ -104,20 +104,21 @@ For each iteration, structure your work as:
 
 Continue iterations until the design feels polished, visually balanced, and professionally executed. Each iteration should build upon previous improvements while addressing new refinement opportunities.
 
-Focus on systematic improvement rather than random changes - each iteration should have clear goals and measurable visual improvements.`
+Focus on systematic improvement rather than random changes - each iteration should have clear goals and measurable visual improvements.`;
 
 export function createDesignIteratorAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
     // Can use all tools for iterative design improvement including editing code
-  ])
-  
+  ]);
+
   return {
-    description: "Systematic design refinement through iterative improvement cycles. Takes screenshots, analyzes design issues, implements improvements, and repeats N times to fix color harmony, layout balance, typography, and overall aesthetic quality.",
+    description:
+      "Systematic design refinement through iterative improvement cycles. Takes screenshots, analyzes design issues, implements improvements, and repeats N times to fix color harmony, layout balance, typography, and overall aesthetic quality.",
     model,
     temperature: 0.2, // Slightly higher for creative design iteration
     prompt: DESIGN_ITERATOR_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
@@ -126,21 +127,34 @@ export const DESIGN_ITERATOR_METADATA: AgentPromptMetadata = {
   cost: "EXPENSIVE", // Multiple iterations with screenshot analysis
   promptAlias: "Design Iterator",
   triggers: [
-    { domain: "Design refinement", trigger: "When initial design work produces mediocre results that need systematic improvement" },
-    { domain: "Aesthetic polish", trigger: "When colors feel wrong, layouts aren't balanced, or overall aesthetic needs work" },
-    { domain: "Visual quality improvement", trigger: "When design needs iterative refinement beyond single changes" },
-    { domain: "User-requested iteration", trigger: "When user explicitly requests multiple iterations of design improvement" }
+    {
+      domain: "Design refinement",
+      trigger:
+        "When initial design work produces mediocre results that need systematic improvement",
+    },
+    {
+      domain: "Aesthetic polish",
+      trigger: "When colors feel wrong, layouts aren't balanced, or overall aesthetic needs work",
+    },
+    {
+      domain: "Visual quality improvement",
+      trigger: "When design needs iterative refinement beyond single changes",
+    },
+    {
+      domain: "User-requested iteration",
+      trigger: "When user explicitly requests multiple iterations of design improvement",
+    },
   ],
   useWhen: [
     "Design work isn't coming together on first attempt",
-    "Need systematic improvement through multiple iterations", 
+    "Need systematic improvement through multiple iterations",
     "Colors, typography, or layout need comprehensive refinement",
-    "Want to push design quality to professional polish level"
+    "Want to push design quality to professional polish level",
   ],
   avoidWhen: [
     "Initial design exploration or prototyping",
     "When single, targeted changes are sufficient",
-    "Time-constrained projects where iteration isn't feasible", 
-    "When design quality is already meeting requirements"
+    "Time-constrained projects where iteration isn't feasible",
+    "When design quality is already meeting requirements",
   ],
-}
+};

@@ -56,31 +56,37 @@ Structure your findings as:
 ## Repository Research Summary
 
 ### Architecture & Structure
+
 - Key findings about project organization
 - Important architectural decisions
 - Technology stack and dependencies
 
 ### Issue Conventions
+
 - Formatting patterns observed
 - Label taxonomy and usage
 - Common issue types and structures
 
 ### Documentation Insights
+
 - Contribution guidelines summary
 - Coding standards and practices
 - Testing and review requirements
 
 ### Templates Found
+
 - List of template files with purposes
 - Required fields and formats
 - Usage instructions
 
 ### Implementation Patterns
+
 - Common code patterns identified
 - Naming conventions
 - Project-specific practices
 
 ### Recommendations
+
 - How to best align with project conventions
 - Areas needing clarification
 - Next steps for deeper investigation
@@ -97,6 +103,7 @@ Structure your findings as:
 **Search Strategies:**
 
 Use the built-in tools for efficient searching:
+
 - **Grep tool**: For text/code pattern searches with regex support (uses ripgrep under the hood)
 - **Glob tool**: For file discovery by pattern (e.g., `**/*.md`, `**/CLAUDE.md`)
 - **Read tool**: For reading file contents once located

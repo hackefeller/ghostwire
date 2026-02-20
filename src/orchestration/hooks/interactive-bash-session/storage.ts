@@ -1,16 +1,7 @@
-import {
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  writeFileSync,
-  unlinkSync,
-} from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
 import { join } from "node:path";
 import { INTERACTIVE_BASH_SESSION_STORAGE } from "./constants";
-import type {
-  InteractiveBashSessionState,
-  SerializedInteractiveBashSessionState,
-} from "./types";
+import type { InteractiveBashSessionState, SerializedInteractiveBashSessionState } from "./types";
 
 function getStoragePath(sessionID: string): string {
   return join(INTERACTIVE_BASH_SESSION_STORAGE, `${sessionID}.json`);
@@ -35,9 +26,7 @@ export function loadInteractiveBashSessionState(
   }
 }
 
-export function saveInteractiveBashSessionState(
-  state: InteractiveBashSessionState,
-): void {
+export function saveInteractiveBashSessionState(state: InteractiveBashSessionState): void {
   if (!existsSync(INTERACTIVE_BASH_SESSION_STORAGE)) {
     mkdirSync(INTERACTIVE_BASH_SESSION_STORAGE, { recursive: true });
   }

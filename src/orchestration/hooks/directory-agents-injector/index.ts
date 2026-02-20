@@ -1,11 +1,7 @@
 import type { PluginInput } from "@opencode-ai/plugin";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import {
-  loadInjectedPaths,
-  saveInjectedPaths,
-  clearInjectedPaths,
-} from "./storage";
+import { loadInjectedPaths, saveInjectedPaths, clearInjectedPaths } from "./storage";
 import { AGENTS_FILENAME } from "./constants";
 import { createDynamicTruncator } from "../../../integration/shared/dynamic-truncator";
 
@@ -98,10 +94,7 @@ export function createDirectoryAgentsInjectorHook(ctx: PluginInput) {
 
       try {
         const content = readFileSync(agentsPath, "utf-8");
-        const { result, truncated } = await truncator.truncate(
-          sessionID,
-          content,
-        );
+        const { result, truncated } = await truncator.truncate(sessionID, content);
         const truncationNotice = truncated
           ? `\n\n[Note: Content was truncated to save context window space. For full context, please read the file directly: ${agentsPath}]`
           : "";
@@ -113,10 +106,7 @@ export function createDirectoryAgentsInjectorHook(ctx: PluginInput) {
     saveInjectedPaths(sessionID, cache);
   }
 
-  const toolExecuteBefore = async (
-    input: ToolExecuteInput,
-    output: ToolExecuteBeforeOutput,
-  ) => {
+  const toolExecuteBefore = async (input: ToolExecuteInput, output: ToolExecuteBeforeOutput) => {
     if (input.tool.toLowerCase() !== "batch") return;
 
     const args = output.args as { tool_calls?: BatchToolCall[] } | undefined;
@@ -134,10 +124,7 @@ export function createDirectoryAgentsInjectorHook(ctx: PluginInput) {
     }
   };
 
-  const toolExecuteAfter = async (
-    input: ToolExecuteInput,
-    output: ToolExecuteOutput,
-  ) => {
+  const toolExecuteAfter = async (input: ToolExecuteInput, output: ToolExecuteOutput) => {
     const toolName = input.tool.toLowerCase();
 
     if (toolName === "read") {
@@ -168,8 +155,9 @@ export function createDirectoryAgentsInjectorHook(ctx: PluginInput) {
     }
 
     if (event.type === "session.compacted") {
-      const sessionID = (props?.sessionID ??
-        (props?.info as { id?: string } | undefined)?.id) as string | undefined;
+      const sessionID = (props?.sessionID ?? (props?.info as { id?: string } | undefined)?.id) as
+        | string
+        | undefined;
       if (sessionID) {
         sessionCaches.delete(sessionID);
         clearInjectedPaths(sessionID);

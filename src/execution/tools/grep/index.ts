@@ -1,3 +1,3 @@
-import { grep } from "./tools"
+import { grep } from "./tools";
 
-export { grep }
+export { grep };

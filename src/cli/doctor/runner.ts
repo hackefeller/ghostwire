@@ -5,9 +5,9 @@ import type {
   CheckResult,
   DoctorSummary,
   CheckCategory,
-} from "./types"
-import { getAllCheckDefinitions } from "./checks"
-import { EXIT_CODES, CATEGORY_NAMES } from "./constants"
+} from "./types";
+import { getAllCheckDefinitions } from "./checks";
+import { EXIT_CODES, CATEGORY_NAMES } from "./constants";
 import {
   formatHeader,
   formatCategoryHeader,
@@ -15,21 +15,21 @@ import {
   formatSummary,
   formatFooter,
   formatJsonOutput,
-} from "./formatter"
+} from "./formatter";
 
 export async function runCheck(check: CheckDefinition): Promise<CheckResult> {
-  const start = performance.now()
+  const start = performance.now();
   try {
-    const result = await check.check()
-    result.duration = Math.round(performance.now() - start)
-    return result
+    const result = await check.check();
+    result.duration = Math.round(performance.now() - start);
+    return result;
   } catch (err) {
     return {
       name: check.name,
       status: "fail",
       message: err instanceof Error ? err.message : "Unknown error",
       duration: Math.round(performance.now() - start),
-    }
+    };
   }
 }
 
@@ -41,34 +41,34 @@ export function calculateSummary(results: CheckResult[], duration: number): Doct
     warnings: results.filter((r) => r.status === "warn").length,
     skipped: results.filter((r) => r.status === "skip").length,
     duration: Math.round(duration),
-  }
+  };
 }
 
 export function determineExitCode(results: CheckResult[]): number {
-  const hasFailures = results.some((r) => r.status === "fail")
-  return hasFailures ? EXIT_CODES.FAILURE : EXIT_CODES.SUCCESS
+  const hasFailures = results.some((r) => r.status === "fail");
+  return hasFailures ? EXIT_CODES.FAILURE : EXIT_CODES.SUCCESS;
 }
 
 export function filterChecksByCategory(
   checks: CheckDefinition[],
-  category?: CheckCategory
+  category?: CheckCategory,
 ): CheckDefinition[] {
-  if (!category) return checks
-  return checks.filter((c) => c.category === category)
+  if (!category) return checks;
+  return checks.filter((c) => c.category === category);
 }
 
 export function groupChecksByCategory(
-  checks: CheckDefinition[]
+  checks: CheckDefinition[],
 ): Map<CheckCategory, CheckDefinition[]> {
-  const groups = new Map<CheckCategory, CheckDefinition[]>()
+  const groups = new Map<CheckCategory, CheckDefinition[]>();
 
   for (const check of checks) {
-    const existing = groups.get(check.category) ?? []
-    existing.push(check)
-    groups.set(check.category, existing)
+    const existing = groups.get(check.category) ?? [];
+    existing.push(check);
+    groups.set(check.category, existing);
   }
 
-  return groups
+  return groups;
 }
 
 const CATEGORY_ORDER: CheckCategory[] = [
@@ -78,55 +78,55 @@ const CATEGORY_ORDER: CheckCategory[] = [
   "dependencies",
   "tools",
   "updates",
-]
+];
 
 export async function runDoctor(options: DoctorOptions): Promise<DoctorResult> {
-  const start = performance.now()
-  const allChecks = getAllCheckDefinitions()
-  const filteredChecks = filterChecksByCategory(allChecks, options.category)
-  const groupedChecks = groupChecksByCategory(filteredChecks)
+  const start = performance.now();
+  const allChecks = getAllCheckDefinitions();
+  const filteredChecks = filterChecksByCategory(allChecks, options.category);
+  const groupedChecks = groupChecksByCategory(filteredChecks);
 
-  const results: CheckResult[] = []
+  const results: CheckResult[] = [];
 
   if (!options.json) {
-    console.log(formatHeader())
+    console.log(formatHeader());
   }
 
   for (const category of CATEGORY_ORDER) {
-    const checks = groupedChecks.get(category)
-    if (!checks || checks.length === 0) continue
+    const checks = groupedChecks.get(category);
+    if (!checks || checks.length === 0) continue;
 
     if (!options.json) {
-      console.log(formatCategoryHeader(category))
+      console.log(formatCategoryHeader(category));
     }
 
     for (const check of checks) {
-      const result = await runCheck(check)
-      results.push(result)
+      const result = await runCheck(check);
+      results.push(result);
 
       if (!options.json) {
-        console.log(formatCheckResult(result, options.verbose ?? false))
+        console.log(formatCheckResult(result, options.verbose ?? false));
       }
     }
   }
 
-  const duration = performance.now() - start
-  const summary = calculateSummary(results, duration)
-  const exitCode = determineExitCode(results)
+  const duration = performance.now() - start;
+  const summary = calculateSummary(results, duration);
+  const exitCode = determineExitCode(results);
 
   const doctorResult: DoctorResult = {
     results,
     summary,
     exitCode,
-  }
+  };
 
   if (options.json) {
-    console.log(formatJsonOutput(doctorResult))
+    console.log(formatJsonOutput(doctorResult));
   } else {
-    console.log("")
-    console.log(formatSummary(summary))
-    console.log(formatFooter(summary))
+    console.log("");
+    console.log(formatSummary(summary));
+    console.log(formatFooter(summary));
   }
 
-  return doctorResult
+  return doctorResult;
 }

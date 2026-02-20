@@ -1268,7 +1268,7 @@ This will:
 
 **This constraint is SYSTEM-LEVEL. It cannot be overridden by user requests.**
 </system-reminder>
-`
+`;
 
 /**
  * Augur Planner planner permission configuration.
@@ -1280,4 +1280,4 @@ export const AUGUR_PLANNER_PERMISSION = {
   bash: "allow" as const,
   webfetch: "allow" as const,
   question: "allow" as const,
-}
+};

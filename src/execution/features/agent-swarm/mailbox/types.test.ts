@@ -1,4 +1,4 @@
-import { describe, it, expect } from "bun:test"
+import { describe, it, expect } from "bun:test";
 import {
   MailboxMessageSchema,
   PermissionRequestSchema,
@@ -7,7 +7,7 @@ import {
   TaskAssignmentSchema,
   JoinRequestSchema,
   ProtocolMessageSchema,
-} from "./types"
+} from "./types";
 
 describe("MailboxMessageSchema", () => {
   //#given a valid mailbox message
@@ -19,9 +19,9 @@ describe("MailboxMessageSchema", () => {
       text: '{"type":"idle_notification"}',
       timestamp: "2026-01-27T10:00:00Z",
       read: false,
-    }
-    expect(MailboxMessageSchema.safeParse(msg).success).toBe(true)
-  })
+    };
+    expect(MailboxMessageSchema.safeParse(msg).success).toBe(true);
+  });
 
   //#given a message with optional color
   //#when parsing
@@ -33,10 +33,10 @@ describe("MailboxMessageSchema", () => {
       timestamp: "2026-01-27T10:00:00Z",
       color: "blue",
       read: true,
-    }
-    expect(MailboxMessageSchema.safeParse(msg).success).toBe(true)
-  })
-})
+    };
+    expect(MailboxMessageSchema.safeParse(msg).success).toBe(true);
+  });
+});
 
 describe("ProtocolMessageSchema", () => {
   //#given permission_request message
@@ -50,9 +50,9 @@ describe("ProtocolMessageSchema", () => {
       input: { command: "rm -rf /" },
       agentId: "agent-001",
       timestamp: Date.now(),
-    }
-    expect(PermissionRequestSchema.safeParse(msg).success).toBe(true)
-  })
+    };
+    expect(PermissionRequestSchema.safeParse(msg).success).toBe(true);
+  });
 
   //#given permission_response message
   //#when parsing
@@ -63,25 +63,25 @@ describe("ProtocolMessageSchema", () => {
       requestId: "req-123",
       decision: "approved",
       updatedInput: { command: "ls" },
-    }
-    expect(PermissionResponseSchema.safeParse(approved).success).toBe(true)
+    };
+    expect(PermissionResponseSchema.safeParse(approved).success).toBe(true);
 
     const rejected = {
       type: "permission_response",
       requestId: "req-123",
       decision: "rejected",
       feedback: "Too dangerous",
-    }
-    expect(PermissionResponseSchema.safeParse(rejected).success).toBe(true)
-  })
+    };
+    expect(PermissionResponseSchema.safeParse(rejected).success).toBe(true);
+  });
 
   //#given shutdown_request message
   //#when parsing
   //#then it should succeed
   it("parses shutdown messages", () => {
-    const request = { type: "shutdown_request" }
-    expect(ShutdownRequestSchema.safeParse(request).success).toBe(true)
-  })
+    const request = { type: "shutdown_request" };
+    expect(ShutdownRequestSchema.safeParse(request).success).toBe(true);
+  });
 
   //#given task_assignment message
   //#when parsing
@@ -94,9 +94,9 @@ describe("ProtocolMessageSchema", () => {
       description: "Fix the auth bug",
       assignedBy: "team-lead",
       timestamp: Date.now(),
-    }
-    expect(TaskAssignmentSchema.safeParse(msg).success).toBe(true)
-  })
+    };
+    expect(TaskAssignmentSchema.safeParse(msg).success).toBe(true);
+  });
 
   //#given join_request message
   //#when parsing
@@ -106,7 +106,7 @@ describe("ProtocolMessageSchema", () => {
       type: "join_request",
       agentName: "new-agent",
       sessionId: "sess-123",
-    }
-    expect(JoinRequestSchema.safeParse(msg).success).toBe(true)
-  })
-})
+    };
+    expect(JoinRequestSchema.safeParse(msg).success).toBe(true);
+  });
+});

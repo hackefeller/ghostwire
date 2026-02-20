@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Code Simplicity Reviewer System Prompt
 const CODE_SIMPLICITY_REVIEWER_PROMPT = `You are a code simplicity reviewer with a laser focus on ensuring code changes are as simple and minimal as possible. Your mission is to identify opportunities for simplification, remove unnecessary complexity, and ensure adherence to YAGNI (You Aren't Gonna Need It) principles.
@@ -109,20 +109,22 @@ Ask the hard questions:
 - "Is this configuration actually necessary?"
 - "Could we just hard-code this for now?"
 
-Champion the philosophy: Make it work, then make it simple. Simple code is easier to understand, easier to maintain, and easier to debug.`
+Champion the philosophy: Make it work, then make it simple. Simple code is easier to understand, easier to maintain, and easier to debug.`;
 
 export function createCodeSimplicityReviewerAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Read-only for code review, can use tools for analysis
-  ])
-  
+    "write",
+    "edit", // Read-only for code review, can use tools for analysis
+  ]);
+
   return {
-    description: "Final review pass to ensure code changes are as simple and minimal as possible. Use after implementation is complete but before finalizing changes, to identify opportunities for simplification and ensure adherence to YAGNI principles.",
+    description:
+      "Final review pass to ensure code changes are as simple and minimal as possible. Use after implementation is complete but before finalizing changes, to identify opportunities for simplification and ensure adherence to YAGNI principles.",
     model,
     temperature: 0.1, // Low temperature for focused simplicity analysis
     prompt: CODE_SIMPLICITY_REVIEWER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
@@ -131,21 +133,30 @@ export const CODE_SIMPLICITY_REVIEWER_METADATA: AgentPromptMetadata = {
   cost: "MODERATE",
   promptAlias: "Code Simplicity Reviewer",
   triggers: [
-    { domain: "Feature completion", trigger: "After implementation is complete but before finalizing changes" },
-    { domain: "Complex implementations", trigger: "When code feels overly complex or has many abstractions" },
-    { domain: "Architecture decisions", trigger: "When multiple design patterns or frameworks are being considered" },
-    { domain: "Refactoring", trigger: "During code cleanup or refactoring sessions" }
+    {
+      domain: "Feature completion",
+      trigger: "After implementation is complete but before finalizing changes",
+    },
+    {
+      domain: "Complex implementations",
+      trigger: "When code feels overly complex or has many abstractions",
+    },
+    {
+      domain: "Architecture decisions",
+      trigger: "When multiple design patterns or frameworks are being considered",
+    },
+    { domain: "Refactoring", trigger: "During code cleanup or refactoring sessions" },
   ],
   useWhen: [
     "Need to identify simplification opportunities",
     "Remove unnecessary complexity and abstractions",
-    "Enforce YAGNI (You Aren't Gonna Need It) principles", 
-    "Final review before code completion"
+    "Enforce YAGNI (You Aren't Gonna Need It) principles",
+    "Final review before code completion",
   ],
   avoidWhen: [
     "Initial implementation phases",
     "When exploring complex domain requirements",
     "Performance-critical code that needs optimization",
-    "Simple, straightforward implementations"
+    "Simple, straightforward implementations",
   ],
-}
+};

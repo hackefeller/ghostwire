@@ -1,160 +1,160 @@
-import { describe, expect, test } from "bun:test"
+import { describe, expect, test } from "bun:test";
 import {
   AGENT_MODEL_REQUIREMENTS,
   CATEGORY_MODEL_REQUIREMENTS,
   type FallbackEntry,
   type ModelRequirement,
-} from "./model-requirements"
+} from "./model-requirements";
 
 describe("AGENT_MODEL_REQUIREMENTS", () => {
   test("eye-ops has valid fallbackChain with gpt-5.2 as primary", () => {
     // #given - seerAdvisor agent requirement
-    const seerAdvisor = AGENT_MODEL_REQUIREMENTS["eye-ops"]
+    const seerAdvisor = AGENT_MODEL_REQUIREMENTS["eye-ops"];
 
     // #when - accessing seerAdvisor requirement
     // #then - fallbackChain exists with gpt-5.2 as first entry
-    expect(seerAdvisor).toBeDefined()
-    expect(seerAdvisor.fallbackChain).toBeArray()
-    expect(seerAdvisor.fallbackChain.length).toBeGreaterThan(0)
+    expect(seerAdvisor).toBeDefined();
+    expect(seerAdvisor.fallbackChain).toBeArray();
+    expect(seerAdvisor.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = seerAdvisor.fallbackChain[0]
-    expect(primary.providers).toContain("openai")
-    expect(primary.model).toBe("gpt-5.2")
-    expect(primary.variant).toBe("high")
-  })
+    const primary = seerAdvisor.fallbackChain[0];
+    expect(primary.providers).toContain("openai");
+    expect(primary.model).toBe("gpt-5.2");
+    expect(primary.variant).toBe("high");
+  });
 
   test("void-runner has valid fallbackChain with claude-opus-4-5 as primary", () => {
     // #given - cipherOperator agent requirement
-    const cipherOperator = AGENT_MODEL_REQUIREMENTS["void-runner"]
+    const cipherOperator = AGENT_MODEL_REQUIREMENTS["void-runner"];
 
     // #when - accessing Cipher Operator requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
-    expect(cipherOperator).toBeDefined()
-    expect(cipherOperator.fallbackChain).toBeArray()
-    expect(cipherOperator.fallbackChain.length).toBeGreaterThan(0)
+    expect(cipherOperator).toBeDefined();
+    expect(cipherOperator.fallbackChain).toBeArray();
+    expect(cipherOperator.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = cipherOperator.fallbackChain[0]
-    expect(primary.providers[0]).toBe("anthropic")
-    expect(primary.model).toBe("claude-opus-4-5")
-    expect(primary.variant).toBe("max")
-  })
+    const primary = cipherOperator.fallbackChain[0];
+    expect(primary.providers[0]).toBe("anthropic");
+    expect(primary.model).toBe("claude-opus-4-5");
+    expect(primary.variant).toBe("max");
+  });
 
   test("data-dive has valid fallbackChain with glm-4.7 as primary", () => {
     // #given - archiveResearcher agent requirement
-    const archiveResearcher = AGENT_MODEL_REQUIREMENTS["data-dive"]
+    const archiveResearcher = AGENT_MODEL_REQUIREMENTS["data-dive"];
 
     // #when - accessing archiveResearcher requirement
     // #then - fallbackChain exists with glm-4.7 as first entry
-    expect(archiveResearcher).toBeDefined()
-    expect(archiveResearcher.fallbackChain).toBeArray()
-    expect(archiveResearcher.fallbackChain.length).toBeGreaterThan(0)
+    expect(archiveResearcher).toBeDefined();
+    expect(archiveResearcher.fallbackChain).toBeArray();
+    expect(archiveResearcher.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = archiveResearcher.fallbackChain[0]
-    expect(primary.providers[0]).toBe("zai-coding-plan")
-    expect(primary.model).toBe("glm-4.7")
-  })
+    const primary = archiveResearcher.fallbackChain[0];
+    expect(primary.providers[0]).toBe("zai-coding-plan");
+    expect(primary.model).toBe("glm-4.7");
+  });
 
   test("scan-ops has valid fallbackChain with claude-haiku-4-5 as primary", () => {
     // #given - scoutRecon agent requirement
-    const scoutRecon = AGENT_MODEL_REQUIREMENTS["scan-ops"]
+    const scoutRecon = AGENT_MODEL_REQUIREMENTS["scan-ops"];
 
     // #when - accessing scoutRecon requirement
     // #then - fallbackChain exists with claude-haiku-4-5 as first entry, gpt-5-mini as second, gpt-5-nano as third
-    expect(scoutRecon).toBeDefined()
-    expect(scoutRecon.fallbackChain).toBeArray()
-    expect(scoutRecon.fallbackChain).toHaveLength(3)
+    expect(scoutRecon).toBeDefined();
+    expect(scoutRecon.fallbackChain).toBeArray();
+    expect(scoutRecon.fallbackChain).toHaveLength(3);
 
-    const primary = scoutRecon.fallbackChain[0]
-    expect(primary.providers).toContain("anthropic")
-    expect(primary.providers).toContain("opencode")
-    expect(primary.model).toBe("claude-haiku-4-5")
+    const primary = scoutRecon.fallbackChain[0];
+    expect(primary.providers).toContain("anthropic");
+    expect(primary.providers).toContain("opencode");
+    expect(primary.model).toBe("claude-haiku-4-5");
 
-    const secondary = scoutRecon.fallbackChain[1]
-    expect(secondary.providers).toContain("github-copilot")
-    expect(secondary.model).toBe("gpt-5-mini")
+    const secondary = scoutRecon.fallbackChain[1];
+    expect(secondary.providers).toContain("github-copilot");
+    expect(secondary.model).toBe("gpt-5-mini");
 
-    const tertiary = scoutRecon.fallbackChain[2]
-    expect(tertiary.providers).toContain("opencode")
-    expect(tertiary.model).toBe("gpt-5-nano")
-  })
+    const tertiary = scoutRecon.fallbackChain[2];
+    expect(tertiary.providers).toContain("opencode");
+    expect(tertiary.model).toBe("gpt-5-nano");
+  });
 
   test("eye-scan has valid fallbackChain with gemini-3-flash as primary", () => {
     // #given - opticAnalyst agent requirement
-    const multimodalLooker = AGENT_MODEL_REQUIREMENTS["eye-scan"]
+    const multimodalLooker = AGENT_MODEL_REQUIREMENTS["eye-scan"];
 
     // #when - accessing opticAnalyst requirement
     // #then - fallbackChain exists with gemini-3-flash as first entry
-    expect(multimodalLooker).toBeDefined()
-    expect(multimodalLooker.fallbackChain).toBeArray()
-    expect(multimodalLooker.fallbackChain.length).toBeGreaterThan(0)
+    expect(multimodalLooker).toBeDefined();
+    expect(multimodalLooker.fallbackChain).toBeArray();
+    expect(multimodalLooker.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = multimodalLooker.fallbackChain[0]
-    expect(primary.providers[0]).toBe("google")
-    expect(primary.model).toBe("gemini-3-flash")
-  })
+    const primary = multimodalLooker.fallbackChain[0];
+    expect(primary.providers[0]).toBe("google");
+    expect(primary.model).toBe("gemini-3-flash");
+  });
 
   test("zen-planner has valid fallbackChain with claude-opus-4-5 as primary", () => {
     // #given - augurPlanner agent requirement
-    const augurPlanner = AGENT_MODEL_REQUIREMENTS["zen-planner"]
+    const augurPlanner = AGENT_MODEL_REQUIREMENTS["zen-planner"];
 
     // #when - accessing Augur Planner requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
-    expect(augurPlanner).toBeDefined()
-    expect(augurPlanner.fallbackChain).toBeArray()
-    expect(augurPlanner.fallbackChain.length).toBeGreaterThan(0)
+    expect(augurPlanner).toBeDefined();
+    expect(augurPlanner.fallbackChain).toBeArray();
+    expect(augurPlanner.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = augurPlanner.fallbackChain[0]
-    expect(primary.model).toBe("claude-opus-4-5")
-    expect(primary.providers[0]).toBe("anthropic")
-    expect(primary.variant).toBe("max")
-  })
+    const primary = augurPlanner.fallbackChain[0];
+    expect(primary.model).toBe("claude-opus-4-5");
+    expect(primary.providers[0]).toBe("anthropic");
+    expect(primary.variant).toBe("max");
+  });
 
   test("war-mind has valid fallbackChain with claude-opus-4-5 as primary", () => {
     // #given - tacticianStrategist agent requirement
-    const tacticianStrategist = AGENT_MODEL_REQUIREMENTS["war-mind"]
+    const tacticianStrategist = AGENT_MODEL_REQUIREMENTS["war-mind"];
 
     // #when - accessing Tactician Strategist requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
-    expect(tacticianStrategist).toBeDefined()
-    expect(tacticianStrategist.fallbackChain).toBeArray()
-    expect(tacticianStrategist.fallbackChain.length).toBeGreaterThan(0)
+    expect(tacticianStrategist).toBeDefined();
+    expect(tacticianStrategist.fallbackChain).toBeArray();
+    expect(tacticianStrategist.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = tacticianStrategist.fallbackChain[0]
-    expect(primary.model).toBe("claude-opus-4-5")
-    expect(primary.providers[0]).toBe("anthropic")
-    expect(primary.variant).toBe("max")
-  })
+    const primary = tacticianStrategist.fallbackChain[0];
+    expect(primary.model).toBe("claude-opus-4-5");
+    expect(primary.providers[0]).toBe("anthropic");
+    expect(primary.variant).toBe("max");
+  });
 
   test("null-audit has valid fallbackChain with gpt-5.2 as primary", () => {
     // #given - glitchAuditor agent requirement
-    const glitchAuditor = AGENT_MODEL_REQUIREMENTS["null-audit"]
+    const glitchAuditor = AGENT_MODEL_REQUIREMENTS["null-audit"];
 
     // #when - accessing Glitch Auditor requirement
     // #then - fallbackChain exists with gpt-5.2 as first entry, variant medium
-    expect(glitchAuditor).toBeDefined()
-    expect(glitchAuditor.fallbackChain).toBeArray()
-    expect(glitchAuditor.fallbackChain.length).toBeGreaterThan(0)
+    expect(glitchAuditor).toBeDefined();
+    expect(glitchAuditor.fallbackChain).toBeArray();
+    expect(glitchAuditor.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = glitchAuditor.fallbackChain[0]
-    expect(primary.model).toBe("gpt-5.2")
-    expect(primary.variant).toBe("medium")
-    expect(primary.providers[0]).toBe("openai")
-  })
+    const primary = glitchAuditor.fallbackChain[0];
+    expect(primary.model).toBe("gpt-5.2");
+    expect(primary.variant).toBe("medium");
+    expect(primary.providers[0]).toBe("openai");
+  });
 
   test("grid-sync has valid fallbackChain with k2p5 as primary (kimi-for-coding prioritized)", () => {
     // #given - nexusOrchestrator agent requirement
-    const nexusOrchestrator = AGENT_MODEL_REQUIREMENTS["grid-sync"]
+    const nexusOrchestrator = AGENT_MODEL_REQUIREMENTS["grid-sync"];
 
     // #when - accessing Nexus Orchestrator requirement
     // #then - fallbackChain exists with k2p5 as first entry (kimi-for-coding prioritized)
-    expect(nexusOrchestrator).toBeDefined()
-    expect(nexusOrchestrator.fallbackChain).toBeArray()
-    expect(nexusOrchestrator.fallbackChain.length).toBeGreaterThan(0)
+    expect(nexusOrchestrator).toBeDefined();
+    expect(nexusOrchestrator.fallbackChain).toBeArray();
+    expect(nexusOrchestrator.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = nexusOrchestrator.fallbackChain[0]
-    expect(primary.model).toBe("k2p5")
-    expect(primary.providers[0]).toBe("kimi-for-coding")
-  })
+    const primary = nexusOrchestrator.fallbackChain[0];
+    expect(primary.model).toBe("k2p5");
+    expect(primary.providers[0]).toBe("kimi-for-coding");
+  });
 
   test("all 9 builtin agents have valid fallbackChain arrays", () => {
     // #given - list of 9 agent names
@@ -168,153 +168,153 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
       "war-mind",
       "null-audit",
       "grid-sync",
-    ]
+    ];
 
     // #when - checking AGENT_MODEL_REQUIREMENTS
-    const definedAgents = Object.keys(AGENT_MODEL_REQUIREMENTS)
+    const definedAgents = Object.keys(AGENT_MODEL_REQUIREMENTS);
 
     // #then - all agents present with valid fallbackChain
-    expect(definedAgents).toHaveLength(9)
+    expect(definedAgents).toHaveLength(9);
     for (const agent of expectedAgents) {
-      const requirement = AGENT_MODEL_REQUIREMENTS[agent]
-      expect(requirement).toBeDefined()
-      expect(requirement.fallbackChain).toBeArray()
-      expect(requirement.fallbackChain.length).toBeGreaterThan(0)
+      const requirement = AGENT_MODEL_REQUIREMENTS[agent];
+      expect(requirement).toBeDefined();
+      expect(requirement.fallbackChain).toBeArray();
+      expect(requirement.fallbackChain.length).toBeGreaterThan(0);
 
       for (const entry of requirement.fallbackChain) {
-        expect(entry.providers).toBeArray()
-        expect(entry.providers.length).toBeGreaterThan(0)
-        expect(typeof entry.model).toBe("string")
-        expect(entry.model.length).toBeGreaterThan(0)
+        expect(entry.providers).toBeArray();
+        expect(entry.providers.length).toBeGreaterThan(0);
+        expect(typeof entry.model).toBe("string");
+        expect(entry.model.length).toBeGreaterThan(0);
       }
     }
-  })
-})
+  });
+});
 
 describe("CATEGORY_MODEL_REQUIREMENTS", () => {
   test("ultrabrain has valid fallbackChain with gpt-5.2-codex as primary", () => {
     // #given - ultrabrain category requirement
-    const ultrabrain = CATEGORY_MODEL_REQUIREMENTS["ultrabrain"]
+    const ultrabrain = CATEGORY_MODEL_REQUIREMENTS["ultrabrain"];
 
     // #when - accessing ultrabrain requirement
     // #then - fallbackChain exists with gpt-5.2-codex as first entry
-    expect(ultrabrain).toBeDefined()
-    expect(ultrabrain.fallbackChain).toBeArray()
-    expect(ultrabrain.fallbackChain.length).toBeGreaterThan(0)
+    expect(ultrabrain).toBeDefined();
+    expect(ultrabrain.fallbackChain).toBeArray();
+    expect(ultrabrain.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = ultrabrain.fallbackChain[0]
-    expect(primary.variant).toBe("xhigh")
-    expect(primary.model).toBe("gpt-5.2-codex")
-    expect(primary.providers[0]).toBe("openai")
-  })
+    const primary = ultrabrain.fallbackChain[0];
+    expect(primary.variant).toBe("xhigh");
+    expect(primary.model).toBe("gpt-5.2-codex");
+    expect(primary.providers[0]).toBe("openai");
+  });
 
   test("deep has valid fallbackChain with gpt-5.2-codex as primary", () => {
     // #given - deep category requirement
-    const deep = CATEGORY_MODEL_REQUIREMENTS["deep"]
+    const deep = CATEGORY_MODEL_REQUIREMENTS["deep"];
 
     // #when - accessing deep requirement
     // #then - fallbackChain exists with gpt-5.2-codex as first entry, medium variant
-    expect(deep).toBeDefined()
-    expect(deep.fallbackChain).toBeArray()
-    expect(deep.fallbackChain.length).toBeGreaterThan(0)
+    expect(deep).toBeDefined();
+    expect(deep.fallbackChain).toBeArray();
+    expect(deep.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = deep.fallbackChain[0]
-    expect(primary.variant).toBe("medium")
-    expect(primary.model).toBe("gpt-5.2-codex")
-    expect(primary.providers[0]).toBe("openai")
-  })
+    const primary = deep.fallbackChain[0];
+    expect(primary.variant).toBe("medium");
+    expect(primary.model).toBe("gpt-5.2-codex");
+    expect(primary.providers[0]).toBe("openai");
+  });
 
   test("visual-engineering has valid fallbackChain with gemini-3-pro as primary", () => {
     // #given - visual-engineering category requirement
-    const visualEngineering = CATEGORY_MODEL_REQUIREMENTS["visual-engineering"]
+    const visualEngineering = CATEGORY_MODEL_REQUIREMENTS["visual-engineering"];
 
     // #when - accessing visual-engineering requirement
     // #then - fallbackChain exists with gemini-3-pro as first entry
-    expect(visualEngineering).toBeDefined()
-    expect(visualEngineering.fallbackChain).toBeArray()
-    expect(visualEngineering.fallbackChain.length).toBeGreaterThan(0)
+    expect(visualEngineering).toBeDefined();
+    expect(visualEngineering.fallbackChain).toBeArray();
+    expect(visualEngineering.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = visualEngineering.fallbackChain[0]
-    expect(primary.providers[0]).toBe("google")
-    expect(primary.model).toBe("gemini-3-pro")
-  })
+    const primary = visualEngineering.fallbackChain[0];
+    expect(primary.providers[0]).toBe("google");
+    expect(primary.model).toBe("gemini-3-pro");
+  });
 
   test("quick has valid fallbackChain with claude-haiku-4-5 as primary", () => {
     // #given - quick category requirement
-    const quick = CATEGORY_MODEL_REQUIREMENTS["quick"]
+    const quick = CATEGORY_MODEL_REQUIREMENTS["quick"];
 
     // #when - accessing quick requirement
     // #then - fallbackChain exists with claude-haiku-4-5 as first entry
-    expect(quick).toBeDefined()
-    expect(quick.fallbackChain).toBeArray()
-    expect(quick.fallbackChain.length).toBeGreaterThan(0)
+    expect(quick).toBeDefined();
+    expect(quick.fallbackChain).toBeArray();
+    expect(quick.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = quick.fallbackChain[0]
-    expect(primary.model).toBe("claude-haiku-4-5")
-    expect(primary.providers[0]).toBe("anthropic")
-  })
+    const primary = quick.fallbackChain[0];
+    expect(primary.model).toBe("claude-haiku-4-5");
+    expect(primary.providers[0]).toBe("anthropic");
+  });
 
   test("unspecified-low has valid fallbackChain with claude-sonnet-4-5 as primary", () => {
     // #given - unspecified-low category requirement
-    const unspecifiedLow = CATEGORY_MODEL_REQUIREMENTS["unspecified-low"]
+    const unspecifiedLow = CATEGORY_MODEL_REQUIREMENTS["unspecified-low"];
 
     // #when - accessing unspecified-low requirement
     // #then - fallbackChain exists with claude-sonnet-4-5 as first entry
-    expect(unspecifiedLow).toBeDefined()
-    expect(unspecifiedLow.fallbackChain).toBeArray()
-    expect(unspecifiedLow.fallbackChain.length).toBeGreaterThan(0)
+    expect(unspecifiedLow).toBeDefined();
+    expect(unspecifiedLow.fallbackChain).toBeArray();
+    expect(unspecifiedLow.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = unspecifiedLow.fallbackChain[0]
-    expect(primary.model).toBe("claude-sonnet-4-5")
-    expect(primary.providers[0]).toBe("anthropic")
-  })
+    const primary = unspecifiedLow.fallbackChain[0];
+    expect(primary.model).toBe("claude-sonnet-4-5");
+    expect(primary.providers[0]).toBe("anthropic");
+  });
 
   test("unspecified-high has valid fallbackChain with claude-opus-4-5 as primary", () => {
     // #given - unspecified-high category requirement
-    const unspecifiedHigh = CATEGORY_MODEL_REQUIREMENTS["unspecified-high"]
+    const unspecifiedHigh = CATEGORY_MODEL_REQUIREMENTS["unspecified-high"];
 
     // #when - accessing unspecified-high requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
-    expect(unspecifiedHigh).toBeDefined()
-    expect(unspecifiedHigh.fallbackChain).toBeArray()
-    expect(unspecifiedHigh.fallbackChain.length).toBeGreaterThan(0)
+    expect(unspecifiedHigh).toBeDefined();
+    expect(unspecifiedHigh.fallbackChain).toBeArray();
+    expect(unspecifiedHigh.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = unspecifiedHigh.fallbackChain[0]
-    expect(primary.model).toBe("claude-opus-4-5")
-    expect(primary.variant).toBe("max")
-    expect(primary.providers[0]).toBe("anthropic")
-  })
+    const primary = unspecifiedHigh.fallbackChain[0];
+    expect(primary.model).toBe("claude-opus-4-5");
+    expect(primary.variant).toBe("max");
+    expect(primary.providers[0]).toBe("anthropic");
+  });
 
   test("artistry has valid fallbackChain with gemini-3-pro as primary", () => {
     // #given - artistry category requirement
-    const artistry = CATEGORY_MODEL_REQUIREMENTS["artistry"]
+    const artistry = CATEGORY_MODEL_REQUIREMENTS["artistry"];
 
     // #when - accessing artistry requirement
     // #then - fallbackChain exists with gemini-3-pro as first entry
-    expect(artistry).toBeDefined()
-    expect(artistry.fallbackChain).toBeArray()
-    expect(artistry.fallbackChain.length).toBeGreaterThan(0)
+    expect(artistry).toBeDefined();
+    expect(artistry.fallbackChain).toBeArray();
+    expect(artistry.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = artistry.fallbackChain[0]
-    expect(primary.model).toBe("gemini-3-pro")
-    expect(primary.variant).toBe("max")
-    expect(primary.providers[0]).toBe("google")
-  })
+    const primary = artistry.fallbackChain[0];
+    expect(primary.model).toBe("gemini-3-pro");
+    expect(primary.variant).toBe("max");
+    expect(primary.providers[0]).toBe("google");
+  });
 
   test("writing has valid fallbackChain with gemini-3-flash as primary", () => {
     // #given - writing category requirement
-    const writing = CATEGORY_MODEL_REQUIREMENTS["writing"]
+    const writing = CATEGORY_MODEL_REQUIREMENTS["writing"];
 
     // #when - accessing writing requirement
     // #then - fallbackChain exists with gemini-3-flash as first entry
-    expect(writing).toBeDefined()
-    expect(writing.fallbackChain).toBeArray()
-    expect(writing.fallbackChain.length).toBeGreaterThan(0)
+    expect(writing).toBeDefined();
+    expect(writing.fallbackChain).toBeArray();
+    expect(writing.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = writing.fallbackChain[0]
-    expect(primary.model).toBe("gemini-3-flash")
-    expect(primary.providers[0]).toBe("google")
-  })
+    const primary = writing.fallbackChain[0];
+    expect(primary.model).toBe("gemini-3-flash");
+    expect(primary.providers[0]).toBe("google");
+  });
 
   test("all 8 categories have valid fallbackChain arrays", () => {
     // #given - list of 8 category names
@@ -327,28 +327,28 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
       "unspecified-low",
       "unspecified-high",
       "writing",
-    ]
+    ];
 
     // #when - checking CATEGORY_MODEL_REQUIREMENTS
-    const definedCategories = Object.keys(CATEGORY_MODEL_REQUIREMENTS)
+    const definedCategories = Object.keys(CATEGORY_MODEL_REQUIREMENTS);
 
     // #then - all categories present with valid fallbackChain
-    expect(definedCategories).toHaveLength(8)
+    expect(definedCategories).toHaveLength(8);
     for (const category of expectedCategories) {
-      const requirement = CATEGORY_MODEL_REQUIREMENTS[category]
-      expect(requirement).toBeDefined()
-      expect(requirement.fallbackChain).toBeArray()
-      expect(requirement.fallbackChain.length).toBeGreaterThan(0)
+      const requirement = CATEGORY_MODEL_REQUIREMENTS[category];
+      expect(requirement).toBeDefined();
+      expect(requirement.fallbackChain).toBeArray();
+      expect(requirement.fallbackChain.length).toBeGreaterThan(0);
 
       for (const entry of requirement.fallbackChain) {
-        expect(entry.providers).toBeArray()
-        expect(entry.providers.length).toBeGreaterThan(0)
-        expect(typeof entry.model).toBe("string")
-        expect(entry.model.length).toBeGreaterThan(0)
+        expect(entry.providers).toBeArray();
+        expect(entry.providers.length).toBeGreaterThan(0);
+        expect(typeof entry.model).toBe("string");
+        expect(entry.model.length).toBeGreaterThan(0);
       }
     }
-  })
-})
+  });
+});
 
 describe("FallbackEntry type", () => {
   test("FallbackEntry structure is correct", () => {
@@ -357,27 +357,27 @@ describe("FallbackEntry type", () => {
       providers: ["anthropic", "github-copilot", "opencode"],
       model: "claude-opus-4-5",
       variant: "high",
-    }
+    };
 
     // #when - accessing properties
     // #then - all properties are accessible
-    expect(entry.providers).toEqual(["anthropic", "github-copilot", "opencode"])
-    expect(entry.model).toBe("claude-opus-4-5")
-    expect(entry.variant).toBe("high")
-  })
+    expect(entry.providers).toEqual(["anthropic", "github-copilot", "opencode"]);
+    expect(entry.model).toBe("claude-opus-4-5");
+    expect(entry.variant).toBe("high");
+  });
 
   test("FallbackEntry variant is optional", () => {
     // #given - a FallbackEntry without variant
     const entry: FallbackEntry = {
       providers: ["opencode", "anthropic"],
       model: "glm-4.7-free",
-    }
+    };
 
     // #when - accessing variant
     // #then - variant is undefined
-    expect(entry.variant).toBeUndefined()
-  })
-})
+    expect(entry.variant).toBeUndefined();
+  });
+});
 
 describe("ModelRequirement type", () => {
   test("ModelRequirement structure with fallbackChain is correct", () => {
@@ -387,75 +387,75 @@ describe("ModelRequirement type", () => {
         { providers: ["anthropic", "github-copilot"], model: "claude-opus-4-5", variant: "max" },
         { providers: ["openai", "github-copilot"], model: "gpt-5.2", variant: "high" },
       ],
-    }
+    };
 
     // #when - accessing properties
     // #then - fallbackChain is accessible with correct structure
-    expect(requirement.fallbackChain).toBeArray()
-    expect(requirement.fallbackChain).toHaveLength(2)
-    expect(requirement.fallbackChain[0].model).toBe("claude-opus-4-5")
-    expect(requirement.fallbackChain[1].model).toBe("gpt-5.2")
-  })
+    expect(requirement.fallbackChain).toBeArray();
+    expect(requirement.fallbackChain).toHaveLength(2);
+    expect(requirement.fallbackChain[0].model).toBe("claude-opus-4-5");
+    expect(requirement.fallbackChain[1].model).toBe("gpt-5.2");
+  });
 
   test("ModelRequirement variant is optional", () => {
     // #given - a ModelRequirement without top-level variant
     const requirement: ModelRequirement = {
       fallbackChain: [{ providers: ["opencode"], model: "glm-4.7-free" }],
-    }
+    };
 
     // #when - accessing variant
     // #then - variant is undefined
-    expect(requirement.variant).toBeUndefined()
-  })
+    expect(requirement.variant).toBeUndefined();
+  });
 
   test("no model in fallbackChain has provider prefix", () => {
     // #given - all agent and category requirements
     const allRequirements = [
       ...Object.values(AGENT_MODEL_REQUIREMENTS),
       ...Object.values(CATEGORY_MODEL_REQUIREMENTS),
-    ]
+    ];
 
     // #when - checking each model in fallbackChain
     // #then - none contain "/" (provider prefix)
     for (const req of allRequirements) {
       for (const entry of req.fallbackChain) {
-        expect(entry.model).not.toContain("/")
+        expect(entry.model).not.toContain("/");
       }
     }
-  })
+  });
 
-   test("all fallbackChain entries have non-empty providers array", () => {
-     // #given - all agent and category requirements
-     const allRequirements = [
-       ...Object.values(AGENT_MODEL_REQUIREMENTS),
-       ...Object.values(CATEGORY_MODEL_REQUIREMENTS),
-     ]
+  test("all fallbackChain entries have non-empty providers array", () => {
+    // #given - all agent and category requirements
+    const allRequirements = [
+      ...Object.values(AGENT_MODEL_REQUIREMENTS),
+      ...Object.values(CATEGORY_MODEL_REQUIREMENTS),
+    ];
 
-     // #when - checking each entry in fallbackChain
-     // #then - all have non-empty providers array
-     for (const req of allRequirements) {
-       for (const entry of req.fallbackChain) {
-         expect(entry.providers).toBeArray()
-         expect(entry.providers.length).toBeGreaterThan(0)
-       }
-     }
-   })
-})
+    // #when - checking each entry in fallbackChain
+    // #then - all have non-empty providers array
+    for (const req of allRequirements) {
+      for (const entry of req.fallbackChain) {
+        expect(entry.providers).toBeArray();
+        expect(entry.providers.length).toBeGreaterThan(0);
+      }
+    }
+  });
+});
 
 describe("requiresModel field in categories", () => {
   test("deep category has requiresModel set to gpt-5.2-codex", () => {
     // #given
-    const deep = CATEGORY_MODEL_REQUIREMENTS["deep"]
+    const deep = CATEGORY_MODEL_REQUIREMENTS["deep"];
 
     // #when / #then
-    expect(deep.requiresModel).toBe("gpt-5.2-codex")
-  })
+    expect(deep.requiresModel).toBe("gpt-5.2-codex");
+  });
 
   test("artistry category has requiresModel set to gemini-3-pro", () => {
     // #given
-    const artistry = CATEGORY_MODEL_REQUIREMENTS["artistry"]
+    const artistry = CATEGORY_MODEL_REQUIREMENTS["artistry"];
 
     // #when / #then
-    expect(artistry.requiresModel).toBe("gemini-3-pro")
-  })
-})
+    expect(artistry.requiresModel).toBe("gemini-3-pro");
+  });
+});

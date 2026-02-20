@@ -1,4 +1,4 @@
-import type { BuiltinSkill } from "./types"
+import type { BuiltinSkill } from "./types";
 
 /**
  * Compound Engineering Skills - 73 skills organized by category
@@ -36,7 +36,8 @@ import type { BuiltinSkill } from "./types"
 const developmentSkills: BuiltinSkill[] = [
   {
     name: "grid:typescript-expert",
-    description: "Expert TypeScript development with type safety, advanced patterns, and ecosystem knowledge.",
+    description:
+      "Expert TypeScript development with type safety, advanced patterns, and ecosystem knowledge.",
     template: `# TypeScript Expert Skill
 
 Master TypeScript development with advanced type system knowledge, architectural patterns, and ecosystem expertise.`,
@@ -57,7 +58,8 @@ Master Ruby and Rails development with conventions, patterns, and domain modelin
   },
   {
     name: "grid:go-expert",
-    description: "Expert Go development with concurrency patterns, microservices, and performance optimization.",
+    description:
+      "Expert Go development with concurrency patterns, microservices, and performance optimization.",
     template: `# Go Expert Skill
 
 Master Go development with goroutines, channels, and high-performance patterns.`,
@@ -71,7 +73,8 @@ Master Rust development with ownership, borrowing, and zero-cost abstractions.`,
   },
   {
     name: "grid:react-expert",
-    description: "Expert React development with hooks, state management, and performance optimization.",
+    description:
+      "Expert React development with hooks, state management, and performance optimization.",
     template: `# React Expert Skill
 
 Master React development with modern hooks, concurrent features, and performance patterns.`,
@@ -209,7 +212,7 @@ Master advanced typing patterns, generics, and type safety.`,
 
 Master algorithms, data structures, and computational efficiency.`,
   },
-]
+];
 
 // ============================================================================
 // DESIGN SKILLS (18)
@@ -342,7 +345,7 @@ Master Tailwind CSS, utility customization, and component extraction.`,
 
 Master component APIs, composition, and reusability patterns.`,
   },
-]
+];
 
 // ============================================================================
 // DEVOPS SKILLS (12)
@@ -351,7 +354,8 @@ Master component APIs, composition, and reusability patterns.`,
 const devopsSkills: BuiltinSkill[] = [
   {
     name: "grid:docker-expertise",
-    description: "Expert Docker containerization, Dockerfile optimization, and registry management.",
+    description:
+      "Expert Docker containerization, Dockerfile optimization, and registry management.",
     template: `# Docker Expert Skill
 
 Master Docker images, containers, and registry best practices.`,
@@ -433,7 +437,7 @@ Master scaling patterns, auto-scaling, and load management.`,
 
 Master disaster recovery, failover, and business continuity.`,
   },
-]
+];
 
 // ============================================================================
 // DOCUMENTATION SKILLS (10)
@@ -510,7 +514,7 @@ Master contributor workflows, guidelines, and community building.`,
 
 Master KB organization, searchability, and content management.`,
   },
-]
+];
 
 // ============================================================================
 // ANALYSIS SKILLS (8)
@@ -573,7 +577,7 @@ Master trend identification, market analysis, and research.`,
 
 Master cost optimization, budget planning, and FinOps.`,
   },
-]
+];
 
 // ============================================================================
 // EXPORT ALL COMPOUND SKILLS
@@ -585,6 +589,6 @@ export const COMPOUND_SKILLS: BuiltinSkill[] = [
   ...devopsSkills,
   ...documentationSkills,
   ...analysisSkills,
-]
+];
 
-export const COMPOUND_SKILL_NAMES = COMPOUND_SKILLS.map((skill) => skill.name)
+export const COMPOUND_SKILL_NAMES = COMPOUND_SKILLS.map((skill) => skill.name);

@@ -1,5 +1,5 @@
-export const CODE_BLOCK_PATTERN = /```[\s\S]*?```/g
-export const INLINE_CODE_PATTERN = /`[^`]+`/g
+export const CODE_BLOCK_PATTERN = /```[\s\S]*?```/g;
+export const INLINE_CODE_PATTERN = /`[^`]+`/g;
 
 const ULTRAWORK_PLANNER_SECTION = `## CRITICAL: YOU ARE A PLANNER, NOT AN IMPLEMENTER
 
@@ -123,16 +123,16 @@ Each TODO item MUST include:
 - Orchestrator (Cipher Operator) executes tasks in parallel waves
 - Independent tasks run simultaneously via background agents
 - Proper dependency tracking prevents race conditions
-- Category + skills ensure optimal model routing per task`
+- Category + skills ensure optimal model routing per task`;
 
 /**
  * Determines if the agent is a planner-type agent.
  * Planner agents should NOT be told to call plan agent (they ARE the planner).
  */
 export function isPlannerAgent(agentName?: string): boolean {
-  if (!agentName) return false
-  const lowerName = agentName.toLowerCase()
-  return lowerName.includes("zen-planner") || lowerName.includes("planner") || lowerName === "plan"
+  if (!agentName) return false;
+  const lowerName = agentName.toLowerCase();
+  return lowerName.includes("zen-planner") || lowerName.includes("planner") || lowerName === "plan";
 }
 
 /**
@@ -141,7 +141,7 @@ export function isPlannerAgent(agentName?: string): boolean {
  * Other agents get the original strong agent utilization instructions.
  */
 export function getUltraworkMessage(agentName?: string): string {
-  const isPlanner = isPlannerAgent(agentName)
+  const isPlanner = isPlannerAgent(agentName);
 
   if (isPlanner) {
     return `<ultrawork-mode>
@@ -154,7 +154,7 @@ ${ULTRAWORK_PLANNER_SECTION}
 
 ---
 
-`
+`;
   }
 
   return `<ultrawork-mode>
@@ -465,10 +465,13 @@ NOW.
 
 ---
 
-`
+`;
 }
 
-export const KEYWORD_DETECTORS: Array<{ pattern: RegExp; message: string | ((agentName?: string) => string) }> = [
+export const KEYWORD_DETECTORS: Array<{
+  pattern: RegExp;
+  message: string | ((agentName?: string) => string);
+}> = [
   {
     pattern: /\b(ultrawork|ulw)\b/i,
     message: getUltraworkMessage,
@@ -502,4 +505,4 @@ IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
 
 SYNTHESIZE findings before proceeding.`,
   },
-]
+];

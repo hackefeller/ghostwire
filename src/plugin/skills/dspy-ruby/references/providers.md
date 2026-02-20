@@ -128,14 +128,14 @@ end
 
 ### Feature Support
 
-| Feature | OpenAI | Anthropic | Gemini | Ollama |
-|---------|--------|-----------|--------|--------|
-| Structured Output | ✅ | ✅ | ✅ | ✅ |
-| Vision (Images) | ✅ | ✅ | ✅ | ⚠️ Limited |
-| Image URLs | ✅ | ❌ | ❌ | ❌ |
-| Tool Calling | ✅ | ✅ | ✅ | Varies |
-| Streaming | ❌ | ❌ | ❌ | ❌ |
-| Function Calling | ✅ | ✅ | ✅ | Varies |
+| Feature           | OpenAI | Anthropic | Gemini | Ollama     |
+| ----------------- | ------ | --------- | ------ | ---------- |
+| Structured Output | ✅     | ✅        | ✅     | ✅         |
+| Vision (Images)   | ✅     | ✅        | ✅     | ⚠️ Limited |
+| Image URLs        | ✅     | ❌        | ❌     | ❌         |
+| Tool Calling      | ✅     | ✅        | ✅     | Varies     |
+| Streaming         | ❌     | ❌        | ❌     | ❌         |
+| Function Calling  | ✅     | ✅        | ✅     | Varies     |
 
 **Legend**: ✅ Full support | ⚠️ Partial support | ❌ Not supported
 

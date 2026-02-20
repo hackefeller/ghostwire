@@ -1,105 +1,105 @@
-import { existsSync } from "node:fs"
-import { homedir } from "node:os"
-import { join, resolve } from "node:path"
+import { existsSync } from "node:fs";
+import { homedir } from "node:os";
+import { join, resolve } from "node:path";
 
-export type OpenCodeBinaryType = "opencode" | "opencode-desktop"
+export type OpenCodeBinaryType = "opencode" | "opencode-desktop";
 
 export interface OpenCodeConfigDirOptions {
-  binary: OpenCodeBinaryType
-  version?: string | null
-  checkExisting?: boolean
+  binary: OpenCodeBinaryType;
+  version?: string | null;
+  checkExisting?: boolean;
 }
 
 export interface OpenCodeConfigPaths {
-  configDir: string
-  configJson: string
-  configJsonc: string
-  packageJson: string
-  omoConfig: string
+  configDir: string;
+  configJson: string;
+  configJsonc: string;
+  packageJson: string;
+  omoConfig: string;
 }
 
-export const TAURI_APP_IDENTIFIER = "ai.opencode.desktop"
-export const TAURI_APP_IDENTIFIER_DEV = "ai.opencode.desktop.dev"
+export const TAURI_APP_IDENTIFIER = "ai.opencode.desktop";
+export const TAURI_APP_IDENTIFIER_DEV = "ai.opencode.desktop.dev";
 
 export function isDevBuild(version: string | null | undefined): boolean {
-  if (!version) return false
-  return version.includes("-dev") || version.includes(".dev")
+  if (!version) return false;
+  return version.includes("-dev") || version.includes(".dev");
 }
 
 function getTauriConfigDir(identifier: string): string {
-  const platform = process.platform
+  const platform = process.platform;
 
   switch (platform) {
     case "darwin":
-      return join(homedir(), "Library", "Application Support", identifier)
+      return join(homedir(), "Library", "Application Support", identifier);
 
     case "win32": {
-      const appData = process.env.APPDATA || join(homedir(), "AppData", "Roaming")
-      return join(appData, identifier)
+      const appData = process.env.APPDATA || join(homedir(), "AppData", "Roaming");
+      return join(appData, identifier);
     }
 
     case "linux":
     default: {
-      const xdgConfig = process.env.XDG_CONFIG_HOME || join(homedir(), ".config")
-      return join(xdgConfig, identifier)
+      const xdgConfig = process.env.XDG_CONFIG_HOME || join(homedir(), ".config");
+      return join(xdgConfig, identifier);
     }
   }
 }
 
 function getCliConfigDir(): string {
-  const envConfigDir = process.env.OPENCODE_CONFIG_DIR?.trim()
+  const envConfigDir = process.env.OPENCODE_CONFIG_DIR?.trim();
   if (envConfigDir) {
-    return resolve(envConfigDir)
+    return resolve(envConfigDir);
   }
 
   if (process.platform === "win32") {
-    const crossPlatformDir = join(homedir(), ".config", "opencode")
-    const crossPlatformConfig = join(crossPlatformDir, "opencode.json")
+    const crossPlatformDir = join(homedir(), ".config", "opencode");
+    const crossPlatformConfig = join(crossPlatformDir, "opencode.json");
 
     if (existsSync(crossPlatformConfig)) {
-      return crossPlatformDir
+      return crossPlatformDir;
     }
 
-    const appData = process.env.APPDATA || join(homedir(), "AppData", "Roaming")
-    const appdataDir = join(appData, "opencode")
-    const appdataConfig = join(appdataDir, "opencode.json")
+    const appData = process.env.APPDATA || join(homedir(), "AppData", "Roaming");
+    const appdataDir = join(appData, "opencode");
+    const appdataConfig = join(appdataDir, "opencode.json");
 
     if (existsSync(appdataConfig)) {
-      return appdataDir
+      return appdataDir;
     }
 
-    return crossPlatformDir
+    return crossPlatformDir;
   }
 
-  const xdgConfig = process.env.XDG_CONFIG_HOME || join(homedir(), ".config")
-  return join(xdgConfig, "opencode")
+  const xdgConfig = process.env.XDG_CONFIG_HOME || join(homedir(), ".config");
+  return join(xdgConfig, "opencode");
 }
 
 export function getOpenCodeConfigDir(options: OpenCodeConfigDirOptions): string {
-  const { binary, version, checkExisting = true } = options
+  const { binary, version, checkExisting = true } = options;
 
   if (binary === "opencode") {
-    return getCliConfigDir()
+    return getCliConfigDir();
   }
 
-  const identifier = isDevBuild(version) ? TAURI_APP_IDENTIFIER_DEV : TAURI_APP_IDENTIFIER
-  const tauriDir = getTauriConfigDir(identifier)
+  const identifier = isDevBuild(version) ? TAURI_APP_IDENTIFIER_DEV : TAURI_APP_IDENTIFIER;
+  const tauriDir = getTauriConfigDir(identifier);
 
   if (checkExisting) {
-    const legacyDir = getCliConfigDir()
-    const legacyConfig = join(legacyDir, "opencode.json")
-    const legacyConfigC = join(legacyDir, "opencode.jsonc")
+    const legacyDir = getCliConfigDir();
+    const legacyConfig = join(legacyDir, "opencode.json");
+    const legacyConfigC = join(legacyDir, "opencode.jsonc");
 
     if (existsSync(legacyConfig) || existsSync(legacyConfigC)) {
-      return legacyDir
+      return legacyDir;
     }
   }
 
-  return tauriDir
+  return tauriDir;
 }
 
 export function getOpenCodeConfigPaths(options: OpenCodeConfigDirOptions): OpenCodeConfigPaths {
-  const configDir = getOpenCodeConfigDir(options)
+  const configDir = getOpenCodeConfigDir(options);
 
   return {
     configDir,
@@ -107,36 +107,39 @@ export function getOpenCodeConfigPaths(options: OpenCodeConfigDirOptions): OpenC
     configJsonc: join(configDir, "opencode.jsonc"),
     packageJson: join(configDir, "package.json"),
     omoConfig: join(configDir, "ghostwire.json"),
-  }
+  };
 }
 
-export function detectExistingConfigDir(binary: OpenCodeBinaryType, version?: string | null): string | null {
-  const locations: string[] = []
+export function detectExistingConfigDir(
+  binary: OpenCodeBinaryType,
+  version?: string | null,
+): string | null {
+  const locations: string[] = [];
 
-  const envConfigDir = process.env.OPENCODE_CONFIG_DIR?.trim()
+  const envConfigDir = process.env.OPENCODE_CONFIG_DIR?.trim();
   if (envConfigDir) {
-    locations.push(resolve(envConfigDir))
+    locations.push(resolve(envConfigDir));
   }
 
   if (binary === "opencode-desktop") {
-    const identifier = isDevBuild(version) ? TAURI_APP_IDENTIFIER_DEV : TAURI_APP_IDENTIFIER
-    locations.push(getTauriConfigDir(identifier))
+    const identifier = isDevBuild(version) ? TAURI_APP_IDENTIFIER_DEV : TAURI_APP_IDENTIFIER;
+    locations.push(getTauriConfigDir(identifier));
 
     if (isDevBuild(version)) {
-      locations.push(getTauriConfigDir(TAURI_APP_IDENTIFIER))
+      locations.push(getTauriConfigDir(TAURI_APP_IDENTIFIER));
     }
   }
 
-  locations.push(getCliConfigDir())
+  locations.push(getCliConfigDir());
 
   for (const dir of locations) {
-    const configJson = join(dir, "opencode.json")
-    const configJsonc = join(dir, "opencode.jsonc")
+    const configJson = join(dir, "opencode.json");
+    const configJsonc = join(dir, "opencode.jsonc");
 
     if (existsSync(configJson) || existsSync(configJsonc)) {
-      return dir
+      return dir;
     }
   }
 
-  return null
+  return null;
 }

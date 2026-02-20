@@ -7,20 +7,20 @@
 
 export interface BoulderState {
   /** Absolute path to the active plan file */
-  active_plan: string
+  active_plan: string;
   /** ISO timestamp when work started */
-  started_at: string
+  started_at: string;
   /** Session IDs that have worked on this plan */
-  session_ids: string[]
+  session_ids: string[];
   /** Plan name derived from filename */
-  plan_name: string
+  plan_name: string;
 }
 
 export interface PlanProgress {
   /** Total number of checkboxes */
-  total: number
+  total: number;
   /** Number of completed checkboxes */
-  completed: number
+  completed: number;
   /** Whether all tasks are done */
-  isComplete: boolean
+  isComplete: boolean;
 }

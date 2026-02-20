@@ -12,30 +12,20 @@ import type {
   GitMasterConfig,
 } from "../../platform/config/schema";
 import { createVoidRunnerAgent } from "./void-runner";
-import { createOracleAgent, ORACLE_PROMPT_METADATA } from "./eye-ops";
-import {
-  createLibrarianAgent,
-  LIBRARIAN_PROMPT_METADATA,
-} from "./data-dive";
+import { createEyeOpsAgent, EYE_OPS_PROMPT_METADATA } from "./eye-ops";
+import { createLibrarianAgent, LIBRARIAN_PROMPT_METADATA } from "./data-dive";
 import { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./scan-ops";
-import {
-  createMultimodalLookerAgent,
-  MULTIMODAL_LOOKER_PROMPT_METADATA,
-} from "./eye-scan";
-import { createMetisAgent } from "./war-mind";
-import { createAtlasAgent } from "./grid-sync";
-import { createMomusAgent } from "./null-audit";
+import { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./eye-scan";
+import { createWarMindAgent } from "./war-mind";
+import { createGridSyncAgent } from "./grid-sync";
+import { createNullAuditAgent } from "./null-audit";
 import { COMPOUND_AGENT_MAPPINGS } from "./compound";
 import type {
   AvailableAgent,
   AvailableCategory,
   AvailableSkill,
 } from "./dynamic-agent-prompt-builder";
-import {
-  deepMerge,
-  findCaseInsensitive,
-  includesCaseInsensitive,
-} from "../../integration/shared";
+import { deepMerge, findCaseInsensitive, includesCaseInsensitive } from "../../integration/shared";
 import {
   fetchAvailableModels,
   isModelAvailable,
@@ -49,10 +39,7 @@ import {
 } from "../../execution/tools/delegate-task/constants";
 import { resolveMultipleSkills } from "../../execution/features/opencode-skill-loader/skill-content";
 import { createBuiltinSkills } from "../../execution/features/builtin-skills";
-import type {
-  LoadedSkill,
-  SkillScope,
-} from "../../execution/features/opencode-skill-loader/types";
+import type { LoadedSkill, SkillScope } from "../../execution/features/opencode-skill-loader/types";
 import type { BrowserAutomationProvider } from "../../platform/config/schema";
 export {
   createAgentToolRestrictions,
@@ -63,15 +50,15 @@ type AgentSource = AgentFactory | AgentConfig;
 
 const agentSources: Record<BuiltinAgentName, AgentSource> = {
   "void-runner": createVoidRunnerAgent,
-  "eye-ops": createOracleAgent,
+  "eye-ops": createEyeOpsAgent,
   "data-dive": createLibrarianAgent,
   "scan-ops": createExploreAgent,
   "eye-scan": createMultimodalLookerAgent,
-  "war-mind": createMetisAgent,
-  "null-audit": createMomusAgent,
+  "war-mind": createWarMindAgent,
+  "null-audit": createNullAuditAgent,
   // Note: grid-sync is handled specially in createBuiltinAgents()
   // because it needs OrchestratorContext, not just a model string
-  "grid-sync": createAtlasAgent as unknown as AgentFactory,
+  "grid-sync": createGridSyncAgent as unknown as AgentFactory,
   // Compound Agents (28 total)
   ...COMPOUND_AGENT_MAPPINGS,
 };
@@ -81,7 +68,7 @@ const agentSources: Record<BuiltinAgentName, AgentSource> = {
  * (Delegation Table, Tool Selection, Key Triggers, etc.)
  */
 const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
-  "eye-ops": ORACLE_PROMPT_METADATA,
+  "eye-ops": EYE_OPS_PROMPT_METADATA,
   "data-dive": LIBRARIAN_PROMPT_METADATA,
   "scan-ops": EXPLORE_PROMPT_METADATA,
   "eye-scan": MULTIMODAL_LOOKER_PROMPT_METADATA,
@@ -114,10 +101,7 @@ export function buildAgent(
       if (!base.model) {
         base.model = categoryConfig.model;
       }
-      if (
-        base.temperature === undefined &&
-        categoryConfig.temperature !== undefined
-      ) {
+      if (base.temperature === undefined && categoryConfig.temperature !== undefined) {
         base.temperature = categoryConfig.temperature;
       }
       if (base.variant === undefined && categoryConfig.variant !== undefined) {
@@ -190,27 +174,20 @@ function applyCategoryOverride(
 
   const result = { ...config } as AgentConfig & Record<string, unknown>;
   if (categoryConfig.model) result.model = categoryConfig.model;
-  if (categoryConfig.variant !== undefined)
-    result.variant = categoryConfig.variant;
-  if (categoryConfig.temperature !== undefined)
-    result.temperature = categoryConfig.temperature;
+  if (categoryConfig.variant !== undefined) result.variant = categoryConfig.variant;
+  if (categoryConfig.temperature !== undefined) result.temperature = categoryConfig.temperature;
   if (categoryConfig.reasoningEffort !== undefined)
     result.reasoningEffort = categoryConfig.reasoningEffort;
   if (categoryConfig.textVerbosity !== undefined)
     result.textVerbosity = categoryConfig.textVerbosity;
-  if (categoryConfig.thinking !== undefined)
-    result.thinking = categoryConfig.thinking;
+  if (categoryConfig.thinking !== undefined) result.thinking = categoryConfig.thinking;
   if (categoryConfig.top_p !== undefined) result.top_p = categoryConfig.top_p;
-  if (categoryConfig.maxTokens !== undefined)
-    result.maxTokens = categoryConfig.maxTokens;
+  if (categoryConfig.maxTokens !== undefined) result.maxTokens = categoryConfig.maxTokens;
 
   return result as AgentConfig;
 }
 
-function mergeAgentConfig(
-  base: AgentConfig,
-  override: AgentOverrideConfig,
-): AgentConfig {
+function mergeAgentConfig(base: AgentConfig, override: AgentOverrideConfig): AgentConfig {
   const { prompt_append, ...rest } = override;
   const merged = deepMerge(base, rest as Partial<AgentConfig>);
 
@@ -254,15 +231,13 @@ export async function createBuiltinAgents(
     ? { ...DEFAULT_CATEGORIES, ...categories }
     : DEFAULT_CATEGORIES;
 
-  const availableCategories: AvailableCategory[] = Object.entries(
-    mergedCategories,
-  ).map(([name]) => ({
-    name,
-    description:
-      categories?.[name]?.description ??
-      CATEGORY_DESCRIPTIONS[name] ??
-      "General tasks",
-  }));
+  const availableCategories: AvailableCategory[] = Object.entries(mergedCategories).map(
+    ([name]) => ({
+      name,
+      description:
+        categories?.[name]?.description ?? CATEGORY_DESCRIPTIONS[name] ?? "General tasks",
+    }),
+  );
 
   const builtinSkills = createBuiltinSkills({ browserProvider });
   const builtinSkillNames = new Set(builtinSkills.map((s) => s.name));
@@ -281,10 +256,7 @@ export async function createBuiltinAgents(
       location: mapScopeToLocation(skill.scope),
     }));
 
-  const availableSkills: AvailableSkill[] = [
-    ...builtinAvailable,
-    ...discoveredAvailable,
-  ];
+  const availableSkills: AvailableSkill[] = [...builtinAvailable, ...discoveredAvailable];
 
   for (const [name, source] of Object.entries(agentSources)) {
     const agentName = name as BuiltinAgentName;
@@ -315,13 +287,7 @@ export async function createBuiltinAgents(
     if (!resolution) continue;
     const { model, variant: resolvedVariant } = resolution;
 
-    let config = buildAgent(
-      source,
-      model,
-      mergedCategories,
-      gitMasterConfig,
-      browserProvider,
-    );
+    let config = buildAgent(source, model, mergedCategories, gitMasterConfig, browserProvider);
 
     // Apply resolved variant from model fallback chain
     if (resolvedVariant) {
@@ -329,14 +295,11 @@ export async function createBuiltinAgents(
     }
 
     // Expand override.category into concrete properties (higher priority than factory/resolved)
-    const overrideCategory = (override as Record<string, unknown> | undefined)
-      ?.category as string | undefined;
+    const overrideCategory = (override as Record<string, unknown> | undefined)?.category as
+      | string
+      | undefined;
     if (overrideCategory) {
-      config = applyCategoryOverride(
-        config,
-        overrideCategory,
-        mergedCategories,
-      );
+      config = applyCategoryOverride(config, overrideCategory, mergedCategories);
     }
 
     if (agentName === "data-dive" && directory && config.prompt) {
@@ -374,8 +337,7 @@ export async function createBuiltinAgents(
     });
 
     if (cipherResolution) {
-      const { model: cipherModel, variant: cipherResolvedVariant } =
-        cipherResolution;
+      const { model: cipherModel, variant: cipherResolvedVariant } = cipherResolution;
 
       let cipherConfig = createVoidRunnerAgent(
         cipherModel,
@@ -389,15 +351,10 @@ export async function createBuiltinAgents(
         cipherConfig = { ...cipherConfig, variant: cipherResolvedVariant };
       }
 
-      const sisOverrideCategory = (
-        cipherOverride as Record<string, unknown> | undefined
-      )?.category as string | undefined;
+      const sisOverrideCategory = (cipherOverride as Record<string, unknown> | undefined)
+        ?.category as string | undefined;
       if (sisOverrideCategory) {
-        cipherConfig = applyCategoryOverride(
-          cipherConfig,
-          sisOverrideCategory,
-          mergedCategories,
-        );
+        cipherConfig = applyCategoryOverride(cipherConfig, sisOverrideCategory, mergedCategories);
       }
 
       if (directory && cipherConfig.prompt) {
@@ -429,10 +386,9 @@ export async function createBuiltinAgents(
     });
 
     if (nexusResolution) {
-      const { model: nexusModel, variant: nexusResolvedVariant } =
-        nexusResolution;
+      const { model: nexusModel, variant: nexusResolvedVariant } = nexusResolution;
 
-      let orchestratorConfig = createAtlasAgent({
+      let orchestratorConfig = createGridSyncAgent({
         model: nexusModel,
         availableAgents,
         availableSkills,
@@ -446,9 +402,8 @@ export async function createBuiltinAgents(
         };
       }
 
-      const nexusOverrideCategory = (
-        orchestratorOverride as Record<string, unknown> | undefined
-      )?.category as string | undefined;
+      const nexusOverrideCategory = (orchestratorOverride as Record<string, unknown> | undefined)
+        ?.category as string | undefined;
       if (nexusOverrideCategory) {
         orchestratorConfig = applyCategoryOverride(
           orchestratorConfig,
@@ -458,10 +413,7 @@ export async function createBuiltinAgents(
       }
 
       if (orchestratorOverride) {
-        orchestratorConfig = mergeAgentConfig(
-          orchestratorConfig,
-          orchestratorOverride,
-        );
+        orchestratorConfig = mergeAgentConfig(orchestratorConfig, orchestratorOverride);
       }
 
       result["grid-sync"] = orchestratorConfig;

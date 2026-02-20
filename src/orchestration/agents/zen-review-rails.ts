@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // DHH Rails Reviewer System Prompt
 const DHH_RAILS_REVIEWER_PROMPT = `You are David Heinemeier Hansson, creator of Ruby on Rails, reviewing code and architectural decisions. You embody DHH's philosophy: Rails is omakase, convention over configuration, and the majestic monolith. You have zero tolerance for unnecessary complexity, JavaScript framework patterns infiltrating Rails, or developers trying to turn Rails into something it's not.
@@ -40,20 +40,22 @@ Your review approach:
 
 When reviewing, channel DHH's voice: confident, opinionated, and absolutely certain that Rails already solved these problems elegantly. You're not just reviewing code - you're defending Rails' philosophy against the complexity merchants and architecture astronauts.
 
-Remember: Vanilla Rails with Hotwire can build 99% of web applications. Anyone suggesting otherwise is probably overengineering.`
+Remember: Vanilla Rails with Hotwire can build 99% of web applications. Anyone suggesting otherwise is probably overengineering.`;
 
 export function createDHHRailsReviewerAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Read-only for code review, can use tools for analysis
-  ])
-  
+    "write",
+    "edit", // Read-only for code review, can use tools for analysis
+  ]);
+
   return {
-    description: "Brutally honest Rails code review from DHH's perspective. Excels at identifying anti-patterns, JavaScript framework contamination in Rails codebases, and violations of Rails conventions. Perfect for uncompromising feedback on Rails best practices.",
+    description:
+      "Brutally honest Rails code review from DHH's perspective. Excels at identifying anti-patterns, JavaScript framework contamination in Rails codebases, and violations of Rails conventions. Perfect for uncompromising feedback on Rails best practices.",
     model,
-    temperature: 0.2, // Slightly higher for DHH's opinionated personality  
+    temperature: 0.2, // Slightly higher for DHH's opinionated personality
     prompt: DHH_RAILS_REVIEWER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
@@ -62,21 +64,33 @@ export const DHH_RAILS_REVIEWER_METADATA: AgentPromptMetadata = {
   cost: "MODERATE",
   promptAlias: "DHH Rails Reviewer",
   triggers: [
-    { domain: "Rails architecture decisions", trigger: "When implementing authentication systems, API layers, or state management" },
-    { domain: "Rails feature planning", trigger: "Planning new Rails features that might deviate from conventions" },
-    { domain: "Service objects", trigger: "Creating service objects with dependency injection or complex abstractions" },
-    { domain: "JavaScript integration", trigger: "Adding Redux, JWT, or SPA patterns to Rails applications" }
+    {
+      domain: "Rails architecture decisions",
+      trigger: "When implementing authentication systems, API layers, or state management",
+    },
+    {
+      domain: "Rails feature planning",
+      trigger: "Planning new Rails features that might deviate from conventions",
+    },
+    {
+      domain: "Service objects",
+      trigger: "Creating service objects with dependency injection or complex abstractions",
+    },
+    {
+      domain: "JavaScript integration",
+      trigger: "Adding Redux, JWT, or SPA patterns to Rails applications",
+    },
   ],
   useWhen: [
     "Need uncompromising Rails philosophy feedback",
     "Evaluating architectural decisions in Rails apps",
     "Detecting JavaScript framework patterns in Rails",
-    "Ensuring adherence to Rails conventions and omakase philosophy"
+    "Ensuring adherence to Rails conventions and omakase philosophy",
   ],
   avoidWhen: [
     "Non-Rails applications",
     "Initial brainstorming or exploration",
     "When you want gentle, diplomatic feedback",
-    "Pure JavaScript/frontend applications"
+    "Pure JavaScript/frontend applications",
   ],
-}
+};

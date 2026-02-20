@@ -4,7 +4,7 @@
  * true = tool allowed, false = tool denied.
  */
 
-import { findCaseInsensitive } from "../../integration/shared/case-insensitive"
+import { findCaseInsensitive } from "../../integration/shared/case-insensitive";
 
 const EXPLORATION_AGENT_DENYLIST: Record<string, boolean> = {
   write: false,
@@ -12,7 +12,7 @@ const EXPLORATION_AGENT_DENYLIST: Record<string, boolean> = {
   task: false,
   delegate_task: false,
   call_grid_agent: false,
-}
+};
 
 const AGENT_RESTRICTIONS: Record<string, Record<string, boolean>> = {
   "scan-ops": EXPLORATION_AGENT_DENYLIST,
@@ -34,13 +34,13 @@ const AGENT_RESTRICTIONS: Record<string, Record<string, boolean>> = {
     task: false,
     delegate_task: false,
   },
-}
+};
 
 export function getAgentToolRestrictions(agentName: string): Record<string, boolean> {
-  return findCaseInsensitive(AGENT_RESTRICTIONS, agentName) ?? {}
+  return findCaseInsensitive(AGENT_RESTRICTIONS, agentName) ?? {};
 }
 
 export function hasAgentToolRestrictions(agentName: string): boolean {
-  const restrictions = findCaseInsensitive(AGENT_RESTRICTIONS, agentName)
-  return restrictions !== undefined && Object.keys(restrictions).length > 0
+  const restrictions = findCaseInsensitive(AGENT_RESTRICTIONS, agentName);
+  return restrictions !== undefined && Object.keys(restrictions).length > 0;
 }

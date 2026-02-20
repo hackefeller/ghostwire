@@ -45,6 +45,7 @@ skills/
 ## Command Naming Convention
 
 **Workflow commands** use `workflows:` prefix to avoid collisions with built-in commands:
+
 - `/workflows:plan` - Create implementation plans
 - `/workflows:review` - Run comprehensive code reviews
 - `/workflows:work` - Execute work items systematically

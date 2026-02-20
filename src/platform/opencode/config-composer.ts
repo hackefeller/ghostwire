@@ -1,5 +1,5 @@
 import { createBuiltinAgents } from "../../orchestration/agents";
-import { createSisyphusJuniorAgentWithOverrides } from "../../orchestration/agents/dark-runner";
+import { createDarkRunnerAgent } from "../../orchestration/agents/dark-runner";
 import {
   loadUserCommands,
   loadProjectCommands,
@@ -25,13 +25,8 @@ import { loadMcpConfigs } from "../../execution/features/claude-code-mcp-loader"
 import { loadAllPluginComponents } from "../../execution/features/claude-code-plugin-loader";
 import { createBuiltinMcps } from "../../integration/mcp";
 import type { GhostwireConfig } from "../../platform/config";
-import {
-  log,
-} from "../../integration/shared";
-import {
-  fetchAvailableModels,
-  readConnectedProvidersCache,
-} from "./index";
+import { log } from "../../integration/shared";
+import { fetchAvailableModels, readConnectedProvidersCache } from "./index";
 import { getOpenCodeConfigPaths } from "./config-dir";
 import { migrateAgentConfig } from "../../platform/config/permission-compat";
 import { AGENT_NAME_MAP } from "../../platform/config/migration";
@@ -66,14 +61,10 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       options?: { headers?: Record<string, string> };
       models?: Record<string, { limit?: { context?: number } }>;
     };
-    const providers = config.provider as
-      | Record<string, ProviderConfig>
-      | undefined;
+    const providers = config.provider as Record<string, ProviderConfig> | undefined;
 
-    const anthropicBeta =
-      providers?.anthropic?.options?.headers?.["anthropic-beta"];
-    modelCacheState.anthropicContext1MEnabled =
-      anthropicBeta?.includes("context-1m") ?? false;
+    const anthropicBeta = providers?.anthropic?.options?.headers?.["anthropic-beta"];
+    modelCacheState.anthropicContext1MEnabled = anthropicBeta?.includes("context-1m") ?? false;
 
     if (providers) {
       for (const [providerID, providerConfig] of Object.entries(providers)) {
@@ -82,10 +73,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
           for (const [modelID, modelConfig] of Object.entries(models)) {
             const contextLimit = modelConfig?.limit?.context;
             if (contextLimit) {
-              modelCacheState.modelContextLimitsCache.set(
-                `${providerID}/${modelID}`,
-                contextLimit,
-              );
+              modelCacheState.modelContextLimitsCache.set(`${providerID}/${modelID}`, contextLimit);
             }
           }
         }
@@ -118,28 +106,19 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     }
 
     // Migrate disabled_agents from old names to new names
-    const migratedDisabledAgents = (pluginConfig.disabled_agents ?? []).map(
-      (agent) => {
-        return (
-          AGENT_NAME_MAP[agent.toLowerCase()] ?? AGENT_NAME_MAP[agent] ?? agent
-        );
-      },
-    ) as typeof pluginConfig.disabled_agents;
+    const migratedDisabledAgents = (pluginConfig.disabled_agents ?? []).map((agent) => {
+      return AGENT_NAME_MAP[agent.toLowerCase()] ?? AGENT_NAME_MAP[agent] ?? agent;
+    }) as typeof pluginConfig.disabled_agents;
 
-    const includeClaudeSkillsForAwareness =
-      pluginConfig.claude_code?.skills ?? true;
+    const includeClaudeSkillsForAwareness = pluginConfig.claude_code?.skills ?? true;
     const [
       discoveredUserSkills,
       discoveredProjectSkills,
       discoveredOpencodeGlobalSkills,
       discoveredOpencodeProjectSkills,
     ] = await Promise.all([
-      includeClaudeSkillsForAwareness
-        ? discoverUserClaudeSkills()
-        : Promise.resolve([]),
-      includeClaudeSkillsForAwareness
-        ? discoverProjectClaudeSkills()
-        : Promise.resolve([]),
+      includeClaudeSkillsForAwareness ? discoverUserClaudeSkills() : Promise.resolve([]),
+      includeClaudeSkillsForAwareness ? discoverProjectClaudeSkills() : Promise.resolve([]),
       discoverOpencodeGlobalSkills(),
       discoverOpencodeProjectSkills(),
     ]);
@@ -151,8 +130,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       ...discoveredUserSkills,
     ];
 
-    const browserProvider =
-      pluginConfig.browser_automation_engine?.provider ?? "playwright";
+    const browserProvider = pluginConfig.browser_automation_engine?.provider ?? "playwright";
     // config.model represents the currently active model in OpenCode (including UI selection)
     // Pass it as uiSelectedModel so it takes highest priority in model resolution
     const currentModel = config.model as string | undefined;
@@ -172,10 +150,8 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     // Claude Code agents: Do NOT apply permission migration
     // Claude Code uses whitelist-based tools format which is semantically different
     // from OpenCode's denylist-based permission system
-    const userAgents =
-      (pluginConfig.claude_code?.agents ?? true) ? loadUserAgents() : {};
-    const projectAgents =
-      (pluginConfig.claude_code?.agents ?? true) ? loadProjectAgents() : {};
+    const userAgents = (pluginConfig.claude_code?.agents ?? true) ? loadUserAgents() : {};
+    const projectAgents = (pluginConfig.claude_code?.agents ?? true) ? loadProjectAgents() : {};
 
     // Plugin agents: Apply permission migration for compatibility
     const rawPluginAgents = pluginComponents.agents;
@@ -187,8 +163,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     );
 
     const isVoidRunnerEnabled = pluginConfig.void_runner?.disabled !== true;
-    const builderEnabled =
-      pluginConfig.void_runner?.default_builder_enabled ?? false;
+    const builderEnabled = pluginConfig.void_runner?.default_builder_enabled ?? false;
     const plannerEnabled = pluginConfig.void_runner?.planner_enabled ?? true;
     const replacePlan = pluginConfig.void_runner?.replace_plan ?? true;
 
@@ -210,19 +185,17 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         "void-runner": builtinAgents["void-runner"],
       };
 
-      agentConfig["dark-runner"] = createSisyphusJuniorAgentWithOverrides(
+      agentConfig["dark-runner"] = createDarkRunnerAgent(
         pluginConfig.agents?.["dark-runner"],
         config.model as string | undefined,
       );
 
       if (builderEnabled) {
-        const { name: _buildName, ...buildConfigWithoutName } =
-          configAgent?.build ?? {};
+        const { name: _buildName, ...buildConfigWithoutName } = configAgent?.build ?? {};
         const migratedBuildConfig = migrateAgentConfig(
           buildConfigWithoutName as Record<string, unknown>,
         );
-        const openCodeBuilderOverride =
-          pluginConfig.agents?.["OpenCode-Builder"];
+        const openCodeBuilderOverride = pluginConfig.agents?.["OpenCode-Builder"];
         const openCodeBuilderBase = {
           ...migratedBuildConfig,
           description: `${configAgent?.build?.description ?? "Build agent"} (OpenCode default)`,
@@ -257,10 +230,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
           | undefined;
 
         const categoryConfig = augurOverride?.category
-          ? resolveCategoryConfig(
-              augurOverride.category,
-              pluginConfig.categories,
-            )
+          ? resolveCategoryConfig(augurOverride.category, pluginConfig.categories)
           : undefined;
 
         const augurRequirement = AGENT_MODEL_REQUIREMENTS["zen-planner"];
@@ -288,15 +258,11 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         const variantToUse = augurOverride?.variant ?? resolvedVariant;
         const reasoningEffortToUse =
           augurOverride?.reasoningEffort ?? categoryConfig?.reasoningEffort;
-        const textVerbosityToUse =
-          augurOverride?.textVerbosity ?? categoryConfig?.textVerbosity;
-        const thinkingToUse =
-          augurOverride?.thinking ?? categoryConfig?.thinking;
-        const temperatureToUse =
-          augurOverride?.temperature ?? categoryConfig?.temperature;
+        const textVerbosityToUse = augurOverride?.textVerbosity ?? categoryConfig?.textVerbosity;
+        const thinkingToUse = augurOverride?.thinking ?? categoryConfig?.thinking;
+        const temperatureToUse = augurOverride?.temperature ?? categoryConfig?.temperature;
         const topPToUse = augurOverride?.top_p ?? categoryConfig?.top_p;
-        const maxTokensToUse =
-          augurOverride?.maxTokens ?? categoryConfig?.maxTokens;
+        const maxTokensToUse = augurOverride?.maxTokens ?? categoryConfig?.maxTokens;
         const augurBase = {
           name: "zen-planner",
           ...(resolvedModel ? { model: resolvedModel } : {}),
@@ -306,26 +272,16 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
           permission: AUGUR_PLANNER_PERMISSION,
           description: `${configAgent?.plan?.description ?? "Plan agent"} (Augur Planner - Ghostwire)`,
           color: (configAgent?.plan?.color as string) ?? "#FF6347",
-          ...(temperatureToUse !== undefined
-            ? { temperature: temperatureToUse }
-            : {}),
+          ...(temperatureToUse !== undefined ? { temperature: temperatureToUse } : {}),
           ...(topPToUse !== undefined ? { top_p: topPToUse } : {}),
-          ...(maxTokensToUse !== undefined
-            ? { maxTokens: maxTokensToUse }
-            : {}),
+          ...(maxTokensToUse !== undefined ? { maxTokens: maxTokensToUse } : {}),
           ...(categoryConfig?.tools ? { tools: categoryConfig.tools } : {}),
           ...(thinkingToUse ? { thinking: thinkingToUse } : {}),
-          ...(reasoningEffortToUse !== undefined
-            ? { reasoningEffort: reasoningEffortToUse }
-            : {}),
-          ...(textVerbosityToUse !== undefined
-            ? { textVerbosity: textVerbosityToUse }
-            : {}),
+          ...(reasoningEffortToUse !== undefined ? { reasoningEffort: reasoningEffortToUse } : {}),
+          ...(textVerbosityToUse !== undefined ? { textVerbosity: textVerbosityToUse } : {}),
         };
 
-        agentConfig["zen-planner"] = augurOverride
-          ? { ...augurBase, ...augurOverride }
-          : augurBase;
+        agentConfig["zen-planner"] = augurOverride ? { ...augurBase, ...augurOverride } : augurBase;
       }
 
       const filteredConfigAgents = configAgent
@@ -342,9 +298,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
               })
               .map(([key, value]) => [
                 key,
-                value
-                  ? migrateAgentConfig(value as Record<string, unknown>)
-                  : value,
+                value ? migrateAgentConfig(value as Record<string, unknown>) : value,
               ]),
           )
         : {};
@@ -364,11 +318,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
 
       config.agent = {
         ...agentConfig,
-        ...Object.fromEntries(
-          Object.entries(builtinAgents).filter(
-            ([k]) => k !== "void-runner",
-          ),
-        ),
+        ...Object.fromEntries(Object.entries(builtinAgents).filter(([k]) => k !== "void-runner")),
         ...userAgents,
         ...projectAgents,
         ...pluginAgents,
@@ -446,9 +396,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     };
 
     const mcpResult =
-      (pluginConfig.claude_code?.mcp ?? true)
-        ? await loadMcpConfigs()
-        : { servers: {} };
+      (pluginConfig.claude_code?.mcp ?? true) ? await loadMcpConfigs() : { servers: {} };
 
     config.mcp = {
       ...createBuiltinMcps(pluginConfig.disabled_mcps),

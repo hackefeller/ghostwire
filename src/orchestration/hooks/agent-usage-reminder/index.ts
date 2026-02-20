@@ -1,9 +1,5 @@
 import type { PluginInput } from "@opencode-ai/plugin";
-import {
-  loadAgentUsageState,
-  saveAgentUsageState,
-  clearAgentUsageState,
-} from "./storage";
+import { loadAgentUsageState, saveAgentUsageState, clearAgentUsageState } from "./storage";
 import { TARGET_TOOLS, AGENT_TOOLS, REMINDER_MESSAGE } from "./constants";
 import type { AgentUsageState } from "./types";
 
@@ -55,10 +51,7 @@ export function createAgentUsageReminderHook(_ctx: PluginInput) {
     clearAgentUsageState(sessionID);
   }
 
-  const toolExecuteAfter = async (
-    input: ToolExecuteInput,
-    output: ToolExecuteOutput,
-  ) => {
+  const toolExecuteAfter = async (input: ToolExecuteInput, output: ToolExecuteOutput) => {
     const { tool, sessionID } = input;
     const toolLower = tool.toLowerCase();
 
@@ -94,8 +87,9 @@ export function createAgentUsageReminderHook(_ctx: PluginInput) {
     }
 
     if (event.type === "session.compacted") {
-      const sessionID = (props?.sessionID ??
-        (props?.info as { id?: string } | undefined)?.id) as string | undefined;
+      const sessionID = (props?.sessionID ?? (props?.info as { id?: string } | undefined)?.id) as
+        | string
+        | undefined;
       if (sessionID) {
         resetState(sessionID);
       }

@@ -132,7 +132,7 @@ Huge thanks to the community contributors who made this release possible! 🙌
 
 - **`/test-browser` command** - Clarified to use agent-browser CLI exclusively
   - Added explicit "CRITICAL: Use agent-browser CLI Only" section
-  - Added warning: "DO NOT use Chrome MCP tools (mcp__claude-in-chrome__*)"
+  - Added warning: "DO NOT use Chrome MCP tools (mcp**claude-in-chrome**\*)"
   - Added Step 0: Verify agent-browser installation before testing
   - Added full CLI reference section at bottom
   - Added Next.js route mapping patterns
@@ -278,6 +278,7 @@ Huge thanks to the community contributors who made this release possible! 🙌
 ### Summary
 
 This release consolidates all recent work:
+
 - `/feature-video` command for recording PR demos
 - `/deepen-plan` command for enhanced planning
 - `create-agent-skills` skill rewrite (official spec compliance)

@@ -1,10 +1,7 @@
 import type { CommandDefinition } from "../claude-code-command-loader";
 import type { BuiltinCommandName, BuiltinCommands } from "./types";
 import { INIT_DEEP_TEMPLATE } from "./templates/init-deep";
-import {
-  RALPH_LOOP_TEMPLATE,
-  CANCEL_RALPH_TEMPLATE,
-} from "./templates/ralph-loop";
+import { RALPH_LOOP_TEMPLATE, CANCEL_RALPH_TEMPLATE } from "./templates/ralph-loop";
 import { STOP_CONTINUATION_TEMPLATE } from "./templates/stop-continuation";
 import { REFACTOR_TEMPLATE } from "./templates/refactor";
 import { START_WORK_TEMPLATE } from "./templates/start-work";
@@ -45,10 +42,7 @@ import {
   DOCS_TEST_BROWSER_TEMPLATE,
 } from "./templates/docs";
 
-const BUILTIN_COMMAND_DEFINITIONS: Record<
-  BuiltinCommandName,
-  Omit<CommandDefinition, "name">
-> = {
+const BUILTIN_COMMAND_DEFINITIONS: Record<BuiltinCommandName, Omit<CommandDefinition, "name">> = {
   "init-deep": {
     description: "(builtin) Initialize hierarchical AGENTS.md knowledge base",
     template: `<command-instruction>
@@ -61,8 +55,7 @@ $ARGUMENTS
     argumentHint: "[--create-new] [--max-depth=N]",
   },
   "overclock-loop": {
-    description:
-      "(builtin) Start self-referential development loop until completion",
+    description: "(builtin) Start self-referential development loop until completion",
     template: `<command-instruction>
 ${RALPH_LOOP_TEMPLATE}
 </command-instruction>
@@ -70,12 +63,10 @@ ${RALPH_LOOP_TEMPLATE}
 <user-task>
 $ARGUMENTS
 </user-task>`,
-    argumentHint:
-      '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
+    argumentHint: '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
   },
   "ulw-overclock": {
-    description:
-      "(builtin) Start ultrawork loop - continues until completion with ultrawork mode",
+    description: "(builtin) Start ultrawork loop - continues until completion with ultrawork mode",
     template: `<command-instruction>
 ${RALPH_LOOP_TEMPLATE}
 </command-instruction>
@@ -83,8 +74,7 @@ ${RALPH_LOOP_TEMPLATE}
 <user-task>
 $ARGUMENTS
 </user-task>`,
-    argumentHint:
-      '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
+    argumentHint: '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
   },
   "cancel-overclock": {
     description: "(builtin) Cancel active Ralph Loop",
@@ -102,8 +92,7 @@ ${REFACTOR_TEMPLATE}
       "<refactoring-target> [--scope=<file|module|project>] [--strategy=<safe|aggressive>]",
   },
   "jack-in-work": {
-    description:
-      "(builtin) Start Cipher Operator work session from Augur Planner plan",
+    description: "(builtin) Start Cipher Operator work session from Augur Planner plan",
     agent: "grid-sync",
     template: `<command-instruction>
 ${START_WORK_TEMPLATE}
@@ -127,8 +116,7 @@ ${STOP_CONTINUATION_TEMPLATE}
 </command-instruction>`,
   },
   "ghostwire:workflows:plan": {
-    description:
-      "(compound) Transform feature descriptions into implementation plans",
+    description: "(compound) Transform feature descriptions into implementation plans",
     template: `<command-instruction>
 ${WORKFLOWS_PLAN_TEMPLATE}
 </command-instruction>
@@ -139,8 +127,7 @@ $ARGUMENTS
     argumentHint: "[feature description, bug report, or improvement idea]",
   },
   "ghostwire:workflows:create": {
-    description:
-      "(compound) Execute plan by breaking into tasks and coordinating implementation",
+    description: "(compound) Execute plan by breaking into tasks and coordinating implementation",
     template: `<command-instruction>
 ${WORKFLOWS_CREATE_TEMPLATE}
 </command-instruction>
@@ -173,8 +160,7 @@ $ARGUMENTS
     argumentHint: "[workflow-id or plan-name]",
   },
   "ghostwire:code:refactor": {
-    description:
-      "(compound) Systematically refactor code while maintaining functionality",
+    description: "(compound) Systematically refactor code while maintaining functionality",
     template: `<command-instruction>
 ${CODE_REFACTOR_TEMPLATE}
 </command-instruction>
@@ -182,12 +168,10 @@ ${CODE_REFACTOR_TEMPLATE}
 <refactoring-target>
 $ARGUMENTS
 </refactoring-target>`,
-    argumentHint:
-      "<target> [--scope=file|module|project] [--strategy=safe|aggressive]",
+    argumentHint: "<target> [--scope=file|module|project] [--strategy=safe|aggressive]",
   },
   "ghostwire:code:review": {
-    description:
-      "(compound) Conduct comprehensive code reviews with specialist agents",
+    description: "(compound) Conduct comprehensive code reviews with specialist agents",
     template: `<command-instruction>
 ${CODE_REVIEW_TEMPLATE}
 </command-instruction>
@@ -195,12 +179,10 @@ ${CODE_REVIEW_TEMPLATE}
 <code-context>
 $ARGUMENTS
 </code-context>`,
-    argumentHint:
-      "[file-path or PR-number] [--type=architecture|security|performance]",
+    argumentHint: "[file-path or PR-number] [--type=architecture|security|performance]",
   },
   "ghostwire:code:optimize": {
-    description:
-      "(compound) Improve performance, reduce bundle size, or enhance efficiency",
+    description: "(compound) Improve performance, reduce bundle size, or enhance efficiency",
     template: `<command-instruction>
 ${CODE_OPTIMIZE_TEMPLATE}
 </command-instruction>
@@ -222,8 +204,7 @@ $ARGUMENTS
     argumentHint: "[path-to-format] [--dry-run]",
   },
   "ghostwire:git:smart-commit": {
-    description:
-      "(compound) Generate well-structured commits following conventions",
+    description: "(compound) Generate well-structured commits following conventions",
     template: `<command-instruction>
 ${GIT_SMART_COMMIT_TEMPLATE}
 </command-instruction>
@@ -234,8 +215,7 @@ $ARGUMENTS
     argumentHint: '[--message="custom message"]',
   },
   "ghostwire:git:branch": {
-    description:
-      "(compound) Create and manage feature branches with naming conventions",
+    description: "(compound) Create and manage feature branches with naming conventions",
     template: `<command-instruction>
 ${GIT_BRANCH_TEMPLATE}
 </command-instruction>
@@ -364,8 +344,7 @@ ${DOCS_DEPLOY_DOCS_TEMPLATE}
 <docs-context>
 $ARGUMENTS
 </docs-context>`,
-    argumentHint:
-      "[--target=github-pages|vercel|netlify|s3] [--version=latest|stable]",
+    argumentHint: "[--target=github-pages|vercel|netlify|s3] [--version=latest|stable]",
   },
   "ghostwire:docs:release-docs": {
     description: "(compound) Create versioned documentation release",
@@ -403,15 +382,11 @@ $ARGUMENTS
   },
 };
 
-export function loadBuiltinCommands(
-  disabledCommands?: BuiltinCommandName[],
-): BuiltinCommands {
+export function loadBuiltinCommands(disabledCommands?: BuiltinCommandName[]): BuiltinCommands {
   const disabled = new Set(disabledCommands ?? []);
   const commands: BuiltinCommands = {};
 
-  for (const [name, definition] of Object.entries(
-    BUILTIN_COMMAND_DEFINITIONS,
-  )) {
+  for (const [name, definition] of Object.entries(BUILTIN_COMMAND_DEFINITIONS)) {
     if (!disabled.has(name as BuiltinCommandName)) {
       const { argumentHint: _argumentHint, ...openCodeCompatible } = definition;
       commands[name] = { ...openCodeCompatible, name } as CommandDefinition;

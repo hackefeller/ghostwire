@@ -1,11 +1,11 @@
-import { log } from "./logger"
+import { log } from "./logger";
 
 export type HookTelemetryPhase =
   | "chat.message"
   | "tool.execute.before"
   | "tool.execute.after"
   | "event"
-  | "experimental.chat.messages.transform"
+  | "experimental.chat.messages.transform";
 
 const PHASE_BUDGET_MS: Record<HookTelemetryPhase, number> = {
   "chat.message": 100,
@@ -13,30 +13,27 @@ const PHASE_BUDGET_MS: Record<HookTelemetryPhase, number> = {
   "tool.execute.after": 100,
   event: 100,
   "experimental.chat.messages.transform": 100,
-}
+};
 
 const HOOK_BUDGET_OVERRIDES_MS: Record<string, number> = {
   "tool.execute.before:grid-sync": 200,
   "tool.execute.after:grid-sync": 250,
   "event:grid-sync": 200,
   "event:overclock-loop": 150,
-}
+};
 
-type Logger = (message: string, data?: unknown) => void
+type Logger = (message: string, data?: unknown) => void;
 
 export interface HookTelemetryInput<T> {
-  phase: HookTelemetryPhase
-  hookName: string
-  invoke: () => Promise<T> | T
-  logger?: Logger
-  now?: () => number
+  phase: HookTelemetryPhase;
+  hookName: string;
+  invoke: () => Promise<T> | T;
+  logger?: Logger;
+  now?: () => number;
 }
 
-export function getHookBudgetMs(
-  phase: HookTelemetryPhase,
-  hookName: string
-): number {
-  return HOOK_BUDGET_OVERRIDES_MS[`${phase}:${hookName}`] ?? PHASE_BUDGET_MS[phase]
+export function getHookBudgetMs(phase: HookTelemetryPhase, hookName: string): number {
+  return HOOK_BUDGET_OVERRIDES_MS[`${phase}:${hookName}`] ?? PHASE_BUDGET_MS[phase];
 }
 
 export async function runHookWithTelemetry<T>({
@@ -46,33 +43,33 @@ export async function runHookWithTelemetry<T>({
   logger = log,
   now = Date.now,
 }: HookTelemetryInput<T>): Promise<T> {
-  const key = `${phase}:${hookName}`
-  const budgetMs = getHookBudgetMs(phase, hookName)
-  const startedAt = now()
+  const key = `${phase}:${hookName}`;
+  const budgetMs = getHookBudgetMs(phase, hookName);
+  const startedAt = now();
 
   try {
-    const result = await invoke()
-    const durationMs = now() - startedAt
+    const result = await invoke();
+    const durationMs = now() - startedAt;
     logger(`[hook-telemetry] ${key}`, {
       durationMs,
       budgetMs,
       overBudget: durationMs > budgetMs,
-    })
+    });
     if (durationMs > budgetMs) {
       logger(`[hook-budget-exceeded] ${key}`, {
         durationMs,
         budgetMs,
         overByMs: durationMs - budgetMs,
-      })
+      });
     }
-    return result
+    return result;
   } catch (error) {
-    const durationMs = now() - startedAt
+    const durationMs = now() - startedAt;
     logger(`[hook-error] ${key}`, {
       durationMs,
       budgetMs,
       error: error instanceof Error ? error.message : String(error),
-    })
-    throw error
+    });
+    throw error;
   }
 }

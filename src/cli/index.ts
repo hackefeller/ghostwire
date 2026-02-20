@@ -1,29 +1,38 @@
 #!/usr/bin/env bun
-import { Command } from "commander"
-import { install } from "./install"
-import { run } from "./run"
-import { getLocalVersion } from "./get-local-version"
-import { doctor } from "./doctor"
-import { createMcpOAuthCommand } from "./mcp-oauth"
-import type { InstallArgs } from "./types"
-import type { RunOptions } from "./run"
-import type { GetLocalVersionOptions } from "./get-local-version/types"
-import type { DoctorOptions } from "./doctor"
-import packageJson from "../../package.json" with { type: "json" }
-import fs from "fs"
+import { Command } from "commander";
+import { install } from "./install";
+import { run } from "./run";
+import { getLocalVersion } from "./get-local-version";
+import { doctor } from "./doctor";
+import { createMcpOAuthCommand } from "./mcp-oauth";
+import type { InstallArgs } from "./types";
+import type { RunOptions } from "./run";
+import type { GetLocalVersionOptions } from "./get-local-version/types";
+import type { DoctorOptions } from "./doctor";
+import packageJson from "../../package.json" with { type: "json" };
+import fs from "fs";
 
-const VERSION = packageJson.version
-const INSTALL_HELP = fs.readFileSync(new URL("../../docs/cli/install-help.md", import.meta.url), "utf8")
-const RUN_HELP = fs.readFileSync(new URL("../../docs/cli/run-help.md", import.meta.url), "utf8")
-const GET_LOCAL_VERSION_HELP = fs.readFileSync(new URL("../../docs/cli/get-local-version-help.md", import.meta.url), "utf8")
-const DOCTOR_HELP = fs.readFileSync(new URL("../../docs/cli/doctor-help.md", import.meta.url), "utf8")
+const VERSION = packageJson.version;
+const INSTALL_HELP = fs.readFileSync(
+  new URL("../../docs/cli/install-help.md", import.meta.url),
+  "utf8",
+);
+const RUN_HELP = fs.readFileSync(new URL("../../docs/cli/run-help.md", import.meta.url), "utf8");
+const GET_LOCAL_VERSION_HELP = fs.readFileSync(
+  new URL("../../docs/cli/get-local-version-help.md", import.meta.url),
+  "utf8",
+);
+const DOCTOR_HELP = fs.readFileSync(
+  new URL("../../docs/cli/doctor-help.md", import.meta.url),
+  "utf8",
+);
 
-const program = new Command()
+const program = new Command();
 
 program
   .name("ghostwire")
   .description("The ultimate Ghostwire plugin - multi-model orchestration, LSP tools, and more")
-  .version(VERSION, "-v, --version", "Show version number")
+  .version(VERSION, "-v, --version", "Show version number");
 
 program
   .command("install")
@@ -49,10 +58,10 @@ program
       kimiForCoding: options.kimiForCoding,
       skipAuth: options.skipAuth ?? false,
       installPath: options.installPath,
-    }
-    const exitCode = await install(args)
-    process.exit(exitCode)
-  })
+    };
+    const exitCode = await install(args);
+    process.exit(exitCode);
+  });
 
 program
   .command("run <message>")
@@ -67,10 +76,10 @@ program
       agent: options.agent,
       directory: options.directory,
       timeout: options.timeout,
-    }
-    const exitCode = await run(runOptions)
-    process.exit(exitCode)
-  })
+    };
+    const exitCode = await run(runOptions);
+    process.exit(exitCode);
+  });
 
 program
   .command("get-local-version")
@@ -82,10 +91,10 @@ program
     const versionOptions: GetLocalVersionOptions = {
       directory: options.directory,
       json: options.json ?? false,
-    }
-    const exitCode = await getLocalVersion(versionOptions)
-    process.exit(exitCode)
-  })
+    };
+    const exitCode = await getLocalVersion(versionOptions);
+    process.exit(exitCode);
+  });
 
 program
   .command("doctor")
@@ -99,18 +108,18 @@ program
       verbose: options.verbose ?? false,
       json: options.json ?? false,
       category: options.category,
-    }
-    const exitCode = await doctor(doctorOptions)
-    process.exit(exitCode)
-  })
+    };
+    const exitCode = await doctor(doctorOptions);
+    process.exit(exitCode);
+  });
 
 program
   .command("version")
   .description("Show version information")
   .action(() => {
-    console.log(`ghostwire v${VERSION}`)
-  })
+    console.log(`ghostwire v${VERSION}`);
+  });
 
-program.addCommand(createMcpOAuthCommand())
+program.addCommand(createMcpOAuthCommand());
 
-program.parse()
+program.parse();

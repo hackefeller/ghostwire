@@ -1,103 +1,97 @@
-import { existsSync, readFileSync } from "fs"
-import { join } from "path"
-import { BUILTIN_SERVERS, EXT_TO_LANG, LSP_INSTALL_HINTS } from "./constants"
-import type { ResolvedServer, ServerLookupResult } from "./types"
-import { getDataDir, parseJsonc } from "../../../integration/shared"
-import { getOpenCodeConfigDir } from "../../../platform/opencode/config-dir"
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
+import { BUILTIN_SERVERS, EXT_TO_LANG, LSP_INSTALL_HINTS } from "./constants";
+import type { ResolvedServer, ServerLookupResult } from "./types";
+import { getDataDir, parseJsonc } from "../../../integration/shared";
+import { getOpenCodeConfigDir } from "../../../platform/opencode/config-dir";
 
 interface LspEntry {
-  disabled?: boolean
-  command?: string[]
-  extensions?: string[]
-  priority?: number
-  env?: Record<string, string>
-  initialization?: Record<string, unknown>
+  disabled?: boolean;
+  command?: string[];
+  extensions?: string[];
+  priority?: number;
+  env?: Record<string, string>;
+  initialization?: Record<string, unknown>;
 }
 
 interface ConfigJson {
-  lsp?: Record<string, LspEntry>
+  lsp?: Record<string, LspEntry>;
 }
 
-type ConfigSource = "project" | "user" | "opencode"
+type ConfigSource = "project" | "user" | "opencode";
 
 interface ServerWithSource extends ResolvedServer {
-  source: ConfigSource
+  source: ConfigSource;
 }
 
 function loadJsonFile<T>(path: string): T | null {
-  if (!existsSync(path)) return null
+  if (!existsSync(path)) return null;
   try {
-    return parseJsonc<T>(readFileSync(path, "utf-8"))
+    return parseJsonc<T>(readFileSync(path, "utf-8"));
   } catch {
-    return null
+    return null;
   }
 }
 
 function getConfigPaths(): {
-  project: string[]
-  user: string[]
-  opencode: string
+  project: string[];
+  user: string[];
+  opencode: string;
 } {
-  const cwd = process.cwd()
-  const configDir = getOpenCodeConfigDir({ binary: "opencode" })
+  const cwd = process.cwd();
+  const configDir = getOpenCodeConfigDir({ binary: "opencode" });
   return {
-    project: [
-      join(cwd, ".opencode", "ghostwire.jsonc"),
-      join(cwd, ".opencode", "ghostwire.json"),
-    ],
-    user: [
-      join(configDir, "ghostwire.jsonc"),
-      join(configDir, "ghostwire.json"),
-    ],
+    project: [join(cwd, ".opencode", "ghostwire.jsonc"), join(cwd, ".opencode", "ghostwire.json")],
+    user: [join(configDir, "ghostwire.jsonc"), join(configDir, "ghostwire.json")],
     opencode: join(configDir, "opencode.json"),
-  }
+  };
 }
 
 function loadFirstValidConfig(paths: string[]): ConfigJson | null {
   for (const path of paths) {
-    const config = loadJsonFile<ConfigJson>(path)
-    if (config) return config
+    const config = loadJsonFile<ConfigJson>(path);
+    if (config) return config;
   }
-  return null
+  return null;
 }
 
 function loadAllConfigs(): Map<ConfigSource, ConfigJson> {
-  const paths = getConfigPaths()
-  const configs = new Map<ConfigSource, ConfigJson>()
+  const paths = getConfigPaths();
+  const configs = new Map<ConfigSource, ConfigJson>();
 
-  const project = loadFirstValidConfig(paths.project)
-  if (project) configs.set("project", project)
+  const project = loadFirstValidConfig(paths.project);
+  if (project) configs.set("project", project);
 
-  const user = loadFirstValidConfig(paths.user)
-  if (user) configs.set("user", user)
+  const user = loadFirstValidConfig(paths.user);
+  if (user) configs.set("user", user);
 
-  const opencode = loadJsonFile<ConfigJson>(paths.opencode)
-  if (opencode) configs.set("opencode", opencode)
+  const opencode = loadJsonFile<ConfigJson>(paths.opencode);
+  if (opencode) configs.set("opencode", opencode);
 
-  return configs
+  return configs;
 }
 
 function getMergedServers(): ServerWithSource[] {
-  const configs = loadAllConfigs()
-  const servers: ServerWithSource[] = []
-  const disabled = new Set<string>()
-  const seen = new Set<string>()
+  const configs = loadAllConfigs();
+  const servers: ServerWithSource[] = [];
+  const disabled = new Set<string>();
+  const seen = new Set<string>();
 
-  const sources: ConfigSource[] = ["project", "user", "opencode"]
+  const sources: ConfigSource[] = ["project", "user", "opencode"];
 
   for (const source of sources) {
-    const config = configs.get(source)
-    if (!config?.lsp) continue
+    const config = configs.get(source);
+    if (!config?.lsp) continue;
 
     for (const [id, entry] of Object.entries(config.lsp)) {
       if (entry.disabled) {
-        disabled.add(id)
-        seen.add(id)
-        continue
+        disabled.add(id);
+        seen.add(id);
+        continue;
       }
 
-      if (seen.has(id)) continue
-      if (!entry.command || !entry.extensions) continue
+      if (seen.has(id)) continue;
+      if (!entry.command || !entry.extensions) continue;
 
       servers.push({
         id,
@@ -107,13 +101,13 @@ function getMergedServers(): ServerWithSource[] {
         env: entry.env,
         initialization: entry.initialization,
         source,
-      })
-      seen.add(id)
+      });
+      seen.add(id);
     }
   }
 
   for (const [id, config] of Object.entries(BUILTIN_SERVERS)) {
-    if (disabled.has(id) || seen.has(id)) continue
+    if (disabled.has(id) || seen.has(id)) continue;
 
     servers.push({
       id,
@@ -121,20 +115,20 @@ function getMergedServers(): ServerWithSource[] {
       extensions: config.extensions,
       priority: -100,
       source: "opencode",
-    })
+    });
   }
 
   return servers.sort((a, b) => {
     if (a.source !== b.source) {
-      const order: Record<ConfigSource, number> = { project: 0, user: 1, opencode: 2 }
-      return order[a.source] - order[b.source]
+      const order: Record<ConfigSource, number> = { project: 0, user: 1, opencode: 2 };
+      return order[a.source] - order[b.source];
     }
-    return b.priority - a.priority
-  })
+    return b.priority - a.priority;
+  });
 }
 
 export function findServerForExtension(ext: string): ServerLookupResult {
-  const servers = getMergedServers()
+  const servers = getMergedServers();
 
   for (const server of servers) {
     if (server.extensions.includes(ext) && isServerInstalled(server.command)) {
@@ -148,14 +142,15 @@ export function findServerForExtension(ext: string): ServerLookupResult {
           env: server.env,
           initialization: server.initialization,
         },
-      }
+      };
     }
   }
 
   for (const server of servers) {
     if (server.extensions.includes(ext)) {
       const installHint =
-        LSP_INSTALL_HINTS[server.id] || `Install '${server.command[0]}' and ensure it's in your PATH`
+        LSP_INSTALL_HINTS[server.id] ||
+        `Install '${server.command[0]}' and ensure it's in your PATH`;
       return {
         status: "not_installed",
         server: {
@@ -164,119 +159,119 @@ export function findServerForExtension(ext: string): ServerLookupResult {
           extensions: server.extensions,
         },
         installHint,
-      }
+      };
     }
   }
 
-  const availableServers = [...new Set(servers.map((s) => s.id))]
+  const availableServers = [...new Set(servers.map((s) => s.id))];
   return {
     status: "not_configured",
     extension: ext,
     availableServers,
-  }
+  };
 }
 
 export function getLanguageId(ext: string): string {
-  return EXT_TO_LANG[ext] || "plaintext"
+  return EXT_TO_LANG[ext] || "plaintext";
 }
 
 export function isServerInstalled(command: string[]): boolean {
-  if (command.length === 0) return false
+  if (command.length === 0) return false;
 
-  const cmd = command[0]
+  const cmd = command[0];
 
   // Support absolute paths (e.g., C:\Users\...\server.exe or /usr/local/bin/server)
   if (cmd.includes("/") || cmd.includes("\\")) {
-    if (existsSync(cmd)) return true
+    if (existsSync(cmd)) return true;
   }
 
-  const isWindows = process.platform === "win32"
-  
-  let exts = [""]
+  const isWindows = process.platform === "win32";
+
+  let exts = [""];
   if (isWindows) {
-    const pathExt = process.env.PATHEXT || ""
+    const pathExt = process.env.PATHEXT || "";
     if (pathExt) {
-       const systemExts = pathExt.split(";").filter(Boolean)
-       exts = [...new Set([...exts, ...systemExts, ".exe", ".cmd", ".bat", ".ps1"])]
+      const systemExts = pathExt.split(";").filter(Boolean);
+      exts = [...new Set([...exts, ...systemExts, ".exe", ".cmd", ".bat", ".ps1"])];
     } else {
-       exts = ["", ".exe", ".cmd", ".bat", ".ps1"]
+      exts = ["", ".exe", ".cmd", ".bat", ".ps1"];
     }
   }
 
-  let pathEnv = process.env.PATH || ""
+  let pathEnv = process.env.PATH || "";
   if (isWindows && !pathEnv) {
-    pathEnv = process.env.Path || ""
+    pathEnv = process.env.Path || "";
   }
-  
-  const pathSeparator = isWindows ? ";" : ":"
-  const paths = pathEnv.split(pathSeparator)
+
+  const pathSeparator = isWindows ? ";" : ":";
+  const paths = pathEnv.split(pathSeparator);
 
   for (const p of paths) {
     for (const suffix of exts) {
       if (existsSync(join(p, cmd + suffix))) {
-        return true
+        return true;
       }
     }
   }
 
-  const cwd = process.cwd()
-  const configDir = getOpenCodeConfigDir({ binary: "opencode" })
-  const dataDir = join(getDataDir(), "opencode")
+  const cwd = process.cwd();
+  const configDir = getOpenCodeConfigDir({ binary: "opencode" });
+  const dataDir = join(getDataDir(), "opencode");
   const additionalBases = [
     join(cwd, "node_modules", ".bin"),
     join(configDir, "bin"),
     join(configDir, "node_modules", ".bin"),
     join(dataDir, "bin"),
-  ]
+  ];
 
   for (const base of additionalBases) {
     for (const suffix of exts) {
       if (existsSync(join(base, cmd + suffix))) {
-        return true
+        return true;
       }
     }
   }
 
   // Runtime wrappers (bun/node) are always available in plugin context
   if (cmd === "bun" || cmd === "node") {
-    return true
+    return true;
   }
 
-  return false
+  return false;
 }
 
 export function getAllServers(): Array<{
-  id: string
-  installed: boolean
-  extensions: string[]
-  disabled: boolean
-  source: string
-  priority: number
+  id: string;
+  installed: boolean;
+  extensions: string[];
+  disabled: boolean;
+  source: string;
+  priority: number;
 }> {
-  const configs = loadAllConfigs()
-  const servers = getMergedServers()
-  const disabled = new Set<string>()
+  const configs = loadAllConfigs();
+  const servers = getMergedServers();
+  const disabled = new Set<string>();
 
   for (const config of configs.values()) {
-    if (!config.lsp) continue
+    if (!config.lsp) continue;
     for (const [id, entry] of Object.entries(config.lsp)) {
-      if (entry.disabled) disabled.add(id)
+      if (entry.disabled) disabled.add(id);
     }
   }
 
   const result: Array<{
-    id: string
-    installed: boolean
-    extensions: string[]
-    disabled: boolean
-    source: string
-    priority: number
-  }> = []
+    id: string;
+    installed: boolean;
+    extensions: string[];
+    disabled: boolean;
+    source: string;
+    priority: number;
+  }> = [];
 
-  const seen = new Set<string>()
+  const seen = new Set<string>();
 
   for (const server of servers) {
-    if (seen.has(server.id)) continue
+    if (seen.has(server.id)) continue;
     result.push({
       id: server.id,
       installed: isServerInstalled(server.command),
@@ -284,13 +279,13 @@ export function getAllServers(): Array<{
       disabled: false,
       source: server.source,
       priority: server.priority,
-    })
-    seen.add(server.id)
+    });
+    seen.add(server.id);
   }
 
   for (const id of disabled) {
-    if (seen.has(id)) continue
-    const builtin = BUILTIN_SERVERS[id]
+    if (seen.has(id)) continue;
+    const builtin = BUILTIN_SERVERS[id];
     result.push({
       id,
       installed: builtin ? isServerInstalled(builtin.command) : false,
@@ -298,16 +293,16 @@ export function getAllServers(): Array<{
       disabled: true,
       source: "disabled",
       priority: 0,
-    })
+    });
   }
 
-  return result
+  return result;
 }
 
 export function getConfigPaths_(): {
-  project: string[]
-  user: string[]
-  opencode: string
+  project: string[];
+  user: string[];
+  opencode: string;
 } {
-  return getConfigPaths()
+  return getConfigPaths();
 }

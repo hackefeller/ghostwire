@@ -2,10 +2,7 @@ import { join } from "node:path";
 import { getOpenCodeStorageDir } from "../../../integration/shared/data-path";
 
 export const OPENCODE_STORAGE = getOpenCodeStorageDir();
-export const AGENT_USAGE_REMINDER_STORAGE = join(
-  OPENCODE_STORAGE,
-  "grid-agent-usage-reminder",
-);
+export const AGENT_USAGE_REMINDER_STORAGE = join(OPENCODE_STORAGE, "grid-agent-usage-reminder");
 
 // All tool names normalized to lowercase for case-insensitive matching
 export const TARGET_TOOLS = new Set([
@@ -21,11 +18,7 @@ export const TARGET_TOOLS = new Set([
   "grep_app_searchgithub",
 ]);
 
-export const AGENT_TOOLS = new Set([
-  "task",
-  "call_grid_agent",
-  "delegate_task",
-]);
+export const AGENT_TOOLS = new Set(["task", "call_grid_agent", "delegate_task"]);
 
 export const REMINDER_MESSAGE = `
 [Agent Usage Reminder]

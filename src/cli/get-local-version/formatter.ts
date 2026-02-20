@@ -1,5 +1,5 @@
-import color from "picocolors"
-import type { VersionInfo } from "./types"
+import color from "picocolors";
+import type { VersionInfo } from "./types";
 
 const SYMBOLS = {
   check: color.green("[OK]"),
@@ -9,58 +9,60 @@ const SYMBOLS = {
   warn: color.yellow("[!]"),
   pin: color.magenta("[PINNED]"),
   dev: color.cyan("[DEV]"),
-}
+};
 
 export function formatVersionOutput(info: VersionInfo): string {
-  const lines: string[] = []
+  const lines: string[] = [];
 
-  lines.push("")
-  lines.push(color.bold(color.white("Ghostwire Version Information")))
-  lines.push(color.dim("─".repeat(50)))
-  lines.push("")
+  lines.push("");
+  lines.push(color.bold(color.white("Ghostwire Version Information")));
+  lines.push(color.dim("─".repeat(50)));
+  lines.push("");
 
   if (info.currentVersion) {
-    lines.push(`  Current Version: ${color.cyan(info.currentVersion)}`)
+    lines.push(`  Current Version: ${color.cyan(info.currentVersion)}`);
   } else {
-    lines.push(`  Current Version: ${color.dim("unknown")}`)
+    lines.push(`  Current Version: ${color.dim("unknown")}`);
   }
 
   if (!info.isLocalDev && info.latestVersion) {
-    lines.push(`  Latest Version:  ${color.cyan(info.latestVersion)}`)
+    lines.push(`  Latest Version:  ${color.cyan(info.latestVersion)}`);
   }
 
-  lines.push("")
+  lines.push("");
 
   switch (info.status) {
     case "up-to-date":
-      lines.push(`  ${SYMBOLS.check} ${color.green("You're up to date!")}`)
-      break
+      lines.push(`  ${SYMBOLS.check} ${color.green("You're up to date!")}`);
+      break;
     case "outdated":
-      lines.push(`  ${SYMBOLS.warn} ${color.yellow("Update available")}`)
-      lines.push(`  ${color.dim("Run:")} ${color.cyan("cd ~/.config/opencode && bun update ghostwire")}`)
-      break
+      lines.push(`  ${SYMBOLS.warn} ${color.yellow("Update available")}`);
+      lines.push(
+        `  ${color.dim("Run:")} ${color.cyan("cd ~/.config/opencode && bun update ghostwire")}`,
+      );
+      break;
     case "local-dev":
-      lines.push(`  ${SYMBOLS.dev} ${color.cyan("Running in local development mode")}`)
-      lines.push(`  ${color.dim("Using file:// protocol from config")}`)
-      break
+      lines.push(`  ${SYMBOLS.dev} ${color.cyan("Running in local development mode")}`);
+      lines.push(`  ${color.dim("Using file:// protocol from config")}`);
+      break;
     case "pinned":
-      lines.push(`  ${SYMBOLS.pin} ${color.magenta(`Version pinned to ${info.pinnedVersion}`)}`)
-      lines.push(`  ${color.dim("Update check skipped for pinned versions")}`)
-      break
+      lines.push(`  ${SYMBOLS.pin} ${color.magenta(`Version pinned to ${info.pinnedVersion}`)}`);
+      lines.push(`  ${color.dim("Update check skipped for pinned versions")}`);
+      break;
     case "error":
-      lines.push(`  ${SYMBOLS.cross} ${color.red("Unable to check for updates")}`)
-      lines.push(`  ${color.dim("Network error or npm registry unavailable")}`)
-      break
+      lines.push(`  ${SYMBOLS.cross} ${color.red("Unable to check for updates")}`);
+      lines.push(`  ${color.dim("Network error or npm registry unavailable")}`);
+      break;
     case "unknown":
-      lines.push(`  ${SYMBOLS.info} ${color.yellow("Version information unavailable")}`)
-      break
+      lines.push(`  ${SYMBOLS.info} ${color.yellow("Version information unavailable")}`);
+      break;
   }
 
-  lines.push("")
+  lines.push("");
 
-  return lines.join("\n")
+  return lines.join("\n");
 }
 
 export function formatJsonOutput(info: VersionInfo): string {
-  return JSON.stringify(info, null, 2)
+  return JSON.stringify(info, null, 2);
 }

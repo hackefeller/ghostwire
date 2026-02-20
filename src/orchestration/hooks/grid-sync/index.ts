@@ -1,30 +1,40 @@
-import type { PluginInput } from "@opencode-ai/plugin"
-import { execSync } from "node:child_process"
-import { existsSync, readdirSync } from "node:fs"
-import { join } from "node:path"
+import type { PluginInput } from "@opencode-ai/plugin";
+import { execSync } from "node:child_process";
+import { existsSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 import {
   readBoulderState,
   appendSessionId,
   getPlanProgress,
-} from "../../../execution/features/boulder-state"
-import { getMainSessionID, subagentSessions } from "../../../execution/features/claude-code-session-state"
-import { findNearestMessageWithFields, MESSAGE_STORAGE } from "../../../execution/features/hook-message-injector"
-import { log } from "../../../integration/shared/logger"
-import { createSystemDirective, SYSTEM_DIRECTIVE_PREFIX, SystemDirectiveTypes } from "../../../integration/shared/system-directive"
-import { isCallerOrchestrator, getMessageDir } from "../../../integration/shared/session-utils"
-import type { BackgroundManager } from "../../../execution/features/background-agent"
+} from "../../../execution/features/boulder-state";
+import {
+  getMainSessionID,
+  subagentSessions,
+} from "../../../execution/features/claude-code-session-state";
+import {
+  findNearestMessageWithFields,
+  MESSAGE_STORAGE,
+} from "../../../execution/features/hook-message-injector";
+import { log } from "../../../integration/shared/logger";
+import {
+  createSystemDirective,
+  SYSTEM_DIRECTIVE_PREFIX,
+  SystemDirectiveTypes,
+} from "../../../integration/shared/system-directive";
+import { isCallerOrchestrator, getMessageDir } from "../../../integration/shared/session-utils";
+import type { BackgroundManager } from "../../../execution/features/background-agent";
 
-export const HOOK_NAME = "grid-sync"
+export const HOOK_NAME = "grid-sync";
 
 /**
  * Cross-platform check if a path is inside .ghostwire/ directory.
  * Handles both forward slashes (Unix) and backslashes (Windows).
  */
 function isSisyphusPath(filePath: string): boolean {
-  return /\.ghostwire[/\\]/.test(filePath)
+  return /\.ghostwire[/\\]/.test(filePath);
 }
 
-const WRITE_EDIT_TOOLS = ["Write", "Edit", "write", "edit"]
+const WRITE_EDIT_TOOLS = ["Write", "Edit", "write", "edit"];
 
 const DIRECT_WORK_REMINDER = `
 
@@ -52,7 +62,7 @@ You should NOT:
 3. Verify the subagent's work after completion
 
 ---
-`
+`;
 
 const BOULDER_CONTINUATION_PROMPT = `${createSystemDirective(SystemDirectiveTypes.BOULDER_CONTINUATION)}
 
@@ -63,7 +73,7 @@ RULES:
 - Mark each checkbox [x] in the plan file when done
 - Use the notepad at .ghostwire/notepads/{PLAN_NAME}/ to record learnings
 - Do not stop until all tasks are complete
-- If blocked, document the blocker and move to the next task`
+- If blocked, document the blocker and move to the next task`;
 
 const VERIFICATION_REMINDER = `**MANDATORY: WHAT YOU MUST DO RIGHT NOW**
 
@@ -102,7 +112,7 @@ todowrite([
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-**BLOCKING: DO NOT proceed to Step 4 until Steps 1-3 are VERIFIED.**`
+**BLOCKING: DO NOT proceed to Step 4 until Steps 1-3 are VERIFIED.**`;
 
 const ORCHESTRATOR_DELEGATION_REQUIRED = `
 
@@ -152,7 +162,7 @@ delegate_task(
 DELEGATE. DON'T IMPLEMENT.
 
 ---
-`
+`;
 
 const SINGLE_TASK_DIRECTIVE = `
 
@@ -177,21 +187,25 @@ If you were NOT given **exactly ONE atomic task**, you MUST:
 - Batch delegation = sloppy work = rework = wasted tokens
 
 **REFUSE multi-task requests. DEMAND single-task clarity.**
-`
+`;
 
 function buildVerificationReminder(sessionId: string): string {
-   return `${VERIFICATION_REMINDER}
+  return `${VERIFICATION_REMINDER}
 
 ---
 
 **If ANY verification fails, use this immediately:**
 \`\`\`
 delegate_task(session_id="${sessionId}", prompt="fix: [describe the specific failure]")
-\`\`\``
+\`\`\``;
 }
 
-function buildOrchestratorReminder(planName: string, progress: { total: number; completed: number }, sessionId: string): string {
-  const remaining = progress.total - progress.completed
+function buildOrchestratorReminder(
+  planName: string,
+  progress: { total: number; completed: number },
+  sessionId: string,
+): string {
+  const remaining = progress.total - progress.completed;
   return `
 ---
 
@@ -223,7 +237,7 @@ Update the plan file \`.ghostwire/tasks/${planName}.yaml\`:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-**${remaining} tasks remain. Keep bouldering.**`
+**${remaining} tasks remain. Keep bouldering.**`;
 }
 
 function buildStandaloneVerificationReminder(sessionId: string): string {
@@ -254,19 +268,19 @@ If QA tasks exist in your todo list:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-**NO TODO = NO TRACKING = INCOMPLETE WORK. Use todowrite aggressively.**`
+**NO TODO = NO TRACKING = INCOMPLETE WORK. Use todowrite aggressively.**`;
 }
 
 function extractSessionIdFromOutput(output: string): string {
-  const match = output.match(/Session ID:\s*(ses_[a-zA-Z0-9]+)/)
-  return match?.[1] ?? "<session_id>"
+  const match = output.match(/Session ID:\s*(ses_[a-zA-Z0-9]+)/);
+  return match?.[1] ?? "<session_id>";
 }
 
 interface GitFileStat {
-  path: string
-  added: number
-  removed: number
-  status: "modified" | "added" | "deleted"
+  path: string;
+  added: number;
+  removed: number;
+  status: "modified" | "added" | "deleted";
 }
 
 function getGitDiffStats(directory: string): GitFileStat[] {
@@ -276,452 +290,482 @@ function getGitDiffStats(directory: string): GitFileStat[] {
       encoding: "utf-8",
       timeout: 5000,
       stdio: ["pipe", "pipe", "pipe"],
-    }).trim()
+    }).trim();
 
-    if (!output) return []
+    if (!output) return [];
 
     const statusOutput = execSync("git status --porcelain", {
       cwd: directory,
       encoding: "utf-8",
       timeout: 5000,
       stdio: ["pipe", "pipe", "pipe"],
-    }).trim()
+    }).trim();
 
-    const statusMap = new Map<string, "modified" | "added" | "deleted">()
+    const statusMap = new Map<string, "modified" | "added" | "deleted">();
     for (const line of statusOutput.split("\n")) {
-      if (!line) continue
-      const status = line.substring(0, 2).trim()
-      const filePath = line.substring(3)
+      if (!line) continue;
+      const status = line.substring(0, 2).trim();
+      const filePath = line.substring(3);
       if (status === "A" || status === "??") {
-        statusMap.set(filePath, "added")
+        statusMap.set(filePath, "added");
       } else if (status === "D") {
-        statusMap.set(filePath, "deleted")
+        statusMap.set(filePath, "deleted");
       } else {
-        statusMap.set(filePath, "modified")
+        statusMap.set(filePath, "modified");
       }
     }
 
-    const stats: GitFileStat[] = []
+    const stats: GitFileStat[] = [];
     for (const line of output.split("\n")) {
-      const parts = line.split("\t")
-      if (parts.length < 3) continue
+      const parts = line.split("\t");
+      if (parts.length < 3) continue;
 
-      const [addedStr, removedStr, path] = parts
-      const added = addedStr === "-" ? 0 : parseInt(addedStr, 10)
-      const removed = removedStr === "-" ? 0 : parseInt(removedStr, 10)
+      const [addedStr, removedStr, path] = parts;
+      const added = addedStr === "-" ? 0 : parseInt(addedStr, 10);
+      const removed = removedStr === "-" ? 0 : parseInt(removedStr, 10);
 
       stats.push({
         path,
         added,
         removed,
         status: statusMap.get(path) ?? "modified",
-      })
+      });
     }
 
-    return stats
+    return stats;
   } catch {
-    return []
+    return [];
   }
 }
 
 function formatFileChanges(stats: GitFileStat[], notepadPath?: string): string {
-  if (stats.length === 0) return "[FILE CHANGES SUMMARY]\nNo file changes detected.\n"
+  if (stats.length === 0) return "[FILE CHANGES SUMMARY]\nNo file changes detected.\n";
 
-  const modified = stats.filter((s) => s.status === "modified")
-  const added = stats.filter((s) => s.status === "added")
-  const deleted = stats.filter((s) => s.status === "deleted")
+  const modified = stats.filter((s) => s.status === "modified");
+  const added = stats.filter((s) => s.status === "added");
+  const deleted = stats.filter((s) => s.status === "deleted");
 
-  const lines: string[] = ["[FILE CHANGES SUMMARY]"]
+  const lines: string[] = ["[FILE CHANGES SUMMARY]"];
 
   if (modified.length > 0) {
-    lines.push("Modified files:")
+    lines.push("Modified files:");
     for (const f of modified) {
-      lines.push(`  ${f.path}  (+${f.added}, -${f.removed})`)
+      lines.push(`  ${f.path}  (+${f.added}, -${f.removed})`);
     }
-    lines.push("")
+    lines.push("");
   }
 
   if (added.length > 0) {
-    lines.push("Created files:")
+    lines.push("Created files:");
     for (const f of added) {
-      lines.push(`  ${f.path}  (+${f.added})`)
+      lines.push(`  ${f.path}  (+${f.added})`);
     }
-    lines.push("")
+    lines.push("");
   }
 
   if (deleted.length > 0) {
-    lines.push("Deleted files:")
+    lines.push("Deleted files:");
     for (const f of deleted) {
-      lines.push(`  ${f.path}  (-${f.removed})`)
+      lines.push(`  ${f.path}  (-${f.removed})`);
     }
-    lines.push("")
+    lines.push("");
   }
 
   if (notepadPath) {
-    const notepadStat = stats.find((s) => s.path.includes("notepad") || s.path.includes(".void-runner"))
+    const notepadStat = stats.find(
+      (s) => s.path.includes("notepad") || s.path.includes(".void-runner"),
+    );
     if (notepadStat) {
-      lines.push("[NOTEPAD UPDATED]")
-      lines.push(`  ${notepadStat.path}  (+${notepadStat.added})`)
-      lines.push("")
+      lines.push("[NOTEPAD UPDATED]");
+      lines.push(`  ${notepadStat.path}  (+${notepadStat.added})`);
+      lines.push("");
     }
   }
 
-  return lines.join("\n")
+  return lines.join("\n");
 }
 
 interface ToolExecuteAfterInput {
-  tool: string
-  sessionID?: string
-  callID?: string
+  tool: string;
+  sessionID?: string;
+  callID?: string;
 }
 
 interface ToolExecuteAfterOutput {
-  title: string
-  output: string
-  metadata: Record<string, unknown>
+  title: string;
+  output: string;
+  metadata: Record<string, unknown>;
 }
 
 interface SessionState {
-  lastEventWasAbortError?: boolean
-  lastContinuationInjectedAt?: number
+  lastEventWasAbortError?: boolean;
+  lastContinuationInjectedAt?: number;
 }
 
-const CONTINUATION_COOLDOWN_MS = 5000
+const CONTINUATION_COOLDOWN_MS = 5000;
 
 export interface AtlasHookOptions {
-  directory: string
-  backgroundManager?: BackgroundManager
+  directory: string;
+  backgroundManager?: BackgroundManager;
 }
 
 function isAbortError(error: unknown): boolean {
-  if (!error) return false
+  if (!error) return false;
 
   if (typeof error === "object") {
-    const errObj = error as Record<string, unknown>
-    const name = errObj.name as string | undefined
-    const message = (errObj.message as string | undefined)?.toLowerCase() ?? ""
+    const errObj = error as Record<string, unknown>;
+    const name = errObj.name as string | undefined;
+    const message = (errObj.message as string | undefined)?.toLowerCase() ?? "";
 
-    if (name === "MessageAbortedError" || name === "AbortError") return true
-    if (name === "DOMException" && message.includes("abort")) return true
-    if (message.includes("aborted") || message.includes("cancelled") || message.includes("interrupted")) return true
+    if (name === "MessageAbortedError" || name === "AbortError") return true;
+    if (name === "DOMException" && message.includes("abort")) return true;
+    if (
+      message.includes("aborted") ||
+      message.includes("cancelled") ||
+      message.includes("interrupted")
+    )
+      return true;
   }
 
   if (typeof error === "string") {
-    const lower = error.toLowerCase()
-    return lower.includes("abort") || lower.includes("cancel") || lower.includes("interrupt")
+    const lower = error.toLowerCase();
+    return lower.includes("abort") || lower.includes("cancel") || lower.includes("interrupt");
   }
 
-  return false
+  return false;
 }
 
-export function createAtlasHook(
-  ctx: PluginInput,
-  options?: AtlasHookOptions
-) {
-  const backgroundManager = options?.backgroundManager
-  const sessions = new Map<string, SessionState>()
-  const pendingFilePaths = new Map<string, string>()
+export function createAtlasHook(ctx: PluginInput, options?: AtlasHookOptions) {
+  const backgroundManager = options?.backgroundManager;
+  const sessions = new Map<string, SessionState>();
+  const pendingFilePaths = new Map<string, string>();
 
   function getState(sessionID: string): SessionState {
-    let state = sessions.get(sessionID)
+    let state = sessions.get(sessionID);
     if (!state) {
-      state = {}
-      sessions.set(sessionID, state)
+      state = {};
+      sessions.set(sessionID, state);
     }
-    return state
+    return state;
   }
 
-  async function injectContinuation(sessionID: string, planName: string, remaining: number, total: number): Promise<void> {
+  async function injectContinuation(
+    sessionID: string,
+    planName: string,
+    remaining: number,
+    total: number,
+  ): Promise<void> {
     const hasRunningBgTasks = backgroundManager
-      ? backgroundManager.getTasksByParentSession(sessionID).some(t => t.status === "running")
-      : false
+      ? backgroundManager.getTasksByParentSession(sessionID).some((t) => t.status === "running")
+      : false;
 
     if (hasRunningBgTasks) {
-      log(`[${HOOK_NAME}] Skipped injection: background tasks running`, { sessionID })
-      return
+      log(`[${HOOK_NAME}] Skipped injection: background tasks running`, { sessionID });
+      return;
     }
 
-    const prompt = BOULDER_CONTINUATION_PROMPT
-      .replace(/{PLAN_NAME}/g, planName) +
-      `\n\n[Status: ${total - remaining}/${total} completed, ${remaining} remaining]`
+    const prompt =
+      BOULDER_CONTINUATION_PROMPT.replace(/{PLAN_NAME}/g, planName) +
+      `\n\n[Status: ${total - remaining}/${total} completed, ${remaining} remaining]`;
 
     try {
-      log(`[${HOOK_NAME}] Injecting boulder continuation`, { sessionID, planName, remaining })
+      log(`[${HOOK_NAME}] Injecting boulder continuation`, { sessionID, planName, remaining });
 
-      let model: { providerID: string; modelID: string } | undefined
+      let model: { providerID: string; modelID: string } | undefined;
       try {
-        const messagesResp = await ctx.client.session.messages({ path: { id: sessionID } })
+        const messagesResp = await ctx.client.session.messages({ path: { id: sessionID } });
         const messages = (messagesResp.data ?? []) as Array<{
-          info?: { model?: { providerID: string; modelID: string }; modelID?: string; providerID?: string }
-        }>
+          info?: {
+            model?: { providerID: string; modelID: string };
+            modelID?: string;
+            providerID?: string;
+          };
+        }>;
         for (let i = messages.length - 1; i >= 0; i--) {
-          const info = messages[i].info
-          const msgModel = info?.model
+          const info = messages[i].info;
+          const msgModel = info?.model;
           if (msgModel?.providerID && msgModel?.modelID) {
-            model = { providerID: msgModel.providerID, modelID: msgModel.modelID }
-            break
+            model = { providerID: msgModel.providerID, modelID: msgModel.modelID };
+            break;
           }
           if (info?.providerID && info?.modelID) {
-            model = { providerID: info.providerID, modelID: info.modelID }
-            break
+            model = { providerID: info.providerID, modelID: info.modelID };
+            break;
           }
         }
       } catch {
-        const messageDir = getMessageDir(sessionID)
-        const currentMessage = messageDir ? findNearestMessageWithFields(messageDir) : null
-        model = currentMessage?.model?.providerID && currentMessage?.model?.modelID
-          ? { providerID: currentMessage.model.providerID, modelID: currentMessage.model.modelID }
-          : undefined
+        const messageDir = getMessageDir(sessionID);
+        const currentMessage = messageDir ? findNearestMessageWithFields(messageDir) : null;
+        model =
+          currentMessage?.model?.providerID && currentMessage?.model?.modelID
+            ? { providerID: currentMessage.model.providerID, modelID: currentMessage.model.modelID }
+            : undefined;
       }
 
-       await ctx.client.session.prompt({
-         path: { id: sessionID },
-         body: {
-            agent: "grid-sync",
-           ...(model !== undefined ? { model } : {}),
-           parts: [{ type: "text", text: prompt }],
-         },
-         query: { directory: ctx.directory },
-       })
+      await ctx.client.session.prompt({
+        path: { id: sessionID },
+        body: {
+          agent: "grid-sync",
+          ...(model !== undefined ? { model } : {}),
+          parts: [{ type: "text", text: prompt }],
+        },
+        query: { directory: ctx.directory },
+      });
 
-      log(`[${HOOK_NAME}] Boulder continuation injected`, { sessionID })
+      log(`[${HOOK_NAME}] Boulder continuation injected`, { sessionID });
     } catch (err) {
-      log(`[${HOOK_NAME}] Boulder continuation failed`, { sessionID, error: String(err) })
+      log(`[${HOOK_NAME}] Boulder continuation failed`, { sessionID, error: String(err) });
     }
   }
 
   return {
-    handler: async ({ event }: { event: { type: string; properties?: unknown } }): Promise<void> => {
-      const props = event.properties as Record<string, unknown> | undefined
+    handler: async ({
+      event,
+    }: {
+      event: { type: string; properties?: unknown };
+    }): Promise<void> => {
+      const props = event.properties as Record<string, unknown> | undefined;
 
       if (event.type === "session.error") {
-        const sessionID = props?.sessionID as string | undefined
-        if (!sessionID) return
+        const sessionID = props?.sessionID as string | undefined;
+        if (!sessionID) return;
 
-        const state = getState(sessionID)
-        const isAbort = isAbortError(props?.error)
-        state.lastEventWasAbortError = isAbort
+        const state = getState(sessionID);
+        const isAbort = isAbortError(props?.error);
+        state.lastEventWasAbortError = isAbort;
 
-        log(`[${HOOK_NAME}] session.error`, { sessionID, isAbort })
-        return
+        log(`[${HOOK_NAME}] session.error`, { sessionID, isAbort });
+        return;
       }
 
       if (event.type === "session.idle") {
-        const sessionID = props?.sessionID as string | undefined
-        if (!sessionID) return
+        const sessionID = props?.sessionID as string | undefined;
+        if (!sessionID) return;
 
-        log(`[${HOOK_NAME}] session.idle`, { sessionID })
+        log(`[${HOOK_NAME}] session.idle`, { sessionID });
 
         // Read boulder state FIRST to check if this session is part of an active boulder
-        const boulderState = readBoulderState(ctx.directory)
-        const isBoulderSession = boulderState?.session_ids.includes(sessionID) ?? false
+        const boulderState = readBoulderState(ctx.directory);
+        const isBoulderSession = boulderState?.session_ids.includes(sessionID) ?? false;
 
-        const mainSessionID = getMainSessionID()
-        const isMainSession = sessionID === mainSessionID
-        const isBackgroundTaskSession = subagentSessions.has(sessionID)
+        const mainSessionID = getMainSessionID();
+        const isMainSession = sessionID === mainSessionID;
+        const isBackgroundTaskSession = subagentSessions.has(sessionID);
 
         // Allow continuation if: main session OR background task OR boulder session
         if (mainSessionID && !isMainSession && !isBackgroundTaskSession && !isBoulderSession) {
-          log(`[${HOOK_NAME}] Skipped: not main, background task, or boulder session`, { sessionID })
-          return
+          log(`[${HOOK_NAME}] Skipped: not main, background task, or boulder session`, {
+            sessionID,
+          });
+          return;
         }
 
-        const state = getState(sessionID)
+        const state = getState(sessionID);
 
         if (state.lastEventWasAbortError) {
-          state.lastEventWasAbortError = false
-          log(`[${HOOK_NAME}] Skipped: abort error immediately before idle`, { sessionID })
-          return
+          state.lastEventWasAbortError = false;
+          log(`[${HOOK_NAME}] Skipped: abort error immediately before idle`, { sessionID });
+          return;
         }
 
         const hasRunningBgTasks = backgroundManager
-          ? backgroundManager.getTasksByParentSession(sessionID).some(t => t.status === "running")
-          : false
+          ? backgroundManager.getTasksByParentSession(sessionID).some((t) => t.status === "running")
+          : false;
 
         if (hasRunningBgTasks) {
-          log(`[${HOOK_NAME}] Skipped: background tasks running`, { sessionID })
-          return
+          log(`[${HOOK_NAME}] Skipped: background tasks running`, { sessionID });
+          return;
         }
 
-
         if (!boulderState) {
-          log(`[${HOOK_NAME}] No active boulder`, { sessionID })
-          return
+          log(`[${HOOK_NAME}] No active boulder`, { sessionID });
+          return;
         }
 
         if (!isCallerOrchestrator(sessionID)) {
-          log(`[${HOOK_NAME}] Skipped: last agent is not Nexus Orchestrator`, { sessionID })
-          return
+          log(`[${HOOK_NAME}] Skipped: last agent is not Nexus Orchestrator`, { sessionID });
+          return;
         }
 
-        const progress = getPlanProgress(boulderState.active_plan)
+        const progress = getPlanProgress(boulderState.active_plan);
         if (progress.isComplete) {
-          log(`[${HOOK_NAME}] Boulder complete`, { sessionID, plan: boulderState.plan_name })
-          return
+          log(`[${HOOK_NAME}] Boulder complete`, { sessionID, plan: boulderState.plan_name });
+          return;
         }
 
-        const now = Date.now()
-        if (state.lastContinuationInjectedAt && now - state.lastContinuationInjectedAt < CONTINUATION_COOLDOWN_MS) {
-          log(`[${HOOK_NAME}] Skipped: continuation cooldown active`, { sessionID, cooldownRemaining: CONTINUATION_COOLDOWN_MS - (now - state.lastContinuationInjectedAt) })
-          return
+        const now = Date.now();
+        if (
+          state.lastContinuationInjectedAt &&
+          now - state.lastContinuationInjectedAt < CONTINUATION_COOLDOWN_MS
+        ) {
+          log(`[${HOOK_NAME}] Skipped: continuation cooldown active`, {
+            sessionID,
+            cooldownRemaining: CONTINUATION_COOLDOWN_MS - (now - state.lastContinuationInjectedAt),
+          });
+          return;
         }
 
-        state.lastContinuationInjectedAt = now
-        const remaining = progress.total - progress.completed
-        injectContinuation(sessionID, boulderState.plan_name, remaining, progress.total)
-        return
+        state.lastContinuationInjectedAt = now;
+        const remaining = progress.total - progress.completed;
+        injectContinuation(sessionID, boulderState.plan_name, remaining, progress.total);
+        return;
       }
 
       if (event.type === "message.updated") {
-        const info = props?.info as Record<string, unknown> | undefined
-        const sessionID = info?.sessionID as string | undefined
+        const info = props?.info as Record<string, unknown> | undefined;
+        const sessionID = info?.sessionID as string | undefined;
 
-        if (!sessionID) return
+        if (!sessionID) return;
 
-        const state = sessions.get(sessionID)
+        const state = sessions.get(sessionID);
         if (state) {
-          state.lastEventWasAbortError = false
+          state.lastEventWasAbortError = false;
         }
-        return
+        return;
       }
 
       if (event.type === "message.part.updated") {
-        const info = props?.info as Record<string, unknown> | undefined
-        const sessionID = info?.sessionID as string | undefined
-        const role = info?.role as string | undefined
+        const info = props?.info as Record<string, unknown> | undefined;
+        const sessionID = info?.sessionID as string | undefined;
+        const role = info?.role as string | undefined;
 
         if (sessionID && role === "assistant") {
-          const state = sessions.get(sessionID)
+          const state = sessions.get(sessionID);
           if (state) {
-            state.lastEventWasAbortError = false
+            state.lastEventWasAbortError = false;
           }
         }
-        return
+        return;
       }
 
       if (event.type === "tool.execute.before" || event.type === "tool.execute.after") {
-        const sessionID = props?.sessionID as string | undefined
+        const sessionID = props?.sessionID as string | undefined;
         if (sessionID) {
-          const state = sessions.get(sessionID)
+          const state = sessions.get(sessionID);
           if (state) {
-            state.lastEventWasAbortError = false
+            state.lastEventWasAbortError = false;
           }
         }
-        return
+        return;
       }
 
       if (event.type === "session.deleted") {
-        const sessionInfo = props?.info as { id?: string } | undefined
+        const sessionInfo = props?.info as { id?: string } | undefined;
         if (sessionInfo?.id) {
-          sessions.delete(sessionInfo.id)
-          log(`[${HOOK_NAME}] Session deleted: cleaned up`, { sessionID: sessionInfo.id })
+          sessions.delete(sessionInfo.id);
+          log(`[${HOOK_NAME}] Session deleted: cleaned up`, { sessionID: sessionInfo.id });
         }
-        return
+        return;
       }
     },
 
     "tool.execute.before": async (
       input: { tool: string; sessionID?: string; callID?: string },
-      output: { args: Record<string, unknown>; message?: string }
+      output: { args: Record<string, unknown>; message?: string },
     ): Promise<void> => {
       if (!isCallerOrchestrator(input.sessionID)) {
-        return
+        return;
       }
 
       // Check Write/Edit tools for orchestrator - inject strong warning
       if (WRITE_EDIT_TOOLS.includes(input.tool)) {
-        const filePath = (output.args.filePath ?? output.args.path ?? output.args.file) as string | undefined
+        const filePath = (output.args.filePath ?? output.args.path ?? output.args.file) as
+          | string
+          | undefined;
         if (filePath && !isSisyphusPath(filePath)) {
           // Store filePath for use in tool.execute.after
           if (input.callID) {
-            pendingFilePaths.set(input.callID, filePath)
+            pendingFilePaths.set(input.callID, filePath);
           }
-          const warning = ORCHESTRATOR_DELEGATION_REQUIRED.replace("$FILE_PATH", filePath)
-          output.message = (output.message || "") + warning
+          const warning = ORCHESTRATOR_DELEGATION_REQUIRED.replace("$FILE_PATH", filePath);
+          output.message = (output.message || "") + warning;
           log(`[${HOOK_NAME}] Injected delegation warning for direct file modification`, {
             sessionID: input.sessionID,
             tool: input.tool,
             filePath,
-          })
+          });
         }
-        return
+        return;
       }
 
       // Check delegate_task - inject single-task directive
       if (input.tool === "delegate_task") {
-        const prompt = output.args.prompt as string | undefined
+        const prompt = output.args.prompt as string | undefined;
         if (prompt && !prompt.includes(SYSTEM_DIRECTIVE_PREFIX)) {
-          output.args.prompt = `<system-reminder>${SINGLE_TASK_DIRECTIVE}</system-reminder>\n` + prompt
+          output.args.prompt =
+            `<system-reminder>${SINGLE_TASK_DIRECTIVE}</system-reminder>\n` + prompt;
           log(`[${HOOK_NAME}] Injected single-task directive to delegate_task`, {
             sessionID: input.sessionID,
-          })
+          });
         }
       }
     },
 
     "tool.execute.after": async (
       input: ToolExecuteAfterInput,
-      output: ToolExecuteAfterOutput
+      output: ToolExecuteAfterOutput,
     ): Promise<void> => {
       // Guard against undefined output (e.g., from /review command - see issue #1035)
       if (!output) {
-        return
+        return;
       }
 
       if (!isCallerOrchestrator(input.sessionID)) {
-        return
+        return;
       }
 
       if (WRITE_EDIT_TOOLS.includes(input.tool)) {
-        let filePath = input.callID ? pendingFilePaths.get(input.callID) : undefined
+        let filePath = input.callID ? pendingFilePaths.get(input.callID) : undefined;
         if (input.callID) {
-          pendingFilePaths.delete(input.callID)
+          pendingFilePaths.delete(input.callID);
         }
         if (!filePath) {
-          filePath = output.metadata?.filePath as string | undefined
+          filePath = output.metadata?.filePath as string | undefined;
         }
         if (filePath && !isSisyphusPath(filePath)) {
-          output.output = (output.output || "") + DIRECT_WORK_REMINDER
+          output.output = (output.output || "") + DIRECT_WORK_REMINDER;
           log(`[${HOOK_NAME}] Direct work reminder appended`, {
             sessionID: input.sessionID,
             tool: input.tool,
             filePath,
-          })
+          });
         }
-        return
+        return;
       }
 
       if (input.tool !== "delegate_task") {
-        return
+        return;
       }
 
-       const outputStr = output.output && typeof output.output === "string" ? output.output : ""
-       const isBackgroundLaunch = outputStr.includes("Background task launched") || outputStr.includes("Background task continued")
-      
+      const outputStr = output.output && typeof output.output === "string" ? output.output : "";
+      const isBackgroundLaunch =
+        outputStr.includes("Background task launched") ||
+        outputStr.includes("Background task continued");
+
       if (isBackgroundLaunch) {
-        return
+        return;
       }
-      
-      if (output.output && typeof output.output === "string") {
-        const gitStats = getGitDiffStats(ctx.directory)
-        const fileChanges = formatFileChanges(gitStats)
-        const subagentSessionId = extractSessionIdFromOutput(output.output)
 
-        const boulderState = readBoulderState(ctx.directory)
+      if (output.output && typeof output.output === "string") {
+        const gitStats = getGitDiffStats(ctx.directory);
+        const fileChanges = formatFileChanges(gitStats);
+        const subagentSessionId = extractSessionIdFromOutput(output.output);
+
+        const boulderState = readBoulderState(ctx.directory);
 
         if (boulderState) {
-          const progress = getPlanProgress(boulderState.active_plan)
+          const progress = getPlanProgress(boulderState.active_plan);
 
           if (input.sessionID && !boulderState.session_ids.includes(input.sessionID)) {
-            appendSessionId(ctx.directory, input.sessionID)
+            appendSessionId(ctx.directory, input.sessionID);
             log(`[${HOOK_NAME}] Appended session to boulder`, {
               sessionID: input.sessionID,
               plan: boulderState.plan_name,
-            })
+            });
           }
 
           // Preserve original subagent response - critical for debugging failed tasks
-          const originalResponse = output.output
+          const originalResponse = output.output;
 
           output.output = `
 ## SUBAGENT WORK COMPLETED
@@ -736,22 +780,22 @@ ${originalResponse}
 
 <system-reminder>
 ${buildOrchestratorReminder(boulderState.plan_name, progress, subagentSessionId)}
-</system-reminder>`
+</system-reminder>`;
 
           log(`[${HOOK_NAME}] Output transformed for orchestrator mode (boulder)`, {
             plan: boulderState.plan_name,
             progress: `${progress.completed}/${progress.total}`,
             fileCount: gitStats.length,
-          })
+          });
         } else {
-          output.output += `\n<system-reminder>\n${buildStandaloneVerificationReminder(subagentSessionId)}\n</system-reminder>`
+          output.output += `\n<system-reminder>\n${buildStandaloneVerificationReminder(subagentSessionId)}\n</system-reminder>`;
 
           log(`[${HOOK_NAME}] Verification reminder appended for orchestrator`, {
             sessionID: input.sessionID,
             fileCount: gitStats.length,
-          })
+          });
         }
       }
     },
-  }
+  };
 }

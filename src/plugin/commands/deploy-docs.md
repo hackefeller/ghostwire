@@ -66,7 +66,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'plugin/docs/**'
+      - "plugin/docs/**"
   workflow_dispatch:
 
 permissions:
@@ -89,7 +89,7 @@ jobs:
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: 'plugin/docs'
+          path: "plugin/docs"
       - uses: actions/deploy-pages@v4
 ```
 

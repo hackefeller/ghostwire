@@ -1,5 +1,5 @@
 declare global {
-  type RequestInfo = string | URL
+  type RequestInfo = string | URL;
 }
 
-export {}
+export {};

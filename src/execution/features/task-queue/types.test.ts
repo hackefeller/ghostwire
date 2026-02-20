@@ -1,5 +1,5 @@
-import { describe, it, expect } from "bun:test"
-import { TaskSchema, TaskStatusSchema, type Task } from "./types"
+import { describe, it, expect } from "bun:test";
+import { TaskSchema, TaskStatusSchema, type Task } from "./types";
 
 describe("TaskSchema", () => {
   //#given a valid task object
@@ -13,11 +13,11 @@ describe("TaskSchema", () => {
       status: "pending",
       blocks: [],
       blockedBy: [],
-    }
+    };
 
-    const result = TaskSchema.safeParse(validTask)
-    expect(result.success).toBe(true)
-  })
+    const result = TaskSchema.safeParse(validTask);
+    expect(result.success).toBe(true);
+  });
 
   //#given a task with all optional fields
   //#when parsing with TaskSchema
@@ -33,11 +33,11 @@ describe("TaskSchema", () => {
       blocks: ["3"],
       blockedBy: ["1"],
       metadata: { priority: "high", labels: ["bug"] },
-    }
+    };
 
-    const result = TaskSchema.safeParse(taskWithOptionals)
-    expect(result.success).toBe(true)
-  })
+    const result = TaskSchema.safeParse(taskWithOptionals);
+    expect(result.success).toBe(true);
+  });
 
   //#given an invalid status value
   //#when parsing with TaskSchema
@@ -50,11 +50,11 @@ describe("TaskSchema", () => {
       status: "invalid_status",
       blocks: [],
       blockedBy: [],
-    }
+    };
 
-    const result = TaskSchema.safeParse(invalidTask)
-    expect(result.success).toBe(false)
-  })
+    const result = TaskSchema.safeParse(invalidTask);
+    expect(result.success).toBe(false);
+  });
 
   //#given missing required fields
   //#when parsing with TaskSchema
@@ -63,20 +63,20 @@ describe("TaskSchema", () => {
     const invalidTask = {
       id: "1",
       // missing subject, description, status, blocks, blockedBy
-    }
+    };
 
-    const result = TaskSchema.safeParse(invalidTask)
-    expect(result.success).toBe(false)
-  })
-})
+    const result = TaskSchema.safeParse(invalidTask);
+    expect(result.success).toBe(false);
+  });
+});
 
 describe("TaskStatusSchema", () => {
   //#given valid status values
   //#when parsing
   //#then all should succeed
   it("accepts valid statuses", () => {
-    expect(TaskStatusSchema.safeParse("pending").success).toBe(true)
-    expect(TaskStatusSchema.safeParse("in_progress").success).toBe(true)
-    expect(TaskStatusSchema.safeParse("completed").success).toBe(true)
-  })
-})
+    expect(TaskStatusSchema.safeParse("pending").success).toBe(true);
+    expect(TaskStatusSchema.safeParse("in_progress").success).toBe(true);
+    expect(TaskStatusSchema.safeParse("completed").success).toBe(true);
+  });
+});

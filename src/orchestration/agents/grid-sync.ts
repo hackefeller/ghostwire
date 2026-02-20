@@ -1,15 +1,22 @@
-import type { AgentConfig } from "@opencode-ai/sdk"
-import type { AgentMode, AgentPromptMetadata } from "./types"
+import type { AgentConfig } from "@opencode-ai/sdk";
+import type { AgentMode, AgentPromptMetadata } from "./types";
 
-const MODE: AgentMode = "primary"
-import type { AvailableAgent, AvailableSkill, AvailableCategory } from "./dynamic-agent-prompt-builder"
-import { buildCategorySkillsDelegationGuide } from "./dynamic-agent-prompt-builder"
-import type { CategoryConfig } from "../../platform/config/schema"
-import { DEFAULT_CATEGORIES, CATEGORY_DESCRIPTIONS } from "../../execution/tools/delegate-task/constants"
-import { createAgentToolRestrictions } from "../../platform/config/permission-compat"
+const MODE: AgentMode = "primary";
+import type {
+  AvailableAgent,
+  AvailableSkill,
+  AvailableCategory,
+} from "./dynamic-agent-prompt-builder";
+import { buildCategorySkillsDelegationGuide } from "./dynamic-agent-prompt-builder";
+import type { CategoryConfig } from "../../platform/config/schema";
+import {
+  DEFAULT_CATEGORIES,
+  CATEGORY_DESCRIPTIONS,
+} from "../../execution/tools/delegate-task/constants";
+import { createAgentToolRestrictions } from "../../platform/config/permission-compat";
 
 const getCategoryDescription = (name: string, userCategories?: Record<string, CategoryConfig>) =>
-  userCategories?.[name]?.description ?? CATEGORY_DESCRIPTIONS[name] ?? "General tasks"
+  userCategories?.[name]?.description ?? CATEGORY_DESCRIPTIONS[name] ?? "General tasks";
 
 /**
  * Nexus Orchestrator - Master Orchestrator Agent
@@ -19,37 +26,37 @@ const getCategoryDescription = (name: string, userCategories?: Record<string, Ca
  */
 
 export interface OrchestratorContext {
-  model?: string
-  availableAgents?: AvailableAgent[]
-  availableSkills?: AvailableSkill[]
-  userCategories?: Record<string, CategoryConfig>
+  model?: string;
+  availableAgents?: AvailableAgent[];
+  availableSkills?: AvailableSkill[];
+  userCategories?: Record<string, CategoryConfig>;
 }
 
 function buildAgentSelectionSection(agents: AvailableAgent[]): string {
   if (agents.length === 0) {
     return `##### Option B: Use AGENT directly (for specialized experts)
 
-No agents available.`
+No agents available.`;
   }
 
   const rows = agents.map((a) => {
-    const shortDesc = a.description.split(".")[0] || a.description
-    return `| \`${a.name}\` | ${shortDesc} |`
-  })
+    const shortDesc = a.description.split(".")[0] || a.description;
+    return `| \`${a.name}\` | ${shortDesc} |`;
+  });
 
   return `##### Option B: Use AGENT directly (for specialized experts)
 
 | Agent | Best For |
 |-------|----------|
-${rows.join("\n")}`
+${rows.join("\n")}`;
 }
 
 function buildCategorySection(userCategories?: Record<string, CategoryConfig>): string {
-  const allCategories = { ...DEFAULT_CATEGORIES, ...userCategories }
+  const allCategories = { ...DEFAULT_CATEGORIES, ...userCategories };
   const categoryRows = Object.entries(allCategories).map(([name, config]) => {
-    const temp = config.temperature ?? 0.5
-    return `| \`${name}\` | ${temp} | ${getCategoryDescription(name, userCategories)} |`
-  })
+    const temp = config.temperature ?? 0.5;
+    return `| \`${name}\` | ${temp} | ${getCategoryDescription(name, userCategories)} |`;
+  });
 
   return `##### Option A: Use CATEGORY (for domain-specific work)
 
@@ -61,18 +68,18 @@ ${categoryRows.join("\n")}
 
 \`\`\`typescript
 delegate_task(category="[category-name]", load_skills=[...], prompt="...")
-\`\`\``
+\`\`\``;
 }
 
 function buildSkillsSection(skills: AvailableSkill[]): string {
   if (skills.length === 0) {
-    return ""
+    return "";
   }
 
   const skillRows = skills.map((s) => {
-    const shortDesc = s.description.split(".")[0] || s.description
-    return `| \`${s.name}\` | ${shortDesc} |`
-  })
+    const shortDesc = s.description.split(".")[0] || s.description;
+    return `| \`${s.name}\` | ${shortDesc} |`;
+  });
 
   return `
 #### 3.2.2: Skill Selection (PREPEND TO PROMPT)
@@ -97,20 +104,24 @@ delegate_task(category="[category]", load_skills=["skill-1", "skill-2"], prompt=
 **IMPORTANT:**
 - Skills get prepended to the subagent's prompt, providing domain-specific instructions
 - Subagents are STATELESS - they don't know what skills exist unless you include them
-- Missing a relevant skill = suboptimal output quality`
+- Missing a relevant skill = suboptimal output quality`;
 }
 
-function buildDecisionMatrix(agents: AvailableAgent[], userCategories?: Record<string, CategoryConfig>): string {
-  const allCategories = { ...DEFAULT_CATEGORIES, ...userCategories }
+function buildDecisionMatrix(
+  agents: AvailableAgent[],
+  userCategories?: Record<string, CategoryConfig>,
+): string {
+  const allCategories = { ...DEFAULT_CATEGORIES, ...userCategories };
 
-  const categoryRows = Object.entries(allCategories).map(([name]) =>
-    `| ${getCategoryDescription(name, userCategories)} | \`category="${name}", load_skills=[...]\` |`
-  )
+  const categoryRows = Object.entries(allCategories).map(
+    ([name]) =>
+      `| ${getCategoryDescription(name, userCategories)} | \`category="${name}", load_skills=[...]\` |`,
+  );
 
   const agentRows = agents.map((a) => {
-    const shortDesc = a.description.split(".")[0] || a.description
-    return `| ${shortDesc} | \`agent="${a.name}"\` |`
-  })
+    const shortDesc = a.description.split(".")[0] || a.description;
+    return `| ${shortDesc} | \`agent="${a.name}"\` |`;
+  });
 
   return `##### Decision Matrix
 
@@ -119,10 +130,10 @@ function buildDecisionMatrix(agents: AvailableAgent[], userCategories?: Record<s
 ${categoryRows.join("\n")}
 ${agentRows.join("\n")}
 
-**NEVER provide both category AND agent - they are mutually exclusive.**`
+**NEVER provide both category AND agent - they are mutually exclusive.**`;
 }
 
-export const ATLAS_SYSTEM_PROMPT = `
+export const GRID_SYNC_SYSTEM_PROMPT = `
 <identity>
 You are Nexus Orchestrator - the Master Orchestrator from Ghostwire.
 
@@ -497,38 +508,34 @@ You are the QA gate. Subagents lie. Verify EVERYTHING.
 - **Store session_id from every delegation output**
 - **Use \`session_id="{session_id}"\` for retries, fixes, and follow-ups**
 </critical_overrides>
-`
+`;
 
 function buildDynamicOrchestratorPrompt(ctx?: OrchestratorContext): string {
-  const agents = ctx?.availableAgents ?? []
-  const skills = ctx?.availableSkills ?? []
-  const userCategories = ctx?.userCategories
+  const agents = ctx?.availableAgents ?? [];
+  const skills = ctx?.availableSkills ?? [];
+  const userCategories = ctx?.userCategories;
 
-  const allCategories = { ...DEFAULT_CATEGORIES, ...userCategories }
+  const allCategories = { ...DEFAULT_CATEGORIES, ...userCategories };
   const availableCategories: AvailableCategory[] = Object.entries(allCategories).map(([name]) => ({
     name,
     description: getCategoryDescription(name, userCategories),
-  }))
+  }));
 
-  const categorySection = buildCategorySection(userCategories)
-  const agentSection = buildAgentSelectionSection(agents)
-  const decisionMatrix = buildDecisionMatrix(agents, userCategories)
-  const skillsSection = buildSkillsSection(skills)
-  const categorySkillsGuide = buildCategorySkillsDelegationGuide(availableCategories, skills)
+  const categorySection = buildCategorySection(userCategories);
+  const agentSection = buildAgentSelectionSection(agents);
+  const decisionMatrix = buildDecisionMatrix(agents, userCategories);
+  const skillsSection = buildSkillsSection(skills);
+  const categorySkillsGuide = buildCategorySkillsDelegationGuide(availableCategories, skills);
 
-  return ATLAS_SYSTEM_PROMPT
-    .replace("{CATEGORY_SECTION}", categorySection)
+  return GRID_SYNC_SYSTEM_PROMPT.replace("{CATEGORY_SECTION}", categorySection)
     .replace("{AGENT_SECTION}", agentSection)
     .replace("{DECISION_MATRIX}", decisionMatrix)
     .replace("{SKILLS_SECTION}", skillsSection)
-    .replace("{{CATEGORY_SKILLS_DELEGATION_GUIDE}}", categorySkillsGuide)
+    .replace("{{CATEGORY_SKILLS_DELEGATION_GUIDE}}", categorySkillsGuide);
 }
 
-export function createAtlasAgent(ctx: OrchestratorContext): AgentConfig {
-  const restrictions = createAgentToolRestrictions([
-    "task",
-    "call_grid_agent",
-  ])
+export function createGridSyncAgent(ctx: OrchestratorContext): AgentConfig {
+  const restrictions = createAgentToolRestrictions(["task", "call_grid_agent"]);
   return {
     description:
       "Orchestrates work via delegate_task() to complete ALL tasks in a todo list until fully done. (Nexus Orchestrator - Ghostwire)",
@@ -539,9 +546,9 @@ export function createAtlasAgent(ctx: OrchestratorContext): AgentConfig {
     thinking: { type: "enabled", budgetTokens: 32000 },
     color: "#10B981",
     ...restrictions,
-  } as AgentConfig
+  } as AgentConfig;
 }
-createAtlasAgent.mode = MODE
+createGridSyncAgent.mode = MODE;
 
 export const nexusPromptMetadata: AgentPromptMetadata = {
   category: "advisor",
@@ -567,6 +574,5 @@ export const nexusPromptMetadata: AgentPromptMetadata = {
     "Tasks that can be handled directly by one agent",
     "When user wants to execute tasks manually",
   ],
-  keyTrigger:
-    "Todo list path provided OR multiple tasks requiring multi-agent orchestration",
-}
+  keyTrigger: "Todo list path provided OR multiple tasks requiring multi-agent orchestration",
+};

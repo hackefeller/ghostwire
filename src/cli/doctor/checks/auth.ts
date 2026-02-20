@@ -1,67 +1,64 @@
-import { existsSync, readFileSync } from "node:fs"
-import { join } from "node:path"
-import type { CheckResult, CheckDefinition, AuthProviderInfo, AuthProviderId } from "../types"
-import { CHECK_IDS, CHECK_NAMES } from "../constants"
-import { parseJsonc } from "../../../integration/shared"
-import { getOpenCodeConfigDir } from "../../../platform/opencode/config-dir"
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import type { CheckResult, CheckDefinition, AuthProviderInfo, AuthProviderId } from "../types";
+import { CHECK_IDS, CHECK_NAMES } from "../constants";
+import { parseJsonc } from "../../../integration/shared";
+import { getOpenCodeConfigDir } from "../../../platform/opencode/config-dir";
 
-const OPENCODE_CONFIG_DIR = getOpenCodeConfigDir({ binary: "opencode" })
-const OPENCODE_JSON = join(OPENCODE_CONFIG_DIR, "opencode.json")
-const OPENCODE_JSONC = join(OPENCODE_CONFIG_DIR, "opencode.jsonc")
+const OPENCODE_CONFIG_DIR = getOpenCodeConfigDir({ binary: "opencode" });
+const OPENCODE_JSON = join(OPENCODE_CONFIG_DIR, "opencode.json");
+const OPENCODE_JSONC = join(OPENCODE_CONFIG_DIR, "opencode.jsonc");
 
 const AUTH_PLUGINS: Record<AuthProviderId, { plugin: string; name: string }> = {
   anthropic: { plugin: "builtin", name: "Anthropic (Claude)" },
   openai: { plugin: "opencode-openai-codex-auth", name: "OpenAI (ChatGPT)" },
   google: { plugin: "opencode-antigravity-auth", name: "Google (Gemini)" },
-}
+};
 
 function getOpenCodeConfig(): { plugin?: string[] } | null {
-  const configPath = existsSync(OPENCODE_JSONC) ? OPENCODE_JSONC : OPENCODE_JSON
-  if (!existsSync(configPath)) return null
+  const configPath = existsSync(OPENCODE_JSONC) ? OPENCODE_JSONC : OPENCODE_JSON;
+  if (!existsSync(configPath)) return null;
 
   try {
-    const content = readFileSync(configPath, "utf-8")
-    return parseJsonc<{ plugin?: string[] }>(content)
+    const content = readFileSync(configPath, "utf-8");
+    return parseJsonc<{ plugin?: string[] }>(content);
   } catch {
-    return null
+    return null;
   }
 }
 
 function isPluginInstalled(plugins: string[], pluginName: string): boolean {
-  if (pluginName === "builtin") return true
-  return plugins.some((p) => p === pluginName || p.startsWith(`${pluginName}@`))
+  if (pluginName === "builtin") return true;
+  return plugins.some((p) => p === pluginName || p.startsWith(`${pluginName}@`));
 }
 
 export function getAuthProviderInfo(providerId: AuthProviderId): AuthProviderInfo {
-  const config = getOpenCodeConfig()
-  const plugins = config?.plugin ?? []
-  const authConfig = AUTH_PLUGINS[providerId]
+  const config = getOpenCodeConfig();
+  const plugins = config?.plugin ?? [];
+  const authConfig = AUTH_PLUGINS[providerId];
 
-  const pluginInstalled = isPluginInstalled(plugins, authConfig.plugin)
+  const pluginInstalled = isPluginInstalled(plugins, authConfig.plugin);
 
   return {
     id: providerId,
     name: authConfig.name,
     pluginInstalled,
     configured: pluginInstalled,
-  }
+  };
 }
 
 export async function checkAuthProvider(providerId: AuthProviderId): Promise<CheckResult> {
-  const info = getAuthProviderInfo(providerId)
-  const checkId = `auth-${providerId}` as keyof typeof CHECK_NAMES
-  const checkName = CHECK_NAMES[checkId] || info.name
+  const info = getAuthProviderInfo(providerId);
+  const checkId = `auth-${providerId}` as keyof typeof CHECK_NAMES;
+  const checkName = CHECK_NAMES[checkId] || info.name;
 
   if (!info.pluginInstalled) {
     return {
       name: checkName,
       status: "skip",
       message: "Auth plugin not installed",
-      details: [
-        `Plugin: ${AUTH_PLUGINS[providerId].plugin}`,
-        "Run: bunx ghostwire install",
-      ],
-    }
+      details: [`Plugin: ${AUTH_PLUGINS[providerId].plugin}`, "Run: bunx ghostwire install"],
+    };
   }
 
   return {
@@ -73,19 +70,19 @@ export async function checkAuthProvider(providerId: AuthProviderId): Promise<Che
         ? "Run: opencode auth login (select Anthropic)"
         : `Plugin: ${AUTH_PLUGINS[providerId].plugin}`,
     ],
-  }
+  };
 }
 
 export async function checkAnthropicAuth(): Promise<CheckResult> {
-  return checkAuthProvider("anthropic")
+  return checkAuthProvider("anthropic");
 }
 
 export async function checkOpenAIAuth(): Promise<CheckResult> {
-  return checkAuthProvider("openai")
+  return checkAuthProvider("openai");
 }
 
 export async function checkGoogleAuth(): Promise<CheckResult> {
-  return checkAuthProvider("google")
+  return checkAuthProvider("google");
 }
 
 export function getAuthCheckDefinitions(): CheckDefinition[] {
@@ -111,5 +108,5 @@ export function getAuthCheckDefinitions(): CheckDefinition[] {
       check: checkGoogleAuth,
       critical: false,
     },
-  ]
+  ];
 }

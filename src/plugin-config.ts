@@ -11,10 +11,7 @@ import {
 import { getOpenCodeConfigDir } from "./platform/opencode/config-dir";
 import { migrateConfigFile } from "./platform/config/migration";
 
-export function loadConfigFromPath(
-  configPath: string,
-  ctx: unknown,
-): GhostwireConfig | null {
+export function loadConfigFromPath(configPath: string, ctx: unknown): GhostwireConfig | null {
   try {
     if (fs.existsSync(configPath)) {
       const content = fs.readFileSync(configPath, "utf-8");
@@ -48,53 +45,30 @@ export function loadConfigFromPath(
   return null;
 }
 
-export function mergeConfigs(
-  base: GhostwireConfig,
-  override: GhostwireConfig,
-): GhostwireConfig {
+export function mergeConfigs(base: GhostwireConfig, override: GhostwireConfig): GhostwireConfig {
   return {
     ...base,
     ...override,
     agents: deepMerge(base.agents, override.agents),
     categories: deepMerge(base.categories, override.categories),
     disabled_agents: [
-      ...new Set([
-        ...(base.disabled_agents ?? []),
-        ...(override.disabled_agents ?? []),
-      ]),
+      ...new Set([...(base.disabled_agents ?? []), ...(override.disabled_agents ?? [])]),
     ],
-    disabled_mcps: [
-      ...new Set([
-        ...(base.disabled_mcps ?? []),
-        ...(override.disabled_mcps ?? []),
-      ]),
-    ],
+    disabled_mcps: [...new Set([...(base.disabled_mcps ?? []), ...(override.disabled_mcps ?? [])])],
     disabled_hooks: [
-      ...new Set([
-        ...(base.disabled_hooks ?? []),
-        ...(override.disabled_hooks ?? []),
-      ]),
+      ...new Set([...(base.disabled_hooks ?? []), ...(override.disabled_hooks ?? [])]),
     ],
     disabled_commands: [
-      ...new Set([
-        ...(base.disabled_commands ?? []),
-        ...(override.disabled_commands ?? []),
-      ]),
+      ...new Set([...(base.disabled_commands ?? []), ...(override.disabled_commands ?? [])]),
     ],
     disabled_skills: [
-      ...new Set([
-        ...(base.disabled_skills ?? []),
-        ...(override.disabled_skills ?? []),
-      ]),
+      ...new Set([...(base.disabled_skills ?? []), ...(override.disabled_skills ?? [])]),
     ],
     claude_code: deepMerge(base.claude_code, override.claude_code),
   };
 }
 
-export function loadPluginConfig(
-  directory: string,
-  ctx: unknown,
-): GhostwireConfig {
+export function loadPluginConfig(directory: string, ctx: unknown): GhostwireConfig {
   // User-level config path - prefer .jsonc over .json
   const configDir = getOpenCodeConfigDir({ binary: "opencode" });
   const userBasePath = path.join(configDir, "ghostwire");
@@ -106,9 +80,7 @@ export function loadPluginConfig(
   const projectBasePath = path.join(directory, ".opencode", "ghostwire");
   const projectDetected = detectConfigFile(projectBasePath);
   const projectConfigPath =
-    projectDetected.format !== "none"
-      ? projectDetected.path
-      : projectBasePath + ".json";
+    projectDetected.format !== "none" ? projectDetected.path : projectBasePath + ".json";
 
   // Load user config first (base)
   let config: GhostwireConfig = loadConfigFromPath(userConfigPath, ctx) ?? {};

@@ -32,13 +32,13 @@ Your review approach follows these principles:
 
 Honor the fact that elements of the DOM may get replaced in-situ. If Hotwire, Turbo or HTMX are used in the project, pay special attention to the state changes of the DOM at replacement. Specifically:
 
-* Remember that Turbo and similar tech does things the following way:
+- Remember that Turbo and similar tech does things the following way:
   1. Prepare the new node but keep it detached from the document
   2. Remove the node that is getting replaced from the DOM
   3. Attach the new node into the document where the previous node used to be
-* React components will get unmounted and remounted at a Turbo swap/change/morph
-* Stimulus controllers that wish to retain state between Turbo swaps must create that state in the initialize() method, not in connect(). In those cases, Stimulus controllers get retained, but they get disconnected and then reconnected again
-* Event handlers must be properly disposed of in disconnect(), same for all the defined intervals and timeouts
+- React components will get unmounted and remounted at a Turbo swap/change/morph
+- Stimulus controllers that wish to retain state between Turbo swaps must create that state in the initialize() method, not in connect(). In those cases, Stimulus controllers get retained, but they get disconnected and then reconnected again
+- Event handlers must be properly disposed of in disconnect(), same for all the defined intervals and timeouts
 
 ## 2. Use of DOM events
 
@@ -98,7 +98,7 @@ All set timeouts and all set intervals should contain cancelation token checks i
 
 ```js
 function setTimeoutWithCancelation(fn, delay, ...params) {
-  let cancelToken = {canceled: false};
+  let cancelToken = { canceled: false };
   let handlerWithCancelation = (...params) => {
     if (cancelToken.canceled) return;
     return fn(...params);
@@ -108,7 +108,7 @@ function setTimeoutWithCancelation(fn, delay, ...params) {
     cancelToken.canceled = true;
     clearTimeout(timeoutId);
   };
-  return {timeoutId, cancel};
+  return { timeoutId, cancel };
 }
 // and in disconnect() of the controller
 this.reloadTimeout.cancel();
@@ -122,7 +122,7 @@ When `requestAnimationFrame` is used, there is no need to make it cancelable by 
 
 ```js
 var st = performance.now();
-let cancelToken = {canceled: false};
+let cancelToken = { canceled: false };
 const animFn = () => {
   const now = performance.now();
   const ds = performance.now() - st;
@@ -131,7 +131,7 @@ const animFn = () => {
   if (!cancelToken.canceled) {
     requestAnimationFrame(animFn);
   }
-}
+};
 requestAnimationFrame(animFn); // start the loop
 ```
 
@@ -150,7 +150,7 @@ For key interactions managed by a React component or a Stimulus controller, stor
 ```js
 this.isLoading = true;
 // ...do the loading which may fail or succeed
-loadAsync().finally(() => this.isLoading = false);
+loadAsync().finally(() => (this.isLoading = false));
 ```
 
 but:
@@ -159,7 +159,7 @@ but:
 const priorState = this.state; // imagine it is STATE_IDLE
 this.state = STATE_LOADING; // which is usually best as a Symbol()
 // ...do the loading which may fail or succeed
-loadAsync().finally(() => this.state = priorState); // reset
+loadAsync().finally(() => (this.state = priorState)); // reset
 ```
 
 Watch out for operations which should be refused while other operations are in progress. This applies to both React and Stimulus. Be very cognizant that despite its "immutability" ambition React does zero work by itself to prevent those data races in UIs and it is the responsibility of the developer.
@@ -195,11 +195,11 @@ if (img.__loaded) {
 
 The underlying ideas:
 
-* Always assume the DOM is async and reactive, and it will be doing things in the background
-* Embrace native DOM state (selection, CSS properties, data attributes, native events)
-* Prevent jank by ensuring there are no racing animations, no racing async loads
-* Prevent conflicting interactions that will cause weird UI behavior from happening at the same time
-* Prevent stale timers messing up the DOM when the DOM changes underneath the timer
+- Always assume the DOM is async and reactive, and it will be doing things in the background
+- Embrace native DOM state (selection, CSS properties, data attributes, native events)
+- Prevent jank by ensuring there are no racing animations, no racing async loads
+- Prevent conflicting interactions that will cause weird UI behavior from happening at the same time
+- Prevent stale timers messing up the DOM when the DOM changes underneath the timer
 
 When reviewing code:
 

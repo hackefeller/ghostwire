@@ -1,9 +1,4 @@
-import {
-  existsSync,
-  readdirSync,
-  realpathSync,
-  statSync,
-} from "node:fs";
+import { existsSync, readdirSync, realpathSync, statSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import {
   GITHUB_INSTRUCTIONS_PATTERN,

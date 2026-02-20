@@ -26,14 +26,14 @@
  * extractModelPrefix("openai/gpt-5.2") // { prefix: "openai/", base: "gpt-5.2" }
  */
 function extractModelPrefix(modelID: string): { prefix: string; base: string } {
-  const slashIndex = modelID.indexOf("/")
+  const slashIndex = modelID.indexOf("/");
   if (slashIndex === -1) {
-    return { prefix: "", base: modelID }
+    return { prefix: "", base: modelID };
   }
   return {
     prefix: modelID.slice(0, slashIndex + 1),
     base: modelID.slice(slashIndex + 1),
-  }
+  };
 }
 
 /**
@@ -50,7 +50,7 @@ function extractModelPrefix(modelID: string): { prefix: string; base: string } {
 function normalizeModelID(modelID: string): string {
   // Replace dots with hyphens when followed by a digit
   // This handles version numbers like 4.5 → 4-5, 5.2 → 5-2
-  return modelID.replace(/\.(\d+)/g, "-$1")
+  return modelID.replace(/\.(\d+)/g, "-$1");
 }
 
 /**
@@ -67,20 +67,16 @@ function normalizeModelID(modelID: string): string {
 function resolveProvider(providerID: string, modelID: string): string {
   // GitHub Copilot is a proxy - infer actual provider from model name
   if (providerID === "github-copilot") {
-    const modelLower = modelID.toLowerCase()
-    if (modelLower.includes("claude")) return "anthropic"
-    if (modelLower.includes("gemini")) return "google"
-    if (
-      modelLower.includes("gpt") ||
-      modelLower.includes("o1") ||
-      modelLower.includes("o3")
-    ) {
-      return "openai"
+    const modelLower = modelID.toLowerCase();
+    if (modelLower.includes("claude")) return "anthropic";
+    if (modelLower.includes("gemini")) return "google";
+    if (modelLower.includes("gpt") || modelLower.includes("o1") || modelLower.includes("o3")) {
+      return "openai";
     }
   }
 
   // Direct providers or unknown - return as-is
-  return providerID
+  return providerID;
 }
 
 // Maps model IDs to their "high reasoning" variant (internal convention)
@@ -89,10 +85,10 @@ const HIGH_VARIANT_MAP: Record<string, string> = {
   // Claude
   "claude-sonnet-4-5": "claude-sonnet-4-5-high",
   "claude-opus-4-5": "claude-opus-4-5-high",
-   // Gemini
-   "gemini-3-pro": "gemini-3-pro-high",
-   "gemini-3-pro-low": "gemini-3-pro-high",
-   "gemini-3-flash": "gemini-3-flash-high",
+  // Gemini
+  "gemini-3-pro": "gemini-3-pro-high",
+  "gemini-3-pro-low": "gemini-3-pro-high",
+  "gemini-3-flash": "gemini-3-flash-high",
   // GPT-5
   "gpt-5": "gpt-5-high",
   "gpt-5-mini": "gpt-5-mini-high",
@@ -109,9 +105,9 @@ const HIGH_VARIANT_MAP: Record<string, string> = {
   "gpt-5-2": "gpt-5-2-high",
   "gpt-5-2-chat-latest": "gpt-5-2-chat-latest-high",
   "gpt-5-2-pro": "gpt-5-2-pro-high",
-}
+};
 
-const ALREADY_HIGH: Set<string> = new Set(Object.values(HIGH_VARIANT_MAP))
+const ALREADY_HIGH: Set<string> = new Set(Object.values(HIGH_VARIANT_MAP));
 
 export const THINKING_CONFIGS = {
   anthropic: {
@@ -149,7 +145,7 @@ export const THINKING_CONFIGS = {
   openai: {
     reasoning_effort: "high",
   },
-} as const satisfies Record<string, Record<string, unknown>>
+} as const satisfies Record<string, Record<string, unknown>>;
 
 const THINKING_CAPABLE_MODELS = {
   anthropic: ["claude-sonnet-4", "claude-opus-4", "claude-3"],
@@ -157,64 +153,62 @@ const THINKING_CAPABLE_MODELS = {
   google: ["gemini-2", "gemini-3"],
   "google-vertex": ["gemini-2", "gemini-3"],
   openai: ["gpt-5", "o1", "o3"],
-} as const satisfies Record<string, readonly string[]>
+} as const satisfies Record<string, readonly string[]>;
 
 export function getHighVariant(modelID: string): string | null {
-  const normalized = normalizeModelID(modelID)
-  const { prefix, base } = extractModelPrefix(normalized)
+  const normalized = normalizeModelID(modelID);
+  const { prefix, base } = extractModelPrefix(normalized);
 
   // Check if already high variant (with or without prefix)
   if (ALREADY_HIGH.has(base) || base.endsWith("-high")) {
-    return null
+    return null;
   }
 
   // Look up high variant for base model
-  const highBase = HIGH_VARIANT_MAP[base]
+  const highBase = HIGH_VARIANT_MAP[base];
   if (!highBase) {
-    return null
+    return null;
   }
 
   // Preserve prefix in the high variant
-  return prefix + highBase
+  return prefix + highBase;
 }
 
 export function isAlreadyHighVariant(modelID: string): boolean {
-  const normalized = normalizeModelID(modelID)
-  const { base } = extractModelPrefix(normalized)
-  return ALREADY_HIGH.has(base) || base.endsWith("-high")
+  const normalized = normalizeModelID(modelID);
+  const { base } = extractModelPrefix(normalized);
+  return ALREADY_HIGH.has(base) || base.endsWith("-high");
 }
 
-type ThinkingProvider = keyof typeof THINKING_CONFIGS
+type ThinkingProvider = keyof typeof THINKING_CONFIGS;
 
 function isThinkingProvider(provider: string): provider is ThinkingProvider {
-  return provider in THINKING_CONFIGS
+  return provider in THINKING_CONFIGS;
 }
 
 export function getThinkingConfig(
   providerID: string,
-  modelID: string
+  modelID: string,
 ): Record<string, unknown> | null {
-  const normalized = normalizeModelID(modelID)
-  const { base } = extractModelPrefix(normalized)
+  const normalized = normalizeModelID(modelID);
+  const { base } = extractModelPrefix(normalized);
 
   if (isAlreadyHighVariant(normalized)) {
-    return null
+    return null;
   }
 
-  const resolvedProvider = resolveProvider(providerID, modelID)
+  const resolvedProvider = resolveProvider(providerID, modelID);
 
   if (!isThinkingProvider(resolvedProvider)) {
-    return null
+    return null;
   }
 
-  const config = THINKING_CONFIGS[resolvedProvider]
-  const capablePatterns = THINKING_CAPABLE_MODELS[resolvedProvider]
+  const config = THINKING_CONFIGS[resolvedProvider];
+  const capablePatterns = THINKING_CAPABLE_MODELS[resolvedProvider];
 
   // Check capability using base model name (without prefix)
-  const baseLower = base.toLowerCase()
-  const isCapable = capablePatterns.some((pattern) =>
-    baseLower.includes(pattern.toLowerCase())
-  )
+  const baseLower = base.toLowerCase();
+  const isCapable = capablePatterns.some((pattern) => baseLower.includes(pattern.toLowerCase()));
 
-  return isCapable ? config : null
+  return isCapable ? config : null;
 }

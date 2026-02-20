@@ -17,9 +17,7 @@ function debugLog(...args: unknown[]) {
 }
 
 function getBinaryName(): string {
-  return process.platform === "win32"
-    ? "grid-comment-checker.exe"
-    : "grid-comment-checker";
+  return process.platform === "win32" ? "grid-comment-checker.exe" : "grid-comment-checker";
 }
 
 function findCommentCheckerPathSync(): string | null {
@@ -40,8 +38,7 @@ function findCommentCheckerPathSync(): string | null {
 
   try {
     const require = createRequire(import.meta.url);
-    const cliPkgPath =
-      require.resolve("@code-yeongyu/comment-checker/package.json");
+    const cliPkgPath = require.resolve("@code-yeongyu/comment-checker/package.json");
     const cliDir = dirname(cliPkgPath);
     const binaryPath = join(cliDir, "bin", binaryName);
 
@@ -171,10 +168,7 @@ export async function runCommentChecker(
   }
 
   const jsonInput = JSON.stringify(input);
-  debugLog(
-    "running grid-comment-checker with input:",
-    jsonInput.substring(0, 200),
-  );
+  debugLog("running grid-comment-checker with input:", jsonInput.substring(0, 200));
 
   try {
     const args = [binaryPath];

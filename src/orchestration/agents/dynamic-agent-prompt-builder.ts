@@ -1,96 +1,96 @@
-import type { AgentCost, AgentPromptMetadata, BuiltinAgentName } from "./types"
+import type { AgentCost, AgentPromptMetadata, BuiltinAgentName } from "./types";
 
 export interface AvailableAgent {
-  name: BuiltinAgentName
-  description: string
-  metadata: AgentPromptMetadata
+  name: BuiltinAgentName;
+  description: string;
+  metadata: AgentPromptMetadata;
 }
 
 export interface AvailableTool {
-  name: string
-  category: "lsp" | "ast" | "search" | "session" | "command" | "other"
+  name: string;
+  category: "lsp" | "ast" | "search" | "session" | "command" | "other";
 }
 
 export interface AvailableSkill {
-  name: string
-  description: string
-  location: "user" | "project" | "plugin"
+  name: string;
+  description: string;
+  location: "user" | "project" | "plugin";
 }
 
 export interface AvailableCategory {
-  name: string
-  description: string
+  name: string;
+  description: string;
 }
 
 export function categorizeTools(toolNames: string[]): AvailableTool[] {
   return toolNames.map((name) => {
-    let category: AvailableTool["category"] = "other"
+    let category: AvailableTool["category"] = "other";
     if (name.startsWith("lsp_")) {
-      category = "lsp"
+      category = "lsp";
     } else if (name.startsWith("ast_grep")) {
-      category = "ast"
+      category = "ast";
     } else if (name === "grep" || name === "glob") {
-      category = "search"
+      category = "search";
     } else if (name.startsWith("session_")) {
-      category = "session"
+      category = "session";
     } else if (name === "slashcommand") {
-      category = "command"
+      category = "command";
     }
-    return { name, category }
-  })
+    return { name, category };
+  });
 }
 
 function formatToolsForPrompt(tools: AvailableTool[]): string {
-  const lspTools = tools.filter((t) => t.category === "lsp")
-  const astTools = tools.filter((t) => t.category === "ast")
-  const searchTools = tools.filter((t) => t.category === "search")
+  const lspTools = tools.filter((t) => t.category === "lsp");
+  const astTools = tools.filter((t) => t.category === "ast");
+  const searchTools = tools.filter((t) => t.category === "search");
 
-  const parts: string[] = []
+  const parts: string[] = [];
 
   if (searchTools.length > 0) {
-    parts.push(...searchTools.map((t) => `\`${t.name}\``))
+    parts.push(...searchTools.map((t) => `\`${t.name}\``));
   }
 
   if (lspTools.length > 0) {
-    parts.push("`lsp_*`")
+    parts.push("`lsp_*`");
   }
 
   if (astTools.length > 0) {
-    parts.push("`ast_grep`")
+    parts.push("`ast_grep`");
   }
 
-  return parts.join(", ")
+  return parts.join(", ");
 }
 
-export function buildKeyTriggersSection(agents: AvailableAgent[], _skills: AvailableSkill[] = []): string {
+export function buildKeyTriggersSection(
+  agents: AvailableAgent[],
+  _skills: AvailableSkill[] = [],
+): string {
   const keyTriggers = agents
     .filter((a) => a.metadata.keyTrigger)
-    .map((a) => `- ${a.metadata.keyTrigger}`)
+    .map((a) => `- ${a.metadata.keyTrigger}`);
 
-  if (keyTriggers.length === 0) return ""
+  if (keyTriggers.length === 0) return "";
 
   return `### Key Triggers (check BEFORE classification):
 
 ${keyTriggers.join("\n")}
-- **"Look into" + "create PR"** → Not just research. Full implementation cycle expected.`
+- **"Look into" + "create PR"** → Not just research. Full implementation cycle expected.`;
 }
 
 export function buildToolSelectionTable(
   agents: AvailableAgent[],
   tools: AvailableTool[] = [],
-  _skills: AvailableSkill[] = []
+  _skills: AvailableSkill[] = [],
 ): string {
-  const rows: string[] = [
-    "### Tool & Agent Selection:",
-    "",
-  ]
+  const rows: string[] = ["### Tool & Agent Selection:", ""];
 
-  rows.push("| Resource | Cost | When to Use |")
-  rows.push("|----------|------|-------------|")
+  rows.push("| Resource | Cost | When to Use |");
+  rows.push("|----------|------|-------------|");
 
   if (tools.length > 0) {
-    const toolsDisplay = formatToolsForPrompt(tools)
-    rows.push(`| ${toolsDisplay} | FREE | Not Complex, Scope Clear, No Implicit Assumptions |`)
+    const toolsDisplay = formatToolsForPrompt(tools);
+    rows.push(`| ${toolsDisplay} | FREE | Not Complex, Scope Clear, No Implicit Assumptions |`);
   }
 
   const costOrder: Record<AgentCost, number> = {
@@ -100,28 +100,30 @@ export function buildToolSelectionTable(
     MODERATE: 2,
     EXPENSIVE: 3,
     HIGH: 3,
-  }
+  };
   const sortedAgents = [...agents]
     .filter((a) => a.metadata.category !== "utility")
-    .sort((a, b) => costOrder[a.metadata.cost] - costOrder[b.metadata.cost])
+    .sort((a, b) => costOrder[a.metadata.cost] - costOrder[b.metadata.cost]);
 
   for (const agent of sortedAgents) {
-    const shortDesc = agent.description.split(".")[0] || agent.description
-    rows.push(`| \`${agent.name}\` agent | ${agent.metadata.cost} | ${shortDesc} |`)
+    const shortDesc = agent.description.split(".")[0] || agent.description;
+    rows.push(`| \`${agent.name}\` agent | ${agent.metadata.cost} | ${shortDesc} |`);
   }
 
-  rows.push("")
-  rows.push("**Default flow**: scoutRecon/archiveResearcher (background) + tools → seerAdvisor (if required)")
+  rows.push("");
+  rows.push(
+    "**Default flow**: scoutRecon/archiveResearcher (background) + tools → seerAdvisor (if required)",
+  );
 
-  return rows.join("\n")
+  return rows.join("\n");
 }
 
 export function buildExploreSection(agents: AvailableAgent[]): string {
-  const exploreAgent = agents.find((a) => a.name === "scan-ops")
-  if (!exploreAgent) return ""
+  const exploreAgent = agents.find((a) => a.name === "scan-ops");
+  if (!exploreAgent) return "";
 
-  const useWhen = exploreAgent.metadata.useWhen || []
-  const avoidWhen = exploreAgent.metadata.avoidWhen || []
+  const useWhen = exploreAgent.metadata.useWhen || [];
+  const avoidWhen = exploreAgent.metadata.avoidWhen || [];
 
   return `### Scout Recon Agent = Contextual Grep
 
@@ -130,14 +132,14 @@ Use it as a **peer tool**, not a fallback. Fire liberally.
 | Use Direct Tools | Use Scout Recon Agent |
 |------------------|-------------------|
 ${avoidWhen.map((w) => `| ${w} |  |`).join("\n")}
-${useWhen.map((w) => `|  | ${w} |`).join("\n")}`
+${useWhen.map((w) => `|  | ${w} |`).join("\n")}`;
 }
 
 export function buildLibrarianSection(agents: AvailableAgent[]): string {
-  const archiveAgent = agents.find((a) => a.name === "data-dive")
-  if (!archiveAgent) return ""
+  const archiveAgent = agents.find((a) => a.name === "data-dive");
+  if (!archiveAgent) return "";
 
-  const useWhen = archiveAgent.metadata.useWhen || []
+  const useWhen = archiveAgent.metadata.useWhen || [];
 
   return `### Archive Researcher Agent = Reference Grep
 
@@ -153,7 +155,7 @@ Search **external references** (docs, OSS, web). Fire proactively when unfamilia
 | | OSS implementation examples |
 
 **Trigger phrases** (fire archiveResearcher immediately):
-${useWhen.map((w) => `- "${w}"`).join("\n")}`
+${useWhen.map((w) => `- "${w}"`).join("\n")}`;
 }
 
 export function buildDelegationTable(agents: AvailableAgent[]): string {
@@ -162,29 +164,32 @@ export function buildDelegationTable(agents: AvailableAgent[]): string {
     "",
     "| Domain | Delegate To | Trigger |",
     "|--------|-------------|---------|",
-  ]
+  ];
 
   for (const agent of agents) {
     for (const trigger of agent.metadata.triggers) {
-      rows.push(`| ${trigger.domain} | \`${agent.name}\` | ${trigger.trigger} |`)
+      rows.push(`| ${trigger.domain} | \`${agent.name}\` | ${trigger.trigger} |`);
     }
   }
 
-  return rows.join("\n")
+  return rows.join("\n");
 }
 
-export function buildCategorySkillsDelegationGuide(categories: AvailableCategory[], skills: AvailableSkill[]): string {
-  if (categories.length === 0 && skills.length === 0) return ""
+export function buildCategorySkillsDelegationGuide(
+  categories: AvailableCategory[],
+  skills: AvailableSkill[],
+): string {
+  if (categories.length === 0 && skills.length === 0) return "";
 
   const categoryRows = categories.map((c) => {
-    const desc = c.description || c.name
-    return `| \`${c.name}\` | ${desc} |`
-  })
+    const desc = c.description || c.name;
+    return `| \`${c.name}\` | ${desc} |`;
+  });
 
   const skillRows = skills.map((s) => {
-    const desc = s.description.split(".")[0] || s.description
-    return `| \`${s.name}\` | ${desc} |`
-  })
+    const desc = s.description.split(".")[0] || s.description;
+    return `| \`${s.name}\` | ${desc} |`;
+  });
 
   return `### Category + Skills Delegation System
 
@@ -255,15 +260,15 @@ delegate_task(
 **ANTI-PATTERN (will produce poor results):**
 \`\`\`typescript
 delegate_task(category="...", load_skills=[], prompt="...")  // Empty load_skills without justification
-\`\`\``
+\`\`\``;
 }
 
 export function buildOracleSection(agents: AvailableAgent[]): string {
-  const seerAgent = agents.find((a) => a.name === "eye-ops")
-  if (!seerAgent) return ""
+  const seerAgent = agents.find((a) => a.name === "eye-ops");
+  if (!seerAgent) return "";
 
-  const useWhen = seerAgent.metadata.useWhen || []
-  const avoidWhen = seerAgent.metadata.avoidWhen || []
+  const useWhen = seerAgent.metadata.useWhen || [];
+  const avoidWhen = seerAgent.metadata.avoidWhen || [];
 
   return `<Oracle_Usage>
 ## Seer Advisor — Read-Only High-IQ Consultant
@@ -284,7 +289,7 @@ ${avoidWhen.map((w) => `- ${w}`).join("\n")}
 Briefly announce "Consulting Seer Advisor for [reason]" before invocation.
 
 **Exception**: This is the ONLY case where you announce before acting. For all other work, start immediately without status updates.
-</Oracle_Usage>`
+</Oracle_Usage>`;
 }
 
 export function buildHardBlocksSection(): string {
@@ -293,74 +298,74 @@ export function buildHardBlocksSection(): string {
     "| Commit without explicit request | Never |",
     "| Speculate about unread code | Never |",
     "| Leave code in broken state after failures | Never |",
-  ]
+  ];
 
   return `## Hard Blocks (NEVER violate)
 
 | Constraint | No Exceptions |
 |------------|---------------|
-${blocks.join("\n")}`
+${blocks.join("\n")}`;
 }
 
 export function buildAntiPatternsSection(): string {
   const patterns = [
     "| **Type Safety** | `as any`, `@ts-ignore`, `@ts-expect-error` |",
     "| **Error Handling** | Empty catch blocks `catch(e) {}` |",
-    "| **Testing** | Deleting failing tests to \"pass\" |",
+    '| **Testing** | Deleting failing tests to "pass" |',
     "| **Search** | Firing agents for single-line typos or obvious syntax errors |",
     "| **Debugging** | Shotgun debugging, random changes |",
-  ]
+  ];
 
   return `## Anti-Patterns (BLOCKING violations)
 
 | Category | Forbidden |
 |----------|-----------|
-${patterns.join("\n")}`
+${patterns.join("\n")}`;
 }
 
 export function buildUltraworkSection(
   agents: AvailableAgent[],
   categories: AvailableCategory[],
-  skills: AvailableSkill[]
+  skills: AvailableSkill[],
 ): string {
-  const lines: string[] = []
+  const lines: string[] = [];
 
   if (categories.length > 0) {
-    lines.push("**Categories** (for implementation tasks):")
+    lines.push("**Categories** (for implementation tasks):");
     for (const cat of categories) {
-      const shortDesc = cat.description || cat.name
-      lines.push(`- \`${cat.name}\`: ${shortDesc}`)
+      const shortDesc = cat.description || cat.name;
+      lines.push(`- \`${cat.name}\`: ${shortDesc}`);
     }
-    lines.push("")
+    lines.push("");
   }
 
   if (skills.length > 0) {
-    lines.push("**Skills** (combine with categories - EVALUATE ALL for relevance):")
+    lines.push("**Skills** (combine with categories - EVALUATE ALL for relevance):");
     for (const skill of skills) {
-      const shortDesc = skill.description.split(".")[0] || skill.description
-      lines.push(`- \`${skill.name}\`: ${shortDesc}`)
+      const shortDesc = skill.description.split(".")[0] || skill.description;
+      lines.push(`- \`${skill.name}\`: ${shortDesc}`);
     }
-    lines.push("")
+    lines.push("");
   }
 
   if (agents.length > 0) {
-    const ultraworkAgentPriority = ["scan-ops", "data-dive", "plan", "eye-ops"]
+    const ultraworkAgentPriority = ["scan-ops", "data-dive", "plan", "eye-ops"];
     const sortedAgents = [...agents].sort((a, b) => {
-      const aIdx = ultraworkAgentPriority.indexOf(a.name)
-      const bIdx = ultraworkAgentPriority.indexOf(b.name)
-      if (aIdx === -1 && bIdx === -1) return 0
-      if (aIdx === -1) return 1
-      if (bIdx === -1) return -1
-      return aIdx - bIdx
-    })
+      const aIdx = ultraworkAgentPriority.indexOf(a.name);
+      const bIdx = ultraworkAgentPriority.indexOf(b.name);
+      if (aIdx === -1 && bIdx === -1) return 0;
+      if (aIdx === -1) return 1;
+      if (bIdx === -1) return -1;
+      return aIdx - bIdx;
+    });
 
-    lines.push("**Agents** (for specialized consultation/exploration):")
+    lines.push("**Agents** (for specialized consultation/exploration):");
     for (const agent of sortedAgents) {
-      const shortDesc = agent.description.split(".")[0] || agent.description
-      const suffix = agent.name === "scan-ops" || agent.name === "data-dive" ? " (multiple)" : ""
-      lines.push(`- \`${agent.name}${suffix}\`: ${shortDesc}`)
+      const shortDesc = agent.description.split(".")[0] || agent.description;
+      const suffix = agent.name === "scan-ops" || agent.name === "data-dive" ? " (multiple)" : "";
+      lines.push(`- \`${agent.name}${suffix}\`: ${shortDesc}`);
     }
   }
 
-  return lines.join("\n")
+  return lines.join("\n");
 }

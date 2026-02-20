@@ -28,7 +28,7 @@ Build and deploy documentation to live hosting platform.
 - **Netlify** - Continuous deployment
 - **AWS S3/CloudFront** - Custom hosting
 - **Self-Hosted** - Custom server
-`
+`;
 
 export const DOCS_RELEASE_DOCS_TEMPLATE = `# Docs:Release-Docs Command
 
@@ -53,7 +53,7 @@ Create versioned documentation release for new software version.
 - Changelog generation
 - Migration guide generation
 - SEO optimization for versioned content
-`
+`;
 
 export const DOCS_FEATURE_VIDEO_TEMPLATE = `# Docs:Feature-Video Command
 
@@ -85,7 +85,7 @@ Create demonstration video for new feature or capability.
 - **Docs Site** - Embedded in documentation
 - **Social Media** - Short clips for marketing
 - **Internal** - Private videos for team
-`
+`;
 
 export const DOCS_TEST_BROWSER_TEMPLATE = `# Docs:Test-Browser Command
 
@@ -117,4 +117,4 @@ Test documentation in actual browser environment for functionality and rendering
 - **Integration** - Test links between docs and external sites
 - **Accessibility** - Screen reader compatibility, keyboard navigation
 - **SEO** - Meta tags, structured data
-`
+`;

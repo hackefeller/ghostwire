@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Best Practices Researcher System Prompt
 const BEST_PRACTICES_RESEARCHER_PROMPT = `You are a Best Practices Researcher specializing in researching and gathering external best practices, documentation, and examples for any technology, framework, or development practice. Your expertise lies in finding official documentation, community standards, well-regarded examples from open source projects, and domain-specific conventions.
@@ -90,20 +90,22 @@ Structure your research findings as:
 - Monitoring and observability recommendations
 - Deployment and operational considerations
 
-Focus on providing practical, immediately actionable guidance backed by authoritative sources and proven by real-world usage.`
+Focus on providing practical, immediately actionable guidance backed by authoritative sources and proven by real-world usage.`;
 
 export function createBestPracticesResearcherAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Research agent - gathers information but doesn't modify code
-  ])
-  
+    "write",
+    "edit", // Research agent - gathers information but doesn't modify code
+  ]);
+
   return {
-    description: "Research and gather external best practices, documentation, and examples for any technology, framework, or development practice. Find official documentation, community standards, and well-regarded examples from open source projects.",
+    description:
+      "Research and gather external best practices, documentation, and examples for any technology, framework, or development practice. Find official documentation, community standards, and well-regarded examples from open source projects.",
     model,
     temperature: 0.1, // Low temperature for accurate, factual research
     prompt: BEST_PRACTICES_RESEARCHER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
@@ -112,21 +114,33 @@ export const BEST_PRACTICES_RESEARCHER_METADATA: AgentPromptMetadata = {
   cost: "MODERATE",
   promptAlias: "Best Practices Researcher",
   triggers: [
-    { domain: "Technology evaluation", trigger: "When choosing between different technologies or frameworks" },
-    { domain: "Implementation planning", trigger: "Before implementing features with specific technologies" },
-    { domain: "Security implementation", trigger: "When implementing authentication, authorization, or security features" },
-    { domain: "Performance optimization", trigger: "When optimizing applications or implementing performance-critical features" }
+    {
+      domain: "Technology evaluation",
+      trigger: "When choosing between different technologies or frameworks",
+    },
+    {
+      domain: "Implementation planning",
+      trigger: "Before implementing features with specific technologies",
+    },
+    {
+      domain: "Security implementation",
+      trigger: "When implementing authentication, authorization, or security features",
+    },
+    {
+      domain: "Performance optimization",
+      trigger: "When optimizing applications or implementing performance-critical features",
+    },
   ],
   useWhen: [
     "Need authoritative guidance on technology implementation",
     "Evaluating different approaches and their trade-offs",
     "Implementing security or performance-critical features",
-    "Following industry standards and community conventions"
+    "Following industry standards and community conventions",
   ],
   avoidWhen: [
     "Simple, well-understood implementations",
     "Internal company-specific patterns and conventions",
     "When local/institutional knowledge is more valuable",
-    "Time-sensitive implementations where research overhead isn't justified"
+    "Time-sensitive implementations where research overhead isn't justified",
   ],
-}
+};

@@ -26,7 +26,7 @@ export const RALPH_LOOP_TEMPLATE = `You are starting a Ralph Loop - a self-refer
 Parse the arguments below and begin working on the task. The format is:
 \`"task description" [--completion-promise=TEXT] [--max-iterations=N]\`
 
-Default completion promise is "DONE" and default max iterations is 100.`
+Default completion promise is "DONE" and default max iterations is 100.`;
 
 export const CANCEL_RALPH_TEMPLATE = `Cancel the currently active Ralph Loop.
 
@@ -35,4 +35,4 @@ This will:
 2. Clear the loop state file
 3. Allow the session to end normally
 
-Check if a loop is active and cancel it. Inform the user of the result.`
+Check if a loop is active and cancel it. Inform the user of the result.`;

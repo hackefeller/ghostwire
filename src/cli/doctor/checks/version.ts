@@ -1,32 +1,32 @@
-import type { CheckResult, CheckDefinition, VersionCheckInfo } from "../types"
-import { CHECK_IDS, CHECK_NAMES } from "../constants"
+import type { CheckResult, CheckDefinition, VersionCheckInfo } from "../types";
+import { CHECK_IDS, CHECK_NAMES } from "../constants";
 import {
   getCachedVersion,
   getLatestVersion,
   isLocalDevMode,
   findPluginEntry,
-} from "../../../orchestration/hooks/auto-update-checker/checker"
+} from "../../../orchestration/hooks/auto-update-checker/checker";
 
 function compareVersions(current: string, latest: string): boolean {
   const parseVersion = (v: string): number[] => {
-    const cleaned = v.replace(/^v/, "").split("-")[0]
-    return cleaned.split(".").map((n) => parseInt(n, 10) || 0)
-  }
+    const cleaned = v.replace(/^v/, "").split("-")[0];
+    return cleaned.split(".").map((n) => parseInt(n, 10) || 0);
+  };
 
-  const curr = parseVersion(current)
-  const lat = parseVersion(latest)
+  const curr = parseVersion(current);
+  const lat = parseVersion(latest);
 
   for (let i = 0; i < Math.max(curr.length, lat.length); i++) {
-    const c = curr[i] ?? 0
-    const l = lat[i] ?? 0
-    if (c < l) return false
-    if (c > l) return true
+    const c = curr[i] ?? 0;
+    const l = lat[i] ?? 0;
+    if (c < l) return false;
+    if (c > l) return true;
   }
-  return true
+  return true;
 }
 
 export async function getVersionInfo(): Promise<VersionCheckInfo> {
-  const cwd = process.cwd()
+  const cwd = process.cwd();
 
   if (isLocalDevMode(cwd)) {
     return {
@@ -35,10 +35,10 @@ export async function getVersionInfo(): Promise<VersionCheckInfo> {
       isUpToDate: true,
       isLocalDev: true,
       isPinned: false,
-    }
+    };
   }
 
-  const pluginInfo = findPluginEntry(cwd)
+  const pluginInfo = findPluginEntry(cwd);
   if (pluginInfo?.isPinned) {
     return {
       currentVersion: pluginInfo.pinnedVersion,
@@ -46,18 +46,16 @@ export async function getVersionInfo(): Promise<VersionCheckInfo> {
       isUpToDate: true,
       isLocalDev: false,
       isPinned: true,
-    }
+    };
   }
 
-  const currentVersion = getCachedVersion()
-  const { extractChannel } = await import("../../../orchestration/hooks/auto-update-checker/index")
-  const channel = extractChannel(pluginInfo?.pinnedVersion ?? currentVersion)
-  const latestVersion = await getLatestVersion(channel)
+  const currentVersion = getCachedVersion();
+  const { extractChannel } = await import("../../../orchestration/hooks/auto-update-checker/index");
+  const channel = extractChannel(pluginInfo?.pinnedVersion ?? currentVersion);
+  const latestVersion = await getLatestVersion(channel);
 
   const isUpToDate =
-    !currentVersion ||
-    !latestVersion ||
-    compareVersions(currentVersion, latestVersion)
+    !currentVersion || !latestVersion || compareVersions(currentVersion, latestVersion);
 
   return {
     currentVersion,
@@ -65,11 +63,11 @@ export async function getVersionInfo(): Promise<VersionCheckInfo> {
     isUpToDate,
     isLocalDev: false,
     isPinned: false,
-  }
+  };
 }
 
 export async function checkVersionStatus(): Promise<CheckResult> {
-  const info = await getVersionInfo()
+  const info = await getVersionInfo();
 
   if (info.isLocalDev) {
     return {
@@ -77,7 +75,7 @@ export async function checkVersionStatus(): Promise<CheckResult> {
       status: "pass",
       message: "Running in local development mode",
       details: ["Using file:// protocol from config"],
-    }
+    };
   }
 
   if (info.isPinned) {
@@ -86,7 +84,7 @@ export async function checkVersionStatus(): Promise<CheckResult> {
       status: "pass",
       message: `Pinned to version ${info.currentVersion}`,
       details: ["Update check skipped for pinned versions"],
-    }
+    };
   }
 
   if (!info.currentVersion) {
@@ -95,7 +93,7 @@ export async function checkVersionStatus(): Promise<CheckResult> {
       status: "warn",
       message: "Unable to determine current version",
       details: ["Run: bunx ghostwire get-local-version"],
-    }
+    };
   }
 
   if (!info.latestVersion) {
@@ -104,7 +102,7 @@ export async function checkVersionStatus(): Promise<CheckResult> {
       status: "warn",
       message: `Current: ${info.currentVersion}`,
       details: ["Unable to check for updates (network error)"],
-    }
+    };
   }
 
   if (!info.isUpToDate) {
@@ -113,7 +111,7 @@ export async function checkVersionStatus(): Promise<CheckResult> {
       status: "warn",
       message: `Update available: ${info.currentVersion} -> ${info.latestVersion}`,
       details: ["Run: cd ~/.config/opencode && bun update ghostwire"],
-    }
+    };
   }
 
   return {
@@ -121,7 +119,7 @@ export async function checkVersionStatus(): Promise<CheckResult> {
     status: "pass",
     message: `Up to date (${info.currentVersion})`,
     details: info.latestVersion ? [`Latest: ${info.latestVersion}`] : undefined,
-  }
+  };
 }
 
 export function getVersionCheckDefinition(): CheckDefinition {
@@ -131,5 +129,5 @@ export function getVersionCheckDefinition(): CheckDefinition {
     category: "updates",
     check: checkVersionStatus,
     critical: false,
-  }
+  };
 }

@@ -90,9 +90,7 @@ export interface OllamaMergedResponse {
  * // }
  * ```
  */
-export function parseOllamaStreamResponse(
-  response: string,
-): OllamaMergedResponse {
+export function parseOllamaStreamResponse(response: string): OllamaMergedResponse {
   const lines = response.split("\n").filter((line) => line.trim());
 
   if (lines.length === 0) {
@@ -121,8 +119,7 @@ export function parseOllamaStreamResponse(
 
       // Merge content (concatenate)
       if (json.message?.content) {
-        mergedMessage.content =
-          (mergedMessage.content || "") + json.message.content;
+        mergedMessage.content = (mergedMessage.content || "") + json.message.content;
       }
 
       // Update done flag (final line has done: true)

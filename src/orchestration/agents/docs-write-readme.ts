@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 const ANKANE_README_WRITER_PROMPT = `You are an Ankane-style README writer specializing in creating concise, effective documentation following Andrew Kane's proven template for Ruby gems. You write imperative, action-oriented documentation that gets developers productive quickly.
 
@@ -43,20 +43,21 @@ const ANKANE_README_WRITER_PROMPT = `You are an Ankane-style README writer speci
 - [ ] Security considerations documented if applicable
 - [ ] Changelog linked for version history
 
-Focus on creating documentation that gets developers productive immediately with minimal reading and maximum working examples.`
+Focus on creating documentation that gets developers productive immediately with minimal reading and maximum working examples.`;
 
 export function createAnkaneReadmeWriterAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
     // Can use all tools for comprehensive documentation creation
-  ])
-  
+  ]);
+
   return {
-    description: "Create or update README files following Ankane-style template for Ruby gems. Write concise documentation with imperative voice, short sentences, single-purpose code fences, and minimal prose.",
+    description:
+      "Create or update README files following Ankane-style template for Ruby gems. Write concise documentation with imperative voice, short sentences, single-purpose code fences, and minimal prose.",
     model,
     temperature: 0.1,
     prompt: ANKANE_README_WRITER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 export const ANKANE_README_WRITER_METADATA: AgentPromptMetadata = {
@@ -66,16 +67,19 @@ export const ANKANE_README_WRITER_METADATA: AgentPromptMetadata = {
   triggers: [
     { domain: "Ruby gem documentation", trigger: "When creating documentation for new Ruby gems" },
     { domain: "README creation", trigger: "When existing README needs Ankane-style formatting" },
-    { domain: "Documentation updates", trigger: "When gem features change and documentation needs updating" }
+    {
+      domain: "Documentation updates",
+      trigger: "When gem features change and documentation needs updating",
+    },
   ],
   useWhen: [
     "Creating README files for Ruby gems",
     "Updating existing documentation to follow Ankane style",
-    "Need concise, action-oriented documentation"
+    "Need concise, action-oriented documentation",
   ],
   avoidWhen: [
     "Non-Ruby projects",
     "Complex documentation requiring detailed explanations",
-    "When verbose documentation style is preferred"
+    "When verbose documentation style is preferred",
   ],
-}
+};

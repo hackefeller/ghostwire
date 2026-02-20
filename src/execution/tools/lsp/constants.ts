@@ -1,4 +1,4 @@
-import type { LSPServerConfig } from "./types"
+import type { LSPServerConfig } from "./types";
 
 export const SYMBOL_KIND_MAP: Record<number, string> = {
   1: "File",
@@ -27,18 +27,18 @@ export const SYMBOL_KIND_MAP: Record<number, string> = {
   24: "Event",
   25: "Operator",
   26: "TypeParameter",
-}
+};
 
 export const SEVERITY_MAP: Record<number, string> = {
   1: "error",
   2: "warning",
   3: "information",
   4: "hint",
-}
+};
 
-export const DEFAULT_MAX_REFERENCES = 200
-export const DEFAULT_MAX_SYMBOLS = 200
-export const DEFAULT_MAX_DIAGNOSTICS = 200
+export const DEFAULT_MAX_REFERENCES = 200;
+export const DEFAULT_MAX_SYMBOLS = 200;
+export const DEFAULT_MAX_DIAGNOSTICS = 200;
 
 export const LSP_INSTALL_HINTS: Record<string, string> = {
   typescript: "npm install -g typescript-language-server typescript",
@@ -81,7 +81,7 @@ export const LSP_INSTALL_HINTS: Record<string, string> = {
   "haskell-language-server": "ghcup install hls",
   bash: "npm install -g bash-language-server",
   "kotlin-ls": "See https://github.com/Kotlin/kotlin-lsp",
-}
+};
 
 // Synced with OpenCode's server.ts
 // https://github.com/sst/opencode/blob/dev/packages/opencode/src/lsp/server.ts
@@ -104,13 +104,40 @@ export const BUILTIN_SERVERS: Record<string, Omit<LSPServerConfig, "id">> = {
   },
   oxlint: {
     command: ["oxlint", "--lsp"],
-    extensions: [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".mts", ".cts", ".vue", ".astro", ".svelte"],
+    extensions: [
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+      ".mjs",
+      ".cjs",
+      ".mts",
+      ".cts",
+      ".vue",
+      ".astro",
+      ".svelte",
+    ],
   },
   biome: {
     command: ["biome", "lsp-proxy", "--stdio"],
     extensions: [
-      ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".mts", ".cts",
-      ".json", ".jsonc", ".vue", ".astro", ".svelte", ".css", ".graphql", ".gql", ".html",
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+      ".mjs",
+      ".cjs",
+      ".mts",
+      ".cts",
+      ".json",
+      ".jsonc",
+      ".vue",
+      ".astro",
+      ".svelte",
+      ".css",
+      ".graphql",
+      ".gql",
+      ".html",
     ],
   },
   gopls: {
@@ -251,7 +278,7 @@ export const BUILTIN_SERVERS: Record<string, Omit<LSPServerConfig, "id">> = {
     command: ["kotlin-lsp"],
     extensions: [".kt", ".kts"],
   },
-}
+};
 
 // Synced with OpenCode's language.ts
 // https://github.com/sst/opencode/blob/dev/packages/opencode/src/lsp/language.ts
@@ -387,4 +414,4 @@ export const EXT_TO_LANG: Record<string, string> = {
   ".fish": "fish",
   ".graphql": "graphql",
   ".gql": "graphql",
-}
+};

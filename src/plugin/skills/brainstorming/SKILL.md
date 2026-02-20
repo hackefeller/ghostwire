@@ -10,6 +10,7 @@ This skill provides detailed process knowledge for effective brainstorming sessi
 ## When to Use This Skill
 
 Brainstorming is valuable when:
+
 - Requirements are unclear or ambiguous
 - Multiple approaches could solve the problem
 - Trade-offs need to be explored with the user
@@ -17,6 +18,7 @@ Brainstorming is valuable when:
 - The feature scope needs refinement
 
 Brainstorming can be skipped when:
+
 - Requirements are explicit and detailed
 - The user knows exactly what they want
 - The task is a straightforward bug fix or well-defined change
@@ -28,12 +30,14 @@ Brainstorming can be skipped when:
 Before diving into questions, assess whether brainstorming is needed.
 
 **Signals that requirements are clear:**
+
 - User provided specific acceptance criteria
 - User referenced existing patterns to follow
 - User described exact behavior expected
 - Scope is constrained and well-defined
 
 **Signals that brainstorming is needed:**
+
 - User used vague terms ("make it better", "add something like")
 - Multiple reasonable interpretations exist
 - Trade-offs haven't been discussed
@@ -64,13 +68,13 @@ Ask questions **one at a time** to understand the user's intent. Avoid overwhelm
 
 **Key Topics to Scout Recon:**
 
-| Topic | Example Questions |
-|-------|-------------------|
-| Purpose | What problem does this solve? What's the motivation? |
-| Users | Who uses this? What's their context? |
-| Constraints | Any technical limitations? Timeline? Dependencies? |
-| Success | How will you measure success? What's the happy path? |
-| Edge Cases | What shouldn't happen? Any error states to consider? |
+| Topic             | Example Questions                                     |
+| ----------------- | ----------------------------------------------------- |
+| Purpose           | What problem does this solve? What's the motivation?  |
+| Users             | Who uses this? What's their context?                  |
+| Constraints       | Any technical limitations? Timeline? Dependencies?    |
+| Success           | How will you measure success? What's the happy path?  |
+| Edge Cases        | What shouldn't happen? Any error states to consider?  |
 | Existing Patterns | Are there similar features in the codebase to follow? |
 
 **Exit Condition:** Continue until the idea is clear OR user says "proceed" or "let's move on"
@@ -87,10 +91,12 @@ After understanding the idea, propose 2-3 concrete approaches.
 [2-3 sentence description]
 
 **Pros:**
+
 - [Benefit 1]
 - [Benefit 2]
 
 **Cons:**
+
 - [Drawback 1]
 - [Drawback 2]
 
@@ -98,6 +104,7 @@ After understanding the idea, propose 2-3 concrete approaches.
 ```
 
 **Guidelines:**
+
 - Lead with a recommendation and explain why
 - Be honest about trade-offs
 - Consider YAGNI—simpler is usually better
@@ -118,19 +125,24 @@ topic: <kebab-case-topic>
 # <Topic Title>
 
 ## What We're Building
+
 [Concise description—1-2 paragraphs max]
 
 ## Why This Approach
+
 [Brief explanation of approaches considered and why this one was chosen]
 
 ## Key Decisions
+
 - [Decision 1]: [Rationale]
 - [Decision 2]: [Rationale]
 
 ## Open Questions
+
 - [Any unresolved questions for the planning phase]
 
 ## Next Steps
+
 → `/workflows:plan` for implementation details
 ```
 
@@ -166,23 +178,25 @@ This prevents wasted effort on misaligned designs.
 
 ## Anti-Patterns to Avoid
 
-| Anti-Pattern | Better Approach |
-|--------------|-----------------|
-| Asking 5 questions at once | Ask one at a time |
-| Jumping to implementation details | Stay focused on WHAT, not HOW |
-| Proposing overly complex solutions | Start simple, add complexity only if needed |
-| Ignoring existing codebase patterns | Research what exists first |
-| Making assumptions without validating | State assumptions explicitly and confirm |
-| Creating lengthy design documents | Keep it concise—details go in the plan |
+| Anti-Pattern                          | Better Approach                             |
+| ------------------------------------- | ------------------------------------------- |
+| Asking 5 questions at once            | Ask one at a time                           |
+| Jumping to implementation details     | Stay focused on WHAT, not HOW               |
+| Proposing overly complex solutions    | Start simple, add complexity only if needed |
+| Ignoring existing codebase patterns   | Research what exists first                  |
+| Making assumptions without validating | State assumptions explicitly and confirm    |
+| Creating lengthy design documents     | Keep it concise—details go in the plan      |
 
 ## Integration with Planning
 
 Brainstorming answers **WHAT** to build:
+
 - Requirements and acceptance criteria
 - Chosen approach and rationale
 - Key decisions and trade-offs
 
 Planning answers **HOW** to build it:
+
 - Implementation steps and file changes
 - Technical details and code patterns
 - Testing strategy and verification

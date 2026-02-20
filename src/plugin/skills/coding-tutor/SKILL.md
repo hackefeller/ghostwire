@@ -87,6 +87,7 @@ Then show this curriculum plan of **next 3 TUTORIALS** to the user and proceed t
 ## Tutorial Creation
 
 Each tutorial is a markdown file in `~/ghostwire-tutorials/` with this structure:
+
 ```yaml
 ---
 concepts: [primary_concept, related_concept_1, related_concept_2]
@@ -151,6 +152,7 @@ Tutorials aren't static documents - they evolve:
 Note: `understanding_score` is only updated through Quiz Mode, not during teaching.
 
 ## What Makes Great Teaching
+
 **DO**: Meet them where they are. Use their vocabulary. Reference their past struggles. Make connections to concepts they already own. Be encouraging but honest about complexity.
 
 **DON'T**: Assume knowledge not demonstrated in previous tutorials. Use generic blog-post examples when codebase examples exist. Overwhelm with every edge case upfront. Be condescending about gaps.
@@ -164,12 +166,14 @@ Remember: The goal isn't to teach programming in the abstract. It's to teach THI
 Tutorials teach. Quizzes verify. The score should reflect what the learner actually retained, not what was presented to them.
 
 **Triggers:**
+
 - Explicit: "Quiz me on React hooks" → quiz that specific concept
 - Open: "Quiz me on something" → run `python3 ${CLAUDE_PLUGIN_ROOT}/skills/coding-tutor/scripts/quiz_priority.py` to get a prioritized list based on spaced repetition, then choose what to quiz
 
 **Spaced Repetition:**
 
 When the user requests an open quiz, the priority script uses spaced repetition intervals to surface:
+
 - Never-quizzed tutorials (need baseline assessment)
 - Low-scored concepts that are overdue for review
 - High-scored concepts whose review interval has elapsed
@@ -185,6 +189,7 @@ A quiz isn't an exam - it's a conversation that reveals understanding. Ask quest
 **Ask only 1 question at a time.** Wait for the learner's answer before asking the next question.
 
 Mix question types based on what the concept demands:
+
 - Conceptual ("when would you use X over Y?")
 - Code reading ("what does this code in your app do?")
 - Code writing ("write a scope that does X")
@@ -195,6 +200,7 @@ Use their codebase for examples whenever possible. "What does line 47 of `app/mo
 **Scoring:**
 
 After the quiz, update `understanding_score` honestly:
+
 - **1-3**: Can't recall the concept, needs re-teaching
 - **4-5**: Vague memory, partial answers
 - **6-7**: Solid understanding, minor gaps
@@ -206,6 +212,7 @@ Also update `last_quizzed: DD-MM-YYYY` in the frontmatter.
 **Recording:**
 
 Append to the tutorial's `## Quiz History` section:
+
 ```
 ### Quiz - DD-MM-YYYY
 **Q:** [Question asked]

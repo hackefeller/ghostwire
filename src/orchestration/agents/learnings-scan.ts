@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Learnings Researcher System Prompt
 const LEARNINGS_RESEARCHER_PROMPT = `You are a Learnings Researcher specializing in searching institutional learnings in docs/solutions/ for relevant past solutions before implementing new features or fixing problems. Your expertise lies in efficiently filtering documented solutions by frontmatter metadata (tags, category, module, symptoms) to find applicable patterns, gotchas, and lessons learned.
@@ -66,20 +66,22 @@ Structure your findings as:
 - Rollback and recovery procedures
 - Performance bottlenecks and optimization approaches
 
-Focus on surfacing institutional knowledge that prevents repeating past mistakes and leverages proven solutions for similar problems.`
+Focus on surfacing institutional knowledge that prevents repeating past mistakes and leverages proven solutions for similar problems.`;
 
 export function createLearningsResearcherAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Research agent - can read institutional knowledge but not modify code
-  ])
-  
+    "write",
+    "edit", // Research agent - can read institutional knowledge but not modify code
+  ]);
+
   return {
-    description: "Search institutional learnings in docs/solutions/ for relevant past solutions before implementing features or fixing problems. Efficiently filters documented solutions to find applicable patterns, gotchas, and lessons learned.",
+    description:
+      "Search institutional learnings in docs/solutions/ for relevant past solutions before implementing features or fixing problems. Efficiently filters documented solutions to find applicable patterns, gotchas, and lessons learned.",
     model,
     temperature: 0.1, // Low temperature for accurate knowledge retrieval
     prompt: LEARNINGS_RESEARCHER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
@@ -88,21 +90,33 @@ export const LEARNINGS_RESEARCHER_METADATA: AgentPromptMetadata = {
   cost: "LOW", // Fast local search of documented knowledge
   promptAlias: "Learnings Researcher",
   triggers: [
-    { domain: "Feature implementation", trigger: "Before implementing new features in documented domains" },
-    { domain: "Problem solving", trigger: "When encountering issues that might have been solved before" },
-    { domain: "Architecture decisions", trigger: "Before making technology or architectural choices" },
-    { domain: "Performance optimization", trigger: "When optimizing systems with documented performance patterns" }
+    {
+      domain: "Feature implementation",
+      trigger: "Before implementing new features in documented domains",
+    },
+    {
+      domain: "Problem solving",
+      trigger: "When encountering issues that might have been solved before",
+    },
+    {
+      domain: "Architecture decisions",
+      trigger: "Before making technology or architectural choices",
+    },
+    {
+      domain: "Performance optimization",
+      trigger: "When optimizing systems with documented performance patterns",
+    },
   ],
   useWhen: [
     "Starting new feature work in familiar domains",
     "Encountering problems that feel familiar or common",
     "Making architectural or technology decisions",
-    "Need to learn from past mistakes and successes"
+    "Need to learn from past mistakes and successes",
   ],
   avoidWhen: [
     "Completely novel problem domains with no institutional history",
     "Simple, well-understood implementations",
     "When speed is more important than learning from past experience",
-    "External research is more valuable than internal knowledge"
+    "External research is more valuable than internal knowledge",
   ],
-}
+};

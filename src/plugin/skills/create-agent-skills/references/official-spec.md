@@ -17,20 +17,22 @@ description: Brief description of what this Skill does and when to use it
 # Your Skill Name
 
 ## Instructions
+
 Provide clear, step-by-step guidance for Claude.
 
 ## Examples
+
 Show concrete examples of using this Skill.
 ```
 
 ## Required Frontmatter Fields
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `name` | Yes | Skill name using lowercase letters, numbers, and hyphens only (max 64 characters). Should match the directory name. |
-| `description` | Yes | What the Skill does and when to use it (max 1024 characters). Claude uses this to decide when to apply the Skill. |
-| `allowed-tools` | No | Tools Claude can use without asking permission when this Skill is active. Example: `Read, Grep, Glob` |
-| `model` | No | Specific model to use when this Skill is active (e.g., `claude-sonnet-4-20250514`). Defaults to the conversation's model. |
+| Field           | Required | Description                                                                                                               |
+| --------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `name`          | Yes      | Skill name using lowercase letters, numbers, and hyphens only (max 64 characters). Should match the directory name.       |
+| `description`   | Yes      | What the Skill does and when to use it (max 1024 characters). Claude uses this to decide when to apply the Skill.         |
+| `allowed-tools` | No       | Tools Claude can use without asking permission when this Skill is active. Example: `Read, Grep, Glob`                     |
+| `model`         | No       | Specific model to use when this Skill is active (e.g., `claude-sonnet-4-20250514`). Defaults to the conversation's model. |
 
 ## Skill Locations & Priority
 
@@ -38,12 +40,12 @@ Show concrete examples of using this Skill.
 Enterprise (highest priority) → Personal → Project → Plugin (lowest priority)
 ```
 
-| Type | Path | Applies to |
-|------|------|-----------|
-| **Enterprise** | See managed settings | All users in organization |
-| **Personal** | `~/.claude/skills/` | You, across all projects |
-| **Project** | `.claude/skills/` | Anyone working in repository |
-| **Plugin** | Bundled with plugins | Anyone with plugin installed |
+| Type           | Path                 | Applies to                   |
+| -------------- | -------------------- | ---------------------------- |
+| **Enterprise** | See managed settings | All users in organization    |
+| **Personal**   | `~/.claude/skills/`  | You, across all projects     |
+| **Project**    | `.claude/skills/`    | Anyone working in repository |
+| **Plugin**     | Bundled with plugins | Anyone with plugin installed |
 
 ## How Skills Work
 
@@ -68,7 +70,7 @@ my-skill/
 
 ### Example SKILL.md with References
 
-```markdown
+````markdown
 ---
 name: pdf-processing
 description: Extract text, fill forms, merge PDFs. Use when working with PDF files, forms, or document extraction. Requires pypdf and pdfplumber packages.
@@ -80,11 +82,13 @@ allowed-tools: Read, Bash(python:*)
 ## Quick start
 
 Extract text:
+
 ```python
 import pdfplumber
 with pdfplumber.open("doc.pdf") as pdf:
     text = pdf.pages[0].extract_text()
 ```
+````
 
 For form filling, see [FORMS.md](FORMS.md).
 For detailed API reference, see [REFERENCE.md](REFERENCE.md).
@@ -92,10 +96,12 @@ For detailed API reference, see [REFERENCE.md](REFERENCE.md).
 ## Requirements
 
 Packages must be installed:
+
 ```bash
 pip install pypdf pdfplumber
 ```
-```
+
+````
 
 ## Restricting Tool Access
 
@@ -105,9 +111,10 @@ name: reading-files-safely
 description: Read files without making changes. Use when you need read-only file access.
 allowed-tools: Read, Grep, Glob
 ---
-```
+````
 
 Benefits:
+
 - Read-only Skills that shouldn't modify files
 - Limited scope for specific tasks
 - Security-sensitive workflows
@@ -131,7 +138,7 @@ description: Extract text and tables from PDF files, fill forms, merge documents
 **Avoid vague descriptions:**
 
 ```yaml
-description: Helps with documents  # Too vague!
+description: Helps with documents # Too vague!
 ```
 
 ## Complete Example: Commit Message Generator

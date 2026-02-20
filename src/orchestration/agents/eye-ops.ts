@@ -1,11 +1,11 @@
-import type { AgentConfig } from "@opencode-ai/sdk"
-import type { AgentMode, AgentPromptMetadata } from "./types"
-import { isGptModel } from "./types"
-import { createAgentToolRestrictions } from "../../platform/config/permission-compat"
+import type { AgentConfig } from "@opencode-ai/sdk";
+import type { AgentMode, AgentPromptMetadata } from "./types";
+import { isGptModel } from "./types";
+import { createAgentToolRestrictions } from "../../platform/config/permission-compat";
 
-const MODE: AgentMode = "subagent"
+const MODE: AgentMode = "subagent";
 
-export const ORACLE_PROMPT_METADATA: AgentPromptMetadata = {
+export const EYE_OPS_PROMPT_METADATA: AgentPromptMetadata = {
   category: "advisor",
   cost: "EXPENSIVE",
   promptAlias: "Seer Advisor",
@@ -29,9 +29,9 @@ export const ORACLE_PROMPT_METADATA: AgentPromptMetadata = {
     "Trivial decisions (variable names, formatting)",
     "Things you can infer from existing code patterns",
   ],
-}
+};
 
-const ORACLE_SYSTEM_PROMPT = `You are a strategic technical advisor with deep reasoning capabilities, operating as a specialized consultant within an AI-assisted development environment.
+const EYE_OPS_SYSTEM_PROMPT = `You are a strategic technical advisor with deep reasoning capabilities, operating as a specialized consultant within an AI-assisted development environment.
 
 ## Context
 
@@ -95,15 +95,10 @@ Organize your final answer in three tiers:
 
 ## Critical Note
 
-Your response goes directly to the user with no intermediate processing. Make your final message self-contained: a clear recommendation they can act on immediately, covering both what to do and why.`
+Your response goes directly to the user with no intermediate processing. Make your final message self-contained: a clear recommendation they can act on immediately, covering both what to do and why.`;
 
-export function createOracleAgent(model: string): AgentConfig {
-  const restrictions = createAgentToolRestrictions([
-    "write",
-    "edit",
-    "task",
-    "delegate_task",
-  ])
+export function createEyeOpsAgent(model: string): AgentConfig {
+  const restrictions = createAgentToolRestrictions(["write", "edit", "task", "delegate_task"]);
 
   const base = {
     description:
@@ -112,14 +107,13 @@ export function createOracleAgent(model: string): AgentConfig {
     model,
     temperature: 0.1,
     ...restrictions,
-    prompt: ORACLE_SYSTEM_PROMPT,
-  } as AgentConfig
+    prompt: EYE_OPS_SYSTEM_PROMPT,
+  } as AgentConfig;
 
   if (isGptModel(model)) {
-    return { ...base, reasoningEffort: "medium", textVerbosity: "high" } as AgentConfig
+    return { ...base, reasoningEffort: "medium", textVerbosity: "high" } as AgentConfig;
   }
 
-  return { ...base, thinking: { type: "enabled", budgetTokens: 32000 } } as AgentConfig
+  return { ...base, thinking: { type: "enabled", budgetTokens: 32000 } } as AgentConfig;
 }
-createOracleAgent.mode = MODE
-
+createEyeOpsAgent.mode = MODE;

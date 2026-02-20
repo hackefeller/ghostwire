@@ -29,10 +29,7 @@ beforeEach(() => {
     "eye-ops": { name: "eye-ops", prompt: "test", mode: "subagent" },
   });
 
-  spyOn(
-    cipherJunior,
-    "createSisyphusJuniorAgentWithOverrides" as any,
-  ).mockReturnValue({
+  spyOn(cipherJunior, "createDarkRunnerAgent" as any).mockReturnValue({
     name: "dark-runner",
     prompt: "test",
     mode: "subagent",
@@ -40,12 +37,8 @@ beforeEach(() => {
 
   spyOn(commandLoader, "loadUserCommands" as any).mockResolvedValue({});
   spyOn(commandLoader, "loadProjectCommands" as any).mockResolvedValue({});
-  spyOn(commandLoader, "loadOpencodeGlobalCommands" as any).mockResolvedValue(
-    {},
-  );
-  spyOn(commandLoader, "loadOpencodeProjectCommands" as any).mockResolvedValue(
-    {},
-  );
+  spyOn(commandLoader, "loadOpencodeGlobalCommands" as any).mockResolvedValue({});
+  spyOn(commandLoader, "loadOpencodeProjectCommands" as any).mockResolvedValue({});
 
   spyOn(builtinCommands, "loadBuiltinCommands" as any).mockReturnValue({});
 
@@ -54,15 +47,9 @@ beforeEach(() => {
   spyOn(skillLoader, "loadOpencodeGlobalSkills" as any).mockResolvedValue({});
   spyOn(skillLoader, "loadOpencodeProjectSkills" as any).mockResolvedValue({});
   spyOn(skillLoader, "discoverUserClaudeSkills" as any).mockResolvedValue([]);
-  spyOn(skillLoader, "discoverProjectClaudeSkills" as any).mockResolvedValue(
-    [],
-  );
-  spyOn(skillLoader, "discoverOpencodeGlobalSkills" as any).mockResolvedValue(
-    [],
-  );
-  spyOn(skillLoader, "discoverOpencodeProjectSkills" as any).mockResolvedValue(
-    [],
-  );
+  spyOn(skillLoader, "discoverProjectClaudeSkills" as any).mockResolvedValue([]);
+  spyOn(skillLoader, "discoverOpencodeGlobalSkills" as any).mockResolvedValue([]);
+  spyOn(skillLoader, "discoverOpencodeProjectSkills" as any).mockResolvedValue([]);
 
   spyOn(agentLoader, "loadUserAgents" as any).mockReturnValue({});
   spyOn(agentLoader, "loadProjectAgents" as any).mockReturnValue({});
@@ -85,9 +72,7 @@ beforeEach(() => {
   spyOn(modelAvailability, "fetchAvailableModels" as any).mockResolvedValue(
     new Set(["anthropic/claude-opus-4-5"]),
   );
-  spyOn(providersCache, "readConnectedProvidersCache" as any).mockReturnValue(
-    null,
-  );
+  spyOn(providersCache, "readConnectedProvidersCache" as any).mockReturnValue(null);
 
   spyOn(configDir, "getOpenCodeConfigPaths" as any).mockReturnValue({
     global: "/tmp/.config/opencode",
@@ -105,7 +90,7 @@ beforeEach(() => {
 
 afterEach(() => {
   (agents.createBuiltinAgents as any)?.mockRestore?.();
-  (cipherJunior.createSisyphusJuniorAgentWithOverrides as any)?.mockRestore?.();
+  (cipherJunior.createDarkRunnerAgent as any)?.mockRestore?.();
   (commandLoader.loadUserCommands as any)?.mockRestore?.();
   (commandLoader.loadProjectCommands as any)?.mockRestore?.();
   (commandLoader.loadOpencodeGlobalCommands as any)?.mockRestore?.();
@@ -164,10 +149,7 @@ describe("Plan agent demote behavior", () => {
     await handler(config);
 
     // #then
-    const agents = config.agent as Record<
-      string,
-      { mode?: string; name?: string }
-    >;
+    const agents = config.agent as Record<string, { mode?: string; name?: string }>;
     expect(agents.plan).toBeDefined();
     expect(agents.plan.mode).toBe("subagent");
     expect(agents.plan.name).toBe("plan");
@@ -433,10 +415,9 @@ describe("Deadlock prevention - fetchAvailableModels must not receive client", (
     // Passing client to fetchAvailableModels during config handler causes deadlock:
     // - Plugin init waits for server response (client.provider.list())
     // - Server waits for plugin init to complete before handling requests
-    const fetchSpy = spyOn(
-      modelAvailability,
-      "fetchAvailableModels" as any,
-    ).mockResolvedValue(new Set<string>());
+    const fetchSpy = spyOn(modelAvailability, "fetchAvailableModels" as any).mockResolvedValue(
+      new Set<string>(),
+    );
 
     const pluginConfig: GhostwireConfig = {
       void_runner: {

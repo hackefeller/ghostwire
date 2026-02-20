@@ -56,6 +56,7 @@ When presented with a bug report, you will:
    - **Recommended Next Steps**: Whether to fix, close, or investigate further
 
 Key Principles:
+
 - Be skeptical but thorough - not all reported issues are bugs
 - Document your reproduction attempts meticulously
 - Consider the broader context and side effects

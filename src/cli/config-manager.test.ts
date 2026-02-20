@@ -222,10 +222,7 @@ describe("config-manager ANTIGRAVITY_PROVIDER_CONFIG", () => {
 
   test("Gemini models have variant definitions", () => {
     // #given the antigravity provider config
-    const models = (ANTIGRAVITY_PROVIDER_CONFIG as any).google.models as Record<
-      string,
-      any
-    >;
+    const models = (ANTIGRAVITY_PROVIDER_CONFIG as any).google.models as Record<string, any>;
 
     // #when checking Gemini Pro variants
     const pro = models["antigravity-gemini-3-pro"];
@@ -246,10 +243,7 @@ describe("config-manager ANTIGRAVITY_PROVIDER_CONFIG", () => {
 
   test("Claude thinking models have variant definitions", () => {
     // #given the antigravity provider config
-    const models = (ANTIGRAVITY_PROVIDER_CONFIG as any).google.models as Record<
-      string,
-      any
-    >;
+    const models = (ANTIGRAVITY_PROVIDER_CONFIG as any).google.models as Record<string, any>;
 
     // #when checking Claude thinking variants
     const sonnetThinking = models["antigravity-claude-sonnet-4-5-thinking"];
@@ -284,10 +278,9 @@ describe("generateOmoConfig - model fallback system", () => {
       "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
     );
     expect(result.agents).toBeDefined();
-    expect(
-      (result.agents as Record<string, { model: string }>)["void-runner"]
-        .model,
-    ).toBe("opencode/claude-opus-4-5");
+    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+      "opencode/claude-opus-4-5",
+    );
   });
 
   test("generates opencode models when OpenCode Zen subscription", () => {
@@ -305,10 +298,9 @@ describe("generateOmoConfig - model fallback system", () => {
     const result = generateOmoConfig(config);
 
     // #then should use opencode models
-    expect(
-      (result.agents as Record<string, { model: string }>)["void-runner"]
-        .model,
-    ).toBe("opencode/claude-opus-4-5");
+    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+      "opencode/claude-opus-4-5",
+    );
   });
 
   test("uses github-copilot sonnet fallback when only copilot available", () => {
@@ -326,10 +318,9 @@ describe("generateOmoConfig - model fallback system", () => {
     const result = generateOmoConfig(config);
 
     // #then should use github-copilot opus models (copilot fallback)
-    expect(
-      (result.agents as Record<string, { model: string }>)["void-runner"]
-        .model,
-    ).toBe("github-copilot/claude-opus-4.5");
+    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+      "github-copilot/claude-opus-4.5",
+    );
   });
 
   test("uses ultimate fallback when no providers configured", () => {
@@ -350,10 +341,9 @@ describe("generateOmoConfig - model fallback system", () => {
     expect(result.$schema).toBe(
       "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
     );
-    expect(
-      (result.agents as Record<string, { model: string }>)["void-runner"]
-        .model,
-    ).toBe("opencode/glm-4.7-free");
+    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+      "opencode/glm-4.7-free",
+    );
   });
 
   test("uses zai-coding-plan/glm-4.7 for archiveResearcher when Z.ai available", () => {
@@ -371,15 +361,13 @@ describe("generateOmoConfig - model fallback system", () => {
     const result = generateOmoConfig(config);
 
     // #then data-dive should use zai-coding-plan/glm-4.7
-    expect(
-      (result.agents as Record<string, { model: string }>)["data-dive"]
-        .model,
-    ).toBe("zai-coding-plan/glm-4.7");
+    expect((result.agents as Record<string, { model: string }>)["data-dive"].model).toBe(
+      "zai-coding-plan/glm-4.7",
+    );
     // #then other agents should use OpenCode Zen
-    expect(
-      (result.agents as Record<string, { model: string }>)["void-runner"]
-        .model,
-    ).toBe("opencode/claude-opus-4-5");
+    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+      "opencode/claude-opus-4-5",
+    );
   });
 
   test("uses native OpenAI models when only ChatGPT available", () => {
@@ -397,20 +385,17 @@ describe("generateOmoConfig - model fallback system", () => {
     const result = generateOmoConfig(config);
 
     // #then Cipher Operator should use native OpenAI (fallback within native tier)
-    expect(
-      (result.agents as Record<string, { model: string }>)["void-runner"]
-        .model,
-    ).toBe("openai/gpt-5.2-codex");
+    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+      "openai/gpt-5.2-codex",
+    );
     // #then Seer Advisor should use native OpenAI (first fallback entry)
-    expect(
-      (result.agents as Record<string, { model: string }>)["eye-ops"]
-        .model,
-    ).toBe("openai/gpt-5.2");
+    expect((result.agents as Record<string, { model: string }>)["eye-ops"].model).toBe(
+      "openai/gpt-5.2",
+    );
     // #then opticAnalyst should use native OpenAI (fallback within native tier)
-    expect(
-      (result.agents as Record<string, { model: string }>)["eye-scan"]
-        .model,
-    ).toBe("openai/gpt-5.2");
+    expect((result.agents as Record<string, { model: string }>)["eye-scan"].model).toBe(
+      "openai/gpt-5.2",
+    );
   });
 
   test("uses opencode claude-haiku for scoutRecon when OpenCode Zen available", () => {
@@ -428,9 +413,9 @@ describe("generateOmoConfig - model fallback system", () => {
     const result = generateOmoConfig(config);
 
     // #then scoutRecon should use opencode claude-haiku
-    expect(
-      (result.agents as Record<string, { model: string }>)["scan-ops"].model,
-    ).toBe("opencode/claude-haiku-4-5");
+    expect((result.agents as Record<string, { model: string }>)["scan-ops"].model).toBe(
+      "opencode/claude-haiku-4-5",
+    );
   });
 
   test("uses opencode claude-haiku for scoutRecon with OpenCode Zen", () => {
@@ -448,8 +433,8 @@ describe("generateOmoConfig - model fallback system", () => {
     const result = generateOmoConfig(config);
 
     // #then scoutRecon should use opencode claude-haiku
-    expect(
-      (result.agents as Record<string, { model: string }>)["scan-ops"].model,
-    ).toBe("opencode/claude-haiku-4-5");
+    expect((result.agents as Record<string, { model: string }>)["scan-ops"].model).toBe(
+      "opencode/claude-haiku-4-5",
+    );
   });
 });

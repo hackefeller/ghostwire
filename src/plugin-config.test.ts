@@ -39,9 +39,7 @@ describe("mergeConfigs", () => {
       // #then general.temperature should be overridden
       expect(result.categories?.general?.temperature).toBe(0.3);
       // #then quick should be preserved from base
-      expect(result.categories?.quick?.model).toBe(
-        "anthropic/claude-haiku-4-5",
-      );
+      expect(result.categories?.quick?.model).toBe("anthropic/claude-haiku-4-5");
       // #then visual should be added from override
       expect(result.categories?.visual?.model).toBe("google/gemini-3-pro");
     });
@@ -98,9 +96,7 @@ describe("mergeConfigs", () => {
 
       expect(result.agents?.["eye-ops"]?.model).toBe("openai/gpt-5.2");
       expect(result.agents?.["eye-ops"]?.temperature).toBe(0.5);
-      expect(result.agents?.["scan-ops"]?.model).toBe(
-        "anthropic/claude-haiku-4-5",
-      );
+      expect(result.agents?.["scan-ops"]?.model).toBe("anthropic/claude-haiku-4-5");
     });
 
     it("should merge disabled arrays without duplicates", () => {

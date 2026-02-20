@@ -29,7 +29,7 @@ Initialize a new project with proper structure, configuration, and development t
 - Setup formatting (Prettier, Black, RuboCop)
 - Create git workflow templates
 - Generate GitHub Actions workflows
-`
+`;
 
 export const PROJECT_BUILD_TEMPLATE = `# Project:Build Command
 
@@ -58,7 +58,7 @@ Compile, transpile, and bundle project code for distribution.
 - Platform-specific builds
 - Asset optimization
 - Type checking integration
-`
+`;
 
 export const PROJECT_DEPLOY_TEMPLATE = `# Project:Deploy Command
 
@@ -97,7 +97,7 @@ Deploy project to specified environment (staging, production, etc.).
 - Monitor logs and metrics after deployment
 - Have rollback procedure ready
 - Get approval for production deployments
-`
+`;
 
 export const PROJECT_TEST_TEMPLATE = `# Project:Test Command
 
@@ -128,4 +128,4 @@ Run test suites and measure code coverage.
 - Failed test re-runs
 - Test result persistence
 - Watch mode for development
-`
+`;

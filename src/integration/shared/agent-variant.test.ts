@@ -1,10 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import type { GhostwireConfig } from "../../platform/config";
-import {
-  applyAgentVariant,
-  resolveAgentVariant,
-  resolveVariantForModel,
-} from "./agent-variant";
+import { applyAgentVariant, resolveAgentVariant, resolveVariantForModel } from "./agent-variant";
 
 describe("resolveAgentVariant", () => {
   test("returns undefined when agent name missing", () => {

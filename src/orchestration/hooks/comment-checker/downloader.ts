@@ -1,11 +1,5 @@
 import { spawn } from "bun";
-import {
-  existsSync,
-  mkdirSync,
-  chmodSync,
-  unlinkSync,
-  appendFileSync,
-} from "fs";
+import { existsSync, mkdirSync, chmodSync, unlinkSync, appendFileSync } from "fs";
 import { join } from "path";
 import { homedir, tmpdir } from "os";
 import { createRequire } from "module";
@@ -59,9 +53,7 @@ export function getCacheDir(): string {
  * Get the binary name based on platform.
  */
 export function getBinaryName(): string {
-  return process.platform === "win32"
-    ? "grid-comment-checker.exe"
-    : "grid-comment-checker";
+  return process.platform === "win32" ? "grid-comment-checker.exe" : "grid-comment-checker";
 }
 
 /**
@@ -89,10 +81,7 @@ function getPackageVersion(): string {
 /**
  * Extract tar.gz archive using system tar command.
  */
-async function extractTarGz(
-  archivePath: string,
-  destDir: string,
-): Promise<void> {
+async function extractTarGz(archivePath: string, destDir: string): Promise<void> {
   debugLog("Extracting tar.gz:", archivePath, "to", destDir);
 
   const proc = spawn(["tar", "-xzf", archivePath, "-C", destDir], {

@@ -1,4 +1,4 @@
-import type { CategoryConfig } from "../../../platform/config/schema"
+import type { CategoryConfig } from "../../../platform/config/schema";
 
 export const VISUAL_CATEGORY_PROMPT_APPEND = `<Category_Context>
 You are working on VISUAL/UI tasks.
@@ -12,7 +12,7 @@ Design-first mindset:
 - Atmosphere: gradient meshes, noise textures, layered transparencies
 
 AVOID: Generic fonts, purple gradients on white, predictable layouts, cookie-cutter patterns.
-</Category_Context>`
+</Category_Context>`;
 
 export const ULTRABRAIN_CATEGORY_PROMPT_APPEND = `<Category_Context>
 You are working on DEEP LOGICAL REASONING / COMPLEX ARCHITECTURE tasks.
@@ -34,7 +34,7 @@ Response format:
 - Bottom line (2-3 sentences)
 - Action plan (numbered steps)
 - Risks and mitigations (if relevant)
-</Category_Context>`
+</Category_Context>`;
 
 export const ARTISTRY_CATEGORY_PROMPT_APPEND = `<Category_Context>
 You are working on HIGHLY CREATIVE / ARTISTIC tasks.
@@ -51,7 +51,7 @@ Approach:
 - Embrace ambiguity and wild experimentation
 - Balance novelty with coherence
 - This is for tasks requiring exceptional creativity
-</Category_Context>`
+</Category_Context>`;
 
 export const QUICK_CATEGORY_PROMPT_APPEND = `<Category_Context>
 You are working on SMALL / QUICK tasks.
@@ -103,7 +103,7 @@ EXPECTED OUTPUT:
 \`\`\`
 
 If your prompt lacks this structure, REWRITE IT before delegating.
-</Caller_Warning>`
+</Caller_Warning>`;
 
 export const UNSPECIFIED_LOW_CATEGORY_PROMPT_APPEND = `<Category_Context>
 You are working on tasks that don't fit specific categories but require moderate effort.
@@ -126,7 +126,7 @@ THIS CATEGORY USES A MID-TIER MODEL (claude-sonnet-4-5).
 1. MUST DO: Enumerate required actions explicitly
 2. MUST NOT DO: State forbidden actions to prevent scope creep
 3. EXPECTED OUTPUT: Define concrete success criteria
-</Caller_Warning>`
+</Caller_Warning>`;
 
 export const UNSPECIFIED_HIGH_CATEGORY_PROMPT_APPEND = `<Category_Context>
 You are working on tasks that don't fit specific categories but require substantial effort.
@@ -141,7 +141,7 @@ BEFORE selecting this category, VERIFY ALL conditions:
 If task fits ANY other category, DO NOT select unspecified-high.
 If task is unclassifiable but moderate-effort, use unspecified-low instead.
 </Selection_Gate>
-</Category_Context>`
+</Category_Context>`;
 
 export const WRITING_CATEGORY_PROMPT_APPEND = `<Category_Context>
 You are working on WRITING / PROSE tasks.
@@ -157,7 +157,7 @@ Approach:
 - Draft with care
 - Polish for clarity and impact
 - Documentation, READMEs, articles, technical writing
-</Category_Context>`
+</Category_Context>`;
 
 export const DEEP_CATEGORY_PROMPT_APPEND = `<Category_Context>
 You are working on GOAL-ORIENTED AUTONOMOUS tasks.
@@ -188,9 +188,7 @@ You are NOT an interactive assistant. You are an autonomous problem-solver.
 - Minimal status updates (user trusts your autonomy)
 - Focus on results, not play-by-play progress
 - Report completion with summary of changes made
-</Category_Context>`
-
-
+</Category_Context>`;
 
 export const DEFAULT_CATEGORIES: Record<string, CategoryConfig> = {
   "visual-engineering": { model: "google/gemini-3-pro" },
@@ -201,7 +199,7 @@ export const DEFAULT_CATEGORIES: Record<string, CategoryConfig> = {
   "unspecified-low": { model: "anthropic/claude-sonnet-4-5" },
   "unspecified-high": { model: "anthropic/claude-opus-4-5", variant: "max" },
   writing: { model: "google/gemini-3-flash" },
-}
+};
 
 export const CATEGORY_PROMPT_APPENDS: Record<string, string> = {
   "visual-engineering": VISUAL_CATEGORY_PROMPT_APPEND,
@@ -212,18 +210,20 @@ export const CATEGORY_PROMPT_APPENDS: Record<string, string> = {
   "unspecified-low": UNSPECIFIED_LOW_CATEGORY_PROMPT_APPEND,
   "unspecified-high": UNSPECIFIED_HIGH_CATEGORY_PROMPT_APPEND,
   writing: WRITING_CATEGORY_PROMPT_APPEND,
-}
+};
 
 export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "visual-engineering": "Frontend, UI/UX, design, styling, animation",
-  ultrabrain: "Use ONLY for genuinely hard, logic-heavy tasks. Give clear goals only, not step-by-step instructions.",
+  ultrabrain:
+    "Use ONLY for genuinely hard, logic-heavy tasks. Give clear goals only, not step-by-step instructions.",
   deep: "Goal-oriented autonomous problem-solving. Thorough research before action. For hairy problems requiring deep understanding.",
-  artistry: "Complex problem-solving with unconventional, creative approaches - beyond standard patterns",
+  artistry:
+    "Complex problem-solving with unconventional, creative approaches - beyond standard patterns",
   quick: "Trivial tasks - single file changes, typo fixes, simple modifications",
   "unspecified-low": "Tasks that don't fit other categories, low effort required",
   "unspecified-high": "Tasks that don't fit other categories, high effort required",
   writing: "Documentation, prose, technical writing",
-}
+};
 
 /**
  * System prompt prepended to plan agent invocations.
@@ -439,13 +439,13 @@ YOUR PLAN OUTPUT MUST FOLLOW THIS EXACT STRUCTURE:
 #####################################################################
 </CRITICAL_REQUIREMENT_DEPENDENCY_PARALLEL_EXECUTION_CATEGORY_SKILLS>
 
-`
+`;
 
 /**
  * List of agent names that should be treated as plan agents.
  * Case-insensitive matching is used.
  */
-export const PLAN_AGENT_NAMES = ["plan", "zen-planner", "planner"]
+export const PLAN_AGENT_NAMES = ["plan", "zen-planner", "planner"];
 
 /**
  * Check if the given agent name is a plan agent.
@@ -453,9 +453,7 @@ export const PLAN_AGENT_NAMES = ["plan", "zen-planner", "planner"]
  * @returns true if the agent is a plan agent
  */
 export function isPlanAgent(agentName: string | undefined): boolean {
-  if (!agentName) return false
-  const lowerName = agentName.toLowerCase().trim()
-  return PLAN_AGENT_NAMES.some(name => lowerName === name || lowerName.includes(name))
+  if (!agentName) return false;
+  const lowerName = agentName.toLowerCase().trim();
+  return PLAN_AGENT_NAMES.some((name) => lowerName === name || lowerName.includes(name));
 }
-
-

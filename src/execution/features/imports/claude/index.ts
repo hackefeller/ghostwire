@@ -1,2 +1,2 @@
-export * from "./types"
-export { importClaudePluginFromPath } from "./mapper"
+export * from "./types";
+export { importClaudePluginFromPath } from "./mapper";

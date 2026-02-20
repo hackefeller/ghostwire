@@ -1,12 +1,12 @@
-import type { PluginInput } from "@opencode-ai/plugin"
-import type { AutoCompactState, ParsedTokenLimitError } from "./types"
-import type { ExperimentalConfig } from "../../../platform/config"
-import { parseAnthropicTokenLimitError } from "./parser"
-import { executeCompact, getLastAssistant } from "./executor"
-import { log } from "../../../integration/shared/logger"
+import type { PluginInput } from "@opencode-ai/plugin";
+import type { AutoCompactState, ParsedTokenLimitError } from "./types";
+import type { ExperimentalConfig } from "../../../platform/config";
+import { parseAnthropicTokenLimitError } from "./parser";
+import { executeCompact, getLastAssistant } from "./executor";
+import { log } from "../../../integration/shared/logger";
 
 export interface AnthropicContextWindowLimitRecoveryOptions {
-  experimental?: ExperimentalConfig
+  experimental?: ExperimentalConfig;
 }
 
 function createRecoveryState(): AutoCompactState {
@@ -17,47 +17,50 @@ function createRecoveryState(): AutoCompactState {
     truncateStateBySession: new Map(),
     emptyContentAttemptBySession: new Map(),
     compactionInProgress: new Set<string>(),
-  }
+  };
 }
 
-export function createAnthropicContextWindowLimitRecoveryHook(ctx: PluginInput, options?: AnthropicContextWindowLimitRecoveryOptions) {
-  const autoCompactState = createRecoveryState()
-  const experimental = options?.experimental
+export function createAnthropicContextWindowLimitRecoveryHook(
+  ctx: PluginInput,
+  options?: AnthropicContextWindowLimitRecoveryOptions,
+) {
+  const autoCompactState = createRecoveryState();
+  const experimental = options?.experimental;
 
   const eventHandler = async ({ event }: { event: { type: string; properties?: unknown } }) => {
-    const props = event.properties as Record<string, unknown> | undefined
+    const props = event.properties as Record<string, unknown> | undefined;
 
     if (event.type === "session.deleted") {
-      const sessionInfo = props?.info as { id?: string } | undefined
+      const sessionInfo = props?.info as { id?: string } | undefined;
       if (sessionInfo?.id) {
-        autoCompactState.pendingCompact.delete(sessionInfo.id)
-        autoCompactState.errorDataBySession.delete(sessionInfo.id)
-        autoCompactState.retryStateBySession.delete(sessionInfo.id)
-        autoCompactState.truncateStateBySession.delete(sessionInfo.id)
-        autoCompactState.emptyContentAttemptBySession.delete(sessionInfo.id)
-        autoCompactState.compactionInProgress.delete(sessionInfo.id)
+        autoCompactState.pendingCompact.delete(sessionInfo.id);
+        autoCompactState.errorDataBySession.delete(sessionInfo.id);
+        autoCompactState.retryStateBySession.delete(sessionInfo.id);
+        autoCompactState.truncateStateBySession.delete(sessionInfo.id);
+        autoCompactState.emptyContentAttemptBySession.delete(sessionInfo.id);
+        autoCompactState.compactionInProgress.delete(sessionInfo.id);
       }
-      return
+      return;
     }
 
     if (event.type === "session.error") {
-      const sessionID = props?.sessionID as string | undefined
-      log("[auto-compact] session.error received", { sessionID, error: props?.error })
-      if (!sessionID) return
+      const sessionID = props?.sessionID as string | undefined;
+      log("[auto-compact] session.error received", { sessionID, error: props?.error });
+      if (!sessionID) return;
 
-      const parsed = parseAnthropicTokenLimitError(props?.error)
-      log("[auto-compact] parsed result", { parsed, hasError: !!props?.error })
+      const parsed = parseAnthropicTokenLimitError(props?.error);
+      log("[auto-compact] parsed result", { parsed, hasError: !!props?.error });
       if (parsed) {
-        autoCompactState.pendingCompact.add(sessionID)
-        autoCompactState.errorDataBySession.set(sessionID, parsed)
+        autoCompactState.pendingCompact.add(sessionID);
+        autoCompactState.errorDataBySession.set(sessionID, parsed);
 
         if (autoCompactState.compactionInProgress.has(sessionID)) {
-          return
+          return;
         }
 
-        const lastAssistant = await getLastAssistant(sessionID, ctx.client, ctx.directory)
-        const providerID = parsed.providerID ?? (lastAssistant?.providerID as string | undefined)
-        const modelID = parsed.modelID ?? (lastAssistant?.modelID as string | undefined)
+        const lastAssistant = await getLastAssistant(sessionID, ctx.client, ctx.directory);
+        const providerID = parsed.providerID ?? (lastAssistant?.providerID as string | undefined);
+        const modelID = parsed.modelID ?? (lastAssistant?.modelID as string | undefined);
 
         await ctx.client.tui
           .showToast({
@@ -68,7 +71,7 @@ export function createAnthropicContextWindowLimitRecoveryHook(ctx: PluginInput, 
               duration: 3000,
             },
           })
-          .catch(() => {})
+          .catch(() => {});
 
         setTimeout(() => {
           executeCompact(
@@ -77,47 +80,47 @@ export function createAnthropicContextWindowLimitRecoveryHook(ctx: PluginInput, 
             autoCompactState,
             ctx.client,
             ctx.directory,
-            experimental
-          )
-        }, 300)
+            experimental,
+          );
+        }, 300);
       }
-      return
+      return;
     }
 
     if (event.type === "message.updated") {
-      const info = props?.info as Record<string, unknown> | undefined
-      const sessionID = info?.sessionID as string | undefined
+      const info = props?.info as Record<string, unknown> | undefined;
+      const sessionID = info?.sessionID as string | undefined;
 
       if (sessionID && info?.role === "assistant" && info.error) {
-        log("[auto-compact] message.updated with error", { sessionID, error: info.error })
-        const parsed = parseAnthropicTokenLimitError(info.error)
-        log("[auto-compact] message.updated parsed result", { parsed })
+        log("[auto-compact] message.updated with error", { sessionID, error: info.error });
+        const parsed = parseAnthropicTokenLimitError(info.error);
+        log("[auto-compact] message.updated parsed result", { parsed });
         if (parsed) {
-          parsed.providerID = info.providerID as string | undefined
-          parsed.modelID = info.modelID as string | undefined
-          autoCompactState.pendingCompact.add(sessionID)
-          autoCompactState.errorDataBySession.set(sessionID, parsed)
+          parsed.providerID = info.providerID as string | undefined;
+          parsed.modelID = info.modelID as string | undefined;
+          autoCompactState.pendingCompact.add(sessionID);
+          autoCompactState.errorDataBySession.set(sessionID, parsed);
         }
       }
-      return
+      return;
     }
 
     if (event.type === "session.idle") {
-      const sessionID = props?.sessionID as string | undefined
-      if (!sessionID) return
+      const sessionID = props?.sessionID as string | undefined;
+      if (!sessionID) return;
 
-      if (!autoCompactState.pendingCompact.has(sessionID)) return
+      if (!autoCompactState.pendingCompact.has(sessionID)) return;
 
-      const errorData = autoCompactState.errorDataBySession.get(sessionID)
-      const lastAssistant = await getLastAssistant(sessionID, ctx.client, ctx.directory)
+      const errorData = autoCompactState.errorDataBySession.get(sessionID);
+      const lastAssistant = await getLastAssistant(sessionID, ctx.client, ctx.directory);
 
       if (lastAssistant?.summary === true) {
-        autoCompactState.pendingCompact.delete(sessionID)
-        return
+        autoCompactState.pendingCompact.delete(sessionID);
+        return;
       }
 
-      const providerID = errorData?.providerID ?? (lastAssistant?.providerID as string | undefined)
-      const modelID = errorData?.modelID ?? (lastAssistant?.modelID as string | undefined)
+      const providerID = errorData?.providerID ?? (lastAssistant?.providerID as string | undefined);
+      const modelID = errorData?.modelID ?? (lastAssistant?.modelID as string | undefined);
 
       await ctx.client.tui
         .showToast({
@@ -128,7 +131,7 @@ export function createAnthropicContextWindowLimitRecoveryHook(ctx: PluginInput, 
             duration: 3000,
           },
         })
-        .catch(() => {})
+        .catch(() => {});
 
       await executeCompact(
         sessionID,
@@ -136,16 +139,16 @@ export function createAnthropicContextWindowLimitRecoveryHook(ctx: PluginInput, 
         autoCompactState,
         ctx.client,
         ctx.directory,
-        experimental
-      )
+        experimental,
+      );
     }
-  }
+  };
 
   return {
     event: eventHandler,
-  }
+  };
 }
 
-export type { AutoCompactState, ParsedTokenLimitError, TruncateState } from "./types"
-export { parseAnthropicTokenLimitError } from "./parser"
-export { executeCompact, getLastAssistant } from "./executor"
+export type { AutoCompactState, ParsedTokenLimitError, TruncateState } from "./types";
+export { parseAnthropicTokenLimitError } from "./parser";
+export { executeCompact, getLastAssistant } from "./executor";

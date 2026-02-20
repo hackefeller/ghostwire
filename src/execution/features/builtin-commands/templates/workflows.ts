@@ -28,7 +28,7 @@ Creates a markdown plan file in \`docs/plans/\` with:
 - Acceptance criteria
 - Implementation steps
 - Relevant context and references
-`
+`;
 
 export const WORKFLOWS_CREATE_TEMPLATE = `# Workflows:Create Command
 
@@ -54,7 +54,7 @@ Execute a plan by breaking it into concrete development tasks and coordinating i
 - Can be invoked manually after \`workflows:plan\`
 - Can be chained automatically from \`workflows:plan\` with user approval
 - Integrates with background task system for long-running work
-`
+`;
 
 export const WORKFLOWS_STATUS_TEMPLATE = `# Workflows:Status Command
 
@@ -73,7 +73,7 @@ Check the status of an in-progress workflow or plan.
 - Works with \`workflows:create\` to track implementation progress
 - Shows background agent status
 - Provides context for \`workflows:work\` continuation
-`
+`;
 
 export const WORKFLOWS_COMPLETE_TEMPLATE = `# Workflows:Complete Command
 
@@ -93,4 +93,4 @@ Finalize and archive a completed workflow.
 - Artifacts and references
 - Institutional learning record (if applicable)
 - Next steps or follow-up items
-`
+`;

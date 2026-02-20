@@ -1,8 +1,8 @@
-import type { AgentConfig } from "@opencode-ai/sdk"
-import type { AgentMode, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "../../platform/config/permission-compat"
+import type { AgentConfig } from "@opencode-ai/sdk";
+import type { AgentMode, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "../../platform/config/permission-compat";
 
-const MODE: AgentMode = "subagent"
+const MODE: AgentMode = "subagent";
 
 export const EXPLORE_PROMPT_METADATA: AgentPromptMetadata = {
   category: "exploration",
@@ -22,7 +22,7 @@ export const EXPLORE_PROMPT_METADATA: AgentPromptMetadata = {
     "Single keyword/pattern suffices",
     "Known file location",
   ],
-}
+};
 
 export function createExploreAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
@@ -31,7 +31,7 @@ export function createExploreAgent(model: string): AgentConfig {
     "task",
     "delegate_task",
     "call_grid_agent",
-  ])
+  ]);
 
   return {
     description:
@@ -119,6 +119,6 @@ Use the right tool for the job:
 - **History/evolution** (when added, who changed): git commands
 
 Flood with parallel calls. Cross-validate findings across multiple tools.`,
-  }
+  };
 }
-createExploreAgent.mode = MODE
+createExploreAgent.mode = MODE;

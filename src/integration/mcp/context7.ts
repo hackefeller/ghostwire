@@ -7,4 +7,4 @@ export const context7 = {
     : undefined,
   // Disable OAuth auto-detection - Context7 uses API key header, not OAuth
   oauth: false as const,
-}
+};

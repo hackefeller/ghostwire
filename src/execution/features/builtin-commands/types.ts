@@ -1,4 +1,4 @@
-import type { CommandDefinition } from "../claude-code-command-loader"
+import type { CommandDefinition } from "../claude-code-command-loader";
 
 export type BuiltinCommandName =
   | "init-deep"
@@ -31,10 +31,10 @@ export type BuiltinCommandName =
   | "ghostwire:docs:deploy-docs"
   | "ghostwire:docs:release-docs"
   | "ghostwire:docs:feature-video"
-  | "ghostwire:docs:test-browser"
+  | "ghostwire:docs:test-browser";
 
 export interface BuiltinCommandConfig {
-  disabled_commands?: BuiltinCommandName[]
+  disabled_commands?: BuiltinCommandName[];
 }
 
-export type BuiltinCommands = Record<string, CommandDefinition>
+export type BuiltinCommands = Record<string, CommandDefinition>;

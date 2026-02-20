@@ -213,7 +213,7 @@ Mixed format`;
 
     it("should handle Windows-style line endings", () => {
       // #given content with CRLF
-      const content = "---\r\napplyTo: \"*.ts\"\r\n---\r\nWindows content";
+      const content = '---\r\napplyTo: "*.ts"\r\n---\r\nWindows content';
 
       // #when parsing
       const result = parseRuleFrontmatter(content);

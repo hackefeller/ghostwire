@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach, mock } from "bun:test"
-import { createSkillMcpTool, applyGrepFilter } from "./tools"
-import { SkillMcpManager } from "../../features/skill-mcp-manager"
-import type { LoadedSkill } from "../../features/opencode-skill-loader/types"
-import type { ToolContext } from "@opencode-ai/plugin/tool"
+import { describe, it, expect, beforeEach, mock } from "bun:test";
+import { createSkillMcpTool, applyGrepFilter } from "./tools";
+import { SkillMcpManager } from "../../features/skill-mcp-manager";
+import type { LoadedSkill } from "../../features/opencode-skill-loader/types";
+import type { ToolContext } from "@opencode-ai/plugin/tool";
 
 function createMockSkillWithMcp(name: string, mcpServers: Record<string, unknown>): LoadedSkill {
   return {
@@ -16,7 +16,7 @@ function createMockSkillWithMcp(name: string, mcpServers: Record<string, unknown
     },
     scope: "opencode-project",
     mcpConfig: mcpServers as LoadedSkill["mcpConfig"],
-  }
+  };
 }
 
 const mockContext = {
@@ -24,18 +24,18 @@ const mockContext = {
   messageID: "msg-1",
   agent: "test-agent",
   abort: new AbortController().signal,
-} as unknown as ToolContext
+} as unknown as ToolContext;
 
 describe("skill_mcp tool", () => {
-  let manager: SkillMcpManager
-  let loadedSkills: LoadedSkill[]
-  let sessionID: string
+  let manager: SkillMcpManager;
+  let loadedSkills: LoadedSkill[];
+  let sessionID: string;
 
   beforeEach(() => {
-    manager = new SkillMcpManager()
-    loadedSkills = []
-    sessionID = "test-session-1"
-  })
+    manager = new SkillMcpManager();
+    loadedSkills = [];
+    sessionID = "test-session-1";
+  });
 
   describe("parameter validation", () => {
     it("throws when no operation specified", async () => {
@@ -44,13 +44,13 @@ describe("skill_mcp tool", () => {
         manager,
         getLoadedSkills: () => loadedSkills,
         getSessionID: () => sessionID,
-      })
+      });
 
       // #when / #then
-      await expect(
-        tool.execute({ mcp_name: "test-server" }, mockContext)
-      ).rejects.toThrow(/Missing operation/)
-    })
+      await expect(tool.execute({ mcp_name: "test-server" }, mockContext)).rejects.toThrow(
+        /Missing operation/,
+      );
+    });
 
     it("throws when multiple operations specified", async () => {
       // #given
@@ -58,17 +58,20 @@ describe("skill_mcp tool", () => {
         manager,
         getLoadedSkills: () => loadedSkills,
         getSessionID: () => sessionID,
-      })
+      });
 
       // #when / #then
       await expect(
-        tool.execute({
-          mcp_name: "test-server",
-          tool_name: "some-tool",
-          resource_name: "some://resource",
-        }, mockContext)
-      ).rejects.toThrow(/Multiple operations/)
-    })
+        tool.execute(
+          {
+            mcp_name: "test-server",
+            tool_name: "some-tool",
+            resource_name: "some://resource",
+          },
+          mockContext,
+        ),
+      ).rejects.toThrow(/Multiple operations/);
+    });
 
     it("throws when mcp_name not found in any skill", async () => {
       // #given
@@ -76,18 +79,18 @@ describe("skill_mcp tool", () => {
         createMockSkillWithMcp("test-skill", {
           "known-server": { command: "echo", args: ["test"] },
         }),
-      ]
+      ];
       const tool = createSkillMcpTool({
         manager,
         getLoadedSkills: () => loadedSkills,
         getSessionID: () => sessionID,
-      })
+      });
 
       // #when / #then
       await expect(
-        tool.execute({ mcp_name: "unknown-server", tool_name: "some-tool" }, mockContext)
-      ).rejects.toThrow(/not found/)
-    })
+        tool.execute({ mcp_name: "unknown-server", tool_name: "some-tool" }, mockContext),
+      ).rejects.toThrow(/not found/);
+    });
 
     it("includes available MCP servers in error message", async () => {
       // #given
@@ -98,18 +101,18 @@ describe("skill_mcp tool", () => {
         createMockSkillWithMcp("api-skill", {
           "rest-api": { command: "node", args: ["server.js"] },
         }),
-      ]
+      ];
       const tool = createSkillMcpTool({
         manager,
         getLoadedSkills: () => loadedSkills,
         getSessionID: () => sessionID,
-      })
+      });
 
       // #when / #then
       await expect(
-        tool.execute({ mcp_name: "missing", tool_name: "test" }, mockContext)
-      ).rejects.toThrow(/sqlite.*db-skill|rest-api.*api-skill/s)
-    })
+        tool.execute({ mcp_name: "missing", tool_name: "test" }, mockContext),
+      ).rejects.toThrow(/sqlite.*db-skill|rest-api.*api-skill/s);
+    });
 
     it("throws on invalid JSON arguments", async () => {
       // #given
@@ -117,23 +120,26 @@ describe("skill_mcp tool", () => {
         createMockSkillWithMcp("test-skill", {
           "test-server": { command: "echo" },
         }),
-      ]
+      ];
       const tool = createSkillMcpTool({
         manager,
         getLoadedSkills: () => loadedSkills,
         getSessionID: () => sessionID,
-      })
+      });
 
       // #when / #then
       await expect(
-        tool.execute({
-          mcp_name: "test-server",
-          tool_name: "some-tool",
-          arguments: "not valid json",
-        }, mockContext)
-      ).rejects.toThrow(/Invalid arguments JSON/)
-    })
-  })
+        tool.execute(
+          {
+            mcp_name: "test-server",
+            tool_name: "some-tool",
+            arguments: "not valid json",
+          },
+          mockContext,
+        ),
+      ).rejects.toThrow(/Invalid arguments JSON/);
+    });
+  });
 
   describe("tool description", () => {
     it("has concise description", () => {
@@ -142,12 +148,12 @@ describe("skill_mcp tool", () => {
         manager,
         getLoadedSkills: () => [],
         getSessionID: () => "session",
-      })
+      });
 
       // #then
-      expect(tool.description.length).toBeLessThan(200)
-      expect(tool.description).toContain("mcp_name")
-    })
+      expect(tool.description.length).toBeLessThan(200);
+      expect(tool.description).toContain("mcp_name");
+    });
 
     it("includes grep parameter in schema", () => {
       // #given / #when
@@ -155,13 +161,13 @@ describe("skill_mcp tool", () => {
         manager,
         getLoadedSkills: () => [],
         getSessionID: () => "session",
-      })
+      });
 
       // #then
-      expect(tool.description).toBeDefined()
-    })
-  })
-})
+      expect(tool.description).toBeDefined();
+    });
+  });
+});
 
 describe("applyGrepFilter", () => {
   it("filters lines matching pattern", () => {
@@ -169,48 +175,48 @@ describe("applyGrepFilter", () => {
     const output = `line1: hello world
 line2: foo bar
 line3: hello again
-line4: baz qux`
+line4: baz qux`;
 
     // #when
-    const result = applyGrepFilter(output, "hello")
+    const result = applyGrepFilter(output, "hello");
 
     // #then
-    expect(result).toContain("line1: hello world")
-    expect(result).toContain("line3: hello again")
-    expect(result).not.toContain("foo bar")
-    expect(result).not.toContain("baz qux")
-  })
+    expect(result).toContain("line1: hello world");
+    expect(result).toContain("line3: hello again");
+    expect(result).not.toContain("foo bar");
+    expect(result).not.toContain("baz qux");
+  });
 
   it("returns original output when pattern is undefined", () => {
     // #given
-    const output = "some output"
+    const output = "some output";
 
     // #when
-    const result = applyGrepFilter(output, undefined)
+    const result = applyGrepFilter(output, undefined);
 
     // #then
-    expect(result).toBe(output)
-  })
+    expect(result).toBe(output);
+  });
 
   it("returns message when no lines match", () => {
     // #given
-    const output = "line1\nline2\nline3"
+    const output = "line1\nline2\nline3";
 
     // #when
-    const result = applyGrepFilter(output, "xyz")
+    const result = applyGrepFilter(output, "xyz");
 
     // #then
-    expect(result).toContain("[grep] No lines matched pattern")
-  })
+    expect(result).toContain("[grep] No lines matched pattern");
+  });
 
   it("handles invalid regex gracefully", () => {
     // #given
-    const output = "some output"
+    const output = "some output";
 
     // #when
-    const result = applyGrepFilter(output, "[invalid")
+    const result = applyGrepFilter(output, "[invalid");
 
     // #then
-    expect(result).toBe(output)
-  })
-})
+    expect(result).toBe(output);
+  });
+});

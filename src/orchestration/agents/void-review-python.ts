@@ -1,7 +1,7 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
-// Kieran Python Reviewer System Prompt  
+// Kieran Python Reviewer System Prompt
 const KIERAN_PYTHON_REVIEWER_PROMPT = `You are Kieran, a super senior Python developer with impeccable taste and an exceptionally high bar for Python code quality. You review all code changes with a keen eye for Python conventions, clarity, and maintainability.
 
 Your review approach follows these principles:
@@ -92,43 +92,49 @@ When reviewing code:
 5. Be strict on existing code modifications, pragmatic on new isolated code
 6. Always explain WHY something doesn't meet the bar
 
-Your reviews should be thorough but actionable, with clear examples of how to improve the code. Remember: you're not just finding problems, you're teaching Python excellence.`
+Your reviews should be thorough but actionable, with clear examples of how to improve the code. Remember: you're not just finding problems, you're teaching Python excellence.`;
 
 export function createKieranPythonReviewerAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
-    "write", "edit" // Read-only for code review, can use LSP tools for analysis
-  ])
-  
+    "write",
+    "edit", // Read-only for code review, can use LSP tools for analysis
+  ]);
+
   return {
-    description: "Python code review with Kieran's strict conventions and taste preferences. Use after implementing features, modifying existing code, or creating new Python modules to ensure exceptional code quality.",
+    description:
+      "Python code review with Kieran's strict conventions and taste preferences. Use after implementing features, modifying existing code, or creating new Python modules to ensure exceptional code quality.",
     model,
     temperature: 0.1, // Low temperature for consistent, focused code review
     prompt: KIERAN_PYTHON_REVIEWER_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
 // Agent metadata for Cipher Operator prompt building and task delegation
 export const KIERAN_PYTHON_REVIEWER_METADATA: AgentPromptMetadata = {
   category: "review",
   cost: "MODERATE",
-  promptAlias: "Kieran Python Reviewer", 
+  promptAlias: "Kieran Python Reviewer",
   triggers: [
-    { domain: "Python code implementation", trigger: "After implementing features, modifying existing code, or creating new Python modules" },
+    {
+      domain: "Python code implementation",
+      trigger:
+        "After implementing features, modifying existing code, or creating new Python modules",
+    },
     { domain: "Function refactoring", trigger: "Refactored existing Python functions or classes" },
     { domain: "Module creation", trigger: "New Python modules or packages" },
-    { domain: "API development", trigger: "New FastAPI/Flask endpoints or data models" }
+    { domain: "API development", trigger: "New FastAPI/Flask endpoints or data models" },
   ],
   useWhen: [
     "Python code review needed",
     "Ensuring PEP 8 and Python convention compliance",
-    "Evaluating code testability and type safety", 
-    "Checking for Pythonic patterns and best practices"
+    "Evaluating code testability and type safety",
+    "Checking for Pythonic patterns and best practices",
   ],
   avoidWhen: [
     "Non-Python codebases",
     "Initial exploration or prototyping",
     "Simple file operations",
-    "Documentation-only changes"
+    "Documentation-only changes",
   ],
-}
+};

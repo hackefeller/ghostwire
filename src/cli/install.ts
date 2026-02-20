@@ -1,11 +1,6 @@
 import * as p from "@clack/prompts";
 import color from "picocolors";
-import type {
-  InstallArgs,
-  InstallConfig,
-  BooleanArg,
-  DetectedConfig,
-} from "./types";
+import type { InstallArgs, InstallConfig, BooleanArg, DetectedConfig } from "./types";
 import {
   addPluginToOpenCodeConfig,
   addToInstalledPlugins,
@@ -31,11 +26,7 @@ const SYMBOLS = {
   star: color.yellow("*"),
 };
 
-function formatProvider(
-  name: string,
-  enabled: boolean,
-  detail?: string,
-): string {
+function formatProvider(name: string, enabled: boolean, detail?: string): string {
   const status = enabled ? SYMBOLS.check : color.dim("○");
   const label = enabled ? color.white(name) : color.dim(name);
   const suffix = detail ? color.dim(` (${detail})`) : "";
@@ -48,24 +39,12 @@ function formatConfigSummary(config: InstallConfig): string {
   lines.push(color.bold(color.white("Configuration Summary")));
   lines.push("");
 
-  lines.push(
-    formatProvider(
-      "OpenAI/ChatGPT",
-      config.hasOpenAI,
-      "GPT-5.2 for Seer Advisor",
-    ),
-  );
+  lines.push(formatProvider("OpenAI/ChatGPT", config.hasOpenAI, "GPT-5.2 for Seer Advisor"));
   lines.push(formatProvider("Gemini", config.hasGemini));
   lines.push(formatProvider("GitHub Copilot", config.hasCopilot, "fallback"));
+  lines.push(formatProvider("OpenCode Zen", config.hasOpencodeZen, "opencode/ models"));
   lines.push(
-    formatProvider("OpenCode Zen", config.hasOpencodeZen, "opencode/ models"),
-  );
-  lines.push(
-    formatProvider(
-      "Z.ai Coding Plan",
-      config.hasZaiCodingPlan,
-      "Archive Researcher/Multimodal",
-    ),
+    formatProvider("Z.ai Coding Plan", config.hasZaiCodingPlan, "Archive Researcher/Multimodal"),
   );
   lines.push(
     formatProvider(
@@ -81,12 +60,8 @@ function formatConfigSummary(config: InstallConfig): string {
 
   lines.push(color.bold(color.white("Model Assignment")));
   lines.push("");
-  lines.push(
-    `  ${SYMBOLS.info} Models auto-configured based on provider priority`,
-  );
-  lines.push(
-    `  ${SYMBOLS.bullet} Priority: Native > Copilot > OpenCode Zen > Z.ai`,
-  );
+  lines.push(`  ${SYMBOLS.info} Models auto-configured based on provider priority`);
+  lines.push(`  ${SYMBOLS.bullet} Priority: Native > Copilot > OpenCode Zen > Z.ai`);
 
   return lines.join("\n");
 }
@@ -122,10 +97,7 @@ function printWarning(message: string): void {
 function printBox(content: string, title?: string): void {
   const lines = content.split("\n");
   const maxWidth =
-    Math.max(
-      ...lines.map((l) => l.replace(/\x1b\[[0-9;]*m/g, "").length),
-      title?.length ?? 0,
-    ) + 4;
+    Math.max(...lines.map((l) => l.replace(/\x1b\[[0-9;]*m/g, "").length), title?.length ?? 0) + 4;
   const border = color.dim("─".repeat(maxWidth));
 
   console.log();
@@ -143,9 +115,7 @@ function printBox(content: string, title?: string): void {
   for (const line of lines) {
     const stripped = line.replace(/\x1b\[[0-9;]*m/g, "");
     const padding = maxWidth - stripped.length;
-    console.log(
-      color.dim("│") + ` ${line}${" ".repeat(padding - 1)}` + color.dim("│"),
-    );
+    console.log(color.dim("│") + ` ${line}${" ".repeat(padding - 1)}` + color.dim("│"));
   }
 
   console.log(color.dim("└") + border + color.dim("┘"));
@@ -174,31 +144,16 @@ function validateNonTuiArgs(args: InstallArgs): {
     errors.push(`Invalid --openai value: ${args.openai} (expected: no, yes)`);
   }
 
-  if (
-    args.opencodeZen !== undefined &&
-    !["no", "yes"].includes(args.opencodeZen)
-  ) {
-    errors.push(
-      `Invalid --opencode-zen value: ${args.opencodeZen} (expected: no, yes)`,
-    );
+  if (args.opencodeZen !== undefined && !["no", "yes"].includes(args.opencodeZen)) {
+    errors.push(`Invalid --opencode-zen value: ${args.opencodeZen} (expected: no, yes)`);
   }
 
-  if (
-    args.zaiCodingPlan !== undefined &&
-    !["no", "yes"].includes(args.zaiCodingPlan)
-  ) {
-    errors.push(
-      `Invalid --zai-coding-plan value: ${args.zaiCodingPlan} (expected: no, yes)`,
-    );
+  if (args.zaiCodingPlan !== undefined && !["no", "yes"].includes(args.zaiCodingPlan)) {
+    errors.push(`Invalid --zai-coding-plan value: ${args.zaiCodingPlan} (expected: no, yes)`);
   }
 
-  if (
-    args.kimiForCoding !== undefined &&
-    !["no", "yes"].includes(args.kimiForCoding)
-  ) {
-    errors.push(
-      `Invalid --kimi-for-coding value: ${args.kimiForCoding} (expected: no, yes)`,
-    );
+  if (args.kimiForCoding !== undefined && !["no", "yes"].includes(args.kimiForCoding)) {
+    errors.push(`Invalid --kimi-for-coding value: ${args.kimiForCoding} (expected: no, yes)`);
   }
 
   return { valid: errors.length === 0, errors };
@@ -216,12 +171,12 @@ function argsToConfig(args: InstallArgs): InstallConfig {
 }
 
 function detectedToInitialValues(detected: DetectedConfig): {
-  openai: BooleanArg
-  gemini: BooleanArg
-  copilot: BooleanArg
-  opencodeZen: BooleanArg
-  zaiCodingPlan: BooleanArg
-  kimiForCoding: BooleanArg
+  openai: BooleanArg;
+  gemini: BooleanArg;
+  copilot: BooleanArg;
+  opencodeZen: BooleanArg;
+  zaiCodingPlan: BooleanArg;
+  kimiForCoding: BooleanArg;
 } {
   return {
     openai: detected.hasOpenAI ? "yes" : "no",
@@ -233,9 +188,7 @@ function detectedToInitialValues(detected: DetectedConfig): {
   };
 }
 
-async function runTuiMode(
-  detected: DetectedConfig,
-): Promise<InstallConfig | null> {
+async function runTuiMode(detected: DetectedConfig): Promise<InstallConfig | null> {
   const initial = detectedToInitialValues(detected);
 
   const openai = await p.select({
@@ -418,9 +371,7 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
 
   if (isUpdate) {
     const initial = detectedToInitialValues(detected);
-    printInfo(
-      `Current config: OpenAI=${initial.openai}, Gemini=${initial.gemini}`,
-    );
+    printInfo(`Current config: OpenAI=${initial.openai}, Gemini=${initial.gemini}`);
   }
 
   const config = argsToConfig(args);
@@ -442,9 +393,7 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
       printError(`Failed: ${pluginsResult.error}`);
       return 1;
     }
-    printSuccess(
-      `Claude Code plugin registered ${SYMBOLS.arrow} ${color.dim(args.installPath)}`,
-    );
+    printSuccess(`Claude Code plugin registered ${SYMBOLS.arrow} ${color.dim(args.installPath)}`);
   }
 
   if (config.hasGemini) {
@@ -454,9 +403,7 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
       printError(`Failed: ${authResult.error}`);
       return 1;
     }
-    printSuccess(
-      `Auth plugins configured ${SYMBOLS.arrow} ${color.dim(authResult.configPath)}`,
-    );
+    printSuccess(`Auth plugins configured ${SYMBOLS.arrow} ${color.dim(authResult.configPath)}`);
 
     printStep(step++, totalSteps, "Adding provider configurations...");
     const providerResult = addProviderConfig(config);
@@ -464,9 +411,7 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
       printError(`Failed: ${providerResult.error}`);
       return 1;
     }
-    printSuccess(
-      `Providers configured ${SYMBOLS.arrow} ${color.dim(providerResult.configPath)}`,
-    );
+    printSuccess(`Providers configured ${SYMBOLS.arrow} ${color.dim(providerResult.configPath)}`);
   } else {
     step += 2;
   }
@@ -477,24 +422,15 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
     printError(`Failed: ${omoResult.error}`);
     return 1;
   }
-  printSuccess(
-    `Config written ${SYMBOLS.arrow} ${color.dim(omoResult.configPath)}`,
-  );
+  printSuccess(`Config written ${SYMBOLS.arrow} ${color.dim(omoResult.configPath)}`);
 
   printBox(
     formatConfigSummary(config),
     isUpdate ? "Updated Configuration" : "Installation Complete",
   );
 
-  if (
-    !config.hasOpenAI &&
-    !config.hasGemini &&
-    !config.hasCopilot &&
-    !config.hasOpencodeZen
-  ) {
-    printWarning(
-      "No model providers configured. Using opencode/glm-4.7-free as fallback.",
-    );
+  if (!config.hasOpenAI && !config.hasGemini && !config.hasCopilot && !config.hasOpencodeZen) {
+    printWarning("No model providers configured. Using opencode/glm-4.7-free as fallback.");
   }
 
   console.log(
@@ -520,18 +456,13 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
   console.log(color.dim("oMoMoMoMo... Enjoy!"));
   console.log();
 
-  if (
-    (config.hasGemini || config.hasCopilot) &&
-    !args.skipAuth
-  ) {
+  if ((config.hasGemini || config.hasCopilot) && !args.skipAuth) {
     printBox(
       `Run ${color.cyan("opencode auth login")} and select your provider:\n` +
         (config.hasGemini
           ? `  ${SYMBOLS.bullet} Google ${color.gray("→ OAuth with Antigravity")}\n`
           : "") +
-        (config.hasCopilot
-          ? `  ${SYMBOLS.bullet} GitHub ${color.gray("→ Copilot")}`
-          : ""),
+        (config.hasCopilot ? `  ${SYMBOLS.bullet} GitHub ${color.gray("→ Copilot")}` : ""),
       "Authenticate Your Providers",
     );
   }
@@ -547,11 +478,7 @@ export async function install(args: InstallArgs): Promise<number> {
   const detected = detectCurrentConfig();
   const isUpdate = detected.isInstalled;
 
-  p.intro(
-    color.bgMagenta(
-      color.white(isUpdate ? " oMoMoMoMo... Update " : " oMoMoMoMo... "),
-    ),
-  );
+  p.intro(color.bgMagenta(color.white(isUpdate ? " oMoMoMoMo... Update " : " oMoMoMoMo... ")));
 
   if (isUpdate) {
     const initial = detectedToInitialValues(detected);
@@ -570,10 +497,7 @@ export async function install(args: InstallArgs): Promise<number> {
     p.log.warn(
       "OpenCode binary not found. Plugin will be configured, but you'll need to install OpenCode to use it.",
     );
-    p.note(
-      "Visit https://opencode.ai/docs for installation instructions",
-      "Installation Guide",
-    );
+    p.note("Visit https://opencode.ai/docs for installation instructions", "Installation Guide");
   } else {
     s.stop(`OpenCode ${version ?? "installed"} ${color.green("[OK]")}`);
   }
@@ -619,25 +543,13 @@ export async function install(args: InstallArgs): Promise<number> {
   }
   s.stop(`Config written to ${color.cyan(omoResult.configPath)}`);
 
-  if (
-    !config.hasOpenAI &&
-    !config.hasGemini &&
-    !config.hasCopilot &&
-    !config.hasOpencodeZen
-  ) {
-    p.log.warn(
-      "No model providers configured. Using opencode/glm-4.7-free as fallback.",
-    );
+  if (!config.hasOpenAI && !config.hasGemini && !config.hasCopilot && !config.hasOpencodeZen) {
+    p.log.warn("No model providers configured. Using opencode/glm-4.7-free as fallback.");
   }
 
-  p.note(
-    formatConfigSummary(config),
-    isUpdate ? "Updated Configuration" : "Installation Complete",
-  );
+  p.note(formatConfigSummary(config), isUpdate ? "Updated Configuration" : "Installation Complete");
 
-  p.log.success(
-    color.bold(isUpdate ? "Configuration updated!" : "Installation complete!"),
-  );
+  p.log.success(color.bold(isUpdate ? "Configuration updated!" : "Installation complete!"));
   p.log.message(`Run ${color.cyan("opencode")} to start!`);
 
   p.note(
@@ -647,22 +559,16 @@ export async function install(args: InstallArgs): Promise<number> {
     "The Magic Word",
   );
 
-  p.log.message(
-    `${color.yellow("★")} If you found this helpful, consider starring the repo!`,
-  );
+  p.log.message(`${color.yellow("★")} If you found this helpful, consider starring the repo!`);
   p.log.message(
     `  ${color.dim("gh api --silent --method PUT /user/starred/pontistudios/ghostwire >/dev/null 2>&1 || true")}`,
   );
 
   p.outro(color.green("oMoMoMoMo... Enjoy!"));
 
-  if (
-    (config.hasGemini || config.hasCopilot) &&
-    !args.skipAuth
-  ) {
+  if ((config.hasGemini || config.hasCopilot) && !args.skipAuth) {
     const providers: string[] = [];
-    if (config.hasGemini)
-      providers.push(`Google ${color.gray("→ OAuth with Antigravity")}`);
+    if (config.hasGemini) providers.push(`Google ${color.gray("→ OAuth with Antigravity")}`);
     if (config.hasCopilot) providers.push(`GitHub ${color.gray("→ Copilot")}`);
 
     console.log();

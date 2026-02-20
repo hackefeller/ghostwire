@@ -1,7 +1,7 @@
-export const ALLOWED_AGENTS = ["scan-ops", "data-dive"] as const
+export const ALLOWED_AGENTS = ["scan-ops", "data-dive"] as const;
 
 export const CALL_OMO_AGENT_DESCRIPTION = `Spawn scoutRecon/archiveResearcher agent. run_in_background REQUIRED (true=async with task_id, false=sync).
 
 Available: {agents}
 
-Pass \`session_id=<id>\` to continue previous agent with full context. Prompts MUST be in English. Use \`background_output\` for async results.`
+Pass \`session_id=<id>\` to continue previous agent with full context. Prompts MUST be in English. Use \`background_output\` for async results.`;

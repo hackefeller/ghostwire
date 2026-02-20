@@ -1,10 +1,4 @@
-import {
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  writeFileSync,
-  unlinkSync,
-} from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
 import { join } from "node:path";
 import { RULES_INJECTOR_STORAGE } from "./constants";
 import type { InjectedRulesData } from "./types";
@@ -18,8 +12,7 @@ export function loadInjectedRules(sessionID: string): {
   realPaths: Set<string>;
 } {
   const filePath = getStoragePath(sessionID);
-  if (!existsSync(filePath))
-    return { contentHashes: new Set(), realPaths: new Set() };
+  if (!existsSync(filePath)) return { contentHashes: new Set(), realPaths: new Set() };
 
   try {
     const content = readFileSync(filePath, "utf-8");
@@ -35,7 +28,7 @@ export function loadInjectedRules(sessionID: string): {
 
 export function saveInjectedRules(
   sessionID: string,
-  data: { contentHashes: Set<string>; realPaths: Set<string> }
+  data: { contentHashes: Set<string>; realPaths: Set<string> },
 ): void {
   if (!existsSync(RULES_INJECTOR_STORAGE)) {
     mkdirSync(RULES_INJECTOR_STORAGE, { recursive: true });

@@ -31,11 +31,13 @@ ls -la docs/brainstorms/*.md 2>/dev/null | head -10
 ```
 
 **Relevance criteria:** A brainstorm is relevant if:
+
 - The topic (from filename or YAML frontmatter) semantically matches the feature description
 - Created within the last 14 days
 - If multiple candidates match, use the most recent one
 
 **If a relevant brainstorm exists:**
+
 1. Read the brainstorm document
 2. Announce: "Found brainstorm from [date]: [topic]. Using as context for planning."
 3. Extract key decisions, chosen approach, and open questions
@@ -78,6 +80,7 @@ Run these agents **in parallel** to gather local context:
 - Task learnings-researcher(feature_description)
 
 **What to look for:**
+
 - **Repo research:** existing patterns, CLAUDE.md guidance, technology familiarity, pattern consistency
 - **Learnings:** documented solutions in `docs/solutions/` that might apply (gotchas, patterns, lessons learned)
 
@@ -96,6 +99,7 @@ Based on signals from Step 0 and findings from Step 1, decide on external resear
 **Announce the decision and proceed.** Brief explanation, then continue. User can redirect if needed.
 
 Examples:
+
 - "Your codebase has solid patterns for this. Proceeding without external research."
 - "This involves payment processing, so I'll research current best practices first."
 
@@ -432,7 +436,6 @@ Apply best practices for clarity and actionability, making the issue easy to sca
 ````markdown
 # Good example with syntax highlighting and line references
 
-
 ```ruby
 # app/services/user_service.rb:42
 def process_user(user)
@@ -481,6 +484,7 @@ docs/plans/YYYY-MM-DD-<type>-<descriptive-name>-plan.md
 ```
 
 Examples:
+
 - ✅ `docs/plans/2026-01-15-feat-user-authentication-flow-plan.md`
 - ✅ `docs/plans/2026-02-03-fix-checkout-race-condition-plan.md`
 - ✅ `docs/plans/2026-03-10-refactor-api-client-extraction-plan.md`
@@ -496,6 +500,7 @@ After writing the plan file, use the **AskUserQuestion tool** to present these o
 **Question:** "Plan ready at `docs/plans/YYYY-MM-DD-<type>-<name>-plan.md`. What would you like to do next?"
 
 **Options:**
+
 1. **Open plan in editor** - Open the plan file for review
 2. **Run `/deepen-plan`** - Enhance each section with parallel research agents (best practices, performance, UI)
 3. **Run `/plan_review`** - Get feedback from reviewers (DHH, Kieran, Simplicity)
@@ -505,6 +510,7 @@ After writing the plan file, use the **AskUserQuestion tool** to present these o
 7. **Simplify** - Reduce detail level
 
 Based on selection:
+
 - **Open plan in editor** → Run `open docs/plans/<plan_filename>.md` to open the file in the user's default editor
 - **`/deepen-plan`** → Call the /deepen-plan command with the plan file path to enhance with research
 - **`/plan_review`** → Call the /plan_review command with the plan file path

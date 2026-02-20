@@ -33,6 +33,7 @@ Before coding, commit to a **BOLD aesthetic direction**:
 **Key**: Choose a clear direction and execute with precision. Intentionality > intensity.
 
 Then implement working code (HTML/CSS/JS, React, Vue, Angular, etc.) that is:
+
 - Production-grade and functional
 - Visually striking and memorable
 - Cohesive with a clear aesthetic point-of-view
@@ -43,18 +44,23 @@ Then implement working code (HTML/CSS/JS, React, Vue, Angular, etc.) that is:
 # Aesthetic Guidelines
 
 ## Typography
+
 Choose distinctive fonts. **Avoid**: Arial, Inter, Roboto, system fonts, Space Grotesk. Pair a characterful display font with a refined body font.
 
 ## Color
+
 Commit to a cohesive palette. Use CSS variables. Dominant colors with sharp accents outperform timid, evenly-distributed palettes. **Avoid**: purple gradients on white (AI slop).
 
 ## Motion
+
 Focus on high-impact moments. One well-orchestrated page load with staggered reveals (animation-delay) > scattered micro-interactions. Use scroll-triggering and hover states that surprise. Prioritize CSS-only. Use Motion library for React when available.
 
 ## Spatial Composition
+
 Unexpected layouts. Asymmetry. Overlap. Diagonal flow. Grid-breaking elements. Generous negative space OR controlled density.
 
 ## Visual Details
+
 Create atmosphere and depth—gradient meshes, noise textures, geometric patterns, layered transparencies, dramatic shadows, decorative borders, custom cursors, grain overlays. Never default to solid colors.
 
 ---
@@ -72,6 +78,7 @@ Create atmosphere and depth—gradient meshes, noise textures, geometric pattern
 # Execution
 
 Match implementation complexity to aesthetic vision:
+
 - **Maximalist** → Elaborate code with extensive animations and effects
 - **Minimalist** → Restraint, precision, careful spacing and typography
 

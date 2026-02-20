@@ -1,5 +1,5 @@
-import type { AgentConfig, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "./utils"
+import type { AgentConfig, AgentPromptMetadata } from "./types";
+import { createAgentToolRestrictions } from "./utils";
 
 // Frontend Design System Prompt
 const FRONTEND_DESIGN_PROMPT = `You are a Frontend Design specialist focused on creating distinctive, production-grade frontend interfaces with high design quality. Your expertise lies in generating creative, polished code that avoids generic AI aesthetics and delivers exceptional user experiences.
@@ -117,43 +117,56 @@ When creating frontend interfaces, provide:
 - Browser compatibility and testing requirements
 - Maintenance and extensibility considerations
 
-Focus on creating interfaces that users genuinely enjoy using while maintaining the highest standards for code quality, performance, and accessibility.`
+Focus on creating interfaces that users genuinely enjoy using while maintaining the highest standards for code quality, performance, and accessibility.`;
 
 export function createFrontendDesignAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions([
     // Can use all tools for comprehensive frontend development
-  ])
-  
+  ]);
+
   return {
-    description: "Create distinctive, production-grade frontend interfaces with high design quality. Generate creative, polished code that avoids generic AI aesthetics and delivers exceptional user experiences.",
+    description:
+      "Create distinctive, production-grade frontend interfaces with high design quality. Generate creative, polished code that avoids generic AI aesthetics and delivers exceptional user experiences.",
     model,
     temperature: 0.3, // Higher temperature for creative design work
     prompt: FRONTEND_DESIGN_PROMPT,
     ...restrictions,
-  }
+  };
 }
 
-// Agent metadata for Cipher Operator prompt building and task delegation  
+// Agent metadata for Cipher Operator prompt building and task delegation
 export const FRONTEND_DESIGN_METADATA: AgentPromptMetadata = {
   category: "design",
   cost: "EXPENSIVE", // Comprehensive design and implementation work
   promptAlias: "Frontend Design",
   triggers: [
-    { domain: "UI component creation", trigger: "When building new web components, pages, or applications" },
-    { domain: "Design system development", trigger: "When creating or updating design systems and component libraries" },
-    { domain: "User interface design", trigger: "When implementing distinctive, high-quality user interfaces" },
-    { domain: "Frontend architecture", trigger: "When establishing frontend design patterns and standards" }
+    {
+      domain: "UI component creation",
+      trigger: "When building new web components, pages, or applications",
+    },
+    {
+      domain: "Design system development",
+      trigger: "When creating or updating design systems and component libraries",
+    },
+    {
+      domain: "User interface design",
+      trigger: "When implementing distinctive, high-quality user interfaces",
+    },
+    {
+      domain: "Frontend architecture",
+      trigger: "When establishing frontend design patterns and standards",
+    },
   ],
   useWhen: [
     "Creating distinctive, production-grade frontend interfaces",
-    "Building design systems and component libraries", 
+    "Building design systems and component libraries",
     "Implementing high-quality user interfaces with personality",
-    "Need to avoid generic AI aesthetics in design"
+    "Need to avoid generic AI aesthetics in design",
   ],
   avoidWhen: [
     "Backend-only development with no UI component",
     "Simple content pages that don't need custom design",
     "Prototype work where design polish isn't priority",
-    "When working within strict existing design constraints"
+    "When working within strict existing design constraints",
   ],
-}
+};

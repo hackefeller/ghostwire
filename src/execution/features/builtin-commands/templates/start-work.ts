@@ -69,4 +69,4 @@ Reading plan and beginning execution...
 - The session_id is injected by the hook - use it directly
 - Always update boulder.json BEFORE starting work
 - Read the FULL plan file before delegating any tasks
-- Follow nexusOrchestrator delegation protocols (7-section format)`
+- Follow nexusOrchestrator delegation protocols (7-section format)`;

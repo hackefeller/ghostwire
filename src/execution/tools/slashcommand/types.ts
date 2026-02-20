@@ -1,28 +1,34 @@
-import type { LoadedSkill, LazyContentLoader } from "../../features/opencode-skill-loader"
+import type { LoadedSkill, LazyContentLoader } from "../../features/opencode-skill-loader";
 
-export type CommandScope = "builtin" | "config" | "user" | "project" | "opencode" | "opencode-project"
+export type CommandScope =
+  | "builtin"
+  | "config"
+  | "user"
+  | "project"
+  | "opencode"
+  | "opencode-project";
 
 export interface CommandMetadata {
-  name: string
-  description: string
-  argumentHint?: string
-  model?: string
-  agent?: string
-  subtask?: boolean
+  name: string;
+  description: string;
+  argumentHint?: string;
+  model?: string;
+  agent?: string;
+  subtask?: boolean;
 }
 
 export interface CommandInfo {
-  name: string
-  path?: string
-  metadata: CommandMetadata
-  content?: string
-  scope: CommandScope
-  lazyContentLoader?: LazyContentLoader
+  name: string;
+  path?: string;
+  metadata: CommandMetadata;
+  content?: string;
+  scope: CommandScope;
+  lazyContentLoader?: LazyContentLoader;
 }
 
 export interface SlashcommandToolOptions {
   /** Pre-loaded commands (skip discovery if provided) */
-  commands?: CommandInfo[]
+  commands?: CommandInfo[];
   /** Pre-loaded skills (skip discovery if provided) */
-  skills?: LoadedSkill[]
+  skills?: LoadedSkill[];
 }

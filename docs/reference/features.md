@@ -138,7 +138,7 @@ Commands are slash-triggered workflows that execute predefined templates.
 | `/ulw-overclock` | Start ultrawork loop - continues with ultrawork mode |
 | `/cancel-overclock` | Cancel active Ralph Loop |
 | `/refactor` | Intelligent refactoring with LSP, AST-grep, architecture analysis, and TDD verification |
-| `/jack-in-work` | Start Cipher Operator work session from zen-planner plan |
+| `/jack-in-work` | Start Cipher Operator work session from planner plan |
 
 ### Command: /init-deep
 
@@ -203,14 +203,14 @@ Everything runs at maximum intensity - parallel agents, background tasks, aggres
 
 ### Command: /jack-in-work
 
-**Purpose**: Start execution from a zen-planner-generated plan
+**Purpose**: Start execution from a planner-generated plan
 
 **Usage**:
 ```
 /jack-in-work [plan-name]
 ```
 
-Uses grid-sync agent to execute planned tasks systematically.
+Uses orchestrator agent to execute planned tasks systematically.
 
 ### Custom Commands
 

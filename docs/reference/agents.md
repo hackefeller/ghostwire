@@ -1,90 +1,19 @@
 # Agents
 
-Ghostwire provides a team of specialized AI agents, each optimized for specific tasks with distinct models, capabilities, and tool permissions.
+**For the complete, authoritative list of all 31 agents, refer to [`docs/agents.yml`](../agents.yml).**
 
-## Core Agents
+This file has been superseded by the canonical YAML metadata. All agent information is now maintained in a single source of truth to prevent drift and ensure accuracy.
 
-### Cipher Operator
-- **Model**: `anthropic/claude-opus-4-5`
-- **Temperature**: 0.1
-- **Fallback Chain**: kimi-k2.5 → glm-4.7 → gpt-5.2-codex → gemini-3-pro
+## Quick Reference
 
-**The default orchestrator.** Plans, delegates, and executes complex tasks using specialized subagents with aggressive parallel execution. Features todo-driven workflow with extended thinking (32k budget). Embodies an SF Bay Area engineer identity.
+Ghostwire provides 31 specialized AI agents organized in 6 phases:
 
-### Nexus Orchestrator
-- **Model**: `anthropic/claude-sonnet-4-5`
-- **Temperature**: 0.1
-- **Fallback Chain**: kimi-k2.5 → gpt-5.2
-
-**Master orchestrator** that holds the todo list and manages complex multi-agent workflows. Works in tandem with zen-planner to execute planned work systematically.
-
-### Seer Advisor
-- **Model**: `openai/gpt-5.2`
-- **Temperature**: 0.1
-
-**Strategic advisor** for architecture decisions, code review, and debugging. Read-only consultation agent with stellar logical reasoning and deep analysis capabilities. Inspired by AmpCode.
-
-**Tool Restrictions**: Read-only (cannot write, edit, task, or delegate)
-
-### Archive Researcher
-- **Model**: `zai-coding-plan/glm-4.7`
-- **Temperature**: 0.1
-- **Fallback Chain**: glm-4.7-free → claude-sonnet-4-5
-
-**Multi-repo research specialist.** Performs documentation lookup, finds OSS implementation examples, and provides deep codebase understanding with evidence-based answers.
-
-**Tool Restrictions**: Cannot write, edit, task, delegate, or call grid agents
-
-### Scout Recon
-- **Model**: `anthropic/claude-haiku-4-5`
-- **Temperature**: 0.1
-- **Fallback Chain**: gpt-5-mini → gpt-5-nano
-
-**Fast codebase explorer.** Performs blazing fast contextual grep and codebase exploration. Optimized for speed over depth.
-
-**Tool Restrictions**: Cannot write, edit, task, delegate, or call grid agents
-
-### Optic Analyst
-- **Model**: `google/gemini-3-flash`
-- **Temperature**: 0.1
-- **Fallback Chain**: gpt-5.2 → glm-4.6v → kimi-k2.5 → claude-haiku-4-5 → gpt-5-nano
-
-**Visual content specialist.** Analyzes PDFs, images, diagrams, and other media to extract information and insights.
-
-**Tool Restrictions**: Allowlist only (read, glob, grep)
-
-## Planning Agents
-
-### zen-planner
-- **Model**: `anthropic/claude-opus-4-5`
-- **Temperature**: 0.1
-- **Fallback Chain**: kimi-k2.5 → gpt-5.2 → gemini-3-pro
-
-**Strategic planner** with interview mode. Creates detailed work plans through iterative questioning and consultation. Never implements—only plans.
-
-### Tactician Strategist
-- **Model**: `anthropic/claude-opus-4-5`
-- **Temperature**: 0.3
-- **Fallback Chain**: kimi-k2.5 → gpt-5.2 → gemini-3-pro
-
-**Pre-planning analyst** that identifies hidden intentions, ambiguities, and potential AI failure points before planning begins.
-
-### Glitch Auditor
-- **Model**: `openai/gpt-5.2`
-- **Temperature**: 0.1
-- **Fallback Chain**: gpt-5.2 → claude-opus-4-5 → gemini-3-pro
-
-**Plan reviewer** that validates plans against clarity, verifiability, and completeness standards. Ruthlessly finds faults in plans.
-
-## Execution Agents
-
-### Cipher Operator-Junior
-- **Model**: `anthropic/claude-sonnet-4-5`
-- **Temperature**: 0.1
-
-**Category-spawned task executor.** Delegated to by the main Cipher Operator for specific category-based tasks (frontend, business logic, etc.).
-
-**Tool Restrictions**: Cannot spawn subtasks (task, delegate_task)
+- **Phase 1 (Orchestration)**: operator, orchestrator, planner, executor
+- **Phase 2 (Code Review)**: reviewer-rails, reviewer-python, reviewer-typescript, reviewer-rails-dh, reviewer-simplicity
+- **Phase 3 (Research)**: researcher-docs, researcher-learnings, researcher-practices, researcher-git, analyzer-media
+- **Phase 4 (Design)**: designer-flow, designer-sync, designer-iterator, analyzer-design, designer-builder
+- **Phase 5 (Advisory/Validation)**: advisor-architecture, advisor-strategy, advisor-plan, validator-audit, validator-deployment, writer-readme, writer-gem, editor-style
+- **Phase 6 (Legacy)**: researcher-codebase, researcher-data
 
 ## Using Agents
 
@@ -92,25 +21,25 @@ Ghostwire provides a team of specialized AI agents, each optimized for specific 
 Invoke agents explicitly for specialized tasks:
 
 ```
-Ask @seer-advisor to review this design and propose an architecture
-Ask @archive-researcher how this is implemented - why does the behavior keep changing?
-Ask @scout-recon for the policy on this feature
-Ask @optic-analyst to analyze this screenshot
+Ask @advisor-plan to review this design and propose an architecture
+Ask @researcher-data how this is implemented - why does the behavior keep changing?
+Ask @researcher-codebase for the policy on this feature
+Ask @analyzer-media to analyze this screenshot
 ```
 
 ### Background Execution
 Run agents in the background while you continue working:
 
 ```
-delegate_task(agent="scout-recon", background=true, prompt="Find auth implementations")
+delegate_task(agent="researcher-codebase", background=true, prompt="Find auth implementations")
 ```
 
 ### Agent Thinking Budget
 The following agents have 32k thinking budget tokens enabled by default:
-- Cipher Operator
-- Seer Advisor
-- zen-planner
-- Nexus Orchestrator
+- operator
+- advisor-plan
+- planner
+- orchestrator
 
 ## Configuration
 
@@ -119,14 +48,14 @@ Override agent settings in your `ghostwire.json`:
 ```json
 {
   "agents": {
-    "seer-advisor": {
+    "advisor-plan": {
       "model": "openai/gpt-5.2",
       "temperature": 0.1
     },
-    "scout-recon": {
+    "researcher-codebase": {
       "model": "opencode/gpt-5-nano"
     },
-    "optic-analyst": {
+    "analyzer-media": {
       "disable": true
     }
   }
@@ -142,3 +71,5 @@ Ghostwire automatically selects the best available model for each agent based on
 3. Default model for available providers
 
 Run `opencode models` to see available models in your environment.
+
+For detailed agent configurations and model fallback chains, see [`docs/agents.yml`](../agents.yml).

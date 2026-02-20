@@ -10,7 +10,7 @@ Learn about Ghostwire, a plugin that transforms OpenCode into the best agent har
 
 **Feeling lazy?** Just include `ultrawork` (or `ulw`) in your prompt. That's it. The agent figures out the rest.
 
-**Need precision?** Press **Tab** to enter zen-planner (Planner) mode, create a work plan through an interview process, then run `/jack-in-work` to execute it with grid-sync orchestration.
+**Need precision?** Press **Tab** to enter planner mode, create a work plan through an interview process, then run `/jack-in-work` to execute it with orchestrator orchestration.
 
 ---
 
@@ -34,7 +34,7 @@ ulw add authentication to my Next.js app
 ```
 
 The agent will automatically:
-1. Scout Recon your codebase to understand existing patterns
+1. Search your codebase to understand existing patterns
 2. Research best practices via specialized agents
 3. Implement the feature following your conventions
 4. Verify with diagnostics and tests
@@ -44,23 +44,23 @@ This is the "just do it" mode. Full automatic mode.
 The agent is already smart enough, so it explores the codebase and make plans itself.
 **You don't have to think that deep. Agent will think that deep.**
 
-### Option 2: zen-planner Mode (For Precise Work)
+### Option 2: planner Mode (For Precise Work)
 
-For complex or critical tasks, press **Tab** to switch to zen-planner (Planner) mode.
+For complex or critical tasks, press **Tab** to switch to planner mode.
 
 **How it works:**
 
-1. **zen-planner interviews you** - Acts as your personal consultant, asking clarifying questions while researching your codebase to understand exactly what you need.
+1. **planner interviews you** - Acts as your personal consultant, asking clarifying questions while researching your codebase to understand exactly what you need.
 
-2. **Plan generation** - Based on the interview, zen-planner generates a detailed work plan with tasks, acceptance criteria, and guardrails. Optionally reviewed by Glitch Auditor (plan reviewer) for high-accuracy validation.
+2. **Plan generation** - Based on the interview, planner generates a detailed work plan with tasks, acceptance criteria, and guardrails. Optionally reviewed by validator-audit (plan reviewer) for high-accuracy validation.
 
-3. **Run `/jack-in-work`** - The Nexus Orchestrator takes over:
+3. **Run `/jack-in-work`** - The orchestrator takes over:
    - Distributes tasks to specialized sub-agents
    - Verifies each task completion independently
    - Accumulates learnings across tasks
    - Tracks progress across sessions (resume anytime)
 
-**When to use zen-planner:**
+**When to use planner:**
 - Multi-day or multi-session projects
 - Critical production changes
 - Complex refactoring spanning many files
@@ -70,21 +70,21 @@ For complex or critical tasks, press **Tab** to switch to zen-planner (Planner) 
 
 ## Critical Usage Guidelines
 
-### Always Use zen-planner + grid-sync Together
+### Always Use planner + orchestrator Together
 
-**Do NOT use `grid-sync` without `/jack-in-work`.**
+**Do NOT use `orchestrator` without `/jack-in-work`.**
 
-The orchestrator is designed to execute work plans created by zen-planner. Using it directly without a plan leads to unpredictable behavior.
+The orchestrator is designed to execute work plans created by planner. Using it directly without a plan leads to unpredictable behavior.
 
 **Correct workflow:**
 ```
-1. Press Tab → Enter zen-planner mode
-2. Describe work → zen-planner interviews you
+1. Press Tab → Enter planner mode
+2. Describe work → planner interviews you
 3. Confirm plan → Review .ghostwire/plans/*.md
-4. Run /jack-in-work → grid-sync executes
+4. Run /jack-in-work → orchestrator executes
 ```
 
-**zen-planner and grid-sync are a pair. Always use them together.**
+**planner and orchestrator are a pair. Always use them together.**
 
 ---
 
@@ -104,14 +104,14 @@ When you run `bunx ghostwire install`, the installer asks which providers you ha
 - OpenCode Zen?
 - Z.ai Coding Plan?
 
- Based on your answers, it generates `~/.config/opencode/ghostwire.json` with optimal model assignments for each agent and category.
+  Based on your answers, it generates `~/.config/opencode/ghostwire.json` with optimal model assignments for each agent and category.
 
 **2. At Runtime (Fallback Chain)**
 
 Each agent has a **provider priority chain**. The system tries providers in order until it finds an available model:
 
 ```
-Example: optic-analyst
+Example: analyzer-media
 google → openai → zai-coding-plan → anthropic → opencode
    ↓        ↓           ↓              ↓           ↓
 gemini   gpt-5.2     glm-4.6v       haiku     gpt-5-nano
@@ -128,10 +128,10 @@ Here's a real-world config for a user with **Claude, OpenAI, Gemini, and Z.ai** 
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
     // Override specific agents only - rest use fallback chain
-    "grid-sync": { "model": "anthropic/claude-sonnet-4-5", "variant": "max" },
-    "archive-researcher": { "model": "zai-coding-plan/glm-4.7" },
-    "scout-recon": { "model": "opencode/gpt-5-nano" },
-    "optic-analyst": { "model": "zai-coding-plan/glm-4.6v" }
+    "orchestrator": { "model": "anthropic/claude-sonnet-4-5", "variant": "max" },
+    "researcher-data": { "model": "zai-coding-plan/glm-4.7" },
+    "researcher-codebase": { "model": "opencode/gpt-5-nano" },
+    "analyzer-media": { "model": "zai-coding-plan/glm-4.6v" }
   },
   "categories": {
     // Override categories for cost optimization
@@ -163,7 +163,7 @@ For detailed configuration options including per-agent settings, category custom
 
 ### Core Documentation
 - [Installation Guide](./installation.md) - Detailed installation instructions
-- [Architecture](../concepts/orchestration.md) - Deep dive into zen-planner → grid-sync → void-runner workflow
+- [Architecture](../concepts/orchestration.md) - Deep dive into planner → orchestrator → operator workflow
 - [Philosophy](../concepts/philosophy.md) - Principles behind Ghostwire
 
 ### Reference Documentation

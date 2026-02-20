@@ -1,6 +1,6 @@
 # Orchestration System
 
-Ghostwire's orchestration system transforms a simple AI agent into a coordinated development team. This document explains how the zen-planner → grid-sync → void-runner workflow creates high-quality, reliable code output.
+Ghostwire's orchestration system transforms a simple AI agent into a coordinated development team. This document explains how the planner → orchestrator → operator workflow creates high-quality, reliable code output.
 
 ---
 
@@ -21,9 +21,9 @@ The orchestration system solves these problems through **specialization and dele
 
 ```mermaid
 flowchart TB
-    subgraph Planning["Planning Layer (Human + zen-planner)"]
+    subgraph Planning["Planning Layer (Human + planner)"]
         User[("User")]
-        zen-planner["zen-planner (Planner)"]
+        planner["planner (Planner)"]
         Tactician Strategist["Tactician Strategist (Consultant)"]
         Glitch Auditor["Glitch Auditor (Reviewer)"]
     end
@@ -39,12 +39,12 @@ flowchart TB
         Archive Researcher["Archive Researcher (Docs/OSS)"]
     end
     
-    User -->|"Describe work"| zen-planner
-    zen-planner -->|"Consult"| Tactician Strategist
-    zen-planner -->|"Interview"| User
-    zen-planner -->|"Generate plan"| Plan[".ghostwire/plans/*.md"]
+    User -->|"Describe work"| planner
+    planner -->|"Consult"| Tactician Strategist
+    planner -->|"Interview"| User
+    planner -->|"Generate plan"| Plan[".ghostwire/plans/*.md"]
     Plan -->|"High accuracy?"| Glitch Auditor
-    Glitch Auditor -->|"OKAY / REJECT"| zen-planner
+    Glitch Auditor -->|"OKAY / REJECT"| planner
     
     User -->|"/jack-in-work"| Orchestrator
     Plan -->|"Read"| Orchestrator
@@ -64,16 +64,16 @@ flowchart TB
 
 ## Layer 1: Planning
 
-### zen-planner: Your Strategic Consultant
+### planner: Your Strategic Consultant
 
-zen-planner is **not just a planner** - it's an intelligent interviewer that helps you think through what you actually need.
+planner is **not just a planner** - it's an intelligent interviewer that helps you think through what you actually need.
 
 **The Interview Process:**
 
 ```mermaid
 stateDiagram-v2
     [*] --> Interview: User describes work
-    Interview --> Research: Launch scout-recon/archive-researcher agents
+    Interview --> Research: Launch researcher-codebase/researcher-data agents
     Research --> Interview: Gather codebase context
     Interview --> ClearanceCheck: After each response
     
@@ -104,7 +104,7 @@ stateDiagram-v2
 
 **Intent-Specific Strategies:**
 
-| Intent | zen-planner Focus | Example Questions |
+| Intent | planner Focus | Example Questions |
 |--------|------------------|-------------------|
 | **Refactoring** | Safety - behavior preservation | "What tests verify current behavior?" "Rollback strategy?" |
 | **Build from Scratch** | Discovery - patterns first | "Found pattern X in codebase. Follow it or deviate?" |
@@ -113,7 +113,7 @@ stateDiagram-v2
 
 ### Tactician Strategist: The Gap Analyzer
 
-Before zen-planner writes the plan, **Tactician Strategist catches what zen-planner missed**:
+Before planner writes the plan, **Tactician Strategist catches what planner missed**:
 
 - Hidden intentions in user's request
 - Ambiguities that could derail implementation
@@ -137,7 +137,7 @@ The Glitch Auditor only says "OKAY" when:
 - Zero tasks require assumptions about business logic
 - Zero critical red flags
 
-If REJECTED, zen-planner fixes issues and resubmits. **No maximum retry limit.**
+If REJECTED, planner fixes issues and resubmits. **No maximum retry limit.**
 
 ---
 
@@ -259,7 +259,7 @@ DO NOT respond until all todos are marked completed.
 |------------|----------|-------------|
 | **Simple** | Just prompt | Simple tasks, quick fixes, single-file changes |
 | **Complex + Lazy** | Just type `ulw` or `ultrawork` | Complex tasks where explaining context is tedious. Agent figures it out. |
-| **Complex + Precise** | `@plan` → `/jack-in-work` | Precise, multi-step work requiring true orchestration. zen-planner plans, grid-sync executes. |
+| **Complex + Precise** | `@plan` → `/jack-in-work` | Precise, multi-step work requiring true orchestration. planner plans, orchestrator executes. |
 
 **Decision Flow:**
 
@@ -269,7 +269,7 @@ Is it a quick fix or simple task?
   └─ NO  → Is explaining the full context tedious?
              └─ YES → Type "ulw" and let the agent figure it out
              └─ NO  → Do you need precise, verifiable execution?
-                        └─ YES → Use @plan for zen-planner planning, then /jack-in-work
+                        └─ YES → Use @plan for planner planning, then /jack-in-work
                         └─ NO  → Just use "ulw"
 ```
 
@@ -279,7 +279,7 @@ Is it a quick fix or simple task?
 
 ### `@plan [request]`
 
-Invokes zen-planner to start a planning session.
+Invokes planner to start a planning session.
 
 - Example: `@plan "I want to refactor the authentication system to NextAuth"`
 
@@ -300,14 +300,14 @@ You can control related features in `ghostwire.json`.
 {
   "cipher_agent": {
     "disabled": false,           // Enable Nexus Orchestrator orchestration (default: false)
-    "planner_enabled": true,     // Enable zen-planner (default: true)
-    "replace_plan": true         // Replace default plan agent with zen-planner (default: true)
+    "planner_enabled": true,     // Enable planner (default: true)
+    "replace_plan": true         // Replace default plan agent with planner (default: true)
   },
   
   "hooks": {
     "disabled": [
       // "jack-in-work",             // Disable execution trigger
-      // "zen-planner-md-only"      // Remove zen-planner write restrictions (not recommended)
+      // "planner-md-only"      // Remove planner write restrictions (not recommended)
     ]
   }
 }
@@ -319,7 +319,7 @@ You can control related features in `ghostwire.json`.
 
 ### 1. Separation of Concerns
 
-- **Planning** (zen-planner): High reasoning, interview, strategic thinking
+- **Planning** (planner): High reasoning, interview, strategic thinking
 - **Orchestration** (Nexus Orchestrator): Coordination, verification, wisdom accumulation
 - **Execution** (Junior): Focused implementation, no distractions
 
@@ -355,7 +355,7 @@ Bulk work goes to cost-effective models.
 
 ## Best Practices
 
-1. **Don't Rush**: Invest sufficient time in the interview with zen-planner. The more perfect the plan, the faster the execution.
+1. **Don't Rush**: Invest sufficient time in the interview with planner. The more perfect the plan, the faster the execution.
 2. **Single Plan Principle**: No matter how large the task, contain all TODOs in one plan file (`.md`). This prevents context fragmentation.
 3. **Active Delegation**: During execution, delegate to specialized agents via `delegate_task` rather than modifying code directly.
 

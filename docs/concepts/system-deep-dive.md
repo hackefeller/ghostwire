@@ -31,7 +31,7 @@ flowchart TD
     P --> A["Agent Resolution (`src/platform/opencode/config-composer.ts`)"]
     A --> M["Model Fallback + Category/Skill Expansion"]
     T --> B["Background Manager (`src/features/background-agent/manager.ts`)"]
-    H --> O["Orchestration Hooks (zen-planner/grid-sync/Start-Work)"]
+     H --> O["Orchestration Hooks (planner/orchestrator/Start-Work)"]
     P --> MCP["MCP Composition (`src/mcp/index.ts` + loaders)"]
 ```
 
@@ -85,7 +85,7 @@ This forms a deterministic startup graph: configuration first, then runtime capa
 ## 7) Orchestration and Plan Execution
 
 Ghostwire separates planning and execution:
-- Planning phase centered on zen-planner workflow
+- Planning phase centered on planner workflow
 - Execution phase centered on Nexus Orchestrator workflow
 
 `/jack-in-work` integration (`src/hooks/jack-in-work/index.ts`) creates/updates boulder state, then Nexus Orchestrator hooks use that state to enforce plan continuation and delegation discipline.

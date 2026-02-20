@@ -20,9 +20,9 @@ It asks about your providers (Claude, OpenAI, Gemini, etc.) and generates optima
   
   // Override specific agent models
   "agents": {
-    "seer-advisor": { "model": "openai/gpt-5.2" },           // Use GPT for debugging
-    "archive-researcher": { "model": "zai-coding-plan/glm-4.7" }, // Cheap model for research
-    "scout-recon": { "model": "opencode/gpt-5-nano" }        // Free model for grep
+    "advisor-plan": { "model": "openai/gpt-5.2" },           // Use GPT for debugging
+    "researcher-data": { "model": "zai-coding-plan/glm-4.7" }, // Cheap model for research
+    "researcher-codebase": { "model": "opencode/gpt-5-nano" }        // Free model for grep
   },
   
   // Override category models (used by delegate_task)
@@ -72,10 +72,10 @@ When both `ghostwire.jsonc` and `ghostwire.json` files exist, `.jsonc` takes pri
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   /* Agent overrides - customize models for specific tasks */
   "agents": {
-    "seer-advisor": {
+    "advisor-plan": {
       "model": "openai/gpt-5.2"  // GPT for strategic reasoning
     },
-    "scout-recon": {
+    "researcher-codebase": {
       "model": "opencode/gpt-5-nano"  // Free & fast for exploration
     },
   },
@@ -95,7 +95,7 @@ When both `ghostwire.jsonc` and `ghostwire.json` files exist, `.jsonc` takes pri
 ```json
 {
   "agents": {
-    "scout-recon": {
+    "researcher-codebase": {
       "model": "ollama/qwen3-coder",
       "stream": false
     }
@@ -153,11 +153,11 @@ Override built-in agent settings:
 ```json
 {
   "agents": {
-    "scout-recon": {
+    "researcher-codebase": {
       "model": "anthropic/claude-haiku-4-5",
       "temperature": 0.5
     },
-    "optic-analyst": {
+    "analyzer-media": {
       "disable": true
     }
   }
@@ -183,7 +183,7 @@ Each agent supports: `model`, `temperature`, `top_p`, `prompt`, `prompt_append`,
 ```json
 {
   "agents": {
-    "seer-advisor": {
+    "advisor-plan": {
       "thinking": {
         "type": "enabled",
         "budgetTokens": 200000
@@ -203,7 +203,7 @@ Use `prompt_append` to add extra instructions without replacing the default syst
 ```json
 {
   "agents": {
-    "archive-researcher": {
+    "researcher-data": {
       "prompt_append": "Always use the elisp-dev-mcp for Emacs Lisp documentation lookups."
     }
   }
@@ -219,7 +219,7 @@ Fine-grained control over what agents can do:
 ```json
 {
   "agents": {
-    "scout-recon": {
+    "researcher-codebase": {
       "permission": {
         "edit": "deny",
         "bash": "ask",
@@ -242,11 +242,11 @@ Or disable via `disabled_agents` in `~/.config/opencode/ghostwire.json` or `.ope
 
 ```json
 {
-  "disabled_agents": ["seer-advisor", "optic-analyst"]
+  "disabled_agents": ["advisor-plan", "analyzer-media"]
 }
 ```
 
-Available agents: `void-runner`, `zen-planner`, `seer-advisor`, `archive-researcher`, `scout-recon`, `optic-analyst`, `tactician-strategist`, `glitch-auditor`, `grid-sync`
+Available agents: `operator`, `planner`, `advisor-plan`, `researcher-data`, `researcher-codebase`, `analyzer-media`, `advisor-strategy`, `validator-audit`, `orchestrator`
 
 ## Built-in Skills
 
@@ -612,8 +612,8 @@ When enabled (default), Cipher Operator provides a powerful orchestrator with op
 
 - **Cipher Operator**: Primary orchestrator agent (Claude Opus 4.5)
 - **OpenCode-Builder**: OpenCode's default build agent, renamed due to SDK limitations (disabled by default)
-- **zen-planner (Planner)**: OpenCode's default plan agent with work-planner methodology (enabled by default)
-- **Tactician Strategist (Plan Consultant)**: Pre-planning analysis agent that identifies hidden requirements and AI failure points
+- **planner**: OpenCode's default plan agent with work-planner methodology (enabled by default)
+- **advisor-strategy**: Pre-planning analysis agent that identifies hidden requirements and AI failure points
 
 **Configuration Options:**
 
@@ -662,10 +662,10 @@ You can also customize Cipher Operator agents like other agents:
     "OpenCode-Builder": {
       "model": "anthropic/claude-opus-4"
     },
-    "zen-planner (Planner)": {
+    "planner": {
       "model": "openai/gpt-5.2"
     },
-    "Tactician Strategist (Plan Consultant)": {
+    "advisor-strategy": {
       "model": "anthropic/claude-sonnet-4-5"
     }
   }
@@ -676,8 +676,8 @@ You can also customize Cipher Operator agents like other agents:
 | ------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `disabled`                | `false` | When `true`, disables all Cipher Operator orchestration and restores original build/plan as primary.                                          |
 | `default_builder_enabled` | `false` | When `true`, enables OpenCode-Builder agent (same as OpenCode build, renamed due to SDK limitations). Disabled by default.             |
-| `planner_enabled`         | `true`  | When `true`, enables zen-planner (Planner) agent with work-planner methodology. Enabled by default.                                     |
-| `replace_plan`            | `true`  | When `true`, demotes default zen-planner (Planner) agent to subagent mode. Set to `false` to keep both zen-planner (Planner) and default plan available. |
+| `planner_enabled`         | `true`  | When `true`, enables planner agent with work-planner methodology. Enabled by default.                                     |
+| `replace_plan`            | `true`  | When `true`, demotes default planner agent to subagent mode. Set to `false` to keep both planner and default plan available. |
 
 ## Background Tasks
 
@@ -803,7 +803,7 @@ delegate_task(category="visual-engineering", prompt="Create a responsive dashboa
 delegate_task(category="ultrabrain", prompt="Design the payment processing flow")
 
 // Or target a specific agent directly (bypasses categories)
-delegate_task(agent="seer-advisor", prompt="Review this architecture")
+delegate_task(agent="advisor-plan", prompt="Review this architecture")
 ```
 
 ### Custom Categories
@@ -895,15 +895,15 @@ Each agent has a defined provider priority chain. The system tries providers in 
 
 | Agent | Model (no prefix) | Provider Priority Chain |
 |-------|-------------------|-------------------------|
-| **Cipher Operator** | `claude-opus-4-5` | anthropic → kimi-for-coding → zai-coding-plan → openai → google |
-| **seer-advisor** | `gpt-5.2` | openai → google → anthropic |
-| **archive-researcher** | `glm-4.7` | zai-coding-plan → opencode → anthropic |
-| **scout-recon** | `claude-haiku-4-5` | anthropic → github-copilot → opencode |
-| **optic-analyst** | `gemini-3-flash` | google → openai → zai-coding-plan → kimi-for-coding → anthropic → opencode |
-| **zen-planner (Planner)** | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
-| **Tactician Strategist (Plan Consultant)** | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
-| **Glitch Auditor (Plan Reviewer)** | `gpt-5.2` | openai → anthropic → google |
-| **Nexus Orchestrator** | `claude-sonnet-4-5` | anthropic → kimi-for-coding → openai → google |
+| **operator** | `claude-opus-4-5` | anthropic → kimi-for-coding → zai-coding-plan → openai → google |
+| **advisor-plan** | `gpt-5.2` | openai → google → anthropic |
+| **researcher-data** | `glm-4.7` | zai-coding-plan → opencode → anthropic |
+| **researcher-codebase** | `claude-haiku-4-5` | anthropic → github-copilot → opencode |
+| **analyzer-media** | `gemini-3-flash` | google → openai → zai-coding-plan → kimi-for-coding → anthropic → opencode |
+| **planner** | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
+| **advisor-strategy** | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
+| **validator-audit** | `gpt-5.2` | openai → anthropic → google |
+| **orchestrator** | `claude-sonnet-4-5` | anthropic → kimi-for-coding → openai → google |
 
 ### Category Provider Chains
 
@@ -941,10 +941,10 @@ Override any agent or category model in `ghostwire.json`:
 ```json
 {
   "agents": {
-    "Cipher Operator": {
+    "operator": {
       "model": "anthropic/claude-sonnet-4-5"
     },
-    "seer-advisor": {
+    "advisor-plan": {
       "model": "openai/o3"
     }
   },

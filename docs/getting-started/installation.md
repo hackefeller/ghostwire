@@ -149,7 +149,7 @@ The `opencode-antigravity-auth` plugin uses different model names than the built
 ```json
 {
   "agents": {
-    "optic-analyst": { "model": "google/antigravity-gemini-3-flash" }
+    "analyzer-media": { "model": "google/antigravity-gemini-3-flash" }
   }
 }
 ```
@@ -291,7 +291,7 @@ Tell the user of following:
 
 2. **Feeling lazy?** Just include `ultrawork` (or `ulw`) in your prompt. That's it. The agent figures out the rest.
 
-3. **Need precision?** Press **Tab** to enter zen-planner (Planner) mode, create a work plan through an interview process, then run `/jack-in-work` to execute it with grid-sync orchestration.
+3. **Need precision?** Press **Tab** to enter planner (Planner) mode, create a work plan through an interview process, then run `/jack-in-work` to execute it with orchestrator orchestration.
 
 4. You wanna know more? Checkout: [Overview Guide](./overview.md)
 

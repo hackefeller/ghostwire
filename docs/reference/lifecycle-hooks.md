@@ -50,15 +50,15 @@ Ghostwire provides 32+ lifecycle hooks that intercept and modify agent behavior 
 
 ### jack-in-work
 - **Event**: PostToolUse
-- **Description**: Handles `/jack-in-work` command execution to start void-runner work sessions from zen-planner plans.
+- **Description**: Handles `/jack-in-work` command execution to start operator work sessions from planner plans.
 
 ### grid-auto-slash-command
 - **Event**: UserPromptSubmit
 - **Description**: Automatically detects and executes slash commands embedded in natural language prompts.
 
-### zen-planner-md-only
+### planner-md-only
 - **Event**: PostToolUse
-- **Description**: Enforces markdown-only output mode for the zen-planner planning agent.
+- **Description**: Enforces markdown-only output mode for the planner planning agent.
 
 ## Quality & Safety Hooks
 
@@ -161,7 +161,7 @@ Ghostwire provides 32+ lifecycle hooks that intercept and modify agent behavior 
 - **Event**: All
 - **Description**: Executes hooks from Claude Code's `settings.json` for full compatibility.
 
-### grid-sync
+### orchestrator
 - **Event**: All
 - **Description**: Main orchestration logic (752 lines) that coordinates multi-agent workflows.
 

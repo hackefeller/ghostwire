@@ -137,7 +137,7 @@ Category-based task delegation with automatic agent selection.
 
 ```typescript
 delegate_task({
-  agent: "scout-recon",  // Optional: specific agent
+  agent: "researcher-codebase",  // Optional: specific agent
   category: "visual",    // Optional: category-based selection
   prompt: "Find all auth middleware",
   background: true,      // Optional: run in background
@@ -155,11 +155,11 @@ delegate_task({
 - `unspecified-low`: Default fallback
 
 ### call_grid_agent
-Direct agent invocation for scout-recon and archive-researcher.
+Direct agent invocation for researcher-codebase and researcher-data.
 
 ```typescript
 call_grid_agent({
-  agent_type: "scout-recon",
+  agent_type: "researcher-codebase",
   prompt: "Find authentication patterns",
   run_in_background: true
 })
@@ -325,8 +325,8 @@ Delegate tasks to run in parallel:
 
 ```typescript
 // Start multiple searches in parallel
-const task1 = delegate_task({ agent: "scout-recon", prompt: "Find auth", background: true })
-const task2 = delegate_task({ agent: "archive-researcher", prompt: "Research best practices", background: true })
+const task1 = delegate_task({ agent: "researcher-codebase", prompt: "Find auth", background: true })
+const task2 = delegate_task({ agent: "researcher-data", prompt: "Research best practices", background: true })
 
 // Continue working...
 
@@ -351,8 +351,8 @@ Different agents have different tool access:
 
 | Agent | Restrictions |
 |-------|-------------|
-| seer-advisor | Read-only (no write, edit, task, delegate) |
-| archive-researcher | Cannot write, edit, task, delegate, or call agents |
-| scout-recon | Cannot write, edit, task, delegate, or call agents |
-| optic-analyst | Read, glob, grep only |
-| Cipher Operator-Junior | Cannot spawn subtasks |
+| advisor-plan | Read-only (no write, edit, task, delegate) |
+| researcher-data | Cannot write, edit, task, delegate, or call agents |
+| researcher-codebase | Cannot write, edit, task, delegate, or call agents |
+| analyzer-media | Read, glob, grep only |
+| executor | Cannot spawn subtasks |

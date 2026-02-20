@@ -73,11 +73,11 @@ Token efficiency matters. But not at the cost of work quality or human cognitive
 
 Two approaches to achieve this:
 
-### Approach 1: zen-planner (Interview Mode)
+### Approach 1: planner (Interview Mode)
 
 You say: "I want to add authentication."
 
-zen-planner:
+planner:
 - Researches your codebase to understand existing patterns
 - Asks clarifying questions based on actual findings
 - Surfaces edge cases you hadn't considered
@@ -150,7 +150,7 @@ Everything in Ghostwire is designed to make this loop work:
 
 | Feature | Purpose |
 |---------|---------|
-| zen-planner | Extract intent through intelligent interview |
+| planner | Extract intent through intelligent interview |
 | Tactician Strategist | Catch ambiguities before they become bugs |
 | Glitch Auditor | Verify plans are complete before execution |
 | Orchestrator | Coordinate work without human micromanagement |

@@ -135,9 +135,9 @@ bun test               # 594 test files
 | `src/execution/features/builtin-skills/skills.ts` | 1729 | Skill definitions |
 | `src/execution/features/background-agent/manager.ts` | 1419 | Task lifecycle, concurrency |
 | `src/execution/tools/delegate-task/tools.ts` | 1414 | Category-based delegation |
-| `src/orchestration/agents/zen-planner.ts` | 1283 | Planning agent (zen-planner) |
+| `src/orchestration/agents/planner.ts` | 1283 | Planning agent (planner) |
 | `src/index.ts` | 940 | Main plugin entry |
-| `src/orchestration/hooks/grid-sync/index.ts` | 757 | Main orchestration hook (Nexus) |
+| `src/orchestration/hooks/grid-sync/index.ts` | 757 | Main orchestration hook (orchestrator) |
 | `src/cli/config-manager.ts` | 741 | JSONC config parsing |
 
 ## MCP ARCHITECTURE

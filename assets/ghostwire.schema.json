@@ -20,15 +20,15 @@
       "items": {
         "type": "string",
         "enum": [
-          "void-runner",
-          "zen-planner",
-          "eye-ops",
+          "operator",
+          "planner",
+          "advisor-plan",
           "data-dive",
           "scan-ops",
-          "eye-scan",
-          "war-mind",
-          "null-audit",
-          "grid-sync",
+          "analyzer-media",
+          "advisor-strategy",
+          "validator-audit",
+          "orchestrator",
           "void.review-rails",
           "void.review-python",
           "void.review-ts",
@@ -177,11 +177,11 @@
           "grid-auto-slash-command",
           "grid-edit-error-recovery",
           "grid-delegate-task-retry",
-          "zen-planner-md-only",
-          "dark-runner-notepad",
+          "planner-md-only",
+          "executor-notepad",
           "jack-in-work",
           "grid-stop-continuation-guard",
-          "grid-sync"
+          "orchestrator"
         ]
       }
     },
@@ -564,7 +564,7 @@
             }
           }
         },
-        "void-runner": {
+        "operator": {
           "type": "object",
           "properties": {
             "model": {
@@ -735,7 +735,7 @@
             }
           }
         },
-        "dark-runner": {
+        "executor": {
           "type": "object",
           "properties": {
             "model": {
@@ -1077,7 +1077,7 @@
             }
           }
         },
-        "zen-planner": {
+        "planner": {
           "type": "object",
           "properties": {
             "model": {
@@ -1248,7 +1248,7 @@
             }
           }
         },
-        "war-mind": {
+        "advisor-strategy": {
           "type": "object",
           "properties": {
             "model": {
@@ -1419,7 +1419,7 @@
             }
           }
         },
-        "null-audit": {
+        "validator-audit": {
           "type": "object",
           "properties": {
             "model": {
@@ -1590,7 +1590,7 @@
             }
           }
         },
-        "eye-ops": {
+        "advisor-plan": {
           "type": "object",
           "properties": {
             "model": {
@@ -2103,7 +2103,7 @@
             }
           }
         },
-        "eye-scan": {
+        "analyzer-media": {
           "type": "object",
           "properties": {
             "model": {
@@ -2274,7 +2274,7 @@
             }
           }
         },
-        "grid-sync": {
+        "orchestrator": {
           "type": "object",
           "properties": {
             "model": {
@@ -2639,7 +2639,7 @@
         }
       }
     },
-    "void_runner": {
+    "operator": {
       "type": "object",
       "properties": {
         "tasks": {

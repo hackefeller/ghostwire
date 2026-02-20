@@ -172,7 +172,7 @@ describe("session-manager storage", () => {
       JSON.stringify({
         id: "msg_002",
         role: "assistant",
-        agent: "eye-ops",
+        agent: "advisor-plan",
         time: { created: now },
       }),
     );
@@ -185,7 +185,7 @@ describe("session-manager storage", () => {
     expect(info?.id).toBe(sessionID);
     expect(info?.message_count).toBe(2);
     expect(info?.agents_used).toContain("build");
-    expect(info?.agents_used).toContain("eye-ops");
+    expect(info?.agents_used).toContain("advisor-plan");
   });
 });
 

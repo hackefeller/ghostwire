@@ -68,37 +68,37 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("executor");
   });
 
-  it("returns display name for war-mind", () => {
-    // #given config key "war-mind"
-    const configKey = "war-mind";
+  it("returns display name for advisor-strategy", () => {
+    // #given config key "advisor-strategy"
+    const configKey = "advisor-strategy";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "war-mind"
-    expect(result).toBe("war-mind");
+    // #then returns "advisor-strategy"
+    expect(result).toBe("advisor-strategy");
   });
 
-  it("returns display name for null-audit", () => {
-    // #given config key "null-audit"
-    const configKey = "null-audit";
+  it("returns display name for validator-audit", () => {
+    // #given config key "validator-audit"
+    const configKey = "validator-audit";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "null-audit"
-    expect(result).toBe("null-audit");
+    // #then returns "validator-audit"
+    expect(result).toBe("validator-audit");
   });
 
-  it("returns display name for eye-ops", () => {
-    // #given config key "eye-ops"
-    const configKey = "eye-ops";
+  it("returns display name for advisor-plan", () => {
+    // #given config key "advisor-plan"
+    const configKey = "advisor-plan";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "eye-ops"
-    expect(result).toBe("eye-ops");
+    // #then returns "advisor-plan"
+    expect(result).toBe("advisor-plan");
   });
 
   it("returns display name for data-dive", () => {
@@ -144,9 +144,9 @@ describe("AGENT_DISPLAY_NAMES", () => {
       "orchestrator": "orchestrator",
       "planner": "planner",
       "executor": "executor",
-      "war-mind": "war-mind",
-      "null-audit": "null-audit",
-      "eye-ops": "eye-ops",
+      "advisor-strategy": "advisor-strategy",
+      "validator-audit": "validator-audit",
+      "advisor-plan": "advisor-plan",
       "data-dive": "data-dive",
       "scan-ops": "scan-ops",
       "analyzer-media": "analyzer-media",
@@ -155,9 +155,9 @@ describe("AGENT_DISPLAY_NAMES", () => {
       "nexus-orchestrator": "orchestrator",
       "augur-planner": "planner",
       "cipher-runner": "executor",
-      "tactician-strategist": "war-mind",
-      "glitch-auditor": "null-audit",
-      "seer-advisor": "eye-ops",
+      "tactician-strategist": "advisor-strategy",
+      "glitch-auditor": "validator-audit",
+      "seer-advisor": "advisor-plan",
       "archive-researcher": "data-dive",
       "scout-recon": "scan-ops",
       "optic-analyst": "analyzer-media",

@@ -23,7 +23,7 @@ export const DELEGATE_TASK_ERROR_PATTERNS: DelegateTaskErrorPattern[] = [
     pattern: "category OR subagent_type",
     errorType: "mutual_exclusion",
     fixHint:
-      "Provide ONLY one of: category (e.g., 'general', 'quick') OR subagent_type (e.g., 'eye-ops', 'scan-ops')",
+      "Provide ONLY one of: category (e.g., 'general', 'quick') OR subagent_type (e.g., 'advisor-plan', 'scan-ops')",
   },
   {
     pattern: "Must provide either category or subagent_type",
@@ -49,7 +49,7 @@ export const DELEGATE_TASK_ERROR_PATTERNS: DelegateTaskErrorPattern[] = [
     pattern: "Cannot call primary agent",
     errorType: "primary_agent",
     fixHint:
-      "Primary agents cannot be called via delegate_task. Use a subagent like 'scan-ops', 'eye-ops', or 'data-dive'",
+      "Primary agents cannot be called via delegate_task. Use a subagent like 'scan-ops', 'advisor-plan', or 'data-dive'",
   },
   {
     pattern: "Skills not found",

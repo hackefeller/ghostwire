@@ -19,7 +19,7 @@ const AGENT_RESTRICTIONS: Record<string, Record<string, boolean>> = {
 
   "data-dive": EXPLORATION_AGENT_DENYLIST,
 
-  "eye-ops": {
+  "advisor-plan": {
     write: false,
     edit: false,
     task: false,

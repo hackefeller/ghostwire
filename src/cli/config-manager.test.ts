@@ -389,7 +389,7 @@ describe("generateOmoConfig - model fallback system", () => {
       "openai/gpt-5.2-codex",
     );
     // #then Seer Advisor should use native OpenAI (first fallback entry)
-    expect((result.agents as Record<string, { model: string }>)["eye-ops"].model).toBe(
+    expect((result.agents as Record<string, { model: string }>)["advisor-plan"].model).toBe(
       "openai/gpt-5.2",
     );
     // #then opticAnalyst should use native OpenAI (fallback within native tier)

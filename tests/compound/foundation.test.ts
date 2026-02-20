@@ -27,9 +27,9 @@ describe('Compound Engineering - Foundation Tests', () => {
         'src/orchestration/agents/designer-iterator.ts',
         'src/orchestration/agents/designer-builder.ts',
         'src/orchestration/agents/designer-flow.ts',
-        'src/orchestration/agents/agent-arch.ts',
-        'src/orchestration/agents/deploy-check.ts',
-        'src/orchestration/agents/docs-write-readme.ts'
+        'src/orchestration/agents/advisor-architecture.ts',
+        'src/orchestration/agents/validator-deployment.ts',
+        'src/orchestration/agents/writer-readme.ts'
       ];
 
       agentFiles.forEach(file => {

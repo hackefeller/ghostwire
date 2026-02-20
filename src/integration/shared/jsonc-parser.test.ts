@@ -105,7 +105,7 @@ describe("parseJsonc", () => {
     const jsonc = `{
       // This is an example config
       "agents": {
-        "eye-ops": { "model": "openai/gpt-5.2" }, // GPT for strategic reasoning
+        "advisor-plan": { "model": "openai/gpt-5.2" }, // GPT for strategic reasoning
       },
       /* Agent overrides */
       "disabled_agents": [],
@@ -113,12 +113,12 @@ describe("parseJsonc", () => {
 
     //#when
     const result = parseJsonc<{
-      agents: { "eye-ops": { model: string } };
+      agents: { "advisor-plan": { model: string } };
       disabled_agents: string[];
     }>(jsonc);
 
     //#then
-    expect(result.agents["eye-ops"].model).toBe("openai/gpt-5.2");
+    expect(result.agents["advisor-plan"].model).toBe("openai/gpt-5.2");
     expect(result.disabled_agents).toEqual([]);
   });
 

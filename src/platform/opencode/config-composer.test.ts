@@ -26,7 +26,7 @@ beforeEach(() => {
       prompt: "test",
       mode: "primary",
     },
-    "eye-ops": { name: "eye-ops", prompt: "test", mode: "subagent" },
+    "advisor-plan": { name: "advisor-plan", prompt: "test", mode: "subagent" },
   });
 
   spyOn(cipherJunior, "createExecutorAgent" as any).mockReturnValue({

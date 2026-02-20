@@ -7,9 +7,9 @@ import {
 } from "./model-requirements";
 
 describe("AGENT_MODEL_REQUIREMENTS", () => {
-  test("eye-ops has valid fallbackChain with gpt-5.2 as primary", () => {
+  test("advisor-plan has valid fallbackChain with gpt-5.2 as primary", () => {
     // #given - seerAdvisor agent requirement
-    const seerAdvisor = AGENT_MODEL_REQUIREMENTS["eye-ops"];
+    const seerAdvisor = AGENT_MODEL_REQUIREMENTS["advisor-plan"];
 
     // #when - accessing seerAdvisor requirement
     // #then - fallbackChain exists with gpt-5.2 as first entry
@@ -109,9 +109,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.variant).toBe("max");
   });
 
-  test("war-mind has valid fallbackChain with claude-opus-4-5 as primary", () => {
+  test("advisor-strategy has valid fallbackChain with claude-opus-4-5 as primary", () => {
     // #given - tacticianStrategist agent requirement
-    const tacticianStrategist = AGENT_MODEL_REQUIREMENTS["war-mind"];
+    const tacticianStrategist = AGENT_MODEL_REQUIREMENTS["advisor-strategy"];
 
     // #when - accessing Tactician Strategist requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
@@ -125,9 +125,9 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.variant).toBe("max");
   });
 
-  test("null-audit has valid fallbackChain with gpt-5.2 as primary", () => {
+  test("validator-audit has valid fallbackChain with gpt-5.2 as primary", () => {
     // #given - glitchAuditor agent requirement
-    const glitchAuditor = AGENT_MODEL_REQUIREMENTS["null-audit"];
+    const glitchAuditor = AGENT_MODEL_REQUIREMENTS["validator-audit"];
 
     // #when - accessing Glitch Auditor requirement
     // #then - fallbackChain exists with gpt-5.2 as first entry, variant medium
@@ -160,13 +160,13 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     // #given - list of 9 agent names
     const expectedAgents = [
       "operator",
-      "eye-ops",
+      "advisor-plan",
       "data-dive",
       "scan-ops",
       "analyzer-media",
       "planner",
-      "war-mind",
-      "null-audit",
+      "advisor-strategy",
+      "validator-audit",
       "orchestrator",
     ];
 

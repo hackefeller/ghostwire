@@ -155,7 +155,7 @@ call_grid_agent(subagent_type="data-dive", prompt="Find best practices for [tech
 **Seer Advisor Consultation** (RECOMMEND to planner):
 \`\`\`
 Task(
-  subagent_type="eye-ops",
+  subagent_type="advisor-plan",
   prompt="Architecture consultation:
   Request: [user's request]
   Current state: [gathered context]
@@ -279,7 +279,7 @@ User confirms the button works as expected.
 | \`ast_grep_search\` | Find structural patterns | Refactoring, Build |
 | \`scan-ops\` agent | Codebase pattern discovery | Build, Research |
 | \`data-dive\` agent | External docs, best practices | Build, Architecture, Research |
-| \`eye-ops\` agent | Read-only consultation. High-IQ debugging, architecture | Architecture |
+| \`advisor-plan\` agent | Read-only consultation. High-IQ debugging, architecture | Architecture |
 
 ---
 
@@ -309,7 +309,7 @@ const tacticianRestrictions = createAgentToolRestrictions([
   "delegate_task",
 ]);
 
-export function createWarMindAgent(model: string): AgentConfig {
+export function createAdvisorStrategyAgent(model: string): AgentConfig {
   return {
     description:
       "Pre-planning consultant that analyzes requests to identify hidden intentions, ambiguities, and AI failure points. (Tactician Strategist - Ghostwire)",
@@ -321,7 +321,7 @@ export function createWarMindAgent(model: string): AgentConfig {
     thinking: { type: "enabled", budgetTokens: 32000 },
   } as AgentConfig;
 }
-createWarMindAgent.mode = MODE;
+createAdvisorStrategyAgent.mode = MODE;
 
 export const tacticianPromptMetadata: AgentPromptMetadata = {
   category: "advisor",

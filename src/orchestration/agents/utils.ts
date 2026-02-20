@@ -12,13 +12,13 @@ import type {
   GitMasterConfig,
 } from "../../platform/config/schema";
 import { createOperatorAgent } from "./operator";
-import { createEyeOpsAgent, EYE_OPS_PROMPT_METADATA } from "./eye-ops";
+import { createAdvisorPlanAgent, ADVISOR_PLAN_PROMPT_METADATA } from "./advisor-plan";
 import { createLibrarianAgent, LIBRARIAN_PROMPT_METADATA } from "./data-dive";
 import { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./scan-ops";
 import { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./analyzer-media";
-import { createWarMindAgent } from "./war-mind";
+import { createAdvisorStrategyAgent } from "./advisor-strategy";
 import { createOrchestratorAgent } from "./orchestrator";
-import { createNullAuditAgent } from "./null-audit";
+import { createValidatorAuditAgent } from "./validator-audit";
 import { COMPOUND_AGENT_MAPPINGS } from "./compound";
 import type {
   AvailableAgent,
@@ -50,12 +50,12 @@ type AgentSource = AgentFactory | AgentConfig;
 
 const agentSources: Record<BuiltinAgentName, AgentSource> = {
   "operator": createOperatorAgent,
-  "eye-ops": createEyeOpsAgent,
+  "advisor-plan": createAdvisorPlanAgent,
   "data-dive": createLibrarianAgent,
   "scan-ops": createExploreAgent,
   "analyzer-media": createMultimodalLookerAgent,
-  "war-mind": createWarMindAgent,
-  "null-audit": createNullAuditAgent,
+  "advisor-strategy": createAdvisorStrategyAgent,
+  "validator-audit": createValidatorAuditAgent,
   // Note: orchestrator is handled specially in createBuiltinAgents()
   // because it needs OrchestratorContext, not just a model string
   "orchestrator": createOrchestratorAgent as unknown as AgentFactory,
@@ -68,7 +68,7 @@ const agentSources: Record<BuiltinAgentName, AgentSource> = {
  * (Delegation Table, Tool Selection, Key Triggers, etc.)
  */
 const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
-  "eye-ops": EYE_OPS_PROMPT_METADATA,
+  "advisor-plan": ADVISOR_PLAN_PROMPT_METADATA,
   "data-dive": LIBRARIAN_PROMPT_METADATA,
   "scan-ops": EXPLORE_PROMPT_METADATA,
   "analyzer-media": MULTIMODAL_LOOKER_PROMPT_METADATA,

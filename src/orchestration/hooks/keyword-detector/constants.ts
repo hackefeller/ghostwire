@@ -198,7 +198,7 @@ delegate_task(agent="scan-ops", prompt="Find [X] patterns in codebase", backgrou
 delegate_task(agent="data-dive", prompt="Find docs/examples for [Y]", background=true)
 
 // Hard problem? DON'T struggle alone:
-delegate_task(agent="eye-ops", prompt="...")         // conventional: architecture, debugging
+delegate_task(agent="advisor-plan", prompt="...")         // conventional: architecture, debugging
 delegate_task(category="artistry", prompt="...")    // non-conventional: needs different approach
 \`\`\`
 
@@ -303,7 +303,7 @@ delegate_task(session_id="ses_abc123", prompt="Here's my answer to your question
 | Codebase exploration | delegate_task(subagent_type="scan-ops", run_in_background=true) | Parallel, context-efficient |
 | Documentation lookup | delegate_task(subagent_type="data-dive", run_in_background=true) | Specialized knowledge |
 | Planning | delegate_task(subagent_type="plan") | Parallel task graph + structured TODO list |
-| Hard problem (conventional) | delegate_task(subagent_type="eye-ops") | Architecture, debugging, complex logic |
+| Hard problem (conventional) | delegate_task(subagent_type="advisor-plan") | Architecture, debugging, complex logic |
 | Hard problem (non-conventional) | delegate_task(category="artistry", load_skills=[...]) | Different approach needed |
 | Implementation | delegate_task(category="...", load_skills=[...]) | Domain-optimized models |
 

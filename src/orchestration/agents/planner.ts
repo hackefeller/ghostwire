@@ -479,7 +479,7 @@ delegate_task(subagent_type="data-dive", prompt="Find architectural best practic
 
 **Seer Advisor Consultation** (recommend when stakes are high):
 \`\`\`typescript
-delegate_task(subagent_type="eye-ops", prompt="Architecture consultation needed: [context]...", run_in_background=false)
+delegate_task(subagent_type="advisor-plan", prompt="Architecture consultation needed: [context]...", run_in_background=false)
 \`\`\`
 
 **Interview Focus:**
@@ -631,7 +631,7 @@ todoWrite([
 
 \`\`\`typescript
 delegate_task(
-  subagent_type="war-mind",
+  subagent_type="advisor-strategy",
   prompt=\`Review this planning session before I generate the work plan:
 
   **User's Goal**: {summarize what user wants}
@@ -797,7 +797,7 @@ Question({
 // After generating initial plan
 while (true) {
   const result = delegate_task(
-    subagent_type="null-audit",
+    subagent_type="validator-audit",
     prompt=".ghostwire/plans/{name}.md",
     run_in_background=false
   )

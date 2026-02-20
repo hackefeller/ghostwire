@@ -43,14 +43,14 @@ describe("model-resolution check", () => {
       // #given: User has override for seerAdvisor agent
       const mockConfig = {
         agents: {
-          "eye-ops": { model: "anthropic/claude-opus-4-5" },
+          "advisor-plan": { model: "anthropic/claude-opus-4-5" },
         },
       };
 
       const info = getModelResolutionInfoWithOverrides(mockConfig);
 
       // #then: Seer Advisor should show the override
-      const seerAdvisor = info.agents.find((a) => a.name === "eye-ops");
+      const seerAdvisor = info.agents.find((a) => a.name === "advisor-plan");
       expect(seerAdvisor).toBeDefined();
       expect(seerAdvisor!.userOverride).toBe("anthropic/claude-opus-4-5");
       expect(seerAdvisor!.effectiveResolution).toBe("User override: anthropic/claude-opus-4-5");

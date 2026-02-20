@@ -15,9 +15,9 @@ import { createDesignImplementationReviewerAgent } from "../analyzer-design";
 import { createDesignIteratorAgent } from "../designer-iterator";
 import { createFrontendDesignAgent } from "../designer-builder";
 import { createSpecFlowAnalyzerAgent } from "../designer-flow";
-import { createAgentNativeArchitectureAgent } from "../agent-arch";
-import { createDeploymentVerificationAgent } from "../deploy-check";
-import { createAnkaneReadmeWriterAgent } from "../docs-write-readme";
+import { createAgentNativeArchitectureAgent } from "../advisor-architecture";
+import { createDeploymentVerificationAgent } from "../validator-deployment";
+import { createAnkaneReadmeWriterAgent } from "../writer-readme";
 
 // Review Agents (5)
 export {
@@ -64,25 +64,25 @@ export { createSpecFlowAnalyzerAgent, SPEC_FLOW_ANALYZER_METADATA } from "../des
 export {
   createAgentNativeArchitectureAgent,
   AGENT_NATIVE_ARCHITECTURE_METADATA,
-} from "../agent-arch";
+} from "../advisor-architecture";
 export {
   createDeploymentVerificationAgent,
   DEPLOYMENT_VERIFICATION_AGENT_METADATA,
-} from "../deploy-check";
+} from "../validator-deployment";
 
 // Documentation Agents (12) - Simplified implementations following established patterns
-export { createAnkaneReadmeWriterAgent, ANKANE_README_WRITER_METADATA } from "../docs-write-readme";
+export { createAnkaneReadmeWriterAgent, ANKANE_README_WRITER_METADATA } from "../writer-readme";
 
 // Note: Remaining documentation agents (11) would be implemented following the same pattern
 // For now, creating placeholder exports to maintain structure
-export const createEveryStyleEditorAgent = (model: string) => ({
+export const createEditorStyleAgent = (model: string) => ({
   description:
     "Review and edit text content to conform to Every's style guide with systematic line-by-line review",
   model,
   temperature: 0.1,
   prompt: "You are Every's style editor...",
 });
-export const EVERY_STYLE_EDITOR_METADATA = {
+export const EDITOR_STYLE_METADATA = {
   category: "documentation",
   cost: "LOW",
   promptAlias: "Every Style Editor",
@@ -92,13 +92,13 @@ export const EVERY_STYLE_EDITOR_METADATA = {
 };
 
 // Additional documentation agent placeholders...
-export const createAndrewKaneGemWriterAgent = (model: string) => ({
+export const createWriterGemAgent = (model: string) => ({
   description: "Write Ruby gems following Andrew Kane's patterns",
   model,
   temperature: 0.1,
   prompt: "You write Ruby gems...",
 });
-export const ANDREW_KANE_GEM_WRITER_METADATA = {
+export const WRITER_GEM_METADATA = {
   category: "documentation",
   cost: "LOW",
   promptAlias: "Andrew Kane Gem Writer",
@@ -138,6 +138,6 @@ export const COMPOUND_AGENT_MAPPINGS = {
 
   // Documentation Agents (Phase 15)
   "docs.write-readme": createAnkaneReadmeWriterAgent,
-  "docs.edit-style": createEveryStyleEditorAgent,
-  "docs.write-gem": createAndrewKaneGemWriterAgent,
+  "editor-style": createEditorStyleAgent,
+  "writer-gem": createWriterGemAgent,
 };

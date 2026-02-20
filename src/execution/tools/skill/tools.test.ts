@@ -128,7 +128,7 @@ describe("skill tool - agent restriction", () => {
     // #given
     const loadedSkills = [createMockSkill("operator-only-skill", { agent: "operator" })];
     const tool = createSkillTool({ skills: loadedSkills });
-    const context = { ...mockContext, agent: "eye-ops" };
+    const context = { ...mockContext, agent: "advisor-plan" };
 
     // #when / #then
     await expect(tool.execute({ name: "operator-only-skill" }, context)).rejects.toThrow(

@@ -273,7 +273,7 @@ MUTUALLY EXCLUSIVE: Provide EITHER category OR subagent_type, not both (unless c
 - category: Use predefined category → Spawns Dark Runner with category config
   Available categories:
 ${categoryList}
-- subagent_type: Use specific agent directly (e.g., "eye-ops", "scan-ops")
+- subagent_type: Use specific agent directly (e.g., "advisor-plan", "scan-ops")
 - run_in_background: true=async (returns task_id), false=sync (waits for result). Default: false. Use background=true ONLY for parallel exploration with 5+ independent queries.
 - session_id: Existing Task session to continue (from previous task output). Continues agent with FULL CONTEXT PRESERVED - saves tokens, maintains continuity.
 - command: The command that triggered this task (optional, for slash command tracking).
@@ -305,7 +305,7 @@ Prompts MUST be in English.`;
       subagent_type: tool.schema
         .string()
         .optional()
-        .describe("Agent name (e.g., 'eye-ops', 'scan-ops'). Mutually exclusive with category."),
+        .describe("Agent name (e.g., 'advisor-plan', 'scan-ops'). Mutually exclusive with category."),
       session_id: tool.schema.string().optional().describe("Existing Task session to continue"),
       command: tool.schema.string().optional().describe("The command that triggered this task"),
     },
@@ -918,7 +918,7 @@ Create the work plan directly - that's your job as the planning agent.`;
         agentToUse = agentName;
 
         // Validate agent exists and is callable (not a primary agent)
-        // Uses case-insensitive matching to allow "Seer Advisor", "eye-ops", "ORACLE" etc.
+        // Uses case-insensitive matching to allow "Seer Advisor", "advisor-plan", "ORACLE" etc.
         try {
           const agentsResult = await client.app.agents();
           type AgentInfo = {

@@ -177,7 +177,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "openai", modelID: "gpt-5.2" };
 
     // #when
-    const variant = resolveVariantForModel(config, "eye-ops", model);
+    const variant = resolveVariantForModel(config, "advisor-plan", model);
 
     // #then
     expect(variant).toBe("high");
@@ -189,7 +189,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "anthropic", modelID: "claude-opus-4-5" };
 
     // #when
-    const variant = resolveVariantForModel(config, "eye-ops", model);
+    const variant = resolveVariantForModel(config, "advisor-plan", model);
 
     // #then
     expect(variant).toBe("max");

@@ -49,7 +49,7 @@ describe("createBuiltinAgents with model overrides", () => {
   });
 
   test("Seer Advisor uses connected provider fallback when availableModels is empty and cache exists", async () => {
-    // #given - connected providers cache has "openai", which matches eye-ops's first fallback entry
+    // #given - connected providers cache has "openai", which matches advisor-plan's first fallback entry
     const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([
       "openai",
     ]);
@@ -58,9 +58,9 @@ describe("createBuiltinAgents with model overrides", () => {
     const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL);
 
     // #then - seerAdvisor resolves via connected cache fallback to openai/gpt-5.2 (not system default)
-    expect(agents["eye-ops"].model).toBe("openai/gpt-5.2");
-    expect(agents["eye-ops"].reasoningEffort).toBe("medium");
-    expect(agents["eye-ops"].thinking).toBeUndefined();
+    expect(agents["advisor-plan"].model).toBe("openai/gpt-5.2");
+    expect(agents["advisor-plan"].reasoningEffort).toBe("medium");
+    expect(agents["advisor-plan"].thinking).toBeUndefined();
     cacheSpy.mockRestore?.();
   });
 
@@ -74,41 +74,41 @@ describe("createBuiltinAgents with model overrides", () => {
     const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL);
 
     // #then - seerAdvisor should be created with system default model (fallback to systemDefaultModel)
-    expect(agents["eye-ops"]).toBeDefined();
-    expect(agents["eye-ops"].model).toBe(TEST_DEFAULT_MODEL);
+    expect(agents["advisor-plan"]).toBeDefined();
+    expect(agents["advisor-plan"].model).toBe(TEST_DEFAULT_MODEL);
     cacheSpy.mockRestore?.();
   });
 
   test("Seer Advisor with GPT model override has reasoningEffort, no thinking", async () => {
     // #given
     const overrides = {
-      "eye-ops": { model: "openai/gpt-5.2" },
+      "advisor-plan": { model: "openai/gpt-5.2" },
     };
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL);
 
     // #then
-    expect(agents["eye-ops"].model).toBe("openai/gpt-5.2");
-    expect(agents["eye-ops"].reasoningEffort).toBe("medium");
-    expect(agents["eye-ops"].textVerbosity).toBe("high");
-    expect(agents["eye-ops"].thinking).toBeUndefined();
+    expect(agents["advisor-plan"].model).toBe("openai/gpt-5.2");
+    expect(agents["advisor-plan"].reasoningEffort).toBe("medium");
+    expect(agents["advisor-plan"].textVerbosity).toBe("high");
+    expect(agents["advisor-plan"].thinking).toBeUndefined();
   });
 
   test("Seer Advisor with Claude model override has thinking, no reasoningEffort", async () => {
     // #given
     const overrides = {
-      "eye-ops": { model: "anthropic/claude-sonnet-4" },
+      "advisor-plan": { model: "anthropic/claude-sonnet-4" },
     };
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL);
 
     // #then
-    expect(agents["eye-ops"].model).toBe("anthropic/claude-sonnet-4");
-    expect(agents["eye-ops"].thinking).toEqual({ type: "enabled", budgetTokens: 32000 });
-    expect(agents["eye-ops"].reasoningEffort).toBeUndefined();
-    expect(agents["eye-ops"].textVerbosity).toBeUndefined();
+    expect(agents["advisor-plan"].model).toBe("anthropic/claude-sonnet-4");
+    expect(agents["advisor-plan"].thinking).toEqual({ type: "enabled", budgetTokens: 32000 });
+    expect(agents["advisor-plan"].reasoningEffort).toBeUndefined();
+    expect(agents["advisor-plan"].textVerbosity).toBeUndefined();
   });
 
   test("non-model overrides are still applied after factory rebuild", async () => {
@@ -128,7 +128,7 @@ describe("createBuiltinAgents with model overrides", () => {
 
 describe("createBuiltinAgents without systemDefaultModel", () => {
   test("agents created via connected cache fallback even without systemDefaultModel", async () => {
-    // #given - connected cache has "openai", which matches eye-ops's fallback chain
+    // #given - connected cache has "openai", which matches advisor-plan's fallback chain
     const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([
       "openai",
     ]);
@@ -137,8 +137,8 @@ describe("createBuiltinAgents without systemDefaultModel", () => {
     const agents = await createBuiltinAgents([], {}, undefined, undefined);
 
     // #then - connected cache enables model resolution despite no systemDefaultModel
-    expect(agents["eye-ops"]).toBeDefined();
-    expect(agents["eye-ops"].model).toBe("openai/gpt-5.2");
+    expect(agents["advisor-plan"]).toBeDefined();
+    expect(agents["advisor-plan"].model).toBe("openai/gpt-5.2");
     cacheSpy.mockRestore?.();
   });
 
@@ -152,7 +152,7 @@ describe("createBuiltinAgents without systemDefaultModel", () => {
     const agents = await createBuiltinAgents([], {}, undefined, undefined);
 
     // #then
-    expect(agents["eye-ops"]).toBeUndefined();
+    expect(agents["advisor-plan"]).toBeUndefined();
     cacheSpy.mockRestore?.();
   });
 
@@ -429,30 +429,30 @@ describe("override.category expansion in createBuiltinAgents", () => {
   test("standard agent override with category expands category properties", async () => {
     // #given
     const overrides = {
-      "eye-ops": { category: "ultrabrain" } as any,
+      "advisor-plan": { category: "ultrabrain" } as any,
     };
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL);
 
     // #then - ultrabrain category: model=openai/gpt-5.2-codex, variant=xhigh
-    expect(agents["eye-ops"]).toBeDefined();
-    expect(agents["eye-ops"].model).toBe("openai/gpt-5.2-codex");
-    expect(agents["eye-ops"].variant).toBe("xhigh");
+    expect(agents["advisor-plan"]).toBeDefined();
+    expect(agents["advisor-plan"].model).toBe("openai/gpt-5.2-codex");
+    expect(agents["advisor-plan"].variant).toBe("xhigh");
   });
 
   test("standard agent override with category AND direct variant - direct wins", async () => {
     // #given - ultrabrain has variant=xhigh, but direct override says "max"
     const overrides = {
-      "eye-ops": { category: "ultrabrain", variant: "max" } as any,
+      "advisor-plan": { category: "ultrabrain", variant: "max" } as any,
     };
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL);
 
     // #then - direct variant overrides category variant
-    expect(agents["eye-ops"]).toBeDefined();
-    expect(agents["eye-ops"].variant).toBe("max");
+    expect(agents["advisor-plan"]).toBeDefined();
+    expect(agents["advisor-plan"].variant).toBe("max");
   });
 
   test("standard agent override with category AND direct reasoningEffort - direct wins", async () => {
@@ -464,7 +464,7 @@ describe("override.category expansion in createBuiltinAgents", () => {
       },
     };
     const overrides = {
-      "eye-ops": { category: "test-cat", reasoningEffort: "low" } as any,
+      "advisor-plan": { category: "test-cat", reasoningEffort: "low" } as any,
     };
 
     // #when
@@ -477,8 +477,8 @@ describe("override.category expansion in createBuiltinAgents", () => {
     );
 
     // #then - direct reasoningEffort wins over category
-    expect(agents["eye-ops"]).toBeDefined();
-    expect(agents["eye-ops"].reasoningEffort).toBe("low");
+    expect(agents["advisor-plan"]).toBeDefined();
+    expect(agents["advisor-plan"].reasoningEffort).toBe("low");
   });
 
   test("standard agent override with category applies reasoningEffort from category when no direct override", async () => {
@@ -490,7 +490,7 @@ describe("override.category expansion in createBuiltinAgents", () => {
       },
     };
     const overrides = {
-      "eye-ops": { category: "reasoning-cat" } as any,
+      "advisor-plan": { category: "reasoning-cat" } as any,
     };
 
     // #when
@@ -503,8 +503,8 @@ describe("override.category expansion in createBuiltinAgents", () => {
     );
 
     // #then - category reasoningEffort is applied
-    expect(agents["eye-ops"]).toBeDefined();
-    expect(agents["eye-ops"].reasoningEffort).toBe("high");
+    expect(agents["advisor-plan"]).toBeDefined();
+    expect(agents["advisor-plan"].reasoningEffort).toBe("high");
   });
 
   test("operator override with category expands category properties", async () => {
@@ -540,16 +540,16 @@ describe("override.category expansion in createBuiltinAgents", () => {
   test("override with non-existent category has no effect on config", async () => {
     // #given
     const overrides = {
-      "eye-ops": { category: "non-existent-category" } as any,
+      "advisor-plan": { category: "non-existent-category" } as any,
     };
 
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL);
 
     // #then - no category-specific variant/reasoningEffort applied from non-existent category
-    expect(agents["eye-ops"]).toBeDefined();
+    expect(agents["advisor-plan"]).toBeDefined();
     const agentsWithoutOverride = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL);
-    expect(agents["eye-ops"].model).toBe(agentsWithoutOverride["eye-ops"].model);
+    expect(agents["advisor-plan"].model).toBe(agentsWithoutOverride["advisor-plan"].model);
   });
 });
 

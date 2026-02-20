@@ -69,7 +69,7 @@ export interface AgentPromptMetadata {
   /** Optional dedicated prompt section (markdown) - for agents like Seer Advisor that have special sections */
   dedicatedSection?: string;
 
-  /** Nickname/alias used in prompt (e.g., "Seer Advisor" instead of "eye-ops") */
+  /** Nickname/alias used in prompt (e.g., "Seer Advisor" instead of "advisor-plan") */
   promptAlias?: string;
 
   /** Key triggers that should appear in Phase 0 (e.g., "External library mentioned → fire data-dive") */
@@ -82,12 +82,12 @@ export function isGptModel(model: string): boolean {
 
 export type BuiltinAgentName =
   | "operator"
-  | "eye-ops"
+  | "advisor-plan"
   | "data-dive"
   | "scan-ops"
   | "analyzer-media"
-  | "war-mind"
-  | "null-audit"
+  | "advisor-strategy"
+  | "validator-audit"
   | "orchestrator";
 
 export type OverridableAgentName = "build" | BuiltinAgentName;

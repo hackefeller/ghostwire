@@ -503,10 +503,10 @@ describe("Dark Runner agent override", () => {
     // #given
     const config = {
       agents: {
-        "war-mind": {
+        "advisor-strategy": {
           category: "ultrabrain",
         },
-        "null-audit": {
+        "validator-audit": {
           category: "quick",
         },
       },
@@ -518,8 +518,8 @@ describe("Dark Runner agent override", () => {
     // #then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.agents?.["war-mind"]?.category).toBe("ultrabrain");
-      expect(result.data.agents?.["null-audit"]?.category).toBe("quick");
+      expect(result.data.agents?.["advisor-strategy"]?.category).toBe("ultrabrain");
+      expect(result.data.agents?.["validator-audit"]?.category).toBe("quick");
     }
   });
 });

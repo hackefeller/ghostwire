@@ -5,7 +5,7 @@ import { createAgentToolRestrictions } from "../../platform/config/permission-co
 
 const MODE: AgentMode = "subagent";
 
-export const EYE_OPS_PROMPT_METADATA: AgentPromptMetadata = {
+export const ADVISOR_PLAN_PROMPT_METADATA: AgentPromptMetadata = {
   category: "advisor",
   cost: "EXPENSIVE",
   promptAlias: "Seer Advisor",
@@ -31,7 +31,7 @@ export const EYE_OPS_PROMPT_METADATA: AgentPromptMetadata = {
   ],
 };
 
-const EYE_OPS_SYSTEM_PROMPT = `You are a strategic technical advisor with deep reasoning capabilities, operating as a specialized consultant within an AI-assisted development environment.
+const ADVISOR_PLAN_SYSTEM_PROMPT = `You are a strategic technical advisor with deep reasoning capabilities, operating as a specialized consultant within an AI-assisted development environment.
 
 ## Context
 
@@ -97,7 +97,7 @@ Organize your final answer in three tiers:
 
 Your response goes directly to the user with no intermediate processing. Make your final message self-contained: a clear recommendation they can act on immediately, covering both what to do and why.`;
 
-export function createEyeOpsAgent(model: string): AgentConfig {
+export function createAdvisorPlanAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions(["write", "edit", "task", "delegate_task"]);
 
   const base = {
@@ -107,7 +107,7 @@ export function createEyeOpsAgent(model: string): AgentConfig {
     model,
     temperature: 0.1,
     ...restrictions,
-    prompt: EYE_OPS_SYSTEM_PROMPT,
+    prompt: ADVISOR_PLAN_SYSTEM_PROMPT,
   } as AgentConfig;
 
   if (isGptModel(model)) {
@@ -116,4 +116,4 @@ export function createEyeOpsAgent(model: string): AgentConfig {
 
   return { ...base, thinking: { type: "enabled", budgetTokens: 32000 } } as AgentConfig;
 }
-createEyeOpsAgent.mode = MODE;
+createAdvisorPlanAgent.mode = MODE;

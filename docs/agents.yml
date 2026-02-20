@@ -117,7 +117,7 @@ agents:
       For PDFs: Extract text, structure, tables, data from sections.
       For images: Describe layouts, UI elements, text, diagrams, charts.
 
-  - id: war-mind
+  - id: advisor-strategy
     display_name: Tactician Strategist
     model: anthropic/claude-opus-4-5
     purpose: Pre-planning consultant that prevents AI failures by identifying hidden intentions and ambiguities
@@ -135,7 +135,7 @@ agents:
         - Research: Investigation focus, exit criteria
       Mandatory Actions: Launch agents BEFORE asking questions, flag AI-slop patterns, QA must be agent-executable.
 
-  - id: null-audit
+  - id: validator-audit
     display_name: Glitch Auditor
     model: anthropic/claude-opus-4-5
     purpose: Expert reviewer for evaluating work plans against clarity and executability
@@ -237,19 +237,19 @@ agents:
     purpose: Spec flow analyzer
     fallbacks: []
 
-  - id: agent-arch
+  - id: advisor-architecture
     display_name: agent.arch
     model: anthropic/claude-opus-4-5
     purpose: Agent native architecture specialist
     fallbacks: []
 
-  - id: deploy-check
+  - id: validator-deployment
     display_name: deploy.check
     model: anthropic/claude-sonnet-4-5
     purpose: Deployment verification
     fallbacks: []
 
-  - id: docs-write-readme
+  - id: writer-readme
     display_name: docs.write-readme
     model: anthropic/claude-sonnet-4-5
     purpose: Ankane-style README writer

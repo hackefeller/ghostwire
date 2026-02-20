@@ -20,7 +20,7 @@ describe("findCaseInsensitive", () => {
 
   test("finds exact match first", () => {
     // #given - object with exact key
-    const obj = { "Seer Advisor": "value1", "eye-ops": "value2" };
+    const obj = { "Seer Advisor": "value1", "advisor-plan": "value2" };
 
     // #when - lookup with exact case
     const result = findCaseInsensitive(obj, "Seer Advisor");
@@ -31,10 +31,10 @@ describe("findCaseInsensitive", () => {
 
   test("finds case-insensitive match when no exact match", () => {
     // #given - object with lowercase key
-    const obj = { "eye-ops": "value" };
+    const obj = { "advisor-plan": "value" };
 
     // #when - lookup with uppercase
-    const result = findCaseInsensitive(obj, "EYE-OPS");
+    const result = findCaseInsensitive(obj, "ADVISOR-PLAN");
 
     // #then - returns case-insensitive match
     expect(result).toBe("value");
@@ -45,7 +45,7 @@ describe("findCaseInsensitive", () => {
     const obj = { other: "value" };
 
     // #when - lookup missing key
-    const result = findCaseInsensitive(obj, "eye-ops");
+    const result = findCaseInsensitive(obj, "advisor-plan");
 
     // #then - returns undefined
     expect(result).toBeUndefined();
@@ -77,10 +77,10 @@ describe("includesCaseInsensitive", () => {
 
   test("returns true for mixed case match", () => {
     // #given - array with mixed case values
-    const arr = ["eye-ops", "operator"];
+    const arr = ["advisor-plan", "operator"];
 
     // #when - check different case
-    const result = includesCaseInsensitive(arr, "EYE-OPS");
+    const result = includesCaseInsensitive(arr, "ADVISOR-PLAN");
 
     // #then - returns true
     expect(result).toBe(true);
@@ -91,7 +91,7 @@ describe("includesCaseInsensitive", () => {
     const arr = ["scan-ops", "data-dive"];
 
     // #when - check missing value
-    const result = includesCaseInsensitive(arr, "eye-ops");
+    const result = includesCaseInsensitive(arr, "advisor-plan");
 
     // #then - returns false
     expect(result).toBe(false);
@@ -113,34 +113,34 @@ describe("findByNameCaseInsensitive", () => {
   test("finds element by exact name", () => {
     // #given - array with named objects
     const arr = [
-      { name: "eye-ops", value: 1 },
+      { name: "advisor-plan", value: 1 },
       { name: "scan-ops", value: 2 },
     ];
 
     // #when - find by exact name
-    const result = findByNameCaseInsensitive(arr, "eye-ops");
+    const result = findByNameCaseInsensitive(arr, "advisor-plan");
 
     // #then - returns matching element
-    expect(result).toEqual({ name: "eye-ops", value: 1 });
+    expect(result).toEqual({ name: "advisor-plan", value: 1 });
   });
 
   test("finds element by case-insensitive name", () => {
     // #given - array with named objects
     const arr = [
-      { name: "eye-ops", value: 1 },
+      { name: "advisor-plan", value: 1 },
       { name: "scan-ops", value: 2 },
     ];
 
     // #when - find by different case
-    const result = findByNameCaseInsensitive(arr, "EYE-OPS");
+    const result = findByNameCaseInsensitive(arr, "ADVISOR-PLAN");
 
     // #then - returns matching element
-    expect(result).toEqual({ name: "eye-ops", value: 1 });
+    expect(result).toEqual({ name: "advisor-plan", value: 1 });
   });
 
   test("returns undefined when name not found", () => {
     // #given - array without target name
-    const arr = [{ name: "eye-ops", value: 1 }];
+    const arr = [{ name: "advisor-plan", value: 1 }];
 
     // #when - find missing name
     const result = findByNameCaseInsensitive(arr, "data-dive");
@@ -155,14 +155,14 @@ describe("equalsIgnoreCase", () => {
     // #given - same strings
     // #when - compare
     // #then - returns true
-    expect(equalsIgnoreCase("eye-ops", "eye-ops")).toBe(true);
+    expect(equalsIgnoreCase("advisor-plan", "advisor-plan")).toBe(true);
   });
 
   test("returns true for different case", () => {
     // #given - strings with different case
     // #when - compare
     // #then - returns true
-    expect(equalsIgnoreCase("eye-ops", "EYE-OPS")).toBe(true);
+    expect(equalsIgnoreCase("advisor-plan", "ADVISOR-PLAN")).toBe(true);
     expect(equalsIgnoreCase("operator", "OPERATOR")).toBe(true);
   });
 
@@ -170,6 +170,6 @@ describe("equalsIgnoreCase", () => {
     // #given - different strings
     // #when - compare
     // #then - returns false
-    expect(equalsIgnoreCase("eye-ops", "scan-ops")).toBe(false);
+    expect(equalsIgnoreCase("advisor-plan", "scan-ops")).toBe(false);
   });
 });

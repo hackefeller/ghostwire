@@ -600,7 +600,7 @@ Use \`ast_grep_search\` and \`ast_grep_replace\` for structural transformations.
 ## Agents
 - \`scan-ops\`: Parallel codebase pattern discovery
 - \`plan\`: Detailed refactoring plan generation
-- \`eye-ops\`: Read-only consultation for complex architectural decisions and debugging
+- \`advisor-plan\`: Read-only consultation for complex architectural decisions and debugging
 - \`data-dive\`: **Use proactively** when encountering deprecated methods or library migration tasks. Query official docs and OSS examples for modern replacements.
 
 ## Deprecated Code & Library Migration

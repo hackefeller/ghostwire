@@ -165,9 +165,9 @@ describe("operator-task", () => {
       expect(result).toBe(true);
     });
 
-    test("returns false for 'eye-ops'", () => {
+    test("returns false for 'advisor-plan'", () => {
       // #given / #when
-      const result = isPlanAgent("eye-ops");
+      const result = isPlanAgent("advisor-plan");
 
       // #then
       expect(result).toBe(false);
@@ -1935,7 +1935,7 @@ describe("operator-task", () => {
       const skillContent = "You are an expert";
 
       // #when
-      const result = buildSystemContent({ skillContent, agentName: "eye-ops" });
+      const result = buildSystemContent({ skillContent, agentName: "advisor-plan" });
 
       // #then
       expect(result).toBe(skillContent);
@@ -2407,7 +2407,7 @@ describe("operator-task", () => {
             agents: async () => ({
               data: [
                 {
-                  name: "eye-ops",
+                  name: "advisor-plan",
                   mode: "subagent",
                   model: { providerID: "anthropic", modelID: "claude-opus-4-5" },
                 },
@@ -2449,9 +2449,9 @@ describe("operator-task", () => {
         // #when - delegating to seerAdvisor agent via subagent_type in sync mode
         await tool.execute(
           {
-            description: "Consult eye-ops",
+            description: "Consult advisor-plan",
             prompt: "Review architecture",
-            subagent_type: "eye-ops",
+            subagent_type: "advisor-plan",
             run_in_background: false,
             load_skills: [],
           },
@@ -2597,7 +2597,7 @@ describe("operator-task", () => {
 
         const mockManager = { launch: async () => ({}) };
         const mockClient = {
-          app: { agents: async () => ({ data: [{ name: "eye-ops", mode: "subagent" }] }) },
+          app: { agents: async () => ({ data: [{ name: "advisor-plan", mode: "subagent" }] }) },
           config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
           session: {
             get: async () => ({ data: { directory: "/project" } }),
@@ -2635,7 +2635,7 @@ describe("operator-task", () => {
           {
             description: "Test seerAdvisor no delegate_task permission",
             prompt: "Consult on architecture",
-            subagent_type: "eye-ops",
+            subagent_type: "advisor-plan",
             run_in_background: false,
             load_skills: [],
           },

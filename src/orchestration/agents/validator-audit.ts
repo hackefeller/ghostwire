@@ -188,7 +188,7 @@ If REJECT:
 **Response Language**: Match the language of the plan content.
 `;
 
-export function createNullAuditAgent(model: string): AgentConfig {
+export function createValidatorAuditAgent(model: string): AgentConfig {
   const restrictions = createAgentToolRestrictions(["write", "edit", "task", "delegate_task"]);
 
   const base = {
@@ -207,7 +207,7 @@ export function createNullAuditAgent(model: string): AgentConfig {
 
   return { ...base, thinking: { type: "enabled", budgetTokens: 32000 } } as AgentConfig;
 }
-createNullAuditAgent.mode = MODE;
+createValidatorAuditAgent.mode = MODE;
 
 export const glitchPromptMetadata: AgentPromptMetadata = {
   category: "advisor",

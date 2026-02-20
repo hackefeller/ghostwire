@@ -16,7 +16,7 @@ import {
   buildLibrarianSection,
   buildDelegationTable,
   buildCategorySkillsDelegationGuide,
-  buildEyeOpsSection,
+  buildAdvisorPlanSection,
   buildHardBlocksSection,
   buildAntiPatternsSection,
   categorizeTools,
@@ -37,7 +37,7 @@ function buildDynamicOperatorPrompt(
     availableSkills,
   );
   const delegationTable = buildDelegationTable(availableAgents);
-  const seerSection = buildEyeOpsSection(availableAgents);
+  const seerSection = buildAdvisorPlanSection(availableAgents);
   const hardBlocks = buildHardBlocksSection();
   const antiPatterns = buildAntiPatternsSection();
 

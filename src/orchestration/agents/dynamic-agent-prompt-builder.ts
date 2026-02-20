@@ -263,8 +263,8 @@ delegate_task(category="...", load_skills=[], prompt="...")  // Empty load_skill
 \`\`\``;
 }
 
-export function buildEyeOpsSection(agents: AvailableAgent[]): string {
-  const seerAgent = agents.find((a) => a.name === "eye-ops");
+export function buildAdvisorPlanSection(agents: AvailableAgent[]): string {
+  const seerAgent = agents.find((a) => a.name === "advisor-plan");
   if (!seerAgent) return "";
 
   const useWhen = seerAgent.metadata.useWhen || [];
@@ -349,7 +349,7 @@ export function buildUltraworkSection(
   }
 
   if (agents.length > 0) {
-    const ultraworkAgentPriority = ["scan-ops", "data-dive", "plan", "eye-ops"];
+    const ultraworkAgentPriority = ["scan-ops", "data-dive", "plan", "advisor-plan"];
     const sortedAgents = [...agents].sort((a, b) => {
       const aIdx = ultraworkAgentPriority.indexOf(a.name);
       const bIdx = ultraworkAgentPriority.indexOf(b.name);

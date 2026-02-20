@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import { GLITCH_AUDITOR_SYSTEM_PROMPT } from "./null-audit";
+import { GLITCH_AUDITOR_SYSTEM_PROMPT } from "./validator-audit";
 
 function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

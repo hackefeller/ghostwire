@@ -6,15 +6,15 @@ export type {
   AvailableSkill,
 } from "./dynamic-agent-prompt-builder";
 export { createOperatorAgent } from "./operator";
-export { createEyeOpsAgent, EYE_OPS_PROMPT_METADATA } from "./eye-ops";
+export { createAdvisorPlanAgent, ADVISOR_PLAN_PROMPT_METADATA } from "./advisor-plan";
 export { createLibrarianAgent, LIBRARIAN_PROMPT_METADATA } from "./data-dive";
 export { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./scan-ops";
 
 export { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./analyzer-media";
-export { createWarMindAgent, TACTICIAN_SYSTEM_PROMPT, tacticianPromptMetadata } from "./war-mind";
+export { createAdvisorStrategyAgent, TACTICIAN_SYSTEM_PROMPT, tacticianPromptMetadata } from "./advisor-strategy";
 export {
-  createNullAuditAgent,
+  createValidatorAuditAgent,
   GLITCH_AUDITOR_SYSTEM_PROMPT,
   glitchPromptMetadata,
-} from "./null-audit";
+} from "./validator-audit";
 export { createOrchestratorAgent, ORCHESTRATOR_SYSTEM_PROMPT, nexusPromptMetadata } from "./orchestrator";

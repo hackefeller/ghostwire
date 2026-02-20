@@ -76,7 +76,7 @@ tools:
     purpose: Spawn agent tasks with category-based or direct agent selection, with skill injection
     description: |
       Category-based delegation: Predefined categories (explore, code, review) map to specific agents.
-      Direct agent selection: Specify agent name directly (e.g., "eye-ops", "scan-ops").
+      Direct agent selection: Specify agent name directly (e.g., "advisor-plan", "scan-ops").
       Skill injection: Load skills dynamically via load_skills parameter.
       Session continuation: Use session_id to preserve context across sessions.
       Unstable agent detection: Gemini models auto-convert sync to background mode.

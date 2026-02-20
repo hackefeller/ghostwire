@@ -10,13 +10,13 @@ import {
   getPlanProgress,
   getPlanName,
   createBoulderState,
-  findZenPlannerPlans,
+  findPlannerPlans,
 } from "./storage";
 import type { BoulderState } from "./types";
 
 describe("boulder-state", () => {
   const TEST_DIR = join(tmpdir(), "boulder-state-test-" + Date.now());
-  const SISYPHUS_DIR = join(TEST_DIR, ".void-runner");
+  const SISYPHUS_DIR = join(TEST_DIR, ".operator");
 
   beforeEach(() => {
     if (!existsSync(TEST_DIR)) {

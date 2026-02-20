@@ -224,7 +224,7 @@ export const glitchPromptMetadata: AgentPromptMetadata = {
     },
   ],
   useWhen: [
-    "After zen-planner creates a work plan",
+    "After planner creates a work plan",
     "Before executing a complex todo list",
     "To validate plan quality before delegating to executors",
     "When plan needs rigorous review for ADHD-driven omissions",

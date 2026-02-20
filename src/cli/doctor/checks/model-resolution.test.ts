@@ -12,7 +12,7 @@ describe("model-resolution check", () => {
       const info = getModelResolutionInfo();
 
       // #then: Should have agent entries
-      const cipherOperator = info.agents.find((a) => a.name === "void-runner");
+      const cipherOperator = info.agents.find((a) => a.name === "operator");
       expect(cipherOperator).toBeDefined();
       expect(cipherOperator!.requirement.fallbackChain[0]?.model).toBe("claude-opus-4-5");
       expect(cipherOperator!.requirement.fallbackChain[0]?.providers).toContain("anthropic");
@@ -84,7 +84,7 @@ describe("model-resolution check", () => {
       const info = getModelResolutionInfoWithOverrides(mockConfig);
 
       // #then: Should show provider fallback chain
-      const cipherOperator = info.agents.find((a) => a.name === "void-runner");
+      const cipherOperator = info.agents.find((a) => a.name === "operator");
       expect(cipherOperator).toBeDefined();
       expect(cipherOperator!.userOverride).toBeUndefined();
       expect(cipherOperator!.effectiveResolution).toContain("Provider fallback:");

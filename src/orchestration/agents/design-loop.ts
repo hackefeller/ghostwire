@@ -121,7 +121,7 @@ export function createDesignIteratorAgent(model: string): AgentConfig {
   };
 }
 
-// Agent metadata for void-runner prompt building and task delegation
+// Agent metadata for operator prompt building and task delegation
 export const DESIGN_ITERATOR_METADATA: AgentPromptMetadata = {
   category: "design",
   cost: "EXPENSIVE", // Multiple iterations with screenshot analysis

@@ -9,7 +9,7 @@ import {
 
 const MODE: AgentMode = "subagent";
 
-const DARK_RUNNER_PROMPT = `<Role>
+const EXECUTOR_PROMPT = `<Role>
 Dark Runner - Focused executor from Ghostwire.
 Execute tasks directly. NEVER delegate or spawn other agents.
 </Role>
@@ -46,21 +46,21 @@ Task NOT complete without:
 - Dense > verbose.
 </Style>`;
 
-function buildDarkRunnerPrompt(promptAppend?: string): string {
-  if (!promptAppend) return DARK_RUNNER_PROMPT;
-  return DARK_RUNNER_PROMPT + "\n\n" + promptAppend;
+function buildExecutorPrompt(promptAppend?: string): string {
+  if (!promptAppend) return EXECUTOR_PROMPT;
+  return EXECUTOR_PROMPT + "\n\n" + promptAppend;
 }
 
 // Core tools that Dark Runner must NEVER have access to
 // Note: call_grid_agent is ALLOWED so subagents can spawn scoutRecon/archiveResearcher
 const BLOCKED_TOOLS = ["task", "delegate_task"];
 
-export const DARK_RUNNER_DEFAULTS = {
+export const EXECUTOR_DEFAULTS = {
   model: "anthropic/claude-sonnet-4-5",
   temperature: 0.1,
 } as const;
 
-export function createDarkRunnerAgent(
+export function createExecutorAgent(
   override: AgentOverrideConfig | undefined,
   systemDefaultModel?: string,
 ): AgentConfig {
@@ -68,11 +68,11 @@ export function createDarkRunnerAgent(
     override = undefined;
   }
 
-  const model = override?.model ?? systemDefaultModel ?? DARK_RUNNER_DEFAULTS.model;
-  const temperature = override?.temperature ?? DARK_RUNNER_DEFAULTS.temperature;
+  const model = override?.model ?? systemDefaultModel ?? EXECUTOR_DEFAULTS.model;
+  const temperature = override?.temperature ?? EXECUTOR_DEFAULTS.temperature;
 
   const promptAppend = override?.prompt_append;
-  const prompt = buildDarkRunnerPrompt(promptAppend);
+  const prompt = buildExecutorPrompt(promptAppend);
 
   const baseRestrictions = createAgentToolRestrictions(BLOCKED_TOOLS);
 
@@ -112,4 +112,4 @@ export function createDarkRunnerAgent(
   } as AgentConfig;
 }
 
-createDarkRunnerAgent.mode = MODE;
+createExecutorAgent.mode = MODE;

@@ -38,15 +38,15 @@ hooks:
     # === Delegation & Agent Orchestration ===
 
     - id: category-skill-reminder
-      description: Reminds orchestrator agents (void-runner, dark-runner, grid-sync) to use the category+skill delegation system after 3+ tool calls. Promotes agent-based delegation.
+      description: Reminds orchestrator agents (operator, executor, orchestrator) to use the category+skill delegation system after 3+ tool calls. Promotes agent-based delegation.
 
-    - id: dark-runner-notepad
+    - id: executor-notepad
       description: Injects a notepad directive into delegate_task prompts when called by the orchestrator. Tracks work progress across delegation boundaries.
 
     - id: delegate-task-retry
       description: Detects delegate_task tool errors and appends guidance with fix hints and correct parameter examples. Enables self-healing delegation.
 
-    - id: grid-sync
+    - id: orchestrator
       description: Main orchestration hook for boulder continuation. Injects verification reminders after subagent work completes. Prevents direct file edits by orchestrator to maintain workflow integrity.
 
     - id: subagent-question-blocker
@@ -66,8 +66,8 @@ hooks:
     - id: rules-injector
       description: Finds and injects .md rule files (copilot-instructions) matching the current file being edited. Uses frontmatter patterns to match relevant rules.
 
-    - id: zen-planner-md-only
-      description: Restricts zen-planner to only write .md files inside .ghostwire/ directory. Injects workflow reminders for plan file writes.
+    - id: planner-md-only
+      description: Restricts planner to only write .md files inside .ghostwire/ directory. Injects workflow reminders for plan file writes.
 
     # === Error Recovery ===
 
@@ -108,7 +108,7 @@ hooks:
       description: Implements iterative task execution loop. Continues prompting until a completion promise is detected or max iterations reached. Self-driving task completion.
 
     - id: start-work
-      description: Handles /jack-in-work command. Loads/creates boulder state, selects zen-planner plans, injects context for work continuation.
+      description: Handles /jack-in-work command. Loads/creates boulder state, selects planner plans, injects context for work continuation.
 
     - id: task-resume-info
       description: Appends resume instructions to task/delegate_task outputs that launch new sessions. Enables cross-session task continuation.

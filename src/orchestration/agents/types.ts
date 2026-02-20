@@ -18,7 +18,7 @@ export type AgentFactory = ((model: string) => AgentConfig) & {
 };
 
 /**
- * Agent category for grouping in void-runner prompt sections
+ * Agent category for grouping in operator prompt sections
  */
 export type AgentCategory =
   | "exploration"
@@ -37,7 +37,7 @@ export type AgentCategory =
 export type AgentCost = "FREE" | "CHEAP" | "EXPENSIVE" | "LOW" | "MODERATE" | "HIGH";
 
 /**
- * Delegation trigger for void-runner prompt's Delegation Table
+ * Delegation trigger for operator prompt's Delegation Table
  */
 export interface DelegationTrigger {
   /** Domain of work (e.g., "Frontend UI/UX") */
@@ -47,8 +47,8 @@ export interface DelegationTrigger {
 }
 
 /**
- * Metadata for generating void-runner prompt sections dynamically
- * This allows adding/removing agents without manually updating the void-runner prompt
+ * Metadata for generating operator prompt sections dynamically
+ * This allows adding/removing agents without manually updating the operator prompt
  */
 export interface AgentPromptMetadata {
   /** Category for grouping in prompt sections */
@@ -81,14 +81,14 @@ export function isGptModel(model: string): boolean {
 }
 
 export type BuiltinAgentName =
-  | "void-runner"
+  | "operator"
   | "eye-ops"
   | "data-dive"
   | "scan-ops"
   | "eye-scan"
   | "war-mind"
   | "null-audit"
-  | "grid-sync";
+  | "orchestrator";
 
 export type OverridableAgentName = "build" | BuiltinAgentName;
 

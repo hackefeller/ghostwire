@@ -3,12 +3,12 @@ import { existsSync, readdirSync } from "node:fs";
 import { join, resolve, relative, isAbsolute } from "node:path";
 import {
   HOOK_NAME,
-  ZEN_PLANNER_AGENTS,
+  PLANNER_AGENTS,
   ALLOWED_EXTENSIONS,
   ALLOWED_PATH_PREFIX,
   BLOCKED_TOOLS,
   PLANNING_CONSULT_WARNING,
-  ZEN_PLANNER_WORKFLOW_REMINDER,
+  PLANNER_WORKFLOW_REMINDER,
 } from "./constants";
 import {
   findNearestMessageWithFields,
@@ -23,7 +23,7 @@ import { getAgentDisplayName } from "../../../integration/shared/agent-display-n
 export * from "./constants";
 
 /**
- * Cross-platform path validator for zen-planner file writes.
+ * Cross-platform path validator for planner file writes.
  * Uses path.resolve/relative instead of string matching to handle:
  * - Windows backslashes (e.g., .ghostwire\\plans\\x.md)
  * - Mixed separators (e.g., .ghostwire\\plans/x.md)
@@ -86,7 +86,7 @@ function getAgentFromSession(sessionID: string): string | undefined {
   return getSessionAgent(sessionID) ?? getAgentFromMessageFiles(sessionID);
 }
 
-export function createZenPlannerMdOnlyHook(ctx: PluginInput) {
+export function createPlannerMdOnlyHook(ctx: PluginInput) {
   return {
     "tool.execute.before": async (
       input: { tool: string; sessionID: string; callID: string },
@@ -94,13 +94,13 @@ export function createZenPlannerMdOnlyHook(ctx: PluginInput) {
     ): Promise<void> => {
       const agentName = getAgentFromSession(input.sessionID);
 
-      if (!agentName || !ZEN_PLANNER_AGENTS.includes(agentName)) {
+      if (!agentName || !PLANNER_AGENTS.includes(agentName)) {
         return;
       }
 
       const toolName = input.tool;
 
-      // Inject read-only warning for task tools called by zen-planner
+      // Inject read-only warning for task tools called by planner
       if (TASK_TOOLS.includes(toolName)) {
         const prompt = output.args.prompt as string | undefined;
         if (prompt && !prompt.includes(SYSTEM_DIRECTIVE_PREFIX)) {
@@ -126,16 +126,16 @@ export function createZenPlannerMdOnlyHook(ctx: PluginInput) {
       }
 
       if (!isAllowedFile(filePath, ctx.directory)) {
-        log(`[${HOOK_NAME}] Blocked: zen-planner can only write to .ghostwire/*.md`, {
+        log(`[${HOOK_NAME}] Blocked: planner can only write to .ghostwire/*.md`, {
           sessionID: input.sessionID,
           tool: toolName,
           filePath,
           agent: agentName,
         });
         throw new Error(
-          `[${HOOK_NAME}] ${getAgentDisplayName("zen-planner")} can only write/edit .md files inside .ghostwire/ directory. ` +
+          `[${HOOK_NAME}] ${getAgentDisplayName("planner")} can only write/edit .md files inside .ghostwire/ directory. ` +
             `Attempted to modify: ${filePath}. ` +
-            `${getAgentDisplayName("zen-planner")} is a READ-ONLY planner. Use /jack-in-work to execute the plan. ` +
+            `${getAgentDisplayName("planner")} is a READ-ONLY planner. Use /jack-in-work to execute the plan. ` +
             `APOLOGIZE TO THE USER, REMIND OF YOUR PLAN WRITING PROCESSES, TELL USER WHAT YOU WILL GOING TO DO AS THE PROCESS, WRITE THE PLAN`,
         );
       }
@@ -151,7 +151,7 @@ export function createZenPlannerMdOnlyHook(ctx: PluginInput) {
           filePath,
           agent: agentName,
         });
-        output.message = (output.message || "") + ZEN_PLANNER_WORKFLOW_REMINDER;
+        output.message = (output.message || "") + PLANNER_WORKFLOW_REMINDER;
       }
 
       log(`[${HOOK_NAME}] Allowed: .ghostwire/*.md write permitted`, {

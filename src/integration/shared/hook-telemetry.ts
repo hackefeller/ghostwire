@@ -16,9 +16,9 @@ const PHASE_BUDGET_MS: Record<HookTelemetryPhase, number> = {
 };
 
 const HOOK_BUDGET_OVERRIDES_MS: Record<string, number> = {
-  "tool.execute.before:grid-sync": 200,
-  "tool.execute.after:grid-sync": 250,
-  "event:grid-sync": 200,
+  "tool.execute.before:orchestrator": 200,
+  "tool.execute.after:orchestrator": 250,
+  "event:orchestrator": 200,
   "event:overclock-loop": 150,
 };
 

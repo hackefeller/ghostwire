@@ -24,7 +24,7 @@ import {
 import { isCallerOrchestrator, getMessageDir } from "../../../integration/shared/session-utils";
 import type { BackgroundManager } from "../../../execution/features/background-agent";
 
-export const HOOK_NAME = "grid-sync";
+export const HOOK_NAME = "orchestrator";
 
 /**
  * Cross-platform check if a path is inside .ghostwire/ directory.
@@ -122,7 +122,7 @@ ${createSystemDirective(SystemDirectiveTypes.DELEGATION_REQUIRED)}
 
 **STOP. YOU ARE VIOLATING ORCHESTRATOR PROTOCOL.**
 
-You (grid-sync) are attempting to directly modify a file outside \`.ghostwire/\`.
+You (orchestrator) are attempting to directly modify a file outside \`.ghostwire/\`.
 
 **Path attempted:** $FILE_PATH
 
@@ -373,7 +373,7 @@ function formatFileChanges(stats: GitFileStat[], notepadPath?: string): string {
 
   if (notepadPath) {
     const notepadStat = stats.find(
-      (s) => s.path.includes("notepad") || s.path.includes(".void-runner"),
+      (s) => s.path.includes("notepad") || s.path.includes(".operator"),
     );
     if (notepadStat) {
       lines.push("[NOTEPAD UPDATED]");
@@ -404,7 +404,7 @@ interface SessionState {
 
 const CONTINUATION_COOLDOWN_MS = 5000;
 
-export interface GridSyncHookOptions {
+export interface OrchestratorHookOptions {
   directory: string;
   backgroundManager?: BackgroundManager;
 }
@@ -435,7 +435,7 @@ function isAbortError(error: unknown): boolean {
   return false;
 }
 
-export function createGridSyncHook(ctx: PluginInput, options?: GridSyncHookOptions) {
+export function createOrchestratorHook(ctx: PluginInput, options?: OrchestratorHookOptions) {
   const backgroundManager = options?.backgroundManager;
   const sessions = new Map<string, SessionState>();
   const pendingFilePaths = new Map<string, string>();
@@ -505,7 +505,7 @@ export function createGridSyncHook(ctx: PluginInput, options?: GridSyncHookOptio
       await ctx.client.session.prompt({
         path: { id: sessionID },
         body: {
-          agent: "grid-sync",
+          agent: "orchestrator",
           ...(model !== undefined ? { model } : {}),
           parts: [{ type: "text", text: prompt }],
         },
@@ -583,7 +583,7 @@ export function createGridSyncHook(ctx: PluginInput, options?: GridSyncHookOptio
         }
 
         if (!isCallerOrchestrator(sessionID)) {
-          log(`[${HOOK_NAME}] Skipped: last agent is not grid-sync`, { sessionID });
+          log(`[${HOOK_NAME}] Skipped: last agent is not orchestrator`, { sessionID });
           return;
         }
 

@@ -5,7 +5,7 @@ describe("hook telemetry", () => {
   test("uses per-hook override budget when available", () => {
     //#given
     const phase = "tool.execute.after";
-    const hookName = "grid-sync";
+    const hookName = "orchestrator";
 
     //#when
     const budget = getHookBudgetMs(phase, hookName);

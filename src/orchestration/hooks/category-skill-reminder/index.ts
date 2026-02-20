@@ -6,7 +6,7 @@ import { log } from "../../../integration/shared";
  * Target agents that should receive category+skill reminders.
  * These are orchestrator agents that delegate work to specialized agents.
  */
-const TARGET_AGENTS = new Set(["void-runner", "dark-runner", "grid-sync"]);
+const TARGET_AGENTS = new Set(["operator", "executor", "orchestrator"]);
 
 /**
  * Tools that indicate the agent is doing work that could potentially be delegated.
@@ -88,9 +88,9 @@ export function createCategorySkillReminderHook(_ctx: PluginInput) {
     return (
       TARGET_AGENTS.has(agentLower) ||
       TARGET_AGENTS.has(canonical) ||
-      canonical.includes("void-runner") ||
-      canonical.includes("grid-sync") ||
-      canonical.includes("dark-runner")
+      canonical.includes("operator") ||
+      canonical.includes("orchestrator") ||
+      canonical.includes("executor")
     );
   }
 

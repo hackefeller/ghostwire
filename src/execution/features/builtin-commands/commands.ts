@@ -92,8 +92,8 @@ ${REFACTOR_TEMPLATE}
       "<refactoring-target> [--scope=<file|module|project>] [--strategy=<safe|aggressive>]",
   },
   "jack-in-work": {
-    description: "(builtin) Start void-runner work session from zen-planner plan",
-    agent: "grid-sync",
+    description: "(builtin) Start operator work session from planner plan",
+    agent: "orchestrator",
     template: `<command-instruction>
 ${START_WORK_TEMPLATE}
 </command-instruction>

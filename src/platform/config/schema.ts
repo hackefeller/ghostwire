@@ -14,15 +14,15 @@ const AgentPermissionSchema = z.object({
 });
 
 export const BuiltinAgentNameSchema = z.enum([
-  "void-runner",
-  "zen-planner",
+  "operator",
+  "planner",
   "eye-ops",
   "data-dive",
   "scan-ops",
   "eye-scan",
   "war-mind",
   "null-audit",
-  "grid-sync",
+  "orchestrator",
   // Compound Agents (28 total)
   // Review Agents (5) - Phase 11
   "void.review-rails",
@@ -147,17 +147,17 @@ export const BuiltinSkillNameSchema = z.enum([
 export const OverridableAgentNameSchema = z.enum([
   "build",
   "plan",
-  "void-runner",
-  "dark-runner",
+  "operator",
+  "executor",
   "OpenCode-Builder",
-  "zen-planner",
+  "planner",
   "war-mind",
   "null-audit",
   "eye-ops",
   "data-dive",
   "scan-ops",
   "eye-scan",
-  "grid-sync",
+  "orchestrator",
 ]);
 
 export const AgentNameSchema = BuiltinAgentNameSchema;
@@ -193,11 +193,11 @@ export const HookNameSchema = z.enum([
   "grid-auto-slash-command",
   "grid-edit-error-recovery",
   "grid-delegate-task-retry",
-  "zen-planner-md-only",
-  "dark-runner-notepad",
+  "planner-md-only",
+  "executor-notepad",
   "jack-in-work",
   "grid-stop-continuation-guard",
-  "grid-sync",
+  "orchestrator",
 ]);
 
 export const BuiltinCommandNameSchema = z.enum([
@@ -276,17 +276,17 @@ export const AgentOverrideConfigSchema = z.object({
 export const AgentOverridesSchema = z.object({
   build: AgentOverrideConfigSchema.optional(),
   plan: AgentOverrideConfigSchema.optional(),
-  "void-runner": AgentOverrideConfigSchema.optional(),
-  "dark-runner": AgentOverrideConfigSchema.optional(),
+  "operator": AgentOverrideConfigSchema.optional(),
+  "executor": AgentOverrideConfigSchema.optional(),
   "OpenCode-Builder": AgentOverrideConfigSchema.optional(),
-  "zen-planner": AgentOverrideConfigSchema.optional(),
+  "planner": AgentOverrideConfigSchema.optional(),
   "war-mind": AgentOverrideConfigSchema.optional(),
   "null-audit": AgentOverrideConfigSchema.optional(),
   "eye-ops": AgentOverrideConfigSchema.optional(),
   "data-dive": AgentOverrideConfigSchema.optional(),
   "scan-ops": AgentOverrideConfigSchema.optional(),
   "eye-scan": AgentOverrideConfigSchema.optional(),
-  "grid-sync": AgentOverrideConfigSchema.optional(),
+  "orchestrator": AgentOverrideConfigSchema.optional(),
 });
 
 export const ClaudeCodeConfigSchema = z.object({
@@ -327,7 +327,7 @@ export const FeaturesConfigSchema = z.object({
   compound_engineering: CompoundEngineeringConfigSchema.optional(),
 });
 
-export const VoidRunnerConfigSchema = z.object({
+export const OperatorConfigSchema = z.object({
   disabled: z.boolean().optional(),
   default_builder_enabled: z.boolean().optional(),
   planner_enabled: z.boolean().optional(),
@@ -553,7 +553,7 @@ export const AgentSwarmConfigSchema = z.object({
   ui_mode: z.enum(["toast", "tmux", "both"]).default("toast"),
 });
 
-export const VoidRunnerConfigSchemaWrapper = z.object({
+export const OperatorConfigSchemaWrapper = z.object({
   tasks: TaskQueueConfigSchema.optional(),
   swarm: AgentSwarmConfigSchema.optional(),
   disabled: z.boolean().optional(),
@@ -573,7 +573,7 @@ export const GhostwireConfigSchema = z.object({
   claude_code: ClaudeCodeConfigSchema.optional(),
   imports: ImportsConfigSchema.optional(),
   features: FeaturesConfigSchema.optional(),
-  void_runner: VoidRunnerConfigSchemaWrapper.optional(),
+  operator: OperatorConfigSchemaWrapper.optional(),
   comment_checker: CommentCheckerConfigSchema.optional(),
   experimental: ExperimentalConfigSchema.optional(),
   auto_update: z.boolean().optional(),
@@ -594,7 +594,7 @@ export type AgentName = z.infer<typeof AgentNameSchema>;
 export type HookName = z.infer<typeof HookNameSchema>;
 export type BuiltinCommandName = z.infer<typeof BuiltinCommandNameSchema>;
 export type BuiltinSkillName = z.infer<typeof BuiltinSkillNameSchema>;
-export type VoidRunnerConfig = z.infer<typeof VoidRunnerConfigSchema>;
+export type OperatorConfig = z.infer<typeof OperatorConfigSchema>;
 export type CommentCheckerConfig = z.infer<typeof CommentCheckerConfigSchema>;
 export type ExperimentalConfig = z.infer<typeof ExperimentalConfigSchema>;
 export type DynamicContextPruningConfig = z.infer<typeof DynamicContextPruningConfigSchema>;
@@ -612,7 +612,7 @@ export type TmuxConfig = z.infer<typeof TmuxConfigSchema>;
 export type TmuxLayout = z.infer<typeof TmuxLayoutSchema>;
 export type TaskQueueConfig = z.infer<typeof TaskQueueConfigSchema>;
 export type AgentSwarmConfig = z.infer<typeof AgentSwarmConfigSchema>;
-export type VoidRunnerConfigWrapper = z.infer<typeof VoidRunnerConfigSchemaWrapper>;
+export type OperatorConfigWrapper = z.infer<typeof OperatorConfigSchemaWrapper>;
 
 export {
   AnyMcpNameSchema,

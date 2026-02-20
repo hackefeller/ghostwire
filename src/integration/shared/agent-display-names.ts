@@ -1,21 +1,38 @@
 /**
  * Agent config keys to display names mapping.
- * Config keys are lowercase (e.g., "void-runner", "grid-sync").
+ * Config keys are lowercase (e.g., "operator", "orchestrator").
  * Display names match file names for consistency.
  *
  * For backward compatibility, also includes legacy agent name aliases.
  */
 export const AGENT_DISPLAY_NAMES: Record<string, string> = {
-  "void-runner": "void-runner",
-  "grid-sync": "grid-sync",
-  "zen-planner": "zen-planner",
-  "dark-runner": "dark-runner",
+  // Phase 1 - Orchestration (new names)
+  "operator": "operator",
+  "orchestrator": "orchestrator",
+  "planner": "planner",
+  "executor": "executor",
+  // Remaining agents (not yet renamed)
   "war-mind": "war-mind",
   "null-audit": "null-audit",
   "eye-ops": "eye-ops",
   "data-dive": "data-dive",
   "scan-ops": "scan-ops",
   "eye-scan": "eye-scan",
+  // Legacy aliases for backward compatibility
+  "cipher-operator": "operator",
+  "void-runner": "operator",
+  "nexus-orchestrator": "orchestrator",
+  "grid-sync": "orchestrator",
+  "augur-planner": "planner",
+  "zen-planner": "planner",
+  "cipher-runner": "executor",
+  "dark-runner": "executor",
+  "tactician-strategist": "war-mind",
+  "glitch-auditor": "null-audit",
+  "seer-advisor": "eye-ops",
+  "archive-researcher": "data-dive",
+  "scout-recon": "scan-ops",
+  "optic-analyst": "eye-scan",
 };
 
 /**
@@ -32,7 +49,7 @@ export function getAgentDisplayName(configKey: string): string {
   const lowerKey = configKey.toLowerCase();
   const normalizedKey = lowerKey.replace(/\s+/g, "-");
   const aliasKey =
-    normalizedKey === "void-runner-junior" ? "dark-runner" : normalizedKey;
+    normalizedKey === "operator-junior" ? "executor" : normalizedKey;
   for (const [k, v] of Object.entries(AGENT_DISPLAY_NAMES)) {
     const lowerMapKey = k.toLowerCase();
     if (

@@ -15,7 +15,7 @@ import * as connectedProvidersCache from "../../../platform/opencode/connected-p
 
 const SYSTEM_DEFAULT_MODEL = "anthropic/claude-sonnet-4-5";
 
-describe("void-runner-task", () => {
+describe("operator-task", () => {
   let cacheSpy: ReturnType<typeof spyOn>;
 
   beforeEach(() => {
@@ -133,9 +133,9 @@ describe("void-runner-task", () => {
       expect(result).toBe(true);
     });
 
-    test("returns true for 'zen-planner'", () => {
+    test("returns true for 'planner'", () => {
       // #given / #when
-      const result = isPlanAgent("zen-planner");
+      const result = isPlanAgent("planner");
 
       // #then
       expect(result).toBe(true);
@@ -157,9 +157,9 @@ describe("void-runner-task", () => {
       expect(result).toBe(true);
     });
 
-    test("returns true for case-insensitive match 'zen-planner'", () => {
+    test("returns true for case-insensitive match 'planner'", () => {
       // #given / #when
-      const result = isPlanAgent("zen-planner");
+      const result = isPlanAgent("planner");
 
       // #then
       expect(result).toBe(true);
@@ -200,7 +200,7 @@ describe("void-runner-task", () => {
     test("PLAN_AGENT_NAMES contains expected values", () => {
       // #given / #when / #then
       expect(PLAN_AGENT_NAMES).toContain("plan");
-      expect(PLAN_AGENT_NAMES).toContain("zen-planner");
+      expect(PLAN_AGENT_NAMES).toContain("planner");
       expect(PLAN_AGENT_NAMES).toContain("planner");
     });
   });
@@ -229,7 +229,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -277,7 +277,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -529,7 +529,7 @@ describe("void-runner-task", () => {
             id: "task-variant",
             sessionID: "session-variant",
             description: "Variant task",
-            agent: "dark-runner",
+            agent: "executor",
             status: "running",
           };
         },
@@ -556,7 +556,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -592,7 +592,7 @@ describe("void-runner-task", () => {
             id: "task-default-variant",
             sessionID: "session-default-variant",
             description: "Default variant task",
-            agent: "dark-runner",
+            agent: "executor",
             status: "running",
           };
         },
@@ -618,7 +618,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -678,7 +678,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -729,7 +729,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -771,7 +771,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -824,7 +824,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -894,7 +894,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -951,7 +951,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -1006,7 +1006,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -1068,7 +1068,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -1123,7 +1123,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -1180,7 +1180,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent",
           messageID: "msg",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -1221,7 +1221,7 @@ describe("void-runner-task", () => {
               id: "task-unstable",
               sessionID: "ses_unstable_gemini",
               description: "Unstable gemini task",
-              agent: "dark-runner",
+              agent: "executor",
               status: "running",
             };
           },
@@ -1255,7 +1255,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -1291,7 +1291,7 @@ describe("void-runner-task", () => {
             id: "task-normal-bg",
             sessionID: "ses_normal_bg",
             description: "Normal background task",
-            agent: "dark-runner",
+            agent: "executor",
             status: "running",
           };
         },
@@ -1315,7 +1315,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -1384,7 +1384,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -1432,7 +1432,7 @@ describe("void-runner-task", () => {
               id: "task-artistry",
               sessionID: "ses_artistry_gemini",
               description: "Artistry gemini task",
-              agent: "dark-runner",
+              agent: "executor",
               status: "running",
             };
           },
@@ -1466,7 +1466,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -1505,7 +1505,7 @@ describe("void-runner-task", () => {
               id: "task-writing",
               sessionID: "ses_writing_gemini",
               description: "Writing gemini task",
-              agent: "dark-runner",
+              agent: "executor",
               status: "running",
             };
           },
@@ -1539,7 +1539,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -1577,7 +1577,7 @@ describe("void-runner-task", () => {
               id: "task-custom-unstable",
               sessionID: "ses_custom_unstable",
               description: "Custom unstable task",
-              agent: "dark-runner",
+              agent: "executor",
               status: "running",
             };
           },
@@ -1616,7 +1616,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -1657,7 +1657,7 @@ describe("void-runner-task", () => {
             id: "task-fallback",
             sessionID: "ses_fallback_test",
             description: "Fallback test task",
-            agent: "dark-runner",
+            agent: "executor",
             status: "running",
           };
         },
@@ -1685,7 +1685,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -1744,7 +1744,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -1796,7 +1796,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -1886,26 +1886,26 @@ describe("void-runner-task", () => {
       expect(result).toBe(PLAN_AGENT_SYSTEM_PREPEND);
     });
 
-    test("prepends plan agent system prompt when agentName is 'zen-planner'", () => {
+    test("prepends plan agent system prompt when agentName is 'planner'", () => {
       // #given
       const { buildSystemContent } = require("./tools");
       const { PLAN_AGENT_SYSTEM_PREPEND } = require("./constants");
 
       // #when
-      const result = buildSystemContent({ agentName: "zen-planner" });
+      const result = buildSystemContent({ agentName: "planner" });
 
       // #then
       expect(result).toContain("<system>");
       expect(result).toBe(PLAN_AGENT_SYSTEM_PREPEND);
     });
 
-    test("prepends plan agent system prompt when agentName is 'zen-planner' (case insensitive)", () => {
+    test("prepends plan agent system prompt when agentName is 'planner' (case insensitive)", () => {
       // #given
       const { buildSystemContent } = require("./tools");
       const { PLAN_AGENT_SYSTEM_PREPEND } = require("./constants");
 
       // #when
-      const result = buildSystemContent({ agentName: "zen-planner" });
+      const result = buildSystemContent({ agentName: "planner" });
 
       // #then
       expect(result).toContain("<system>");
@@ -2172,14 +2172,14 @@ describe("void-runner-task", () => {
     });
   });
 
-  describe("zen-planner self-delegation block", () => {
-    test("zen-planner cannot delegate to zen-planner - returns error with guidance", async () => {
-      // #given - current agent is zen-planner
+  describe("planner self-delegation block", () => {
+    test("planner cannot delegate to planner - returns error with guidance", async () => {
+      // #given - current agent is planner
       const { createDelegateTask } = require("./tools");
 
       const mockManager = { launch: async () => ({}) };
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "zen-planner", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "planner", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
@@ -2198,36 +2198,36 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "zen-planner",
+        agent: "planner",
         abort: new AbortController().signal,
       };
 
-      // #when - zen-planner tries to delegate to zen-planner
+      // #when - planner tries to delegate to planner
       const result = await tool.execute(
         {
           description: "Test self-delegation block",
           prompt: "Create a plan",
-          subagent_type: "zen-planner",
+          subagent_type: "planner",
           run_in_background: false,
           load_skills: [],
         },
         toolContext,
       );
 
-      // #then - should return error telling zen-planner to create plan directly
-      expect(result).toContain("zen-planner");
+      // #then - should return error telling planner to create plan directly
+      expect(result).toContain("planner");
       expect(result).toContain("directly");
     });
 
     test(
-      "non-zen-planner agent CAN delegate to zen-planner - proceeds normally",
+      "non-planner agent CAN delegate to planner - proceeds normally",
       async () => {
         // #given - current agent is cipherOperator
         const { createDelegateTask } = require("./tools");
 
         const mockManager = { launch: async () => ({}) };
         const mockClient = {
-          app: { agents: async () => ({ data: [{ name: "zen-planner", mode: "subagent" }] }) },
+          app: { agents: async () => ({ data: [{ name: "planner", mode: "subagent" }] }) },
           config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
           session: {
             get: async () => ({ data: { directory: "/project" } }),
@@ -2253,16 +2253,16 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
-        // #when - cipherOperator delegates to zen-planner
+        // #when - cipherOperator delegates to planner
         const result = await tool.execute(
           {
-            description: "Test zen-planner delegation from non-zen-planner agent",
+            description: "Test planner delegation from non-planner agent",
             prompt: "Create a plan",
-            subagent_type: "zen-planner",
+            subagent_type: "planner",
             run_in_background: false,
             load_skills: [],
           },
@@ -2276,13 +2276,13 @@ describe("void-runner-task", () => {
       { timeout: 20000 },
     );
 
-    test("case-insensitive: zen-planner (capitalized) cannot delegate to zen-planner", async () => {
-      // #given - current agent is zen-planner (capitalized)
+    test("case-insensitive: planner (capitalized) cannot delegate to planner", async () => {
+      // #given - current agent is planner (capitalized)
       const { createDelegateTask } = require("./tools");
 
       const mockManager = { launch: async () => ({}) };
       const mockClient = {
-        app: { agents: async () => ({ data: [{ name: "zen-planner", mode: "subagent" }] }) },
+        app: { agents: async () => ({ data: [{ name: "planner", mode: "subagent" }] }) },
         config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
         session: {
           get: async () => ({ data: { directory: "/project" } }),
@@ -2301,16 +2301,16 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "zen-planner",
+        agent: "planner",
         abort: new AbortController().signal,
       };
 
-      // #when - zen-planner tries to delegate to zen-planner
+      // #when - planner tries to delegate to planner
       const result = await tool.execute(
         {
           description: "Test case-insensitive block",
           prompt: "Create a plan",
-          subagent_type: "zen-planner",
+          subagent_type: "planner",
           run_in_background: false,
           load_skills: [],
         },
@@ -2318,7 +2318,7 @@ describe("void-runner-task", () => {
       );
 
       // #then - should still return error
-      expect(result).toContain("zen-planner");
+      expect(result).toContain("planner");
       expect(result).toContain("directly");
     });
   });
@@ -2370,7 +2370,7 @@ describe("void-runner-task", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       };
 
@@ -2442,7 +2442,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -2507,7 +2507,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
@@ -2530,17 +2530,17 @@ describe("void-runner-task", () => {
     );
   });
 
-  describe("zen-planner subagent delegate_task permission", () => {
+  describe("planner subagent delegate_task permission", () => {
     test(
-      "zen-planner subagent should have delegate_task permission enabled",
+      "planner subagent should have delegate_task permission enabled",
       async () => {
-        // #given - cipherOperator delegates to zen-planner
+        // #given - cipherOperator delegates to planner
         const { createDelegateTask } = require("./tools");
         let promptBody: any;
 
         const mockManager = { launch: async () => ({}) };
         const mockClient = {
-          app: { agents: async () => ({ data: [{ name: "zen-planner", mode: "subagent" }] }) },
+          app: { agents: async () => ({ data: [{ name: "planner", mode: "subagent" }] }) },
           config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
           session: {
             get: async () => ({ data: { directory: "/project" } }),
@@ -2566,32 +2566,32 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 
-        // #when - cipherOperator delegates to zen-planner
+        // #when - cipherOperator delegates to planner
         await tool.execute(
           {
-            description: "Test zen-planner delegate_task permission",
+            description: "Test planner delegate_task permission",
             prompt: "Create a plan",
-            subagent_type: "zen-planner",
+            subagent_type: "planner",
             run_in_background: false,
             load_skills: [],
           },
           toolContext,
         );
 
-        // #then - zen-planner should have delegate_task permission
+        // #then - planner should have delegate_task permission
         expect(promptBody.tools.delegate_task).toBe(true);
       },
       { timeout: 20000 },
     );
 
     test(
-      "non-zen-planner subagent should NOT have delegate_task permission",
+      "non-planner subagent should NOT have delegate_task permission",
       async () => {
-        // #given - cipherOperator delegates to seerAdvisor (non-zen-planner)
+        // #given - cipherOperator delegates to seerAdvisor (non-planner)
         const { createDelegateTask } = require("./tools");
         let promptBody: any;
 
@@ -2626,7 +2626,7 @@ describe("void-runner-task", () => {
         const toolContext = {
           sessionID: "parent-session",
           messageID: "parent-message",
-          agent: "void-runner",
+          agent: "operator",
           abort: new AbortController().signal,
         };
 

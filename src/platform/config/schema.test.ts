@@ -400,11 +400,11 @@ describe("BuiltinCategoryNameSchema", () => {
 });
 
 describe("Dark Runner agent override", () => {
-  test("schema accepts agents['dark-runner'] and retains the key after parsing", () => {
+  test("schema accepts agents['executor'] and retains the key after parsing", () => {
     // #given
     const config = {
       agents: {
-        "dark-runner": {
+        "executor": {
           model: "openai/gpt-5.2",
           temperature: 0.2,
         },
@@ -417,9 +417,9 @@ describe("Dark Runner agent override", () => {
     // #then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.agents?.["dark-runner"]).toBeDefined();
-      expect(result.data.agents?.["dark-runner"]?.model).toBe("openai/gpt-5.2");
-      expect(result.data.agents?.["dark-runner"]?.temperature).toBe(0.2);
+      expect(result.data.agents?.["executor"]).toBeDefined();
+      expect(result.data.agents?.["executor"]?.model).toBe("openai/gpt-5.2");
+      expect(result.data.agents?.["executor"]?.temperature).toBe(0.2);
     }
   });
 
@@ -427,8 +427,8 @@ describe("Dark Runner agent override", () => {
     // #given
     const config = {
       agents: {
-        "dark-runner": {
-          prompt_append: "Additional instructions for dark-runner",
+        "executor": {
+          prompt_append: "Additional instructions for executor",
         },
       },
     };
@@ -439,8 +439,8 @@ describe("Dark Runner agent override", () => {
     // #then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.agents?.["dark-runner"]?.prompt_append).toBe(
-        "Additional instructions for dark-runner",
+      expect(result.data.agents?.["executor"]?.prompt_append).toBe(
+        "Additional instructions for executor",
       );
     }
   });
@@ -449,7 +449,7 @@ describe("Dark Runner agent override", () => {
     // #given
     const config = {
       agents: {
-        "dark-runner": {
+        "executor": {
           tools: {
             read: true,
             write: false,
@@ -464,7 +464,7 @@ describe("Dark Runner agent override", () => {
     // #then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.agents?.["dark-runner"]?.tools).toEqual({
+      expect(result.data.agents?.["executor"]?.tools).toEqual({
         read: true,
         write: false,
       });
@@ -475,13 +475,13 @@ describe("Dark Runner agent override", () => {
     // #given
     const config = {
       agents: {
-        "void-runner": {
+        "operator": {
           temperature: 0.1,
         },
-        "grid-sync": {
+        "orchestrator": {
           temperature: 0.2,
         },
-        "zen-planner": {
+        "planner": {
           temperature: 0.3,
         },
       },
@@ -493,9 +493,9 @@ describe("Dark Runner agent override", () => {
     // #then
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.agents?.["void-runner"]?.temperature).toBe(0.1);
-      expect(result.data.agents?.["grid-sync"]?.temperature).toBe(0.2);
-      expect(result.data.agents?.["zen-planner"]?.temperature).toBe(0.3);
+      expect(result.data.agents?.["operator"]?.temperature).toBe(0.1);
+      expect(result.data.agents?.["orchestrator"]?.temperature).toBe(0.2);
+      expect(result.data.agents?.["planner"]?.temperature).toBe(0.3);
     }
   });
 

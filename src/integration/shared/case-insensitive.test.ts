@@ -77,7 +77,7 @@ describe("includesCaseInsensitive", () => {
 
   test("returns true for mixed case match", () => {
     // #given - array with mixed case values
-    const arr = ["eye-ops", "void-runner"];
+    const arr = ["eye-ops", "operator"];
 
     // #when - check different case
     const result = includesCaseInsensitive(arr, "EYE-OPS");
@@ -163,7 +163,7 @@ describe("equalsIgnoreCase", () => {
     // #when - compare
     // #then - returns true
     expect(equalsIgnoreCase("eye-ops", "EYE-OPS")).toBe(true);
-    expect(equalsIgnoreCase("void-runner", "VOID-RUNNER")).toBe(true);
+    expect(equalsIgnoreCase("operator", "OPERATOR")).toBe(true);
   });
 
   test("returns false for different strings", () => {

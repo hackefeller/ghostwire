@@ -340,7 +340,7 @@ describe("jack-in-work hook", () => {
   });
 
   describe("session agent management", () => {
-    test("should update session agent to grid-sync when jack-in-work command is triggered", async () => {
+    test("should update session agent to orchestrator when jack-in-work command is triggered", async () => {
       // #given
       const updateSpy = spyOn(sessionState, "updateSessionAgent");
 
@@ -350,10 +350,10 @@ describe("jack-in-work hook", () => {
       };
 
       // #when
-      await hook["chat.message"]({ sessionID: "ses-zen-planner-to-void-runner" }, output);
+      await hook["chat.message"]({ sessionID: "ses-planner-to-operator" }, output);
 
       // #then
-      expect(updateSpy).toHaveBeenCalledWith("ses-zen-planner-to-void-runner", "grid-sync");
+      expect(updateSpy).toHaveBeenCalledWith("ses-planner-to-operator", "orchestrator");
       updateSpy.mockRestore();
     });
   });

@@ -24,6 +24,6 @@ export interface UpdateCheckResult {
 
 export interface AutoUpdateCheckerOptions {
   showStartupToast?: boolean;
-  isVoidRunnerEnabled?: boolean;
+  isOperatorEnabled?: boolean;
   autoUpdate?: boolean;
 }

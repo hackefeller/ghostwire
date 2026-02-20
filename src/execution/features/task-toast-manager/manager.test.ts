@@ -30,7 +30,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_1",
         description: "Test task",
-        agent: "dark-runner",
+        agent: "executor",
         isBackground: true,
         skills: ["playwright", "git-master"],
       };
@@ -130,7 +130,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_1",
         description: "Full info task",
-        agent: "dark-runner",
+        agent: "executor",
         isBackground: true,
         skills: ["frontend-ui-ux"],
       };
@@ -152,7 +152,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_1",
         description: "Task with category default model",
-        agent: "dark-runner",
+        agent: "executor",
         isBackground: false,
         modelInfo: { model: "google/gemini-3-pro", type: "category-default" as const },
       };
@@ -172,7 +172,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_1b",
         description: "Task with system default model",
-        agent: "dark-runner",
+        agent: "executor",
         isBackground: false,
         modelInfo: { model: "anthropic/claude-sonnet-4-5", type: "system-default" as const },
       };
@@ -193,7 +193,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_2",
         description: "Task with inherited model",
-        agent: "dark-runner",
+        agent: "executor",
         isBackground: false,
         modelInfo: { model: "cliproxy/claude-opus-4-5", type: "inherited" as const },
       };
@@ -214,7 +214,7 @@ describe("TaskToastManager", () => {
       const task = {
         id: "task_3",
         description: "Task with user model",
-        agent: "dark-runner",
+        agent: "executor",
         isBackground: false,
         modelInfo: { model: "my-provider/my-model", type: "user-defined" as const },
       };

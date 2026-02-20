@@ -1,5 +1,5 @@
 import { createBuiltinAgents } from "../../orchestration/agents";
-import { createDarkRunnerAgent } from "../../orchestration/agents/dark-runner";
+import { createExecutorAgent } from "../../orchestration/agents/executor";
 import {
   loadUserCommands,
   loadProjectCommands,
@@ -33,7 +33,7 @@ import { AGENT_MODEL_REQUIREMENTS } from "../../orchestration/agents/model-requi
 import {
   AUGUR_PLANNER_SYSTEM_PROMPT,
   AUGUR_PLANNER_PERMISSION,
-} from "../../orchestration/agents/zen-planner";
+} from "../../orchestration/agents/planner";
 import { DEFAULT_CATEGORIES } from "../../execution/tools/delegate-task/constants";
 import type { ModelCacheState } from "../../plugin-state";
 import type { CategoryConfig } from "../../platform/config/schema";
@@ -160,10 +160,10 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       ]),
     );
 
-    const isVoidRunnerEnabled = pluginConfig.void_runner?.disabled !== true;
-    const builderEnabled = pluginConfig.void_runner?.default_builder_enabled ?? false;
-    const plannerEnabled = pluginConfig.void_runner?.planner_enabled ?? true;
-    const replacePlan = pluginConfig.void_runner?.replace_plan ?? true;
+    const isOperatorEnabled = pluginConfig.operator?.disabled !== true;
+    const builderEnabled = pluginConfig.operator?.default_builder_enabled ?? false;
+    const plannerEnabled = pluginConfig.operator?.planner_enabled ?? true;
+    const replacePlan = pluginConfig.operator?.replace_plan ?? true;
 
     type AgentConfig = Record<string, Record<string, unknown> | undefined> & {
       build?: Record<string, unknown>;
@@ -176,15 +176,15 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     };
     const configAgent = config.agent as AgentConfig | undefined;
 
-    if (isVoidRunnerEnabled && builtinAgents["void-runner"]) {
-      (config as { default_agent?: string }).default_agent = "void-runner";
+    if (isOperatorEnabled && builtinAgents["operator"]) {
+      (config as { default_agent?: string }).default_agent = "operator";
 
       const agentConfig: Record<string, unknown> = {
-        "void-runner": builtinAgents["void-runner"],
+        "operator": builtinAgents["operator"],
       };
 
-      agentConfig["dark-runner"] = createDarkRunnerAgent(
-        pluginConfig.agents?.["dark-runner"],
+      agentConfig["executor"] = createExecutorAgent(
+        pluginConfig.agents?.["executor"],
         config.model as string | undefined,
       );
 
@@ -213,7 +213,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         const migratedPlanConfig = migrateAgentConfig(
           planConfigWithoutName as Record<string, unknown>,
         );
-        const augurOverride = pluginConfig.agents?.["zen-planner"] as
+        const augurOverride = pluginConfig.agents?.["planner"] as
           | (Record<string, unknown> & {
               category?: string;
               model?: string;
@@ -231,7 +231,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
           ? resolveCategoryConfig(augurOverride.category, pluginConfig.categories)
           : undefined;
 
-        const augurRequirement = AGENT_MODEL_REQUIREMENTS["zen-planner"];
+        const augurRequirement = AGENT_MODEL_REQUIREMENTS["planner"];
         const connectedProviders = readConnectedProvidersCache();
         // IMPORTANT: Do NOT pass ctx.client to fetchAvailableModels during plugin initialization.
         // Calling client API (e.g., client.provider.list()) from config handler causes deadlock:
@@ -262,13 +262,13 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         const topPToUse = augurOverride?.top_p ?? categoryConfig?.top_p;
         const maxTokensToUse = augurOverride?.maxTokens ?? categoryConfig?.maxTokens;
         const augurBase = {
-          name: "zen-planner",
+          name: "planner",
           ...(resolvedModel ? { model: resolvedModel } : {}),
           ...(variantToUse ? { variant: variantToUse } : {}),
           mode: "all" as const,
           prompt: AUGUR_PLANNER_SYSTEM_PROMPT,
           permission: AUGUR_PLANNER_PERMISSION,
-          description: `${configAgent?.plan?.description ?? "Plan agent"} (zen-planner - Ghostwire)`,
+          description: `${configAgent?.plan?.description ?? "Plan agent"} (planner - Ghostwire)`,
           color: (configAgent?.plan?.color as string) ?? "#FF6347",
           ...(temperatureToUse !== undefined ? { temperature: temperatureToUse } : {}),
           ...(topPToUse !== undefined ? { top_p: topPToUse } : {}),
@@ -279,7 +279,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
           ...(textVerbosityToUse !== undefined ? { textVerbosity: textVerbosityToUse } : {}),
         };
 
-        agentConfig["zen-planner"] = augurOverride ? { ...augurBase, ...augurOverride } : augurBase;
+        agentConfig["planner"] = augurOverride ? { ...augurBase, ...augurOverride } : augurBase;
       }
 
       const filteredConfigAgents = configAgent
@@ -306,9 +306,9 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         : {};
 
       const planDemoteConfig =
-        replacePlan && agentConfig["zen-planner"]
+        replacePlan && agentConfig["planner"]
           ? {
-              ...agentConfig["zen-planner"],
+              ...agentConfig["planner"],
               name: "plan",
               mode: "subagent" as const,
             }
@@ -316,7 +316,7 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
 
       config.agent = {
         ...agentConfig,
-        ...Object.fromEntries(Object.entries(builtinAgents).filter(([k]) => k !== "void-runner")),
+        ...Object.fromEntries(Object.entries(builtinAgents).filter(([k]) => k !== "operator")),
         ...userAgents,
         ...projectAgents,
         ...pluginAgents,
@@ -354,8 +354,8 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       const agent = agentResult["eye-scan"] as AgentWithPermission;
       agent.permission = { ...agent.permission, task: "deny", look_at: "deny" };
     }
-    if (agentResult["grid-sync"]) {
-      const agent = agentResult["grid-sync"] as AgentWithPermission;
+    if (agentResult["orchestrator"]) {
+      const agent = agentResult["orchestrator"] as AgentWithPermission;
       agent.permission = {
         ...agent.permission,
         task: "deny",
@@ -363,8 +363,8 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         delegate_task: "allow",
       };
     }
-    if (agentResult["void-runner"]) {
-      const agent = agentResult["void-runner"] as AgentWithPermission;
+    if (agentResult["operator"]) {
+      const agent = agentResult["operator"] as AgentWithPermission;
       agent.permission = {
         ...agent.permission,
         call_grid_agent: "deny",
@@ -372,8 +372,8 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         question: "allow",
       };
     }
-    if (agentResult["zen-planner"]) {
-      const agent = agentResult["zen-planner"] as AgentWithPermission;
+    if (agentResult["planner"]) {
+      const agent = agentResult["planner"] as AgentWithPermission;
       agent.permission = {
         ...agent.permission,
         call_grid_agent: "deny",
@@ -381,8 +381,8 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         question: "allow",
       };
     }
-    if (agentResult["dark-runner"]) {
-      const agent = agentResult["dark-runner"] as AgentWithPermission;
+    if (agentResult["executor"]) {
+      const agent = agentResult["executor"] as AgentWithPermission;
       agent.permission = { ...agent.permission, delegate_task: "allow" };
     }
 

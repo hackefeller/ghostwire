@@ -3,27 +3,33 @@ import { describe, test, expect } from 'bun:test'
 describe('Compound Engineering - Foundation Tests', () => {
   describe('Directory Structure', () => {
     test('verifies flat agent directory structure', () => {
-      // Verify agent files exist in flat structure
+      // Verify agent files exist in orchestration/agents structure
       const fs = require('fs');
 
       const agentFiles = [
-        'src/agents/void-review-rails.ts',
-        'src/agents/void-review-python.ts',
-        'src/agents/void-review-ts.ts',
-        'src/agents/zen-review-rails.ts',
-        'src/agents/mono-review.ts',
-        'src/agents/docs-scan.ts',
-        'src/agents/learnings-scan.ts',
-        'src/agents/best-practices-scan.ts',
-        'src/agents/git-scan.ts',
-        'src/agents/figma-sync.ts',
-        'src/agents/design-check.ts',
-        'src/agents/design-loop.ts',
-        'src/agents/ui-build.ts',
-        'src/agents/flow-check.ts',
-        'src/agents/agent-arch.ts',
-        'src/agents/deploy-check.ts',
-        'src/agents/docs-write-readme.ts'
+        // Phase 1 - Renamed
+        'src/orchestration/agents/operator.ts',
+        'src/orchestration/agents/orchestrator.ts',
+        'src/orchestration/agents/planner.ts',
+        'src/orchestration/agents/executor.ts',
+        // Remaining agents (not yet renamed)
+        'src/orchestration/agents/void-review-rails.ts',
+        'src/orchestration/agents/void-review-python.ts',
+        'src/orchestration/agents/void-review-ts.ts',
+        'src/orchestration/agents/zen-review-rails.ts',
+        'src/orchestration/agents/mono-review.ts',
+        'src/orchestration/agents/docs-scan.ts',
+        'src/orchestration/agents/learnings-scan.ts',
+        'src/orchestration/agents/best-practices-scan.ts',
+        'src/orchestration/agents/git-scan.ts',
+        'src/orchestration/agents/figma-sync.ts',
+        'src/orchestration/agents/design-check.ts',
+        'src/orchestration/agents/design-loop.ts',
+        'src/orchestration/agents/ui-build.ts',
+        'src/orchestration/agents/flow-check.ts',
+        'src/orchestration/agents/agent-arch.ts',
+        'src/orchestration/agents/deploy-check.ts',
+        'src/orchestration/agents/docs-write-readme.ts'
       ];
 
       agentFiles.forEach(file => {
@@ -62,7 +68,7 @@ describe('Compound Engineering - Foundation Tests', () => {
       ];
       
       const existingComponentNames = [
-        'void-runner', 'seer-advisor', 'archive-researcher', 'scout-recon'
+        'operator', 'seer-advisor', 'archive-researcher', 'scout-recon'
       ];
       
       // Verify no conflicts

@@ -5,7 +5,7 @@ import type { z } from "zod";
 import type { GhostwireConfig } from "../../../platform/config/schema";
 
 export function getTaskDir(listId: string, config: Partial<GhostwireConfig>): string {
-  const tasksConfig = config.void_runner?.tasks;
+  const tasksConfig = config.operator?.tasks;
 
   if (tasksConfig?.claude_code_compat) {
     return join(homedir(), ".cache", "claude-code", "tasks", listId);
@@ -24,7 +24,7 @@ export function getTaskPath(
 }
 
 export function getTeamDir(teamName: string, config: Partial<GhostwireConfig>): string {
-  const swarmConfig = config.void_runner?.swarm;
+  const swarmConfig = config.operator?.swarm;
 
   if (swarmConfig?.storage_path?.includes("claude")) {
     return join(homedir(), ".claude", "teams", teamName);

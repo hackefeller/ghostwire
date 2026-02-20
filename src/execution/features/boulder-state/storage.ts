@@ -7,7 +7,7 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
 import { dirname, join, basename } from "node:path";
 import type { BoulderState, PlanProgress } from "./types";
-import { BOULDER_DIR, BOULDER_FILE, ZEN_PLANNER_PLANS_DIR } from "./constants";
+import { BOULDER_DIR, BOULDER_FILE, PLANNER_PLANS_DIR } from "./constants";
 
 export function getBoulderFilePath(directory: string): string {
   return join(directory, BOULDER_DIR, BOULDER_FILE);
@@ -73,11 +73,11 @@ export function clearBoulderState(directory: string): boolean {
 }
 
 /**
- * Find zen-planner plan files for this project.
- * zen-planner stores plans at: {project}/.ghostwire/plans/{name}.md
+ * Find planner plan files for this project.
+ * planner stores plans at: {project}/.ghostwire/plans/{name}.md
  */
-export function findZenPlannerPlans(directory: string): string[] {
-  const plansDir = join(directory, ZEN_PLANNER_PLANS_DIR);
+export function findPlannerPlans(directory: string): string[] {
+  const plansDir = join(directory, PLANNER_PLANS_DIR);
 
   if (!existsSync(plansDir)) {
     return [];

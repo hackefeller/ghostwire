@@ -34,11 +34,11 @@ describe("grid-category-skill-reminder hook", () => {
   }
 
   describe("target agent detection", () => {
-    test("should inject reminder for void-runner agent after 3 tool calls", async () => {
-      // #given - void-runner agent session with multiple tool calls
+    test("should inject reminder for operator agent after 3 tool calls", async () => {
+      // #given - operator agent session with multiple tool calls
       const hook = createCategorySkillReminderHook(createMockPluginInput());
-      const sessionID = "void-runner-session";
-      updateSessionAgent(sessionID, "void-runner");
+      const sessionID = "operator-session";
+      updateSessionAgent(sessionID, "operator");
 
       const output = { title: "", output: "file content", metadata: {} };
 
@@ -54,11 +54,11 @@ describe("grid-category-skill-reminder hook", () => {
       clearSessionAgent(sessionID);
     });
 
-    test("should inject reminder for grid-sync agent", async () => {
-      // #given - grid-sync agent session
+    test("should inject reminder for orchestrator agent", async () => {
+      // #given - orchestrator agent session
       const hook = createCategorySkillReminderHook(createMockPluginInput());
-      const sessionID = "grid-sync-session";
-      updateSessionAgent(sessionID, "grid-sync");
+      const sessionID = "orchestrator-session";
+      updateSessionAgent(sessionID, "orchestrator");
 
       const output = { title: "", output: "result", metadata: {} };
 
@@ -73,11 +73,11 @@ describe("grid-category-skill-reminder hook", () => {
       clearSessionAgent(sessionID);
     });
 
-    test("should inject reminder for dark-runner agent", async () => {
-      // #given - dark-runner agent session
+    test("should inject reminder for executor agent", async () => {
+      // #given - executor agent session
       const hook = createCategorySkillReminderHook(createMockPluginInput());
       const sessionID = "junior-session";
-      updateSessionAgent(sessionID, "dark-runner");
+      updateSessionAgent(sessionID, "executor");
 
       const output = { title: "", output: "result", metadata: {} };
 
@@ -120,15 +120,15 @@ describe("grid-category-skill-reminder hook", () => {
 
       // #when - 3 tool calls with agent in input
       await hook["tool.execute.after"](
-        { tool: "edit", sessionID, callID: "1", agent: "void-runner" },
+        { tool: "edit", sessionID, callID: "1", agent: "operator" },
         output,
       );
       await hook["tool.execute.after"](
-        { tool: "edit", sessionID, callID: "2", agent: "void-runner" },
+        { tool: "edit", sessionID, callID: "2", agent: "operator" },
         output,
       );
       await hook["tool.execute.after"](
-        { tool: "edit", sessionID, callID: "3", agent: "void-runner" },
+        { tool: "edit", sessionID, callID: "3", agent: "operator" },
         output,
       );
 
@@ -139,10 +139,10 @@ describe("grid-category-skill-reminder hook", () => {
 
   describe("delegation tool tracking", () => {
     test("should NOT inject reminder if delegate_task is used", async () => {
-      // #given - void-runner agent that uses delegate_task
+      // #given - operator agent that uses delegate_task
       const hook = createCategorySkillReminderHook(createMockPluginInput());
       const sessionID = "delegation-session";
-      updateSessionAgent(sessionID, "void-runner");
+      updateSessionAgent(sessionID, "operator");
 
       const output = { title: "", output: "result", metadata: {} };
 
@@ -159,10 +159,10 @@ describe("grid-category-skill-reminder hook", () => {
     });
 
     test("should NOT inject reminder if call_grid_agent is used", async () => {
-      // #given - void-runner agent that uses call_grid_agent
+      // #given - operator agent that uses call_grid_agent
       const hook = createCategorySkillReminderHook(createMockPluginInput());
       const sessionID = "grid-agent-session";
-      updateSessionAgent(sessionID, "void-runner");
+      updateSessionAgent(sessionID, "operator");
 
       const output = { title: "", output: "result", metadata: {} };
 
@@ -182,7 +182,7 @@ describe("grid-category-skill-reminder hook", () => {
       // #given - cipherOperator agent that uses task tool
       const hook = createCategorySkillReminderHook(createMockPluginInput());
       const sessionID = "task-session";
-      updateSessionAgent(sessionID, "void-runner");
+      updateSessionAgent(sessionID, "operator");
 
       const output = { title: "", output: "result", metadata: {} };
 
@@ -204,7 +204,7 @@ describe("grid-category-skill-reminder hook", () => {
       // #given - cipherOperator agent with only 2 tool calls
       const hook = createCategorySkillReminderHook(createMockPluginInput());
       const sessionID = "few-calls-session";
-      updateSessionAgent(sessionID, "void-runner");
+      updateSessionAgent(sessionID, "operator");
 
       const output = { title: "", output: "result", metadata: {} };
 
@@ -222,7 +222,7 @@ describe("grid-category-skill-reminder hook", () => {
       // #given - cipherOperator agent session
       const hook = createCategorySkillReminderHook(createMockPluginInput());
       const sessionID = "once-session";
-      updateSessionAgent(sessionID, "void-runner");
+      updateSessionAgent(sessionID, "operator");
 
       const output1 = { title: "", output: "result1", metadata: {} };
       const output2 = { title: "", output: "result2", metadata: {} };
@@ -246,7 +246,7 @@ describe("grid-category-skill-reminder hook", () => {
       // #given - cipherOperator agent with mixed tool calls
       const hook = createCategorySkillReminderHook(createMockPluginInput());
       const sessionID = "mixed-tools-session";
-      updateSessionAgent(sessionID, "void-runner");
+      updateSessionAgent(sessionID, "operator");
 
       const output = { title: "", output: "result", metadata: {} };
 
@@ -270,10 +270,10 @@ describe("grid-category-skill-reminder hook", () => {
 
   describe("event handling", () => {
     test("should reset state on session.deleted event", async () => {
-      // #given - void-runner agent with reminder already shown
+      // #given - operator agent with reminder already shown
       const hook = createCategorySkillReminderHook(createMockPluginInput());
       const sessionID = "delete-session";
-      updateSessionAgent(sessionID, "void-runner");
+      updateSessionAgent(sessionID, "operator");
 
       const output1 = { title: "", output: "result1", metadata: {} };
       await hook["tool.execute.after"]({ tool: "edit", sessionID, callID: "1" }, output1);
@@ -298,10 +298,10 @@ describe("grid-category-skill-reminder hook", () => {
     });
 
     test("should reset state on session.compacted event", async () => {
-      // #given - void-runner agent with reminder already shown
+      // #given - operator agent with reminder already shown
       const hook = createCategorySkillReminderHook(createMockPluginInput());
       const sessionID = "compact-session";
-      updateSessionAgent(sessionID, "void-runner");
+      updateSessionAgent(sessionID, "operator");
 
       const output1 = { title: "", output: "result1", metadata: {} };
       await hook["tool.execute.after"]({ tool: "edit", sessionID, callID: "1" }, output1);
@@ -326,10 +326,10 @@ describe("grid-category-skill-reminder hook", () => {
 
   describe("case insensitivity", () => {
     test("should handle tool names case-insensitively", async () => {
-      // #given - void-runner agent with mixed case tool names
+      // #given - operator agent with mixed case tool names
       const hook = createCategorySkillReminderHook(createMockPluginInput());
       const sessionID = "case-session";
-      updateSessionAgent(sessionID, "void-runner");
+      updateSessionAgent(sessionID, "operator");
 
       const output = { title: "", output: "result", metadata: {} };
 
@@ -348,7 +348,7 @@ describe("grid-category-skill-reminder hook", () => {
       // #given - cipherOperator agent using DELEGATE_TASK in uppercase
       const hook = createCategorySkillReminderHook(createMockPluginInput());
       const sessionID = "case-delegate-session";
-      updateSessionAgent(sessionID, "void-runner");
+      updateSessionAgent(sessionID, "operator");
 
       const output = { title: "", output: "result", metadata: {} };
 

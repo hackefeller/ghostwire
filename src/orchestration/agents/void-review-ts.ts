@@ -121,7 +121,7 @@ export function createKieranTypeScriptReviewerAgent(model: string): AgentConfig 
   };
 }
 
-// Agent metadata for void-runner prompt building and task delegation
+// Agent metadata for operator prompt building and task delegation
 export const KIERAN_TYPESCRIPT_REVIEWER_METADATA: AgentPromptMetadata = {
   category: "review",
   cost: "MODERATE",

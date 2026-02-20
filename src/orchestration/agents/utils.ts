@@ -11,13 +11,13 @@ import type {
   CategoryConfig,
   GitMasterConfig,
 } from "../../platform/config/schema";
-import { createVoidRunnerAgent } from "./void-runner";
+import { createOperatorAgent } from "./operator";
 import { createEyeOpsAgent, EYE_OPS_PROMPT_METADATA } from "./eye-ops";
 import { createLibrarianAgent, LIBRARIAN_PROMPT_METADATA } from "./data-dive";
 import { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./scan-ops";
 import { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./eye-scan";
 import { createWarMindAgent } from "./war-mind";
-import { createGridSyncAgent } from "./grid-sync";
+import { createOrchestratorAgent } from "./orchestrator";
 import { createNullAuditAgent } from "./null-audit";
 import { COMPOUND_AGENT_MAPPINGS } from "./compound";
 import type {
@@ -49,22 +49,22 @@ export {
 type AgentSource = AgentFactory | AgentConfig;
 
 const agentSources: Record<BuiltinAgentName, AgentSource> = {
-  "void-runner": createVoidRunnerAgent,
+  "operator": createOperatorAgent,
   "eye-ops": createEyeOpsAgent,
   "data-dive": createLibrarianAgent,
   "scan-ops": createExploreAgent,
   "eye-scan": createMultimodalLookerAgent,
   "war-mind": createWarMindAgent,
   "null-audit": createNullAuditAgent,
-  // Note: grid-sync is handled specially in createBuiltinAgents()
+  // Note: orchestrator is handled specially in createBuiltinAgents()
   // because it needs OrchestratorContext, not just a model string
-  "grid-sync": createGridSyncAgent as unknown as AgentFactory,
+  "orchestrator": createOrchestratorAgent as unknown as AgentFactory,
   // Compound Agents (28 total)
   ...COMPOUND_AGENT_MAPPINGS,
 };
 
 /**
- * Metadata for each agent, used to build void-runner's dynamic prompt sections
+ * Metadata for each agent, used to build operator's dynamic prompt sections
  * (Delegation Table, Tool Selection, Key Triggers, etc.)
  */
 const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
@@ -261,8 +261,8 @@ export async function createBuiltinAgents(
   for (const [name, source] of Object.entries(agentSources)) {
     const agentName = name as BuiltinAgentName;
 
-    if (agentName === "void-runner") continue;
-    if (agentName === "grid-sync") continue;
+    if (agentName === "operator") continue;
+    if (agentName === "orchestrator") continue;
     if (includesCaseInsensitive(disabledAgents, agentName)) continue;
 
     const override = findCaseInsensitive(agentOverrides, agentName);
@@ -324,9 +324,9 @@ export async function createBuiltinAgents(
     }
   }
 
-  if (!disabledAgents.includes("void-runner")) {
-    const cipherOverride = agentOverrides["void-runner"];
-    const cipherRequirement = AGENT_MODEL_REQUIREMENTS["void-runner"];
+  if (!disabledAgents.includes("operator")) {
+    const cipherOverride = agentOverrides["operator"];
+    const cipherRequirement = AGENT_MODEL_REQUIREMENTS["operator"];
 
     const cipherResolution = resolveModelWithFallback({
       uiSelectedModel,
@@ -339,7 +339,7 @@ export async function createBuiltinAgents(
     if (cipherResolution) {
       const { model: cipherModel, variant: cipherResolvedVariant } = cipherResolution;
 
-      let cipherConfig = createVoidRunnerAgent(
+      let cipherConfig = createOperatorAgent(
         cipherModel,
         availableAgents,
         undefined,
@@ -369,16 +369,16 @@ export async function createBuiltinAgents(
         cipherConfig = mergeAgentConfig(cipherConfig, cipherOverride);
       }
 
-      result["void-runner"] = cipherConfig;
+      result["operator"] = cipherConfig;
     }
   }
 
-  if (!disabledAgents.includes("grid-sync")) {
-    const orchestratorOverride = agentOverrides["grid-sync"];
-    const nexusRequirement = AGENT_MODEL_REQUIREMENTS["grid-sync"];
+  if (!disabledAgents.includes("orchestrator")) {
+    const orchestratorOverride = agentOverrides["orchestrator"];
+    const nexusRequirement = AGENT_MODEL_REQUIREMENTS["orchestrator"];
 
     const nexusResolution = resolveModelWithFallback({
-      // NOTE: grid-sync does NOT use uiSelectedModel - respects its own fallbackChain (k2p5 primary)
+      // NOTE: orchestrator does NOT use uiSelectedModel - respects its own fallbackChain (k2p5 primary)
       userModel: orchestratorOverride?.model,
       fallbackChain: nexusRequirement?.fallbackChain,
       availableModels,
@@ -388,7 +388,7 @@ export async function createBuiltinAgents(
     if (nexusResolution) {
       const { model: nexusModel, variant: nexusResolvedVariant } = nexusResolution;
 
-      let orchestratorConfig = createGridSyncAgent({
+      let orchestratorConfig = createOrchestratorAgent({
         model: nexusModel,
         availableAgents,
         availableSkills,
@@ -416,7 +416,7 @@ export async function createBuiltinAgents(
         orchestratorConfig = mergeAgentConfig(orchestratorConfig, orchestratorOverride);
       }
 
-      result["grid-sync"] = orchestratorConfig;
+      result["orchestrator"] = orchestratorConfig;
     }
   }
 

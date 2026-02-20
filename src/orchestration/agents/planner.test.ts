@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import { AUGUR_PLANNER_SYSTEM_PROMPT } from "./zen-planner";
+import { AUGUR_PLANNER_SYSTEM_PROMPT } from "./planner";
 
 describe("AUGUR_PLANNER_SYSTEM_PROMPT Glitch Auditor invocation policy", () => {
   test("should direct providing ONLY the file path string when invoking Glitch Auditor", () => {

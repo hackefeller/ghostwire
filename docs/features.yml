@@ -75,7 +75,7 @@ features:
       Tracks active work plan state from boulder.json for the Cipher Operator orchestrator.
       Manages reading and writing boulder.json file.
       Tracks: active plan file path, start timestamp, session IDs that worked on plan, plan name.
-      Provides utilities to find zen-planner plan files in .ghostwire/plans directory.
+      Provides utilities to find planner plan files in .ghostwire/plans directory.
       Enables persistence of multi-session planning workflows.
 
   # === Claude Code Compatibility ===

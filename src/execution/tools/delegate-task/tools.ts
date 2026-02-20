@@ -46,7 +46,7 @@ import { CATEGORY_MODEL_REQUIREMENTS } from "../../../orchestration/agents/model
 
 type OpencodeClient = PluginInput["client"];
 
-const SISYPHUS_JUNIOR_AGENT = "dark-runner";
+const SISYPHUS_JUNIOR_AGENT = "executor";
 
 function parseModelString(model: string): { providerID: string; modelID: string } | undefined {
   const parts = model.split("/");
@@ -910,7 +910,7 @@ To continue this session: session_id="${sessionID}"`;
         }
 
         if (isPlanAgent(agentName) && isPlanAgent(parentAgent)) {
-          return `You are zen-planner. You cannot delegate to zen-planner via delegate_task.
+          return `You are planner. You cannot delegate to planner via delegate_task.
 
 Create the work plan directly - that's your job as the planning agent.`;
         }

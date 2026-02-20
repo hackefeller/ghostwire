@@ -96,7 +96,7 @@ describe("look-at tool", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       } as unknown as ToolContext;
 
@@ -134,7 +134,7 @@ describe("look-at tool", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       } as unknown as ToolContext;
 
@@ -193,7 +193,7 @@ describe("look-at tool", () => {
       const toolContext = {
         sessionID: "parent-session",
         messageID: "parent-message",
-        agent: "void-runner",
+        agent: "operator",
         abort: new AbortController().signal,
       } as unknown as ToolContext;
 

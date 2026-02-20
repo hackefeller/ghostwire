@@ -91,7 +91,7 @@ export function createFrameworkDocsResearcherAgent(model: string): AgentConfig {
   };
 }
 
-// Agent metadata for void-runner prompt building and task delegation
+// Agent metadata for operator prompt building and task delegation
 export const FRAMEWORK_DOCS_RESEARCHER_METADATA: AgentPromptMetadata = {
   category: "research",
   cost: "MODERATE",

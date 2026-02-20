@@ -4,13 +4,13 @@ import {
 } from "../../../integration/shared/system-directive";
 import { getAgentDisplayName } from "../../../integration/shared/agent-display-names";
 
-export const HOOK_NAME = "zen-planner-md-only";
+export const HOOK_NAME = "planner-md-only";
 
-export const ZEN_PLANNER_AGENTS = ["zen-planner"];
+export const PLANNER_AGENTS = ["planner"];
 
 export const ALLOWED_EXTENSIONS = [".md"];
 
-export const ALLOWED_PATH_PREFIX = ".void-runner";
+export const ALLOWED_PATH_PREFIX = ".operator";
 
 export const BLOCKED_TOOLS = ["Write", "Edit", "write", "edit"];
 
@@ -18,9 +18,9 @@ export const PLANNING_CONSULT_WARNING = `
 
 ---
 
-  ${createSystemDirective(SystemDirectiveTypes.ZEN_PLANNER_READ_ONLY)}
+${createSystemDirective(SystemDirectiveTypes.PLANNER_READ_ONLY)}
 
-You are being invoked by ${getAgentDisplayName("zen-planner")}, a READ-ONLY planning agent.
+You are being invoked by ${getAgentDisplayName("planner")}, a READ-ONLY planning agent.
 
 **CRITICAL CONSTRAINTS:**
 - DO NOT modify any files (no Write, Edit, or any file mutations)
@@ -35,13 +35,13 @@ Return your findings and recommendations. The actual implementation will be hand
 
 `;
 
-export const ZEN_PLANNER_WORKFLOW_REMINDER = `
+export const PLANNER_WORKFLOW_REMINDER = `
 
 ---
 
-  ${createSystemDirective(SystemDirectiveTypes.ZEN_PLANNER_READ_ONLY)}
+  ${createSystemDirective(SystemDirectiveTypes.PLANNER_READ_ONLY)}
 
-## ZEN PLANNER MANDATORY WORKFLOW REMINDER
+## PLANNER MANDATORY WORKFLOW REMINDER
 
 **You are writing a work plan. STOP AND VERIFY you completed ALL steps:**
 

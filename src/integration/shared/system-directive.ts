@@ -54,7 +54,7 @@ export const SystemDirectiveTypes = {
   SINGLE_TASK_ONLY: "SINGLE TASK ONLY",
   COMPACTION_CONTEXT: "COMPACTION CONTEXT",
   CONTEXT_WINDOW_MONITOR: "CONTEXT WINDOW MONITOR",
-  ZEN_PLANNER_READ_ONLY: "ZEN PLANNER READ-ONLY",
+  PLANNER_READ_ONLY: "ZEN PLANNER READ-ONLY",
 } as const;
 
 export type SystemDirectiveType = (typeof SystemDirectiveTypes)[keyof typeof SystemDirectiveTypes];

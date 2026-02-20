@@ -19,7 +19,7 @@ const getCategoryDescription = (name: string, userCategories?: Record<string, Ca
   userCategories?.[name]?.description ?? CATEGORY_DESCRIPTIONS[name] ?? "General tasks";
 
 /**
- * grid-sync - Master Orchestrator Agent
+ * orchestrator - Master Orchestrator Agent
  *
  * Orchestrates work via delegate_task() to complete ALL tasks in a todo list until fully done.
  * You are the conductor of a symphony of specialized agents.
@@ -133,11 +133,11 @@ ${agentRows.join("\n")}
 **NEVER provide both category AND agent - they are mutually exclusive.**`;
 }
 
-export const GRID_SYNC_SYSTEM_PROMPT = `
+export const ORCHESTRATOR_SYSTEM_PROMPT = `
 <identity>
-You are grid-sync - the Master Orchestrator from Ghostwire.
+You are orchestrator - the Master Orchestrator from Ghostwire.
 
-In Greek mythology, grid-sync holds up the celestial heavens. You hold up the entire workflow - coordinating every agent, every task, every verification until completion.
+In Greek mythology, orchestrator holds up the celestial heavens. You hold up the entire workflow - coordinating every agent, every task, every verification until completion.
 
 You are a conductor, not a musician. A general, not a soldier. You DELEGATE, COORDINATE, and VERIFY.
 You never write code yourself. You orchestrate specialists who do.
@@ -527,18 +527,18 @@ function buildDynamicOrchestratorPrompt(ctx?: OrchestratorContext): string {
   const skillsSection = buildSkillsSection(skills);
   const categorySkillsGuide = buildCategorySkillsDelegationGuide(availableCategories, skills);
 
-  return GRID_SYNC_SYSTEM_PROMPT.replace("{CATEGORY_SECTION}", categorySection)
+  return ORCHESTRATOR_SYSTEM_PROMPT.replace("{CATEGORY_SECTION}", categorySection)
     .replace("{AGENT_SECTION}", agentSection)
     .replace("{DECISION_MATRIX}", decisionMatrix)
     .replace("{SKILLS_SECTION}", skillsSection)
     .replace("{{CATEGORY_SKILLS_DELEGATION_GUIDE}}", categorySkillsGuide);
 }
 
-export function createGridSyncAgent(ctx: OrchestratorContext): AgentConfig {
+export function createOrchestratorAgent(ctx: OrchestratorContext): AgentConfig {
   const restrictions = createAgentToolRestrictions(["task", "call_grid_agent"]);
   return {
     description:
-      "Orchestrates work via delegate_task() to complete ALL tasks in a todo list until fully done. (grid-sync - Ghostwire)",
+      "Orchestrates work via delegate_task() to complete ALL tasks in a todo list until fully done. (orchestrator - Ghostwire)",
     mode: MODE,
     ...(ctx.model ? { model: ctx.model } : {}),
     temperature: 0.1,
@@ -548,12 +548,12 @@ export function createGridSyncAgent(ctx: OrchestratorContext): AgentConfig {
     ...restrictions,
   } as AgentConfig;
 }
-createGridSyncAgent.mode = MODE;
+createOrchestratorAgent.mode = MODE;
 
 export const nexusPromptMetadata: AgentPromptMetadata = {
   category: "advisor",
   cost: "EXPENSIVE",
-  promptAlias: "grid-sync",
+  promptAlias: "orchestrator",
   triggers: [
     {
       domain: "Todo list orchestration",

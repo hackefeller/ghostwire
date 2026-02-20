@@ -50,7 +50,7 @@ function formatConfigSummary(config: InstallConfig): string {
     formatProvider(
       "Kimi For Coding",
       config.hasKimiForCoding,
-      "void-runner/zen-planner fallback",
+      "operator/planner fallback",
     ),
   );
 
@@ -312,7 +312,7 @@ async function runTuiMode(detected: DetectedConfig): Promise<InstallConfig | nul
       {
         value: "yes" as const,
         label: "Yes",
-        hint: "Kimi K2.5 for void-runner/zen-planner fallback",
+        hint: "Kimi K2.5 for operator/planner fallback",
       },
     ],
     initialValue: initial.kimiForCoding,

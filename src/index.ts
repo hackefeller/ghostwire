@@ -28,9 +28,9 @@ import {
   createDelegateTaskRetryHook,
   createTaskResumeInfoHook,
   createStartWorkHook,
-  createGridSyncHook,
-  createZenPlannerMdOnlyHook,
-  createDarkRunnerNotepadHook,
+  createOrchestratorHook,
+  createPlannerMdOnlyHook,
+  createExecutorNotepadHook,
   createQuestionLabelTruncatorHook,
   createSubagentQuestionBlockerHook,
   createStopContinuationGuardHook,
@@ -217,7 +217,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
   const autoUpdateChecker = isHookEnabled("grid-auto-update-checker")
     ? createAutoUpdateCheckerHook(ctx, {
         showStartupToast: isHookEnabled("grid-startup-toast"),
-        isVoidRunnerEnabled: pluginConfig.void_runner?.disabled !== true,
+        isOperatorEnabled: pluginConfig.operator?.disabled !== true,
         autoUpdate: pluginConfig.auto_update ?? true,
       })
     : null;
@@ -261,12 +261,12 @@ const GhostwirePlugin: Plugin = async (ctx) => {
 
   const startWork = isHookEnabled("jack-in-work") ? createStartWorkHook(ctx) : null;
 
-  const zenPlannerMdOnly = isHookEnabled("zen-planner-md-only")
-    ? createZenPlannerMdOnlyHook(ctx)
+  const plannerMdOnly = isHookEnabled("planner-md-only")
+    ? createPlannerMdOnlyHook(ctx)
     : null;
 
-  const cipherJuniorNotepad = isHookEnabled("dark-runner-notepad")
-    ? createDarkRunnerNotepadHook(ctx)
+  const cipherJuniorNotepad = isHookEnabled("executor-notepad")
+    ? createExecutorNotepadHook(ctx)
     : null;
 
   const questionLabelTruncator = createQuestionLabelTruncatorHook();
@@ -303,8 +303,8 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     },
   });
 
-  const nexusHook = isHookEnabled("grid-sync")
-    ? createGridSyncHook(ctx, { directory: ctx.directory, backgroundManager })
+  const nexusHook = isHookEnabled("orchestrator")
+    ? createOrchestratorHook(ctx, { directory: ctx.directory, backgroundManager })
     : null;
 
   initTaskToastManager(ctx.client);
@@ -343,7 +343,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     directory: ctx.directory,
     userCategories: pluginConfig.categories,
     gitMasterConfig: pluginConfig.git_master,
-    cipherJuniorModel: pluginConfig.agents?.["dark-runner"]?.model,
+    cipherJuniorModel: pluginConfig.agents?.["executor"]?.model,
     browserProvider,
     onSyncSessionCreated: async (event) => {
       log("[index] onSyncSessionCreated callback", {
@@ -586,7 +586,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("event", "grid-stop-continuation-guard", () =>
         stopContinuationGuard?.event(input),
       );
-      await runHook("event", "grid-sync", () => nexusHook?.handler(input));
+      await runHook("event", "orchestrator", () => nexusHook?.handler(input));
 
       const { event } = input;
       const props = event.properties as Record<string, unknown> | undefined;
@@ -693,13 +693,13 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("tool.execute.before", "grid-rules-injector", () =>
         rulesInjector?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "zen-planner-md-only", () =>
-        zenPlannerMdOnly?.["tool.execute.before"]?.(input, output),
+      await runHook("tool.execute.before", "planner-md-only", () =>
+        plannerMdOnly?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "dark-runner-notepad", () =>
+      await runHook("tool.execute.before", "executor-notepad", () =>
         cipherJuniorNotepad?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "grid-sync", () =>
+      await runHook("tool.execute.before", "orchestrator", () =>
         nexusHook?.["tool.execute.before"]?.(input, output),
       );
 
@@ -820,7 +820,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("tool.execute.after", "grid-delegate-task-retry", () =>
         delegateTaskRetry?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-sync", () =>
+      await runHook("tool.execute.after", "orchestrator", () =>
         nexusHook?.["tool.execute.after"]?.(input, output),
       );
       await runHook("tool.execute.after", "task-resume-info", () =>

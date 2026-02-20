@@ -2,7 +2,7 @@ import { describe, expect, test, beforeEach, afterEach, mock } from "bun:test";
 import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { createGridSyncHook } from "./index";
+import { createOrchestratorHook } from "./index";
 import {
   writeBoulderState,
   clearBoulderState,
@@ -12,9 +12,9 @@ import type { BoulderState } from "../../../execution/features/boulder-state";
 
 import { MESSAGE_STORAGE } from "../../../execution/features/hook-message-injector";
 
-describe("grid-sync hook", () => {
-  const TEST_DIR = join(tmpdir(), "grid-sync-test-" + Date.now());
-  const SISYPHUS_DIR = join(TEST_DIR, ".void-runner");
+describe("orchestrator hook", () => {
+  const TEST_DIR = join(tmpdir(), "orchestrator-test-" + Date.now());
+  const SISYPHUS_DIR = join(TEST_DIR, ".operator");
 
   function createMockPluginInput(overrides?: { promptMock?: ReturnType<typeof mock> }) {
     const promptMock = overrides?.promptMock ?? mock(() => Promise.resolve());
@@ -26,7 +26,7 @@ describe("grid-sync hook", () => {
         },
       },
       _promptMock: promptMock,
-    } as unknown as Parameters<typeof createGridSyncHook>[0] & {
+    } as unknown as Parameters<typeof createOrchestratorHook>[0] & {
       _promptMock: ReturnType<typeof mock>;
     };
   }
@@ -70,7 +70,7 @@ describe("grid-sync hook", () => {
   describe("tool.execute.after handler", () => {
     test("should handle undefined output gracefully (issue #1035)", async () => {
       // #given - hook and undefined output (e.g., from /review command)
-      const hook = createGridSyncHook(createMockPluginInput());
+      const hook = createOrchestratorHook(createMockPluginInput());
 
       // #when - calling with undefined output
       const result = await hook["tool.execute.after"](
@@ -88,7 +88,7 @@ describe("grid-sync hook", () => {
 
     test("should ignore non-delegate_task tools", async () => {
       // #given - hook and non-delegate_task tool
-      const hook = createGridSyncHook(createMockPluginInput());
+      const hook = createOrchestratorHook(createMockPluginInput());
       const output = {
         title: "Test Tool",
         output: "Original output",
@@ -102,8 +102,8 @@ describe("grid-sync hook", () => {
       expect(output.output).toBe("Original output");
     });
 
-    test("should not transform when caller is not grid-sync", async () => {
-      // #given - boulder state exists but caller agent in message storage is not grid-sync
+    test("should not transform when caller is not orchestrator", async () => {
+      // #given - boulder state exists but caller agent in message storage is not orchestrator
       const sessionID = "session-non-orchestrator-test";
       setupMessageStorage(sessionID, "other-agent");
 
@@ -118,9 +118,9 @@ describe("grid-sync hook", () => {
       };
       writeBoulderState(TEST_DIR, state);
 
-      const hook = createGridSyncHook(createMockPluginInput());
+      const hook = createOrchestratorHook(createMockPluginInput());
       const output = {
-        title: "void-runner task",
+        title: "operator task",
         output: "Task completed successfully",
         metadata: {},
       };
@@ -134,14 +134,14 @@ describe("grid-sync hook", () => {
       cleanupMessageStorage(sessionID);
     });
 
-    test("should append standalone verification when no boulder state but caller is grid-sync", async () => {
-      // #given - no boulder state, but caller is grid-sync
+    test("should append standalone verification when no boulder state but caller is orchestrator", async () => {
+      // #given - no boulder state, but caller is orchestrator
       const sessionID = "session-no-boulder-test";
-      setupMessageStorage(sessionID, "grid-sync");
+      setupMessageStorage(sessionID, "orchestrator");
 
-      const hook = createGridSyncHook(createMockPluginInput());
+      const hook = createOrchestratorHook(createMockPluginInput());
       const output = {
-        title: "void-runner task",
+        title: "operator task",
         output: "Task completed successfully",
         metadata: {},
       };
@@ -157,10 +157,10 @@ describe("grid-sync hook", () => {
       cleanupMessageStorage(sessionID);
     });
 
-    test("should transform output when caller is grid-sync with boulder state", async () => {
-      // #given - grid-sync caller with boulder state
+    test("should transform output when caller is orchestrator with boulder state", async () => {
+      // #given - orchestrator caller with boulder state
       const sessionID = "session-transform-test";
-      setupMessageStorage(sessionID, "grid-sync");
+      setupMessageStorage(sessionID, "orchestrator");
 
       const planPath = join(TEST_DIR, "test-plan.md");
       writeFileSync(planPath, "# Plan\n- [ ] Task 1\n- [x] Task 2");
@@ -173,9 +173,9 @@ describe("grid-sync hook", () => {
       };
       writeBoulderState(TEST_DIR, state);
 
-      const hook = createGridSyncHook(createMockPluginInput());
+      const hook = createOrchestratorHook(createMockPluginInput());
       const output = {
-        title: "void-runner task",
+        title: "operator task",
         output: "Task completed successfully",
         metadata: {},
       };
@@ -194,9 +194,9 @@ describe("grid-sync hook", () => {
     });
 
     test("should still transform when plan is complete (shows progress)", async () => {
-      // #given - boulder state with complete plan, grid-sync caller
+      // #given - boulder state with complete plan, orchestrator caller
       const sessionID = "session-complete-plan-test";
-      setupMessageStorage(sessionID, "grid-sync");
+      setupMessageStorage(sessionID, "orchestrator");
 
       const planPath = join(TEST_DIR, "complete-plan.md");
       writeFileSync(planPath, "# Plan\n- [x] Task 1\n- [x] Task 2");
@@ -209,9 +209,9 @@ describe("grid-sync hook", () => {
       };
       writeBoulderState(TEST_DIR, state);
 
-      const hook = createGridSyncHook(createMockPluginInput());
+      const hook = createOrchestratorHook(createMockPluginInput());
       const output = {
-        title: "void-runner task",
+        title: "operator task",
         output: "Original output",
         metadata: {},
       };
@@ -228,9 +228,9 @@ describe("grid-sync hook", () => {
     });
 
     test("should append session ID to boulder state if not present", async () => {
-      // #given - boulder state without session-append-test, grid-sync caller
+      // #given - boulder state without session-append-test, orchestrator caller
       const sessionID = "session-append-test";
-      setupMessageStorage(sessionID, "grid-sync");
+      setupMessageStorage(sessionID, "orchestrator");
 
       const planPath = join(TEST_DIR, "test-plan.md");
       writeFileSync(planPath, "# Plan\n- [ ] Task 1");
@@ -243,9 +243,9 @@ describe("grid-sync hook", () => {
       };
       writeBoulderState(TEST_DIR, state);
 
-      const hook = createGridSyncHook(createMockPluginInput());
+      const hook = createOrchestratorHook(createMockPluginInput());
       const output = {
-        title: "void-runner task",
+        title: "operator task",
         output: "Task output",
         metadata: {},
       };
@@ -261,9 +261,9 @@ describe("grid-sync hook", () => {
     });
 
     test("should not duplicate existing session ID", async () => {
-      // #given - boulder state already has session-dup-test, grid-sync caller
+      // #given - boulder state already has session-dup-test, orchestrator caller
       const sessionID = "session-dup-test";
-      setupMessageStorage(sessionID, "grid-sync");
+      setupMessageStorage(sessionID, "orchestrator");
 
       const planPath = join(TEST_DIR, "test-plan.md");
       writeFileSync(planPath, "# Plan\n- [ ] Task 1");
@@ -276,9 +276,9 @@ describe("grid-sync hook", () => {
       };
       writeBoulderState(TEST_DIR, state);
 
-      const hook = createGridSyncHook(createMockPluginInput());
+      const hook = createOrchestratorHook(createMockPluginInput());
       const output = {
-        title: "void-runner task",
+        title: "operator task",
         output: "Task output",
         metadata: {},
       };
@@ -295,9 +295,9 @@ describe("grid-sync hook", () => {
     });
 
     test("should include boulder.json path and notepad path in transformed output", async () => {
-      // #given - boulder state, grid-sync caller
+      // #given - boulder state, orchestrator caller
       const sessionID = "session-path-test";
-      setupMessageStorage(sessionID, "grid-sync");
+      setupMessageStorage(sessionID, "orchestrator");
 
       const planPath = join(TEST_DIR, "my-feature.md");
       writeFileSync(planPath, "# Plan\n- [ ] Task 1\n- [ ] Task 2\n- [x] Task 3");
@@ -310,9 +310,9 @@ describe("grid-sync hook", () => {
       };
       writeBoulderState(TEST_DIR, state);
 
-      const hook = createGridSyncHook(createMockPluginInput());
+      const hook = createOrchestratorHook(createMockPluginInput());
       const output = {
-        title: "void-runner task",
+        title: "operator task",
         output: "Task completed",
         metadata: {},
       };
@@ -329,9 +329,9 @@ describe("grid-sync hook", () => {
     });
 
     test("should include session_id and checkbox instructions in reminder", async () => {
-      // #given - boulder state, grid-sync caller
+      // #given - boulder state, orchestrator caller
       const sessionID = "session-resume-test";
-      setupMessageStorage(sessionID, "grid-sync");
+      setupMessageStorage(sessionID, "orchestrator");
 
       const planPath = join(TEST_DIR, "test-plan.md");
       writeFileSync(planPath, "# Plan\n- [ ] Task 1");
@@ -344,9 +344,9 @@ describe("grid-sync hook", () => {
       };
       writeBoulderState(TEST_DIR, state);
 
-      const hook = createGridSyncHook(createMockPluginInput());
+      const hook = createOrchestratorHook(createMockPluginInput());
       const output = {
-        title: "void-runner task",
+        title: "operator task",
         output: "Task completed",
         metadata: {},
       };
@@ -366,7 +366,7 @@ describe("grid-sync hook", () => {
       const ORCHESTRATOR_SESSION = "orchestrator-write-test";
 
       beforeEach(() => {
-        setupMessageStorage(ORCHESTRATOR_SESSION, "grid-sync");
+        setupMessageStorage(ORCHESTRATOR_SESSION, "orchestrator");
       });
 
       afterEach(() => {
@@ -375,7 +375,7 @@ describe("grid-sync hook", () => {
 
       test("should append delegation reminder when orchestrator writes outside .ghostwire/", async () => {
         // #given
-        const hook = createGridSyncHook(createMockPluginInput());
+        const hook = createOrchestratorHook(createMockPluginInput());
         const output = {
           title: "Write",
           output: "File written successfully",
@@ -396,7 +396,7 @@ describe("grid-sync hook", () => {
 
       test("should append delegation reminder when orchestrator edits outside .ghostwire/", async () => {
         // #given
-        const hook = createGridSyncHook(createMockPluginInput());
+        const hook = createOrchestratorHook(createMockPluginInput());
         const output = {
           title: "Edit",
           output: "File edited successfully",
@@ -412,7 +412,7 @@ describe("grid-sync hook", () => {
 
       test("should NOT append reminder when orchestrator writes inside .ghostwire/", async () => {
         // #given
-        const hook = createGridSyncHook(createMockPluginInput());
+        const hook = createOrchestratorHook(createMockPluginInput());
         const originalOutput = "File written successfully";
         const output = {
           title: "Write",
@@ -434,9 +434,9 @@ describe("grid-sync hook", () => {
       test("should NOT append reminder when non-orchestrator writes outside .ghostwire/", async () => {
         // #given
         const nonOrchestratorSession = "non-orchestrator-session";
-        setupMessageStorage(nonOrchestratorSession, "dark-runner");
+        setupMessageStorage(nonOrchestratorSession, "executor");
 
-        const hook = createGridSyncHook(createMockPluginInput());
+        const hook = createOrchestratorHook(createMockPluginInput());
         const originalOutput = "File written successfully";
         const output = {
           title: "Write",
@@ -459,7 +459,7 @@ describe("grid-sync hook", () => {
 
       test("should NOT append reminder for read-only tools", async () => {
         // #given
-        const hook = createGridSyncHook(createMockPluginInput());
+        const hook = createOrchestratorHook(createMockPluginInput());
         const originalOutput = "File content";
         const output = {
           title: "Read",
@@ -476,7 +476,7 @@ describe("grid-sync hook", () => {
 
       test("should handle missing filePath gracefully", async () => {
         // #given
-        const hook = createGridSyncHook(createMockPluginInput());
+        const hook = createOrchestratorHook(createMockPluginInput());
         const originalOutput = "File written successfully";
         const output = {
           title: "Write",
@@ -497,7 +497,7 @@ describe("grid-sync hook", () => {
       describe("cross-platform path validation (Windows support)", () => {
         test("should NOT append reminder when orchestrator writes inside .ghostwire\\ (Windows backslash)", async () => {
           // #given
-          const hook = createGridSyncHook(createMockPluginInput());
+          const hook = createOrchestratorHook(createMockPluginInput());
           const originalOutput = "File written successfully";
           const output = {
             title: "Write",
@@ -518,7 +518,7 @@ describe("grid-sync hook", () => {
 
         test("should NOT append reminder when orchestrator writes inside .ghostwire with mixed separators", async () => {
           // #given
-          const hook = createGridSyncHook(createMockPluginInput());
+          const hook = createOrchestratorHook(createMockPluginInput());
           const originalOutput = "File written successfully";
           const output = {
             title: "Write",
@@ -539,7 +539,7 @@ describe("grid-sync hook", () => {
 
         test("should NOT append reminder for absolute Windows path inside .ghostwire\\", async () => {
           // #given
-          const hook = createGridSyncHook(createMockPluginInput());
+          const hook = createOrchestratorHook(createMockPluginInput());
           const originalOutput = "File written successfully";
           const output = {
             title: "Write",
@@ -560,7 +560,7 @@ describe("grid-sync hook", () => {
 
         test("should append reminder for Windows path outside .ghostwire\\", async () => {
           // #given
-          const hook = createGridSyncHook(createMockPluginInput());
+          const hook = createOrchestratorHook(createMockPluginInput());
           const output = {
             title: "Write",
             output: "File written successfully",
@@ -588,7 +588,7 @@ describe("grid-sync hook", () => {
         getMainSessionID: () => MAIN_SESSION_ID,
         subagentSessions: new Set<string>(),
       }));
-      setupMessageStorage(MAIN_SESSION_ID, "grid-sync");
+      setupMessageStorage(MAIN_SESSION_ID, "orchestrator");
     });
 
     afterEach(() => {
@@ -609,7 +609,7 @@ describe("grid-sync hook", () => {
       writeBoulderState(TEST_DIR, state);
 
       const mockInput = createMockPluginInput();
-      const hook = createGridSyncHook(mockInput);
+      const hook = createOrchestratorHook(mockInput);
 
       // #when
       await hook.handler({
@@ -630,7 +630,7 @@ describe("grid-sync hook", () => {
     test("should not inject when no boulder state exists", async () => {
       // #given - no boulder state
       const mockInput = createMockPluginInput();
-      const hook = createGridSyncHook(mockInput);
+      const hook = createOrchestratorHook(mockInput);
 
       // #when
       await hook.handler({
@@ -658,7 +658,7 @@ describe("grid-sync hook", () => {
       writeBoulderState(TEST_DIR, state);
 
       const mockInput = createMockPluginInput();
-      const hook = createGridSyncHook(mockInput);
+      const hook = createOrchestratorHook(mockInput);
 
       // #when
       await hook.handler({
@@ -686,7 +686,7 @@ describe("grid-sync hook", () => {
       writeBoulderState(TEST_DIR, state);
 
       const mockInput = createMockPluginInput();
-      const hook = createGridSyncHook(mockInput);
+      const hook = createOrchestratorHook(mockInput);
 
       // #when - send abort error then idle
       await hook.handler({
@@ -727,7 +727,7 @@ describe("grid-sync hook", () => {
       };
 
       const mockInput = createMockPluginInput();
-      const hook = createGridSyncHook(mockInput, {
+      const hook = createOrchestratorHook(mockInput, {
         directory: TEST_DIR,
         backgroundManager: mockBackgroundManager as any,
       });
@@ -758,7 +758,7 @@ describe("grid-sync hook", () => {
       writeBoulderState(TEST_DIR, state);
 
       const mockInput = createMockPluginInput();
-      const hook = createGridSyncHook(mockInput);
+      const hook = createOrchestratorHook(mockInput);
 
       // #when - abort error, then message update, then idle
       await hook.handler({
@@ -801,7 +801,7 @@ describe("grid-sync hook", () => {
       writeBoulderState(TEST_DIR, state);
 
       const mockInput = createMockPluginInput();
-      const hook = createGridSyncHook(mockInput);
+      const hook = createOrchestratorHook(mockInput);
 
       // #when
       await hook.handler({
@@ -817,8 +817,8 @@ describe("grid-sync hook", () => {
       expect(callArgs.body.parts[0].text).toContain("2 remaining");
     });
 
-    test("should not inject when last agent is not grid-sync", async () => {
-      // #given - boulder state with incomplete plan, but last agent is NOT grid-sync
+    test("should not inject when last agent is not orchestrator", async () => {
+      // #given - boulder state with incomplete plan, but last agent is NOT orchestrator
       const planPath = join(TEST_DIR, "test-plan.md");
       writeFileSync(planPath, "# Plan\n- [ ] Task 1\n- [ ] Task 2");
 
@@ -830,12 +830,12 @@ describe("grid-sync hook", () => {
       };
       writeBoulderState(TEST_DIR, state);
 
-      // #given - last agent is NOT grid-sync
+      // #given - last agent is NOT orchestrator
       cleanupMessageStorage(MAIN_SESSION_ID);
-      setupMessageStorage(MAIN_SESSION_ID, "void-runner");
+      setupMessageStorage(MAIN_SESSION_ID, "operator");
 
       const mockInput = createMockPluginInput();
-      const hook = createGridSyncHook(mockInput);
+      const hook = createOrchestratorHook(mockInput);
 
       // #when
       await hook.handler({
@@ -845,7 +845,7 @@ describe("grid-sync hook", () => {
         },
       });
 
-      // #then - should NOT call prompt because agent is not grid-sync
+      // #then - should NOT call prompt because agent is not orchestrator
       expect(mockInput._promptMock).not.toHaveBeenCalled();
     });
 
@@ -863,7 +863,7 @@ describe("grid-sync hook", () => {
       writeBoulderState(TEST_DIR, state);
 
       const mockInput = createMockPluginInput();
-      const hook = createGridSyncHook(mockInput);
+      const hook = createOrchestratorHook(mockInput);
 
       // #when - fire multiple idle events in rapid succession (simulating infinite loop bug)
       await hook.handler({
@@ -903,7 +903,7 @@ describe("grid-sync hook", () => {
       writeBoulderState(TEST_DIR, state);
 
       const mockInput = createMockPluginInput();
-      const hook = createGridSyncHook(mockInput);
+      const hook = createOrchestratorHook(mockInput);
 
       // #when - create abort state then delete
       await hook.handler({

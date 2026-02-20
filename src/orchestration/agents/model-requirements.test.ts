@@ -23,11 +23,11 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.variant).toBe("high");
   });
 
-  test("void-runner has valid fallbackChain with claude-opus-4-5 as primary", () => {
+  test("operator has valid fallbackChain with claude-opus-4-5 as primary", () => {
     // #given - cipherOperator agent requirement
-    const cipherOperator = AGENT_MODEL_REQUIREMENTS["void-runner"];
+    const cipherOperator = AGENT_MODEL_REQUIREMENTS["operator"];
 
-    // #when - accessing void-runner requirement
+    // #when - accessing operator requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
     expect(cipherOperator).toBeDefined();
     expect(cipherOperator.fallbackChain).toBeArray();
@@ -93,17 +93,17 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.model).toBe("gemini-3-flash");
   });
 
-  test("zen-planner has valid fallbackChain with claude-opus-4-5 as primary", () => {
-    // #given - zen-planner agent requirement
-    const zenPlanner = AGENT_MODEL_REQUIREMENTS["zen-planner"];
+  test("planner has valid fallbackChain with claude-opus-4-5 as primary", () => {
+    // #given - planner agent requirement
+    const planner = AGENT_MODEL_REQUIREMENTS["planner"];
 
-    // #when - accessing zen-planner requirement
+    // #when - accessing planner requirement
     // #then - fallbackChain exists with claude-opus-4-5 as first entry
-    expect(zenPlanner).toBeDefined();
-    expect(zenPlanner!.fallbackChain).toBeArray();
-    expect(zenPlanner!.fallbackChain.length).toBeGreaterThan(0);
+    expect(planner).toBeDefined();
+    expect(planner!.fallbackChain).toBeArray();
+    expect(planner!.fallbackChain.length).toBeGreaterThan(0);
 
-    const primary = zenPlanner!.fallbackChain[0];
+    const primary = planner!.fallbackChain[0];
     expect(primary.model).toBe("claude-opus-4-5");
     expect(primary.providers[0]).toBe("anthropic");
     expect(primary.variant).toBe("max");
@@ -141,11 +141,11 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     expect(primary.providers[0]).toBe("openai");
   });
 
-  test("grid-sync has valid fallbackChain with k2p5 as primary (kimi-for-coding prioritized)", () => {
+  test("orchestrator has valid fallbackChain with k2p5 as primary (kimi-for-coding prioritized)", () => {
     // #given - nexusOrchestrator agent requirement
-    const nexusOrchestrator = AGENT_MODEL_REQUIREMENTS["grid-sync"];
+    const nexusOrchestrator = AGENT_MODEL_REQUIREMENTS["orchestrator"];
 
-    // #when - accessing grid-sync requirement
+    // #when - accessing orchestrator requirement
     // #then - fallbackChain exists with k2p5 as first entry (kimi-for-coding prioritized)
     expect(nexusOrchestrator).toBeDefined();
     expect(nexusOrchestrator.fallbackChain).toBeArray();
@@ -159,15 +159,15 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
   test("all 9 builtin agents have valid fallbackChain arrays", () => {
     // #given - list of 9 agent names
     const expectedAgents = [
-      "void-runner",
+      "operator",
       "eye-ops",
       "data-dive",
       "scan-ops",
       "eye-scan",
-      "zen-planner",
+      "planner",
       "war-mind",
       "null-audit",
-      "grid-sync",
+      "orchestrator",
     ];
 
     // #when - checking AGENT_MODEL_REQUIREMENTS

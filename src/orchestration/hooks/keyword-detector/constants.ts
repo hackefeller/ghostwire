@@ -120,7 +120,7 @@ Each TODO item MUST include:
 | 3 | 6 | \`delegate_task(...)\` final integration |
 
 **WHY PARALLEL TASK GRAPH IS MANDATORY:**
-- Orchestrator (void-runner) executes tasks in parallel waves
+- Orchestrator (operator) executes tasks in parallel waves
 - Independent tasks run simultaneously via background agents
 - Proper dependency tracking prevents race conditions
 - Category + skills ensure optimal model routing per task`;
@@ -132,7 +132,7 @@ Each TODO item MUST include:
 export function isPlannerAgent(agentName?: string): boolean {
   if (!agentName) return false;
   const lowerName = agentName.toLowerCase();
-  return lowerName.includes("zen-planner") || lowerName.includes("planner") || lowerName === "plan";
+  return lowerName.includes("planner") || lowerName.includes("planner") || lowerName === "plan";
 }
 
 /**

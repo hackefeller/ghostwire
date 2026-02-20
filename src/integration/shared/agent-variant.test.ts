@@ -18,12 +18,12 @@ describe("resolveAgentVariant", () => {
     // #given
     const config = {
       agents: {
-        "void-runner": { variant: "low" },
+        "operator": { variant: "low" },
       },
     } as GhostwireConfig;
 
     // #when
-    const variant = resolveAgentVariant(config, "void-runner");
+    const variant = resolveAgentVariant(config, "operator");
 
     // #then
     expect(variant).toBe("low");
@@ -33,7 +33,7 @@ describe("resolveAgentVariant", () => {
     // #given
     const config = {
       agents: {
-        "void-runner": { category: "ultrabrain" },
+        "operator": { category: "ultrabrain" },
       },
       categories: {
         ultrabrain: { model: "openai/gpt-5.2", variant: "xhigh" },
@@ -41,7 +41,7 @@ describe("resolveAgentVariant", () => {
     } as GhostwireConfig;
 
     // #when
-    const variant = resolveAgentVariant(config, "void-runner");
+    const variant = resolveAgentVariant(config, "operator");
 
     // #then
     expect(variant).toBe("xhigh");
@@ -53,13 +53,13 @@ describe("applyAgentVariant", () => {
     // #given
     const config = {
       agents: {
-        "void-runner": { variant: "low" },
+        "operator": { variant: "low" },
       },
     } as GhostwireConfig;
     const message: { variant?: string } = {};
 
     // #when
-    applyAgentVariant(config, "void-runner", message);
+    applyAgentVariant(config, "operator", message);
 
     // #then
     expect(message.variant).toBe("low");
@@ -69,13 +69,13 @@ describe("applyAgentVariant", () => {
     // #given
     const config = {
       agents: {
-        "void-runner": { variant: "low" },
+        "operator": { variant: "low" },
       },
     } as GhostwireConfig;
     const message = { variant: "max" };
 
     // #when
-    applyAgentVariant(config, "void-runner", message);
+    applyAgentVariant(config, "operator", message);
 
     // #then
     expect(message.variant).toBe("max");
@@ -89,7 +89,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "anthropic", modelID: "claude-opus-4-5" };
 
     // #when
-    const variant = resolveVariantForModel(config, "void-runner", model);
+    const variant = resolveVariantForModel(config, "operator", model);
 
     // #then
     expect(variant).toBe("max");
@@ -101,7 +101,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "openai", modelID: "gpt-5.2" };
 
     // #when
-    const variant = resolveVariantForModel(config, "void-runner", model);
+    const variant = resolveVariantForModel(config, "operator", model);
 
     // #then
     expect(variant).toBe("medium");
@@ -113,7 +113,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "google", modelID: "gemini-3-pro" };
 
     // #when
-    const variant = resolveVariantForModel(config, "void-runner", model);
+    const variant = resolveVariantForModel(config, "operator", model);
 
     // #then
     expect(variant).toBeUndefined();
@@ -125,7 +125,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "unknown-provider", modelID: "some-model" };
 
     // #when
-    const variant = resolveVariantForModel(config, "void-runner", model);
+    const variant = resolveVariantForModel(config, "operator", model);
 
     // #then
     expect(variant).toBeUndefined();
@@ -149,7 +149,7 @@ describe("resolveVariantForModel", () => {
     const model = { providerID: "zai-coding-plan", modelID: "glm-4.7" };
 
     // #when
-    const variant = resolveVariantForModel(config, "void-runner", model);
+    const variant = resolveVariantForModel(config, "operator", model);
 
     // #then
     expect(variant).toBeUndefined();

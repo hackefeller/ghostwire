@@ -134,7 +134,7 @@ export function createFrontendDesignAgent(model: string): AgentConfig {
   };
 }
 
-// Agent metadata for void-runner prompt building and task delegation
+// Agent metadata for operator prompt building and task delegation
 export const FRONTEND_DESIGN_METADATA: AgentPromptMetadata = {
   category: "design",
   cost: "EXPENSIVE", // Comprehensive design and implementation work

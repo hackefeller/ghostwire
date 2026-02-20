@@ -278,7 +278,7 @@ describe("generateOmoConfig - model fallback system", () => {
       "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
     );
     expect(result.agents).toBeDefined();
-    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+    expect((result.agents as Record<string, { model: string }>)["operator"].model).toBe(
       "opencode/claude-opus-4-5",
     );
   });
@@ -298,7 +298,7 @@ describe("generateOmoConfig - model fallback system", () => {
     const result = generateOmoConfig(config);
 
     // #then should use opencode models
-    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+    expect((result.agents as Record<string, { model: string }>)["operator"].model).toBe(
       "opencode/claude-opus-4-5",
     );
   });
@@ -318,7 +318,7 @@ describe("generateOmoConfig - model fallback system", () => {
     const result = generateOmoConfig(config);
 
     // #then should use github-copilot opus models (copilot fallback)
-    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+    expect((result.agents as Record<string, { model: string }>)["operator"].model).toBe(
       "github-copilot/claude-opus-4.5",
     );
   });
@@ -341,7 +341,7 @@ describe("generateOmoConfig - model fallback system", () => {
     expect(result.$schema).toBe(
       "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
     );
-    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+    expect((result.agents as Record<string, { model: string }>)["operator"].model).toBe(
       "opencode/glm-4.7-free",
     );
   });
@@ -365,7 +365,7 @@ describe("generateOmoConfig - model fallback system", () => {
       "zai-coding-plan/glm-4.7",
     );
     // #then other agents should use OpenCode Zen
-    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+    expect((result.agents as Record<string, { model: string }>)["operator"].model).toBe(
       "opencode/claude-opus-4-5",
     );
   });
@@ -384,8 +384,8 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config);
 
-    // #then void-runner should use native OpenAI (fallback within native tier)
-    expect((result.agents as Record<string, { model: string }>)["void-runner"].model).toBe(
+    // #then operator should use native OpenAI (fallback within native tier)
+    expect((result.agents as Record<string, { model: string }>)["operator"].model).toBe(
       "openai/gpt-5.2-codex",
     );
     // #then Seer Advisor should use native OpenAI (first fallback entry)

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { DELEGATE_TASK_ERROR_PATTERNS, detectDelegateTaskError, buildRetryGuidance } from "./index";
 
-describe("void-runner-task-retry", () => {
+describe("operator-task-retry", () => {
   describe("DELEGATE_TASK_ERROR_PATTERNS", () => {
     // #given error patterns are defined
     // #then should include all known delegate_task error types

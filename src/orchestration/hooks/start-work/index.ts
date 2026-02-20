@@ -3,7 +3,7 @@ import {
   readBoulderState,
   writeBoulderState,
   appendSessionId,
-  findZenPlannerPlans,
+  findPlannerPlans,
   getPlanProgress,
   createBoulderState,
   getPlanName,
@@ -64,7 +64,7 @@ export function createStartWorkHook(ctx: PluginInput) {
           .trim() || "";
 
       // Only trigger on actual command execution (contains <session-context> tag)
-      // NOT on description text like "Start void-runner work session from zen-planner plan"
+      // NOT on description text like "Start operator work session from planner plan"
       const isStartWorkCommand = promptText.includes("<session-context>");
 
       if (!isStartWorkCommand) {
@@ -75,7 +75,7 @@ export function createStartWorkHook(ctx: PluginInput) {
         sessionID: input.sessionID,
       });
 
-      updateSessionAgent(input.sessionID, "grid-sync"); // Always switch: fixes #1298
+      updateSessionAgent(input.sessionID, "orchestrator"); // Always switch: fixes #1298
 
       const existingState = readBoulderState(ctx.directory);
       const sessionId = input.sessionID;
@@ -90,7 +90,7 @@ export function createStartWorkHook(ctx: PluginInput) {
           sessionID: input.sessionID,
         });
 
-        const allPlans = findZenPlannerPlans(ctx.directory);
+        const allPlans = findPlannerPlans(ctx.directory);
         const matchedPlan = findPlanByName(allPlans, explicitPlanName);
 
         if (matchedPlan) {
@@ -179,7 +179,7 @@ Looking for new plans...`;
           !explicitPlanName &&
           getPlanProgress(existingState.active_plan).isComplete)
       ) {
-        const plans = findZenPlannerPlans(ctx.directory);
+        const plans = findPlannerPlans(ctx.directory);
         const incompletePlans = plans.filter((p) => !getPlanProgress(p).isComplete);
 
         if (plans.length === 0) {
@@ -187,8 +187,8 @@ Looking for new plans...`;
 
 ## No Plans Found
 
-No zen-planner plan files found at .ghostwire/plans/
-Use zen-planner to create a work plan first: /plan "your task"`;
+No planner plan files found at .ghostwire/plans/
+Use planner to create a work plan first: /plan "your task"`;
         } else if (incompletePlans.length === 0) {
           contextInfo += `
 

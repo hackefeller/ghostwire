@@ -298,7 +298,7 @@ export class BackgroundManager {
     });
 
     // Use prompt() instead of promptAsync() to properly initialize agent loop (fire-and-forget)
-    // Include model if caller provided one (e.g., from void-runner category configs)
+    // Include model if caller provided one (e.g., from operator category configs)
     // IMPORTANT: variant must be a top-level field in the body, NOT nested inside model
     // OpenCode's PromptInput schema expects: { model: { providerID, modelID }, variant: "max" }
     const launchModel = input.model

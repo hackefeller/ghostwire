@@ -66,7 +66,7 @@ program
 program
   .command("run <message>")
   .description("Run ghostwire with todo/background task completion enforcement")
-  .option("-a, --agent <name>", "Agent to use (default: void-runner)")
+  .option("-a, --agent <name>", "Agent to use (default: operator)")
   .option("-d, --directory <path>", "Working directory")
   .option("-t, --timeout <ms>", "Timeout in milliseconds (default: 30 minutes)", parseInt)
   .addHelpText("after", RUN_HELP)

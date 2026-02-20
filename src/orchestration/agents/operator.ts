@@ -22,7 +22,7 @@ import {
   categorizeTools,
 } from "./dynamic-agent-prompt-builder";
 
-function buildDynamicVoidRunnerPrompt(
+function buildDynamicOperatorPrompt(
   availableAgents: AvailableAgent[],
   availableTools: AvailableTool[] = [],
   availableSkills: AvailableSkill[] = [],
@@ -427,7 +427,7 @@ ${antiPatterns}
 `;
 }
 
-export function createVoidRunnerAgent(
+export function createOperatorAgent(
   model: string,
   availableAgents?: AvailableAgent[],
   availableToolNames?: string[],
@@ -438,8 +438,8 @@ export function createVoidRunnerAgent(
   const skills = availableSkills ?? [];
   const categories = availableCategories ?? [];
   const prompt = availableAgents
-    ? buildDynamicVoidRunnerPrompt(availableAgents, tools, skills, categories)
-    : buildDynamicVoidRunnerPrompt([], tools, skills, categories);
+    ? buildDynamicOperatorPrompt(availableAgents, tools, skills, categories)
+    : buildDynamicOperatorPrompt([], tools, skills, categories);
 
   const permission = { question: "allow", call_grid_agent: "deny" } as AgentConfig["permission"];
   const base = {
@@ -459,4 +459,4 @@ export function createVoidRunnerAgent(
 
   return { ...base, thinking: { type: "enabled", budgetTokens: 32000 } };
 }
-createVoidRunnerAgent.mode = MODE;
+createOperatorAgent.mode = MODE;

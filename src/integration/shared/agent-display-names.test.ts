@@ -3,25 +3,25 @@ import { AGENT_DISPLAY_NAMES, getAgentDisplayName } from "./agent-display-names"
 
 describe("getAgentDisplayName", () => {
   it("returns display name for lowercase config key (new format)", () => {
-    // #given config key "void-runner"
-    const configKey = "void-runner";
+    // #given config key "operator"
+    const configKey = "operator";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "void-runner"
-    expect(result).toBe("void-runner");
+    // #then returns "operator"
+    expect(result).toBe("operator");
   });
 
   it("returns display name for uppercase config key (old format - case-insensitive)", () => {
-    // #given config key "void-runner" (old format)
-    const configKey = "void-runner";
+    // #given config key "operator" (old format)
+    const configKey = "operator";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "void-runner" (case-insensitive lookup)
-    expect(result).toBe("void-runner");
+    // #then returns "operator" (case-insensitive lookup)
+    expect(result).toBe("operator");
   });
 
   it("returns original key for unknown agents (fallback)", () => {
@@ -35,37 +35,37 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("custom-agent");
   });
 
-  it("returns display name for grid-sync", () => {
-    // #given config key "grid-sync"
-    const configKey = "grid-sync";
+  it("returns display name for orchestrator", () => {
+    // #given config key "orchestrator"
+    const configKey = "orchestrator";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "grid-sync"
-    expect(result).toBe("grid-sync");
+    // #then returns "orchestrator"
+    expect(result).toBe("orchestrator");
   });
 
-  it("returns display name for zen-planner", () => {
-    // #given config key "zen-planner"
-    const configKey = "zen-planner";
+  it("returns display name for planner", () => {
+    // #given config key "planner"
+    const configKey = "planner";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "zen-planner"
-    expect(result).toBe("zen-planner");
+    // #then returns "planner"
+    expect(result).toBe("planner");
   });
 
-  it("returns display name for dark-runner", () => {
-    // #given config key "dark-runner"
-    const configKey = "dark-runner";
+  it("returns display name for executor", () => {
+    // #given config key "executor"
+    const configKey = "executor";
 
     // #when getAgentDisplayName called
     const result = getAgentDisplayName(configKey);
 
-    // #then returns "dark-runner"
-    expect(result).toBe("dark-runner");
+    // #then returns "executor"
+    expect(result).toBe("executor");
   });
 
   it("returns display name for war-mind", () => {
@@ -140,10 +140,10 @@ describe("AGENT_DISPLAY_NAMES", () => {
     // #given expected mappings (including legacy aliases)
     const expectedMappings = {
       // Current agent names (file-based)
-      "void-runner": "void-runner",
-      "grid-sync": "grid-sync",
-      "zen-planner": "zen-planner",
-      "dark-runner": "dark-runner",
+      "operator": "operator",
+      "orchestrator": "orchestrator",
+      "planner": "planner",
+      "executor": "executor",
       "war-mind": "war-mind",
       "null-audit": "null-audit",
       "eye-ops": "eye-ops",
@@ -151,10 +151,10 @@ describe("AGENT_DISPLAY_NAMES", () => {
       "scan-ops": "scan-ops",
       "eye-scan": "eye-scan",
       // Legacy aliases for backward compatibility
-      "cipher-operator": "void-runner",
-      "nexus-orchestrator": "grid-sync",
-      "augur-planner": "zen-planner",
-      "cipher-runner": "dark-runner",
+      "cipher-operator": "operator",
+      "nexus-orchestrator": "orchestrator",
+      "augur-planner": "planner",
+      "cipher-runner": "executor",
       "tactician-strategist": "war-mind",
       "glitch-auditor": "null-audit",
       "seer-advisor": "eye-ops",

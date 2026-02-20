@@ -113,9 +113,9 @@ describe("skill tool - agent restriction", () => {
 
   it("allows skill when agent matches restriction", async () => {
     // #given
-    const loadedSkills = [createMockSkill("restricted-skill", { agent: "void-runner" })];
+    const loadedSkills = [createMockSkill("restricted-skill", { agent: "operator" })];
     const tool = createSkillTool({ skills: loadedSkills });
-    const context = { ...mockContext, agent: "void-runner" };
+    const context = { ...mockContext, agent: "operator" };
 
     // #when
     const result = await tool.execute({ name: "restricted-skill" }, context);
@@ -126,26 +126,26 @@ describe("skill tool - agent restriction", () => {
 
   it("throws error when agent does not match restriction", async () => {
     // #given
-    const loadedSkills = [createMockSkill("void-runner-only-skill", { agent: "void-runner" })];
+    const loadedSkills = [createMockSkill("operator-only-skill", { agent: "operator" })];
     const tool = createSkillTool({ skills: loadedSkills });
     const context = { ...mockContext, agent: "eye-ops" };
 
     // #when / #then
-    await expect(tool.execute({ name: "void-runner-only-skill" }, context)).rejects.toThrow(
-      'Skill "void-runner-only-skill" is restricted to agent "void-runner"',
+    await expect(tool.execute({ name: "operator-only-skill" }, context)).rejects.toThrow(
+      'Skill "operator-only-skill" is restricted to agent "operator"',
     );
   });
 
   it("throws error when context agent is undefined for restricted skill", async () => {
     // #given
-    const loadedSkills = [createMockSkill("void-runner-only-skill", { agent: "void-runner" })];
+    const loadedSkills = [createMockSkill("operator-only-skill", { agent: "operator" })];
     const tool = createSkillTool({ skills: loadedSkills });
     const contextWithoutAgent = { ...mockContext, agent: undefined as unknown as string };
 
     // #when / #then
     await expect(
-      tool.execute({ name: "void-runner-only-skill" }, contextWithoutAgent),
-    ).rejects.toThrow('Skill "void-runner-only-skill" is restricted to agent "void-runner"');
+      tool.execute({ name: "operator-only-skill" }, contextWithoutAgent),
+    ).rejects.toThrow('Skill "operator-only-skill" is restricted to agent "operator"');
   });
 });
 

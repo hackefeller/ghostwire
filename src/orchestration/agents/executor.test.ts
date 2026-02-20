@@ -1,14 +1,14 @@
 import { describe, expect, test } from "bun:test";
-import { createDarkRunnerAgent, DARK_RUNNER_DEFAULTS } from "./dark-runner";
+import { createExecutorAgent, EXECUTOR_DEFAULTS } from "./executor";
 
-describe("createDarkRunnerAgent", () => {
+describe("createExecutorAgent", () => {
   describe("honored fields", () => {
     test("applies model override", () => {
       // #given
       const override = { model: "openai/gpt-5.2" };
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
       expect(result.model).toBe("openai/gpt-5.2");
@@ -19,7 +19,7 @@ describe("createDarkRunnerAgent", () => {
       const override = { temperature: 0.5 };
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
       expect(result.temperature).toBe(0.5);
@@ -30,7 +30,7 @@ describe("createDarkRunnerAgent", () => {
       const override = { top_p: 0.9 };
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
       expect(result.top_p).toBe(0.9);
@@ -41,7 +41,7 @@ describe("createDarkRunnerAgent", () => {
       const override = { description: "Custom description" };
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
       expect(result.description).toBe("Custom description");
@@ -52,7 +52,7 @@ describe("createDarkRunnerAgent", () => {
       const override = { color: "#FF0000" };
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
       expect(result.color).toBe("#FF0000");
@@ -63,7 +63,7 @@ describe("createDarkRunnerAgent", () => {
       const override = { prompt_append: "Extra instructions here" };
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
       expect(result.prompt).toContain("You work ALONE");
@@ -77,10 +77,10 @@ describe("createDarkRunnerAgent", () => {
       const override = {};
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
-      expect(result.model).toBe(DARK_RUNNER_DEFAULTS.model);
+      expect(result.model).toBe(EXECUTOR_DEFAULTS.model);
     });
 
     test("uses default temperature when no override", () => {
@@ -88,10 +88,10 @@ describe("createDarkRunnerAgent", () => {
       const override = {};
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
-      expect(result.temperature).toBe(DARK_RUNNER_DEFAULTS.temperature);
+      expect(result.temperature).toBe(EXECUTOR_DEFAULTS.temperature);
     });
   });
 
@@ -105,11 +105,11 @@ describe("createDarkRunnerAgent", () => {
       };
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then - defaults should be used, not the overrides
-      expect(result.model).toBe(DARK_RUNNER_DEFAULTS.model);
-      expect(result.temperature).toBe(DARK_RUNNER_DEFAULTS.temperature);
+      expect(result.model).toBe(EXECUTOR_DEFAULTS.model);
+      expect(result.temperature).toBe(EXECUTOR_DEFAULTS.temperature);
     });
   });
 
@@ -119,7 +119,7 @@ describe("createDarkRunnerAgent", () => {
       const override = { mode: "primary" as const };
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
       expect(result.mode).toBe("subagent");
@@ -130,7 +130,7 @@ describe("createDarkRunnerAgent", () => {
       const override = { prompt: "Completely new prompt that replaces everything" };
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
       expect(result.prompt).toContain("You work ALONE");
@@ -151,7 +151,7 @@ describe("createDarkRunnerAgent", () => {
       };
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
       const tools = result.tools as Record<string, boolean> | undefined;
@@ -183,7 +183,7 @@ describe("createDarkRunnerAgent", () => {
       } as { permission: Record<string, string> };
 
       // #when
-      const result = createDarkRunnerAgent(override as Parameters<typeof createDarkRunnerAgent>[0]);
+      const result = createExecutorAgent(override as Parameters<typeof createExecutorAgent>[0]);
 
       // #then - task/delegate_task blocked, but call_grid_agent allowed for scoutRecon/archiveResearcher spawning
       const tools = result.tools as Record<string, boolean> | undefined;
@@ -207,7 +207,7 @@ describe("createDarkRunnerAgent", () => {
       const override = {};
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
       expect(result.prompt).toContain("Dark Runner");
@@ -220,7 +220,7 @@ describe("createDarkRunnerAgent", () => {
       const override = { prompt_append: "CUSTOM_MARKER_FOR_TEST" };
 
       // #when
-      const result = createDarkRunnerAgent(override);
+      const result = createExecutorAgent(override);
 
       // #then
       const baseEndIndex = result.prompt!.indexOf("Dense > verbose.");

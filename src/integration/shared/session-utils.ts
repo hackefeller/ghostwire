@@ -26,5 +26,5 @@ export function isCallerOrchestrator(sessionID?: string): boolean {
   const messageDir = getMessageDir(sessionID);
   if (!messageDir) return false;
   const nearest = findNearestMessageWithFields(messageDir);
-  return nearest?.agent?.toLowerCase() === "grid-sync";
+  return nearest?.agent?.toLowerCase() === "orchestrator";
 }

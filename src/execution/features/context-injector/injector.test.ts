@@ -15,7 +15,7 @@ describe("createContextInjectorMessagesTransformHook", () => {
       sessionID,
       role,
       time: { created: Date.now() },
-      agent: "void-runner",
+      agent: "operator",
       model: { providerID: "test", modelID: "test" },
       path: { cwd: "/", root: "/" },
     },

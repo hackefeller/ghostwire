@@ -19,7 +19,7 @@ import {
 
 const HOOK_NAME = "grid-todo-continuation-enforcer";
 
-const DEFAULT_SKIP_AGENTS = ["zen-planner", "compaction"];
+const DEFAULT_SKIP_AGENTS = ["planner", "compaction"];
 
 export interface TodoContinuationEnforcerOptions {
   backgroundManager?: BackgroundManager;

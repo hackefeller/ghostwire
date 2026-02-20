@@ -13,7 +13,7 @@ metadata:
 agents:
   # === Core Orchestrators ===
 
-  - id: void-runner
+  - id: operator
     display_name: Void Runner
     model: anthropic/claude-opus-4-5
     purpose: Primary orchestrator with obsession for todos, strategic delegation, and parallel execution
@@ -32,7 +32,7 @@ agents:
       Phase 2C: Failure recovery (3 failures → STOP → REVERT → DOCUMENT → CONSULT)
       Phase 3: Completion with background task cancellation
 
-  - id: grid-sync
+  - id: orchestrator
     display_name: Grid Sync
     model: anthropic/claude-sonnet-4-5
     purpose: Master orchestrator that coordinates all agents and tasks until completion
@@ -45,8 +45,8 @@ agents:
       Notepad Protocol: Subagents are stateless, notepad is cumulative intelligence.
       QA Protocol: Subagents lie, verify EVERYTHING.
 
-  - id: zen-planner
-    display_name: zen-planner
+  - id: planner
+    display_name: planner
     model: anthropic/claude-opus-4-5
     purpose: Strategic planning consultant that interviews users and generates work plans
     fallbacks:

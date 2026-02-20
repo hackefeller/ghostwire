@@ -6,7 +6,7 @@ import { HOOK_NAME, NOTEPAD_DIRECTIVE } from "./constants";
 
 export * from "./constants";
 
-export function createDarkRunnerNotepadHook(ctx: PluginInput) {
+export function createExecutorNotepadHook(ctx: PluginInput) {
   return {
     "tool.execute.before": async (
       input: { tool: string; sessionID: string; callID: string },
@@ -17,7 +17,7 @@ export function createDarkRunnerNotepadHook(ctx: PluginInput) {
         return;
       }
 
-      // 2. Check if caller is grid-sync (orchestrator)
+      // 2. Check if caller is orchestrator (orchestrator)
       if (!isCallerOrchestrator(input.sessionID)) {
         return;
       }

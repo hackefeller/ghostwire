@@ -487,13 +487,13 @@ describe("grid-todo-continuation-enforcer", () => {
   });
 
   test("should accept skipAgents option without error", async () => {
-    // #given - session with skipAgents configured for zen-planner
-    const sessionID = "main-zenPlanner-option";
+    // #given - session with skipAgents configured for planner
+    const sessionID = "main-planner-option";
     setMainSession(sessionID);
 
     // #when - create hook with skipAgents option (should not throw)
     const hook = createTodoContinuationEnforcer(createMockPluginInput(), {
-      skipAgents: ["zen-planner (Planner)", "custom-agent"],
+      skipAgents: ["planner (Planner)", "custom-agent"],
     });
 
     // #then - handler works without error
@@ -978,7 +978,7 @@ describe("grid-todo-continuation-enforcer", () => {
         info: {
           id: "msg-1",
           role: "user",
-          agent: "void-runner",
+          agent: "operator",
           model: { providerID: "openai", modelID: "gpt-5.2" },
         },
       },
@@ -986,7 +986,7 @@ describe("grid-todo-continuation-enforcer", () => {
         info: {
           id: "msg-2",
           role: "assistant",
-          agent: "void-runner",
+          agent: "operator",
           modelID: "gpt-5.2",
           providerID: "openai",
         },
@@ -1035,7 +1035,7 @@ describe("grid-todo-continuation-enforcer", () => {
   // ============================================================
 
   test("should skip compaction agent messages when resolving agent info", async () => {
-    // #given - session where last message is from compaction agent but previous was void-runner
+    // #given - session where last message is from compaction agent but previous was operator
     const sessionID = "main-compaction-filter";
     setMainSession(sessionID);
 
@@ -1044,7 +1044,7 @@ describe("grid-todo-continuation-enforcer", () => {
         info: {
           id: "msg-1",
           role: "user",
-          agent: "void-runner",
+          agent: "operator",
           model: { providerID: "anthropic", modelID: "claude-sonnet-4-5" },
         },
       },
@@ -1052,7 +1052,7 @@ describe("grid-todo-continuation-enforcer", () => {
         info: {
           id: "msg-2",
           role: "assistant",
-          agent: "void-runner",
+          agent: "operator",
           modelID: "claude-sonnet-4-5",
           providerID: "anthropic",
         },
@@ -1098,9 +1098,9 @@ describe("grid-todo-continuation-enforcer", () => {
     await hook.handler({ event: { type: "session.idle", properties: { sessionID } } });
     await fakeTimers.advanceBy(2500);
 
-    // #then - continuation uses void-runner (skipped compaction agent)
+    // #then - continuation uses operator (skipped compaction agent)
     expect(promptCalls.length).toBe(1);
-    expect(promptCalls[0].agent).toBe("void-runner");
+    expect(promptCalls[0].agent).toBe("operator");
   });
 
   test("should skip injection when only compaction agent messages exist", async () => {
@@ -1147,14 +1147,14 @@ describe("grid-todo-continuation-enforcer", () => {
     expect(promptCalls).toHaveLength(0);
   });
 
-  test("should skip injection when zen-planner agent is after compaction", async () => {
-    // #given - zen-planner session that was compacted
-    const sessionID = "main-zenPlanner-compacted";
+  test("should skip injection when planner agent is after compaction", async () => {
+    // #given - planner session that was compacted
+    const sessionID = "main-planner-compacted";
     setMainSession(sessionID);
 
-    const mockMessagesZenPlannerCompacted = [
-      { info: { id: "msg-1", role: "user", agent: "zen-planner" } },
-      { info: { id: "msg-2", role: "assistant", agent: "zen-planner" } },
+    const mockMessagesPlannerCompacted = [
+      { info: { id: "msg-1", role: "user", agent: "planner" } },
+      { info: { id: "msg-2", role: "assistant", agent: "planner" } },
       { info: { id: "msg-3", role: "assistant", agent: "compaction" } },
     ];
 
@@ -1164,7 +1164,7 @@ describe("grid-todo-continuation-enforcer", () => {
           todo: async () => ({
             data: [{ id: "1", content: "Task 1", status: "pending", priority: "high" }],
           }),
-          messages: async () => ({ data: mockMessagesZenPlannerCompacted }),
+          messages: async () => ({ data: mockMessagesPlannerCompacted }),
           prompt: async (opts: any) => {
             promptCalls.push({
               sessionID: opts.path.id,
@@ -1189,7 +1189,7 @@ describe("grid-todo-continuation-enforcer", () => {
 
     await fakeTimers.advanceBy(3000);
 
-    // #then - no continuation (zen-planner found after filtering compaction, zen-planner is in skipAgents)
+    // #then - no continuation (planner found after filtering compaction, planner is in skipAgents)
     expect(promptCalls).toHaveLength(0);
   });
 

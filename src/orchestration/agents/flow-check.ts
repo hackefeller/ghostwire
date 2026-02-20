@@ -117,7 +117,7 @@ export function createSpecFlowAnalyzerAgent(model: string): AgentConfig {
   };
 }
 
-// Agent metadata for void-runner prompt building and task delegation
+// Agent metadata for operator prompt building and task delegation
 export const SPEC_FLOW_ANALYZER_METADATA: AgentPromptMetadata = {
   category: "workflow",
   cost: "MODERATE",

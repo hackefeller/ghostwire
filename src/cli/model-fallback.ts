@@ -137,7 +137,7 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
       continue;
     }
 
-    // Special case: void-runner uses the standard fallback chain
+    // Special case: operator uses the standard fallback chain
     const fallbackChain = req.fallbackChain;
 
     const resolved = resolveModelFromChain(fallbackChain, avail);

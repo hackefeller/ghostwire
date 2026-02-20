@@ -1,4 +1,4 @@
-export const HOOK_NAME = "dark-runner-notepad";
+export const HOOK_NAME = "executor-notepad";
 
 export const NOTEPAD_DIRECTIVE = `
 <Work_Context>

@@ -1,7 +1,7 @@
 import type { PluginInput } from "@opencode-ai/plugin";
 import { log } from "../../../integration/shared/logger";
 
-const HOOK_NAME = "grid-stop-continuation-guard";
+const HOOK_NAME = "stop-continuation-guard";
 
 export interface StopContinuationGuard {
   event: (input: { event: { type: string; properties?: unknown } }) => Promise<void>;

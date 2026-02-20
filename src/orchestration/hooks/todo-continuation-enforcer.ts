@@ -17,7 +17,7 @@ import {
   SystemDirectiveTypes,
 } from "../../integration/shared/system-directive";
 
-const HOOK_NAME = "grid-todo-continuation-enforcer";
+const HOOK_NAME = "todo-continuation-enforcer";
 
 const DEFAULT_SKIP_AGENTS = ["planner", "compaction"];
 

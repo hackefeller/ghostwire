@@ -69,26 +69,15 @@ hooks:
     - id: planner-md-only
       description: Restricts planner to only write .md files inside .ghostwire/ directory. Injects workflow reminders for plan file writes.
 
+    - id: comment-checker
+      description: Validates comment formatting and consistency in source files. Checks for proper BDD comment patterns (//#given, //#when, //#then) used in testing.
+
     # === Error Recovery ===
 
     - id: edit-error-recovery
       description: Detects Edit tool errors (oldString not found, multiple matches) and injects a recovery reminder to read/verify the file before retrying.
 
-    - id: empty-task-response-detector
-      description: Detects Task tool invocations that return empty responses and appends a warning about possible failure.
-
     # === Monitoring & Notifications ===
-
-    - id: context-window-monitor
-      description: Monitors Anthropic token usage and reminds users they have plenty of context when usage exceeds 70%. Prevents premature compaction.
-
-    - id: session-notification
-      description: Sends native OS notifications (macOS/Windows/Linux) when main session becomes idle. Supports optional sound and todo-skip logic.
-
-    - id: tool-output-truncator
-      description: Truncates large tool outputs (grep, glob, webfetch, etc.) to default 50k tokens. Prevents context window issues from large results.
-
-    # === Slash Commands & Chat ===
 
     - id: auto-slash-command
       description: Detects slash commands in chat messages and replaces them with command templates automatically. Enables quick command access.
@@ -104,17 +93,14 @@ hooks:
 
     # === Task & Boulder Management ===
 
-    - id: ralph-loop
+    - id: overclock-loop
       description: Implements iterative task execution loop. Continues prompting until a completion promise is detected or max iterations reached. Self-driving task completion.
 
-    - id: start-work
+    - id: jack-in-work
       description: Handles /jack-in-work command. Loads/creates boulder state, selects planner plans, injects context for work continuation.
 
     - id: task-resume-info
       description: Appends resume instructions to task/delegate_task outputs that launch new sessions. Enables cross-session task continuation.
-
-    - id: todo-continuation-enforcer
-      description: Automatically continues work when session is idle with incomplete todos. Injects continuation prompt after countdown. Enforces todo completion.
 
     # === Interactive Sessions ===
 
@@ -122,12 +108,27 @@ hooks:
       description: Tracks tmux session operations (create/kill). Reminds users of active sessions. Cleans up on session deletion.
 
   files:
-    # These are handled by the hook system as direct file hooks (not directories)
-    # Included here for completeness of the hook inventory
+    # These are standalone files in src/orchestration/hooks/ (not directories)
+    # They are exported from hooks/index.ts and registered in the hook system
+    
+    - id: context-window-monitor
+      description: Monitors Anthropic token usage and reminds users they have plenty of context when usage exceeds 70%. Prevents premature compaction.
+    
+    - id: empty-task-response-detector
+      description: Detects Task tool invocations that return empty responses and appends a warning about possible failure.
+    
+    - id: session-notification
+      description: Sends native OS notifications (macOS/Windows/Linux) when main session becomes idle. Supports optional sound and todo-skip logic.
+    
+    - id: todo-continuation-enforcer
+      description: Automatically continues work when session is idle with incomplete todos. Injects continuation prompt after countdown. Enforces todo completion.
+    
+    - id: tool-output-truncator
+      description: Truncates large tool outputs (grep, glob, webfetch, etc.) to default 50k tokens. Prevents context window issues from large results.
 
 notes:
   - This map reflects src/orchestration/hooks contents.
   - Keep in sync with directory structure.
-  - Hooks are categorized by primary function: Session, Claude Code, Delegation, Context Injection, Error Recovery, Monitoring, Slash Commands, Task Management, Interactive Sessions.
+  - Hooks are categorized by primary function: Session, Claude Code, Delegation, Context Injection, Error Recovery, Monitoring, Task Management, Interactive Sessions.
   - Directory hooks contain index.ts with hook implementation.
   - File hooks are standalone TypeScript files that export hook functions.

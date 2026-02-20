@@ -137,10 +137,10 @@ const GhostwirePlugin: Plugin = async (ctx) => {
 
   const modelCacheState = createModelCacheState();
 
-  const contextWindowMonitor = isHookEnabled("grid-context-window-monitor")
+  const contextWindowMonitor = isHookEnabled("context-window-monitor")
     ? createContextWindowMonitorHook(ctx)
     : null;
-  const sessionRecovery = isHookEnabled("grid-session-recovery")
+  const sessionRecovery = isHookEnabled("session-recovery")
     ? createSessionRecoveryHook(ctx, {
         experimental: pluginConfig.experimental,
       })
@@ -148,14 +148,14 @@ const GhostwirePlugin: Plugin = async (ctx) => {
 
   // Check for conflicting notification plugins before creating grid-session-notification
   let sessionNotification = null;
-  if (isHookEnabled("grid-session-notification")) {
+  if (isHookEnabled("session-notification")) {
     const forceEnable = pluginConfig.notification?.force_enable ?? false;
     const externalNotifier = detectExternalNotificationPlugin(ctx.directory);
 
     if (externalNotifier.detected && !forceEnable) {
       // External notification plugin detected - skip our notification to avoid conflicts
       log(getNotificationConflictWarning(externalNotifier.pluginName!));
-      log("grid-session-notification disabled due to external notifier conflict", {
+      log("session-notification disabled due to external notifier conflict", {
         detected: externalNotifier.pluginName,
         allPlugins: externalNotifier.allPlugins,
       });
@@ -164,23 +164,23 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     }
   }
 
-  const commentChecker = isHookEnabled("grid-comment-checker")
+  const commentChecker = isHookEnabled("comment-checker")
     ? createCommentCheckerHooks(pluginConfig.comment_checker)
     : null;
-  const toolOutputTruncator = isHookEnabled("grid-tool-output-truncator")
+  const toolOutputTruncator = isHookEnabled("tool-output-truncator")
     ? createToolOutputTruncatorHook(ctx, {
         experimental: pluginConfig.experimental,
       })
     : null;
   // Check for native OpenCode AGENTS.md injection support before creating hook
   let directoryAgentsInjector = null;
-  if (isHookEnabled("grid-directory-agents-injector")) {
+  if (isHookEnabled("directory-agents-injector")) {
     const currentVersion = getOpenCodeVersion();
     const hasNativeSupport =
       currentVersion !== null && isOpenCodeVersionAtLeast(OPENCODE_NATIVE_AGENTS_INJECTION_VERSION);
 
     if (hasNativeSupport) {
-      log("grid-directory-agents-injector auto-disabled due to native OpenCode support", {
+      log("directory-agents-injector auto-disabled due to native OpenCode support", {
         currentVersion,
         nativeVersion: OPENCODE_NATIVE_AGENTS_INJECTION_VERSION,
       });
@@ -188,59 +188,59 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       directoryAgentsInjector = createDirectoryAgentsInjectorHook(ctx);
     }
   }
-  const directoryReadmeInjector = isHookEnabled("grid-directory-readme-injector")
+  const directoryReadmeInjector = isHookEnabled("directory-readme-injector")
     ? createDirectoryReadmeInjectorHook(ctx)
     : null;
-  const emptyTaskResponseDetector = isHookEnabled("grid-empty-task-response-detector")
+  const emptyTaskResponseDetector = isHookEnabled("empty-task-response-detector")
     ? createEmptyTaskResponseDetectorHook(ctx)
     : null;
-  const thinkMode = isHookEnabled("grid-think-mode") ? createThinkModeHook() : null;
+  const thinkMode = isHookEnabled("think-mode") ? createThinkModeHook() : null;
   const claudeCodeHooks = createClaudeCodeHooksHook(
     ctx,
     {
       disabledHooks: (pluginConfig.claude_code?.hooks ?? true) ? undefined : true,
-      keywordDetectorDisabled: !isHookEnabled("grid-keyword-detector"),
+      keywordDetectorDisabled: !isHookEnabled("keyword-detector"),
     },
     contextCollector,
   );
   const anthropicContextWindowLimitRecovery = isHookEnabled(
-    "grid-anthropic-context-window-limit-recovery",
+    "anthropic-context-window-limit-recovery",
   )
     ? createAnthropicContextWindowLimitRecoveryHook(ctx, {
         experimental: pluginConfig.experimental,
       })
     : null;
-  const compactionContextInjector = isHookEnabled("grid-compaction-context-injector")
+  const compactionContextInjector = isHookEnabled("compaction-context-injector")
     ? createCompactionContextInjector()
     : undefined;
-  const rulesInjector = isHookEnabled("grid-rules-injector") ? createRulesInjectorHook(ctx) : null;
-  const autoUpdateChecker = isHookEnabled("grid-auto-update-checker")
+  const rulesInjector = isHookEnabled("rules-injector") ? createRulesInjectorHook(ctx) : null;
+  const autoUpdateChecker = isHookEnabled("auto-update-checker")
     ? createAutoUpdateCheckerHook(ctx, {
-        showStartupToast: isHookEnabled("grid-startup-toast"),
+        showStartupToast: isHookEnabled("startup-toast"),
         isOperatorEnabled: pluginConfig.operator?.disabled !== true,
         autoUpdate: pluginConfig.auto_update ?? true,
       })
     : null;
-  const keywordDetector = isHookEnabled("grid-keyword-detector")
+  const keywordDetector = isHookEnabled("keyword-detector")
     ? createKeywordDetectorHook(ctx, contextCollector)
     : null;
   const contextInjectorMessagesTransform =
     createContextInjectorMessagesTransformHook(contextCollector);
-  const agentUsageReminder = isHookEnabled("grid-agent-usage-reminder")
+  const agentUsageReminder = isHookEnabled("agent-usage-reminder")
     ? createAgentUsageReminderHook(ctx)
     : null;
-  const nonInteractiveEnv = isHookEnabled("grid-non-interactive-env")
+  const nonInteractiveEnv = isHookEnabled("non-interactive-env")
     ? createNonInteractiveEnvHook(ctx)
     : null;
-  const interactiveBashSession = isHookEnabled("grid-interactive-bash-session")
+  const interactiveBashSession = isHookEnabled("interactive-bash-session")
     ? createInteractiveBashSessionHook(ctx)
     : null;
 
-  const thinkingBlockValidator = isHookEnabled("grid-thinking-block-validator")
+  const thinkingBlockValidator = isHookEnabled("thinking-block-validator")
     ? createThinkingBlockValidatorHook()
     : null;
 
-  const categorySkillReminder = isHookEnabled("grid-category-skill-reminder")
+  const categorySkillReminder = isHookEnabled("category-skill-reminder")
     ? createCategorySkillReminderHook(ctx)
     : null;
 
@@ -251,11 +251,11 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       })
     : null;
 
-  const editErrorRecovery = isHookEnabled("grid-edit-error-recovery")
+  const editErrorRecovery = isHookEnabled("edit-error-recovery")
     ? createEditErrorRecoveryHook(ctx)
     : null;
 
-  const delegateTaskRetry = isHookEnabled("grid-delegate-task-retry")
+  const delegateTaskRetry = isHookEnabled("delegate-task-retry")
     ? createDelegateTaskRetryHook(ctx)
     : null;
 
@@ -309,11 +309,11 @@ const GhostwirePlugin: Plugin = async (ctx) => {
 
   initTaskToastManager(ctx.client);
 
-  const stopContinuationGuard = isHookEnabled("grid-stop-continuation-guard")
+  const stopContinuationGuard = isHookEnabled("stop-continuation-guard")
     ? createStopContinuationGuardHook(ctx)
     : null;
 
-  const todoContinuationEnforcer = isHookEnabled("grid-todo-continuation-enforcer")
+  const todoContinuationEnforcer = isHookEnabled("todo-continuation-enforcer")
     ? createTodoContinuationEnforcer(ctx, {
         backgroundManager,
         isContinuationStopped: stopContinuationGuard?.isStopped,
@@ -325,7 +325,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     sessionRecovery.setOnRecoveryCompleteCallback(todoContinuationEnforcer.markRecoveryComplete);
   }
 
-  const backgroundNotificationHook = isHookEnabled("grid-background-notification")
+  const backgroundNotificationHook = isHookEnabled("background-notification")
     ? createBackgroundNotificationHook(backgroundManager)
     : null;
   const backgroundTools = createBackgroundTools(backgroundManager, ctx.client);
@@ -409,7 +409,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     skills: mergedSkills,
   });
 
-  const autoSlashCommand = isHookEnabled("grid-auto-slash-command")
+  const autoSlashCommand = isHookEnabled("auto-slash-command")
     ? createAutoSlashCommandHook({ skills: mergedSkills })
     : null;
 
@@ -458,16 +458,16 @@ const GhostwirePlugin: Plugin = async (ctx) => {
         }
       }
 
-      await runHook("chat.message", "grid-stop-continuation-guard", () =>
+      await runHook("chat.message", "stop-continuation-guard", () =>
         stopContinuationGuard?.["chat.message"]?.(input),
       );
-      await runHook("chat.message", "grid-keyword-detector", () =>
+      await runHook("chat.message", "keyword-detector", () =>
         keywordDetector?.["chat.message"]?.(input, output),
       );
-      await runHook("chat.message", "grid-claude-code-hooks", () =>
+      await runHook("chat.message", "claude-code-hooks", () =>
         claudeCodeHooks["chat.message"]?.(input, output),
       );
-      await runHook("chat.message", "grid-auto-slash-command", () =>
+      await runHook("chat.message", "auto-slash-command", () =>
         autoSlashCommand?.["chat.message"]?.(input, output),
       );
       await runHook("chat.message", "jack-in-work", () =>
@@ -543,7 +543,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
           output as any,
         ),
       );
-      await runHook("experimental.chat.messages.transform", "grid-thinking-block-validator", () =>
+      await runHook("experimental.chat.messages.transform", "thinking-block-validator", () =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         thinkingBlockValidator?.["experimental.chat.messages.transform"]?.(input, output as any),
       );
@@ -552,38 +552,38 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     config: configHandler,
 
     event: async (input) => {
-      await runHook("event", "grid-auto-update-checker", () => autoUpdateChecker?.event(input));
-      await runHook("event", "grid-claude-code-hooks", () => claudeCodeHooks.event(input));
-      await runHook("event", "grid-background-notification", () =>
+      await runHook("event", "auto-update-checker", () => autoUpdateChecker?.event(input));
+      await runHook("event", "claude-code-hooks", () => claudeCodeHooks.event(input));
+      await runHook("event", "background-notification", () =>
         backgroundNotificationHook?.event(input),
       );
-      await runHook("event", "grid-session-notification", () => sessionNotification?.(input));
-      await runHook("event", "grid-todo-continuation-enforcer", () =>
+      await runHook("event", "session-notification", () => sessionNotification?.(input));
+      await runHook("event", "todo-continuation-enforcer", () =>
         todoContinuationEnforcer?.handler(input),
       );
-      await runHook("event", "grid-context-window-monitor", () =>
+      await runHook("event", "context-window-monitor", () =>
         contextWindowMonitor?.event(input),
       );
-      await runHook("event", "grid-directory-agents-injector", () =>
+      await runHook("event", "directory-agents-injector", () =>
         directoryAgentsInjector?.event(input),
       );
-      await runHook("event", "grid-directory-readme-injector", () =>
+      await runHook("event", "directory-readme-injector", () =>
         directoryReadmeInjector?.event(input),
       );
-      await runHook("event", "grid-rules-injector", () => rulesInjector?.event(input));
-      await runHook("event", "grid-think-mode", () => thinkMode?.event(input));
-      await runHook("event", "grid-anthropic-context-window-limit-recovery", () =>
+      await runHook("event", "rules-injector", () => rulesInjector?.event(input));
+      await runHook("event", "think-mode", () => thinkMode?.event(input));
+      await runHook("event", "anthropic-context-window-limit-recovery", () =>
         anthropicContextWindowLimitRecovery?.event(input),
       );
-      await runHook("event", "grid-agent-usage-reminder", () => agentUsageReminder?.event(input));
-      await runHook("event", "grid-category-skill-reminder", () =>
+      await runHook("event", "agent-usage-reminder", () => agentUsageReminder?.event(input));
+      await runHook("event", "category-skill-reminder", () =>
         categorySkillReminder?.event(input),
       );
-      await runHook("event", "grid-interactive-bash-session", () =>
+      await runHook("event", "interactive-bash-session", () =>
         interactiveBashSession?.event(input),
       );
       await runHook("event", "overclock-loop", () => ralphLoop?.event(input));
-      await runHook("event", "grid-stop-continuation-guard", () =>
+      await runHook("event", "stop-continuation-guard", () =>
         stopContinuationGuard?.event(input),
       );
       await runHook("event", "orchestrator", () => nexusHook?.handler(input));
@@ -675,22 +675,22 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       await runHook("tool.execute.before", "question-label-truncator", () =>
         questionLabelTruncator["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "grid-claude-code-hooks", () =>
+      await runHook("tool.execute.before", "claude-code-hooks", () =>
         claudeCodeHooks["tool.execute.before"](input, output),
       );
-      await runHook("tool.execute.before", "grid-non-interactive-env", () =>
+      await runHook("tool.execute.before", "non-interactive-env", () =>
         nonInteractiveEnv?.["tool.execute.before"](input, output),
       );
-      await runHook("tool.execute.before", "grid-comment-checker", () =>
+      await runHook("tool.execute.before", "comment-checker", () =>
         commentChecker?.["tool.execute.before"](input, output),
       );
-      await runHook("tool.execute.before", "grid-directory-agents-injector", () =>
+      await runHook("tool.execute.before", "directory-agents-injector", () =>
         directoryAgentsInjector?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "grid-directory-readme-injector", () =>
+      await runHook("tool.execute.before", "directory-readme-injector", () =>
         directoryReadmeInjector?.["tool.execute.before"]?.(input, output),
       );
-      await runHook("tool.execute.before", "grid-rules-injector", () =>
+      await runHook("tool.execute.before", "rules-injector", () =>
         rulesInjector?.["tool.execute.before"]?.(input, output),
       );
       await runHook("tool.execute.before", "planner-md-only", () =>
@@ -781,43 +781,43 @@ const GhostwirePlugin: Plugin = async (ctx) => {
       if (!output) {
         return;
       }
-      await runHook("tool.execute.after", "grid-claude-code-hooks", () =>
+      await runHook("tool.execute.after", "claude-code-hooks", () =>
         claudeCodeHooks["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-tool-output-truncator", () =>
+      await runHook("tool.execute.after", "tool-output-truncator", () =>
         toolOutputTruncator?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-context-window-monitor", () =>
+      await runHook("tool.execute.after", "context-window-monitor", () =>
         contextWindowMonitor?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-comment-checker", () =>
+      await runHook("tool.execute.after", "comment-checker", () =>
         commentChecker?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-directory-agents-injector", () =>
+      await runHook("tool.execute.after", "directory-agents-injector", () =>
         directoryAgentsInjector?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-directory-readme-injector", () =>
+      await runHook("tool.execute.after", "directory-readme-injector", () =>
         directoryReadmeInjector?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-rules-injector", () =>
+      await runHook("tool.execute.after", "rules-injector", () =>
         rulesInjector?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-empty-task-response-detector", () =>
+      await runHook("tool.execute.after", "empty-task-response-detector", () =>
         emptyTaskResponseDetector?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-agent-usage-reminder", () =>
+      await runHook("tool.execute.after", "agent-usage-reminder", () =>
         agentUsageReminder?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-category-skill-reminder", () =>
+      await runHook("tool.execute.after", "category-skill-reminder", () =>
         categorySkillReminder?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-interactive-bash-session", () =>
+      await runHook("tool.execute.after", "interactive-bash-session", () =>
         interactiveBashSession?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-edit-error-recovery", () =>
+      await runHook("tool.execute.after", "edit-error-recovery", () =>
         editErrorRecovery?.["tool.execute.after"](input, output),
       );
-      await runHook("tool.execute.after", "grid-delegate-task-retry", () =>
+      await runHook("tool.execute.after", "delegate-task-retry", () =>
         delegateTaskRetry?.["tool.execute.after"](input, output),
       );
       await runHook("tool.execute.after", "orchestrator", () =>

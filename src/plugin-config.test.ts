@@ -101,18 +101,18 @@ describe("mergeConfigs", () => {
 
     it("should merge disabled arrays without duplicates", () => {
       const base: GhostwireConfig = {
-        disabled_hooks: ["grid-comment-checker", "grid-think-mode"],
+        disabled_hooks: ["comment-checker", "think-mode"],
       };
 
       const override: GhostwireConfig = {
-        disabled_hooks: ["grid-think-mode", "grid-session-recovery"],
+        disabled_hooks: ["think-mode", "session-recovery"],
       };
 
       const result = mergeConfigs(base, override);
 
-      expect(result.disabled_hooks).toContain("grid-comment-checker");
-      expect(result.disabled_hooks).toContain("grid-think-mode");
-      expect(result.disabled_hooks).toContain("grid-session-recovery");
+      expect(result.disabled_hooks).toContain("comment-checker");
+      expect(result.disabled_hooks).toContain("think-mode");
+      expect(result.disabled_hooks).toContain("session-recovery");
       expect(result.disabled_hooks?.length).toBe(3);
     });
   });

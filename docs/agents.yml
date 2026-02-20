@@ -170,6 +170,53 @@ agents:
     model: zai-coding-plan/glm-4.7
     purpose: External library and documentation researcher for open-source codebases
 
+  # === PHASE 16: New Agents from Export (9 agents) ===
+
+  - id: reviewer-security
+    display_name: reviewer-security
+    model: openai/gpt-5.3-codex
+    purpose: Security audits, vulnerability assessments, and security reviews of code
+
+  - id: validator-bugs
+    display_name: validator-bugs
+    model: openai/gpt-5.3-codex
+    purpose: Bug reproduction and validation specialist
+
+  - id: guardian-data
+    display_name: guardian-data
+    model: openai/gpt-5.3-codex
+    purpose: Database migration and data integrity expert
+
+  - id: expert-migrations
+    display_name: expert-migrations
+    model: openai/gpt-5.3-codex
+    purpose: Data migration and backfill expert
+
+  - id: resolver-pr
+    display_name: resolver-pr
+    model: openai/gpt-5.3-codex
+    purpose: PR comment resolution specialist
+
+  - id: oracle-performance
+    display_name: oracle-performance
+    model: openai/gpt-5.3-codex
+    purpose: Performance analysis and optimization specialist
+
+  - id: reviewer-races
+    display_name: reviewer-races
+    model: openai/gpt-5.3-codex
+    purpose: JavaScript and Stimulus race condition reviewer
+
+  - id: analyzer-patterns
+    display_name: analyzer-patterns
+    model: openai/gpt-5.3-codex
+    purpose: Design pattern recognition and code organization specialist
+
+  - id: researcher-repo
+    display_name: researcher-repo
+    model: openai/gpt-5.3-codex
+    purpose: Repository structure and convention researcher
+
 notes:
   - All 31 agents accounted for across 6 phases
   - Display names use consistent agent ID naming (no decorative aliases)

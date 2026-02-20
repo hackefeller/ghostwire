@@ -39,6 +39,16 @@ export const AGENT_DISPLAY_NAMES: Record<string, string> = {
   // Phase 6 - Legacy Agents (final phase)
   "researcher-codebase": "researcher-codebase",
   "researcher-data": "researcher-data",
+  // Phase 16 - New Agents from Export
+  "reviewer-security": "reviewer-security",
+  "validator-bugs": "validator-bugs",
+  "guardian-data": "guardian-data",
+  "expert-migrations": "expert-migrations",
+  "resolver-pr": "resolver-pr",
+  "oracle-performance": "oracle-performance",
+  "reviewer-races": "reviewer-races",
+  "analyzer-patterns": "analyzer-patterns",
+  "researcher-repo": "researcher-repo",
 };
 
 /**

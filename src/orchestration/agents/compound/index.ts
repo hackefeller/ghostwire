@@ -18,6 +18,16 @@ import { createSpecFlowAnalyzerAgent } from "../designer-flow";
 import { createAgentNativeArchitectureAgent } from "../advisor-architecture";
 import { createDeploymentVerificationAgent } from "../validator-deployment";
 import { createAnkaneReadmeWriterAgent } from "../writer-readme";
+// New agents from export
+import { createSecurityReviewerAgent, SECURITY_REVIEWER_METADATA } from "../reviewer-security";
+import { createBugValidatorAgent, BUG_VALIDATOR_METADATA } from "../validator-bugs";
+import { createDataGuardianAgent, DATA_GUARDIAN_METADATA } from "../guardian-data";
+import { createExpertMigrationsAgent, EXPERT_MIGRATIONS_METADATA } from "../expert-migrations";
+import { createPRResolverAgent, PR_RESOLVER_METADATA } from "../resolver-pr";
+import { createPerformanceOracleAgent, PERFORMANCE_ORACLE_METADATA } from "../oracle-performance";
+import { createRacesReviewerAgent, RACES_REVIEWER_METADATA } from "../reviewer-races";
+import { createPatternsAnalyzerAgent, PATTERNS_ANALYZER_METADATA } from "../analyzer-patterns";
+import { createRepoResearcherAgent, REPO_RESEARCHER_METADATA } from "../researcher-repo";
 
 // Review Agents (5)
 export {
@@ -110,6 +120,29 @@ export const WRITER_GEM_METADATA = {
 // Placeholder for remaining 9 documentation agents...
 // These would be fully implemented following the same detailed pattern as above
 
+// New Agents (Phase 16) - From Export
+export {
+  createSecurityReviewerAgent,
+  SECURITY_REVIEWER_METADATA,
+} from "../reviewer-security";
+export { createBugValidatorAgent, BUG_VALIDATOR_METADATA } from "../validator-bugs";
+export { createDataGuardianAgent, DATA_GUARDIAN_METADATA } from "../guardian-data";
+export {
+  createExpertMigrationsAgent,
+  EXPERT_MIGRATIONS_METADATA,
+} from "../expert-migrations";
+export { createPRResolverAgent, PR_RESOLVER_METADATA } from "../resolver-pr";
+export {
+  createPerformanceOracleAgent,
+  PERFORMANCE_ORACLE_METADATA,
+} from "../oracle-performance";
+export { createRacesReviewerAgent, RACES_REVIEWER_METADATA } from "../reviewer-races";
+export {
+  createPatternsAnalyzerAgent,
+  PATTERNS_ANALYZER_METADATA,
+} from "../analyzer-patterns";
+export { createRepoResearcherAgent, REPO_RESEARCHER_METADATA } from "../researcher-repo";
+
 // Agent name mappings for registration system
 export const COMPOUND_AGENT_MAPPINGS = {
   // Review Agents (Phase 11)
@@ -140,4 +173,15 @@ export const COMPOUND_AGENT_MAPPINGS = {
   "docs.write-readme": createAnkaneReadmeWriterAgent,
   "editor-style": createEditorStyleAgent,
   "writer-gem": createWriterGemAgent,
+
+  // New Agents (Phase 16) - From Export
+  "reviewer-security": createSecurityReviewerAgent,
+  "validator-bugs": createBugValidatorAgent,
+  "guardian-data": createDataGuardianAgent,
+  "expert-migrations": createExpertMigrationsAgent,
+  "resolver-pr": createPRResolverAgent,
+  "oracle-performance": createPerformanceOracleAgent,
+  "reviewer-races": createRacesReviewerAgent,
+  "analyzer-patterns": createPatternsAnalyzerAgent,
+  "researcher-repo": createRepoResearcherAgent,
 };

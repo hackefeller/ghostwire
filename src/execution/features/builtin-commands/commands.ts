@@ -41,6 +41,18 @@ import {
   DOCS_FEATURE_VIDEO_TEMPLATE,
   DOCS_TEST_BROWSER_TEMPLATE,
 } from "./templates/docs";
+import { LINT_RUBY_TEMPLATE } from "./templates/lint-ruby";
+import {
+  RESOLVE_PARALLEL_TEMPLATE,
+  RESOLVE_PR_PARALLEL_TEMPLATE,
+  RESOLVE_TODO_PARALLEL_TEMPLATE,
+} from "./templates/resolve";
+import { REPRODUCE_BUG_TEMPLATE, REPORT_BUG_TEMPLATE } from "./templates/bug";
+import { TRIAGE_TEMPLATE, PLAN_REVIEW_TEMPLATE, LFG_TEMPLATE } from "./templates/workflow";
+import { CHANGELOG_TEMPLATE } from "./templates/changelog";
+import { AGENT_NATIVE_AUDIT_TEMPLATE } from "./templates/audit";
+import { GENERATE_COMMAND_TEMPLATE, HEAL_SKILL_TEMPLATE } from "./templates/generate";
+import { XCODE_TEST_TEMPLATE } from "./templates/xcode";
 
 const BUILTIN_COMMAND_DEFINITIONS: Record<BuiltinCommandName, Omit<CommandDefinition, "name">> = {
   "init-deep": {
@@ -379,6 +391,139 @@ $ARGUMENTS
 </test-context>`,
     argumentHint:
       "[--browsers=chrome,firefox,safari] [--test-types=visual,functional,accessibility]",
+  },
+  "ghostwire:lint:ruby": {
+    description: "(compound) Run linting and code quality checks on Ruby and ERB files",
+    template: `<command-instruction>
+${LINT_RUBY_TEMPLATE}
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+    argumentHint: "[--fix] [--files=path1,path2]",
+  },
+  "ghostwire:resolve:parallel": {
+    description: "(compound) Resolve all TODO comments using parallel processing",
+    template: `<command-instruction>
+${RESOLVE_PARALLEL_TEMPLATE}
+</command-instruction>`,
+  },
+  "ghostwire:resolve:pr": {
+    description: "(compound) Resolve all PR comments using parallel processing",
+    template: `<command-instruction>
+${RESOLVE_PR_PARALLEL_TEMPLATE}
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+    argumentHint: "[PR number]",
+  },
+  "ghostwire:resolve:todo": {
+    description: "(compound) Resolve all pending CLI todos using parallel processing",
+    template: `<command-instruction>
+${RESOLVE_TODO_PARALLEL_TEMPLATE}
+</command-instruction>`,
+  },
+  "ghostwire:bug:reproduce": {
+    description: "(compound) Reproduce and investigate a bug using logs and browser",
+    template: `<command-instruction>
+${REPRODUCE_BUG_TEMPLATE}
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+    argumentHint: "[GitHub issue number]",
+  },
+  "ghostwire:bug:report": {
+    description: "(compound) Report a bug in the ghostwire plugin",
+    template: `<command-instruction>
+${REPORT_BUG_TEMPLATE}
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+  },
+  "ghostwire:triage": {
+    description: "(compound) Triage and categorize findings for the CLI todo system",
+    template: `<command-instruction>
+${TRIAGE_TEMPLATE}
+</command-instruction>`,
+  },
+  "ghostwire:workflows:plan-review": {
+    description: "(compound) Have multiple specialized agents review a plan in parallel",
+    template: `<command-instruction>
+${PLAN_REVIEW_TEMPLATE}
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+    argumentHint: "[plan file path]",
+  },
+  "ghostwire:lfg": {
+    description: "(compound) Full autonomous engineering workflow",
+    template: `<command-instruction>
+${LFG_TEMPLATE}
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+    argumentHint: "[feature description]",
+  },
+  "ghostwire:changelog": {
+    description: "(compound) Create engaging changelogs for recent merges",
+    template: `<command-instruction>
+${CHANGELOG_TEMPLATE}
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+    argumentHint: "[daily|weekly]",
+  },
+  "ghostwire:agent-native:audit": {
+    description: "(compound) Run comprehensive agent-native architecture review",
+    template: `<command-instruction>
+${AGENT_NATIVE_AUDIT_TEMPLATE}
+</command-instruction>`,
+  },
+  "ghostwire:generate:command": {
+    description: "(compound) Create a new custom slash command",
+    template: `<command-instruction>
+${GENERATE_COMMAND_TEMPLATE}
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+    argumentHint: "[command description]",
+  },
+  "ghostwire:heal:skill": {
+    description: "(compound) Fix incorrect SKILL.md files",
+    template: `<command-instruction>
+${HEAL_SKILL_TEMPLATE}
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+    argumentHint: "[skill name or issue description]",
+  },
+  "ghostwire:xcode:test": {
+    description: "(compound) Build and test iOS apps on simulator",
+    template: `<command-instruction>
+${XCODE_TEST_TEMPLATE}
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+    argumentHint: "[project path] [scheme]",
   },
 };
 

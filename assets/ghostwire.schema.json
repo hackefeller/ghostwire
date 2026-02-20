@@ -23,8 +23,8 @@
           "operator",
           "planner",
           "advisor-plan",
-          "data-dive",
-          "scan-ops",
+          "researcher-data",
+          "researcher-codebase",
           "analyzer-media",
           "advisor-strategy",
           "validator-audit",
@@ -149,38 +149,38 @@
       "items": {
         "type": "string",
         "enum": [
-          "grid-todo-continuation-enforcer",
-          "grid-context-window-monitor",
-          "grid-session-recovery",
-          "grid-session-notification",
-          "grid-comment-checker",
-          "grid-grep-output-truncator",
-          "grid-tool-output-truncator",
-          "grid-directory-agents-injector",
-          "grid-directory-readme-injector",
-          "grid-empty-task-response-detector",
-          "grid-think-mode",
-          "grid-anthropic-context-window-limit-recovery",
-          "grid-rules-injector",
-          "grid-background-notification",
-          "grid-auto-update-checker",
-          "grid-startup-toast",
-          "grid-keyword-detector",
-          "grid-agent-usage-reminder",
-          "grid-non-interactive-env",
-          "grid-interactive-bash-session",
-          "grid-thinking-block-validator",
-          "overclock-loop",
-          "grid-category-skill-reminder",
-          "grid-compaction-context-injector",
-          "grid-claude-code-hooks",
-          "grid-auto-slash-command",
-          "grid-edit-error-recovery",
-          "grid-delegate-task-retry",
+          "todo-continuation-enforcer",
+          "context-window-monitor",
+          "session-recovery",
+          "session-notification",
+          "comment-checker",
+          "grep-output-truncator",
+          "tool-output-truncator",
+          "directory-agents-injector",
+          "directory-readme-injector",
+          "empty-task-response-detector",
+          "think-mode",
+          "anthropic-context-window-limit-recovery",
+          "rules-injector",
+          "background-notification",
+          "auto-update-checker",
+          "startup-toast",
+          "keyword-detector",
+          "agent-usage-reminder",
+          "non-interactive-env",
+          "interactive-bash-session",
+          "thinking-block-validator",
+          "ralph-loop",
+          "category-skill-reminder",
+          "compaction-context-injector",
+          "claude-code-hooks",
+          "auto-slash-command",
+          "edit-error-recovery",
+          "delegate-task-retry",
           "planner-md-only",
           "executor-notepad",
-          "jack-in-work",
-          "grid-stop-continuation-guard",
+          "start-work",
+          "stop-continuation-guard",
           "orchestrator"
         ]
       }
@@ -1761,7 +1761,7 @@
             }
           }
         },
-        "data-dive": {
+        "researcher-data": {
           "type": "object",
           "properties": {
             "model": {
@@ -1932,7 +1932,7 @@
             }
           }
         },
-        "scan-ops": {
+        "researcher-codebase": {
           "type": "object",
           "properties": {
             "model": {

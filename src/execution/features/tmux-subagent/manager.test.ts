@@ -61,13 +61,15 @@ mock.module("./action-executor", () => ({
   executeAction: mockExecuteAction,
 }));
 
-mock.module("../../shared/tmux", () => {
-  const { isInsideTmux, getCurrentPaneId } = require("../../shared/tmux/tmux-utils");
+mock.module("../../../integration/shared/tmux", () => {
+  const { isInsideTmux, getCurrentPaneId } = require(
+    "../../../integration/shared/tmux/tmux-utils",
+  );
   const {
     POLL_INTERVAL_BACKGROUND_MS,
     SESSION_TIMEOUT_MS,
     SESSION_MISSING_GRACE_MS,
-  } = require("../../shared/tmux/constants");
+  } = require("../../../integration/shared/tmux/constants");
   return {
     isInsideTmux,
     getCurrentPaneId,

@@ -11,21 +11,18 @@ import type {
   CategoryConfig,
   GitMasterConfig,
 } from "../../platform/config/schema";
-import { createOperatorAgent } from "./operator";
-import { createAdvisorPlanAgent, ADVISOR_PLAN_PROMPT_METADATA } from "./advisor-plan";
-import { createResearcherDataAgent, RESEARCHER_DATA_PROMPT_METADATA } from "./researcher-data";
-import { createResearcherCodebaseAgent, RESEARCHER_CODEBASE_PROMPT_METADATA } from "./researcher-codebase";
-import { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./analyzer-media";
-import { createAdvisorStrategyAgent } from "./advisor-strategy";
-import { createOrchestratorAgent } from "./orchestrator";
-import { createValidatorAuditAgent } from "./validator-audit";
-import { COMPOUND_AGENT_MAPPINGS } from "./compound";
+import { createAgentToolRestrictions } from "../../platform/config/permission-compat";
+import { loadMarkdownAgents } from "./load-markdown-agents";
 import type {
   AvailableAgent,
   AvailableCategory,
   AvailableSkill,
 } from "./dynamic-agent-prompt-builder";
-import { deepMerge, findCaseInsensitive, includesCaseInsensitive } from "../../integration/shared";
+import {
+  deepMerge,
+  findCaseInsensitive,
+  includesCaseInsensitive,
+} from "../../integration/shared";
 import {
   fetchAvailableModels,
   isModelAvailable,
@@ -39,42 +36,119 @@ import {
 } from "../../execution/tools/delegate-task/constants";
 import { resolveMultipleSkills } from "../../execution/features/opencode-skill-loader/skill-content";
 import { createBuiltinSkills } from "../../execution/features/builtin-skills";
-import type { LoadedSkill, SkillScope } from "../../execution/features/opencode-skill-loader/types";
+import type {
+  LoadedSkill,
+  SkillScope,
+} from "../../execution/features/opencode-skill-loader/types";
 import type { BrowserAutomationProvider } from "../../platform/config/schema";
 export {
-  createAgentToolRestrictions,
   createAgentToolAllowlist,
+  createAgentToolRestrictions,
 } from "../../platform/config/permission-compat";
 
-type AgentSource = AgentFactory | AgentConfig;
+type AgentCallable = (model: string) => AgentConfig;
+type AgentSource = AgentFactory | AgentCallable | AgentConfig;
 
-const agentSources: Record<BuiltinAgentName, AgentSource> = {
-  "operator": createOperatorAgent,
-  "advisor-plan": createAdvisorPlanAgent,
-  "researcher-data": createResearcherDataAgent,
-  "researcher-codebase": createResearcherCodebaseAgent,
-  "analyzer-media": createMultimodalLookerAgent,
-  "advisor-strategy": createAdvisorStrategyAgent,
-  "validator-audit": createValidatorAuditAgent,
-  // Note: orchestrator is handled specially in createBuiltinAgents()
-  // because it needs OrchestratorContext, not just a model string
-  "orchestrator": createOrchestratorAgent as unknown as AgentFactory,
-  // Compound Agents (28 total)
-  ...COMPOUND_AGENT_MAPPINGS,
+type MarkdownAgentMetadata = {
+  id: string;
+  name: string;
+  purpose: string;
+  models: { primary: string; fallback?: string };
+  temperature: number;
+  category?: string;
+  cost?: string;
+  triggers?: Array<{ domain: string; trigger: string }>;
+  useWhen?: string[];
+  avoidWhen?: string[];
+  promptAlias?: string;
+  keyTrigger?: string;
+  dedicatedSection?: string;
+  prompt: string;
 };
 
-/**
- * Metadata for each agent, used to build operator's dynamic prompt sections
- * (Delegation Table, Tool Selection, Key Triggers, etc.)
- */
-const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
-  "advisor-plan": ADVISOR_PLAN_PROMPT_METADATA,
-  "researcher-data": RESEARCHER_DATA_PROMPT_METADATA,
-  "researcher-codebase": RESEARCHER_CODEBASE_PROMPT_METADATA,
-  "analyzer-media": MULTIMODAL_LOOKER_PROMPT_METADATA,
-};
+function applyMarkdownModelOverrides(
+  base: AgentConfig,
+  markdownAgent: MarkdownAgentMetadata,
+): AgentConfig {
+  const overrides: AgentConfig = {
+    description: markdownAgent.purpose,
+    prompt: markdownAgent.prompt,
+    temperature: markdownAgent.temperature,
+  };
+  if (markdownAgent.category) overrides.category = markdownAgent.category;
+  return { ...base, ...overrides };
+}
 
-function isFactory(source: AgentSource): source is AgentFactory {
+function buildOperatorAgentConfig(
+  markdownAgent: MarkdownAgentMetadata,
+  model: string,
+): AgentConfig {
+  const permission = { question: "allow", call_grid_agent: "deny" } as AgentConfig["permission"];
+  const base: AgentConfig = {
+    description: "Powerful AI orchestrator.",
+    mode: "primary",
+    model,
+    maxTokens: 64000,
+    color: "#00CED1",
+    permission,
+    prompt: markdownAgent.prompt,
+    temperature: markdownAgent.temperature,
+  };
+
+  if (model.startsWith("openai/") || model.startsWith("github-copilot/gpt-")) {
+    return applyMarkdownModelOverrides({ ...base, reasoningEffort: "medium" }, markdownAgent);
+  }
+
+  return applyMarkdownModelOverrides(
+    { ...base, thinking: { type: "enabled", budgetTokens: 32000 } },
+    markdownAgent,
+  );
+}
+
+function buildOrchestratorAgentConfig(
+  markdownAgent: MarkdownAgentMetadata,
+  model: string,
+): AgentConfig {
+  const base: AgentConfig = {
+    description: "Master orchestrator agent.",
+    mode: "primary",
+    model,
+    maxTokens: 64000,
+    color: "#9370DB",
+    prompt: markdownAgent.prompt,
+    temperature: markdownAgent.temperature,
+    permission: createAgentToolRestrictions(["task", "call_grid_agent"]).permission,
+  };
+
+  if (model.startsWith("openai/") || model.startsWith("github-copilot/gpt-")) {
+    return applyMarkdownModelOverrides({ ...base, reasoningEffort: "medium" }, markdownAgent);
+  }
+
+  return applyMarkdownModelOverrides(
+    { ...base, thinking: { type: "enabled", budgetTokens: 32000 } },
+    markdownAgent,
+  );
+}
+
+function mapMarkdownMetadataToPromptMetadata(
+  agent: MarkdownAgentMetadata,
+): AgentPromptMetadata | undefined {
+  if (!agent.category || !agent.cost) return undefined;
+  if (!agent.triggers) return undefined;
+
+  return {
+    category: agent.category as AgentPromptMetadata["category"],
+    cost: agent.cost as AgentPromptMetadata["cost"],
+    triggers: agent.triggers,
+    useWhen: agent.useWhen,
+    avoidWhen: agent.avoidWhen,
+    promptAlias: agent.promptAlias,
+    keyTrigger: agent.keyTrigger,
+    dedicatedSection: agent.dedicatedSection,
+  };
+}
+
+function isFactory(source: AgentSource): source is AgentFactory | AgentCallable {
   return typeof source === "function";
 }
 
@@ -101,7 +175,10 @@ export function buildAgent(
       if (!base.model) {
         base.model = categoryConfig.model;
       }
-      if (base.temperature === undefined && categoryConfig.temperature !== undefined) {
+      if (
+        base.temperature === undefined &&
+        categoryConfig.temperature !== undefined
+      ) {
         base.temperature = categoryConfig.temperature;
       }
       if (base.variant === undefined && categoryConfig.variant !== undefined) {
@@ -119,6 +196,10 @@ export function buildAgent(
       const skillContent = Array.from(resolved.values()).join("\n\n");
       base.prompt = skillContent + (base.prompt ? "\n\n" + base.prompt : "");
     }
+  }
+
+  if (!base.model) {
+    base.model = model;
   }
 
   return base;
@@ -174,20 +255,27 @@ function applyCategoryOverride(
 
   const result = { ...config } as AgentConfig & Record<string, unknown>;
   if (categoryConfig.model) result.model = categoryConfig.model;
-  if (categoryConfig.variant !== undefined) result.variant = categoryConfig.variant;
-  if (categoryConfig.temperature !== undefined) result.temperature = categoryConfig.temperature;
+  if (categoryConfig.variant !== undefined)
+    result.variant = categoryConfig.variant;
+  if (categoryConfig.temperature !== undefined)
+    result.temperature = categoryConfig.temperature;
   if (categoryConfig.reasoningEffort !== undefined)
     result.reasoningEffort = categoryConfig.reasoningEffort;
   if (categoryConfig.textVerbosity !== undefined)
     result.textVerbosity = categoryConfig.textVerbosity;
-  if (categoryConfig.thinking !== undefined) result.thinking = categoryConfig.thinking;
+  if (categoryConfig.thinking !== undefined)
+    result.thinking = categoryConfig.thinking;
   if (categoryConfig.top_p !== undefined) result.top_p = categoryConfig.top_p;
-  if (categoryConfig.maxTokens !== undefined) result.maxTokens = categoryConfig.maxTokens;
+  if (categoryConfig.maxTokens !== undefined)
+    result.maxTokens = categoryConfig.maxTokens;
 
   return result as AgentConfig;
 }
 
-function mergeAgentConfig(base: AgentConfig, override: AgentOverrideConfig): AgentConfig {
+function mergeAgentConfig(
+  base: AgentConfig,
+  override: AgentOverrideConfig,
+): AgentConfig {
   const { prompt_append, ...rest } = override;
   const merged = deepMerge(base, rest as Partial<AgentConfig>);
 
@@ -216,7 +304,39 @@ export async function createBuiltinAgents(
   browserProvider?: BrowserAutomationProvider,
   uiSelectedModel?: string,
 ): Promise<Record<string, AgentConfig>> {
-  const connectedProviders = readConnectedProvidersCache();
+  const markdownAgents = await loadMarkdownAgents(
+    directory
+      ? `${directory}/src/orchestration/agents`
+      : `${process.cwd()}/src/orchestration/agents`,
+  );
+  const markdownAgentMap = new Map(
+    markdownAgents.map((agent) => [agent.id, agent]),
+  );
+  const agentSources = new Map<string, AgentSource>(
+    markdownAgents
+      .filter((agent) => agent.id !== "operator" && agent.id !== "orchestrator")
+      .map((agent) => {
+        const config: AgentConfig = {
+          description: agent.purpose,
+          prompt: agent.prompt,
+          temperature: agent.temperature,
+        };
+        return [agent.id, config] as [string, AgentSource];
+      }),
+  );
+
+  let connectedProviders = readConnectedProvidersCache();
+  if (connectedProviders === null && client) {
+    try {
+      const { updateConnectedProvidersCache } = await import(
+        "../../platform/opencode/connected-providers-cache"
+      );
+      await updateConnectedProvidersCache(client);
+      connectedProviders = readConnectedProvidersCache();
+    } catch (err) {
+      // ignore cache update failures
+    }
+  }
   // IMPORTANT: Do NOT pass client to fetchAvailableModels during plugin initialization.
   // This function is called from config handler, and calling client API causes deadlock.
   // See: https://github.com/pontistudios/ghostwire/issues/1301
@@ -231,13 +351,15 @@ export async function createBuiltinAgents(
     ? { ...DEFAULT_CATEGORIES, ...categories }
     : DEFAULT_CATEGORIES;
 
-  const availableCategories: AvailableCategory[] = Object.entries(mergedCategories).map(
-    ([name]) => ({
-      name,
-      description:
-        categories?.[name]?.description ?? CATEGORY_DESCRIPTIONS[name] ?? "General tasks",
-    }),
-  );
+  const availableCategories: AvailableCategory[] = Object.entries(
+    mergedCategories,
+  ).map(([name]) => ({
+    name,
+    description:
+      categories?.[name]?.description ??
+      CATEGORY_DESCRIPTIONS[name] ??
+      "General tasks",
+  }));
 
   const builtinSkills = createBuiltinSkills({ browserProvider });
   const builtinSkillNames = new Set(builtinSkills.map((s) => s.name));
@@ -256,17 +378,18 @@ export async function createBuiltinAgents(
       location: mapScopeToLocation(skill.scope),
     }));
 
-  const availableSkills: AvailableSkill[] = [...builtinAvailable, ...discoveredAvailable];
+  const availableSkills: AvailableSkill[] = [
+    ...builtinAvailable,
+    ...discoveredAvailable,
+  ];
 
-  for (const [name, source] of Object.entries(agentSources)) {
-    const agentName = name as BuiltinAgentName;
+  for (const [agentName, source] of agentSources.entries()) {
 
-    if (agentName === "operator") continue;
     if (agentName === "orchestrator") continue;
     if (includesCaseInsensitive(disabledAgents, agentName)) continue;
 
-    const override = findCaseInsensitive(agentOverrides, agentName);
-    const requirement = AGENT_MODEL_REQUIREMENTS[agentName];
+    const override = findCaseInsensitive(agentOverrides, agentName as BuiltinAgentName);
+    const requirement = AGENT_MODEL_REQUIREMENTS[agentName as BuiltinAgentName];
 
     // Check if agent requires a specific model
     if (requirement?.requiresModel && availableModels) {
@@ -275,19 +398,41 @@ export async function createBuiltinAgents(
       }
     }
 
-    const isPrimaryAgent = isFactory(source) && source.mode === "primary";
-
     const resolution = resolveModelWithFallback({
-      uiSelectedModel: isPrimaryAgent ? uiSelectedModel : undefined,
+      uiSelectedModel,
       userModel: override?.model,
       fallbackChain: requirement?.fallbackChain,
       availableModels,
       systemDefaultModel,
     });
-    if (!resolution) continue;
-    const { model, variant: resolvedVariant } = resolution;
+    if (!resolution && !systemDefaultModel) {
+      continue;
+    }
+    const model = resolution?.model ?? systemDefaultModel ?? "";
+    const resolvedVariant = resolution?.variant;
 
-    let config = buildAgent(source, model, mergedCategories, gitMasterConfig, browserProvider);
+    const markdownAgent = markdownAgentMap.get(agentName);
+    const baseConfig = buildAgent(
+      source,
+      model,
+      mergedCategories,
+      gitMasterConfig,
+      browserProvider,
+    );
+
+    let config = markdownAgent
+      ? applyMarkdownModelOverrides(baseConfig, markdownAgent)
+      : baseConfig;
+
+    if (model.startsWith("openai/") || model.startsWith("github-copilot/gpt-")) {
+      config = { ...config, reasoningEffort: "medium", thinking: undefined };
+    } else {
+      config = {
+        ...config,
+        thinking: { type: "enabled", budgetTokens: 32000 },
+        reasoningEffort: undefined,
+      };
+    }
 
     // Apply resolved variant from model fallback chain
     if (resolvedVariant) {
@@ -295,11 +440,14 @@ export async function createBuiltinAgents(
     }
 
     // Expand override.category into concrete properties (higher priority than factory/resolved)
-    const overrideCategory = (override as Record<string, unknown> | undefined)?.category as
-      | string
-      | undefined;
+    const overrideCategory = (override as Record<string, unknown> | undefined)
+      ?.category as string | undefined;
     if (overrideCategory) {
-      config = applyCategoryOverride(config, overrideCategory, mergedCategories);
+      config = applyCategoryOverride(
+        config,
+        overrideCategory,
+        mergedCategories,
+      );
     }
 
     if (agentName === "researcher-data" && directory && config.prompt) {
@@ -312,9 +460,11 @@ export async function createBuiltinAgents(
       config = mergeAgentConfig(config, override);
     }
 
-    result[name] = config;
+    result[agentName] = config;
 
-    const metadata = agentMetadata[agentName];
+    const metadata = markdownAgent
+      ? mapMarkdownMetadataToPromptMetadata(markdownAgent)
+      : undefined;
     if (metadata) {
       availableAgents.push({
         name: agentName,
@@ -325,6 +475,7 @@ export async function createBuiltinAgents(
   }
 
   if (!disabledAgents.includes("operator")) {
+    const operatorMarkdown = markdownAgentMap.get("operator");
     const cipherOverride = agentOverrides["operator"];
     const cipherRequirement = AGENT_MODEL_REQUIREMENTS["operator"];
 
@@ -336,25 +487,25 @@ export async function createBuiltinAgents(
       systemDefaultModel,
     });
 
-    if (cipherResolution) {
-      const { model: cipherModel, variant: cipherResolvedVariant } = cipherResolution;
+    if (cipherResolution && operatorMarkdown) {
+      const { model: cipherModel, variant: cipherResolvedVariant } =
+        cipherResolution;
 
-      let cipherConfig = createOperatorAgent(
-        cipherModel,
-        availableAgents,
-        undefined,
-        availableSkills,
-        availableCategories,
-      );
+      let cipherConfig = buildOperatorAgentConfig(operatorMarkdown, cipherModel);
 
       if (cipherResolvedVariant) {
         cipherConfig = { ...cipherConfig, variant: cipherResolvedVariant };
       }
 
-      const sisOverrideCategory = (cipherOverride as Record<string, unknown> | undefined)
-        ?.category as string | undefined;
+      const sisOverrideCategory = (
+        cipherOverride as Record<string, unknown> | undefined
+      )?.category as string | undefined;
       if (sisOverrideCategory) {
-        cipherConfig = applyCategoryOverride(cipherConfig, sisOverrideCategory, mergedCategories);
+        cipherConfig = applyCategoryOverride(
+          cipherConfig,
+          sisOverrideCategory,
+          mergedCategories,
+        );
       }
 
       if (directory && cipherConfig.prompt) {
@@ -374,6 +525,7 @@ export async function createBuiltinAgents(
   }
 
   if (!disabledAgents.includes("orchestrator")) {
+    const orchestratorMarkdown = markdownAgentMap.get("orchestrator");
     const orchestratorOverride = agentOverrides["orchestrator"];
     const nexusRequirement = AGENT_MODEL_REQUIREMENTS["orchestrator"];
 
@@ -385,15 +537,14 @@ export async function createBuiltinAgents(
       systemDefaultModel,
     });
 
-    if (nexusResolution) {
-      const { model: nexusModel, variant: nexusResolvedVariant } = nexusResolution;
+    if (nexusResolution && orchestratorMarkdown) {
+      const { model: nexusModel, variant: nexusResolvedVariant } =
+        nexusResolution;
 
-      let orchestratorConfig = createOrchestratorAgent({
-        model: nexusModel,
-        availableAgents,
-        availableSkills,
-        userCategories: categories,
-      });
+      let orchestratorConfig = buildOrchestratorAgentConfig(
+        orchestratorMarkdown,
+        nexusModel,
+      );
 
       if (nexusResolvedVariant) {
         orchestratorConfig = {
@@ -402,8 +553,9 @@ export async function createBuiltinAgents(
         };
       }
 
-      const nexusOverrideCategory = (orchestratorOverride as Record<string, unknown> | undefined)
-        ?.category as string | undefined;
+      const nexusOverrideCategory = (
+        orchestratorOverride as Record<string, unknown> | undefined
+      )?.category as string | undefined;
       if (nexusOverrideCategory) {
         orchestratorConfig = applyCategoryOverride(
           orchestratorConfig,
@@ -413,7 +565,10 @@ export async function createBuiltinAgents(
       }
 
       if (orchestratorOverride) {
-        orchestratorConfig = mergeAgentConfig(orchestratorConfig, orchestratorOverride);
+        orchestratorConfig = mergeAgentConfig(
+          orchestratorConfig,
+          orchestratorOverride,
+        );
       }
 
       result["orchestrator"] = orchestratorConfig;

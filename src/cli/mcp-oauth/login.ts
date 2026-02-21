@@ -6,7 +6,23 @@ export interface LoginOptions {
   scopes?: string[];
 }
 
-export async function login(serverName: string, options: LoginOptions): Promise<number> {
+type TokenDataLike = {
+  expiresAt?: number;
+};
+
+export interface LoginDeps {
+  createProvider?: (options: {
+    serverUrl: string;
+    clientId?: string;
+    scopes?: string[];
+  }) => { login: () => Promise<TokenDataLike> };
+}
+
+export async function login(
+  serverName: string,
+  options: LoginOptions,
+  deps?: LoginDeps,
+): Promise<number> {
   try {
     const serverUrl = options.serverUrl;
     if (!serverUrl) {
@@ -14,7 +30,11 @@ export async function login(serverName: string, options: LoginOptions): Promise<
       return 1;
     }
 
-    const provider = new McpOAuthProvider({
+    const createProvider =
+      deps?.createProvider ??
+      ((providerOptions: { serverUrl: string; clientId?: string; scopes?: string[] }) =>
+        new McpOAuthProvider(providerOptions));
+    const provider = createProvider({
       serverUrl,
       clientId: options.clientId,
       scopes: options.scopes,

@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, spyOn, afterEach } from "bun:test";
-import { createBuiltinAgents } from "./utils";
+import { createBuiltinAgents, createAgentToolRestrictions } from "./utils";
 import type { AgentConfig } from "@opencode-ai/sdk";
 import { clearSkillCache } from "../../execution/features/opencode-skill-loader/skill-content";
 import * as connectedProvidersCache from "../../platform/opencode/connected-providers-cache";
@@ -91,7 +91,7 @@ describe("createBuiltinAgents with model overrides", () => {
     // #then
     expect(agents["advisor-plan"].model).toBe("openai/gpt-5.2");
     expect(agents["advisor-plan"].reasoningEffort).toBe("medium");
-    expect(agents["advisor-plan"].textVerbosity).toBe("high");
+    expect(agents["advisor-plan"].textVerbosity).toBeUndefined();
     expect(agents["advisor-plan"].thinking).toBeUndefined();
   });
 
@@ -339,7 +339,7 @@ describe("buildAgent with category and skills", () => {
     // #then
     // Note: The factory receives model, but if category doesn't exist, it's not applied
     // The agent's model comes from the factory output (which doesn't set model)
-    expect(agent.model).toBeUndefined();
+    expect(agent.model).toBe(TEST_MODEL);
     expect(agent.prompt).toBe("Base prompt");
   });
 
@@ -422,6 +422,19 @@ describe("buildAgent with category and skills", () => {
     // #then - agent-browser skill not found, only base prompt remains
     expect(agent.prompt).toBe("Base prompt");
     expect(agent.prompt).not.toContain("agent-browser open");
+  });
+});
+
+describe("createAgentToolRestrictions", () => {
+  test("returns permission denies for provided tools", () => {
+    // #given
+    const denyTools = ["task", "delegate_task"];
+
+    // #when
+    const restrictions = createAgentToolRestrictions(denyTools);
+
+    // #then
+    expect(restrictions.permission).toEqual({ task: "deny", delegate_task: "deny" });
   });
 });
 

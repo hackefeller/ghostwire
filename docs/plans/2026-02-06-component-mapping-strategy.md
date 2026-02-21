@@ -305,7 +305,7 @@ export function createKieranRailsReviewerAgent(): AgentConfig {
 // Example: workflows:plan.ts
 export const workflowsPlanCommand: Omit<CommandDefinition, "name"> = {
   name: "grid:workflows:plan",
-  description: "(compound) Create implementation plans",
+  description: "Create implementation plans",
   template: `<command-instruction>
 You are a master planning agent. Create comprehensive implementation plans.
 ${TEMPLATE}

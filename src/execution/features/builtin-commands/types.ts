@@ -32,20 +32,7 @@ export type BuiltinCommandName =
   | "ghostwire:docs:release-docs"
   | "ghostwire:docs:feature-video"
   | "ghostwire:docs:test-browser"
-  | "ghostwire:lint:ruby"
-  | "ghostwire:resolve:parallel"
-  | "ghostwire:resolve:pr"
-  | "ghostwire:resolve:todo"
-  | "ghostwire:bug:reproduce"
-  | "ghostwire:bug:report"
-  | "ghostwire:triage"
-  | "ghostwire:workflows:plan-review"
-  | "ghostwire:lfg"
-  | "ghostwire:changelog"
-  | "ghostwire:agent-native:audit"
-  | "ghostwire:generate:command"
-  | "ghostwire:heal:skill"
-  | "ghostwire:xcode:test";
+  | "ghostwire:lint:ruby";
 
 export interface BuiltinCommandConfig {
   disabled_commands?: BuiltinCommandName[];

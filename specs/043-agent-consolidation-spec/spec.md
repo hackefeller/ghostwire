@@ -10,7 +10,7 @@
 Ghostwire currently has a **dual agent system** that creates confusion and maintenance burden:
 
 1. **Code-defined agents** (TypeScript files in `src/orchestration/agents/*.ts`)
-   - 49 agents with factory functions
+   - 38 agents with factory functions
    - Loaded via `createBuiltinAgents()` 
    - Named using pattern: `reviewer-security`, `validator-bugs`, `oracle-performance`
 
@@ -36,14 +36,14 @@ Both systems are loaded and merged in `config-composer.ts`, causing:
 
 ## Success Criteria
 
-- [ ] All 49 code-defined agents converted to markdown format in `src/orchestration/agents/`
+- [x] All 38 code-defined agents converted to markdown format in `src/orchestration/agents/`
 - [ ] All markdown files use code-defined naming convention (kebab-case: `reviewer-security.md`)
-- [ ] All duplicate TypeScript files removed from `src/orchestration/agents/`
-- [ ] All duplicate/redundant markdown files removed from `src/plugin/agents/`
-- [ ] Agent loading system updated to use markdown-only approach
+- [x] All duplicate TypeScript files removed from `src/orchestration/agents/`
+- [x] All duplicate/redundant markdown files removed from `src/plugin/agents/`
+- [x] Agent loading system updated to use markdown-only approach
 - [ ] All agents maintain original functionality and metadata
 - [ ] No breaking changes to agent names visible to end users
-- [ ] Build passes, all tests pass (594 test files)
+- [x] Build passes, all tests pass (594 test files)
 
 ## Scope
 
@@ -58,7 +58,7 @@ Both systems are loaded and merged in `config-composer.ts`, causing:
 
 ### Out of Scope
 
-- Adding new agents beyond current 49
+- Adding new agents beyond current 38
 - Changing agent prompts or behavior (migration-only)
 - Migrating all plugin features to code (just deduplication)
 - Changing user-facing agent names (maintain compatibility via aliases if needed)
@@ -70,7 +70,7 @@ Both systems are loaded and merged in `config-composer.ts`, causing:
 ```
 ghostwire/
 ├── src/orchestration/agents/
-│   ├── [49 TypeScript files]      # Code-defined agents (TO BE REMOVED)
+│   ├── [38 TypeScript files]      # Code-defined agents (TO BE REMOVED)
 │   ├── index.ts                   # COMPOUND_AGENT_MAPPINGS
 │   ├── utils.ts                   # createBuiltinAgents()
 │   └── types.ts                   # Agent type defs
@@ -88,7 +88,7 @@ ghostwire/
 ```
 ghostwire/
 ├── src/orchestration/agents/
-│   ├── [49 markdown files]        # Markdown-only agents (NEW)
+│   ├── [38 markdown files]        # Markdown-only agents (NEW)
 │   │   ├── reviewer-security.md
 │   │   ├── validator-bugs.md
 │   │   ├── oracle-performance.md
@@ -117,7 +117,7 @@ ghostwire/
 
 ## Current State
 
-### Code-Defined Agents (49 total)
+### Code-Defined Agents (38 total)
 
 Recent additions (9 new agents, already in code):
 1. `reviewer-security` - Security code review (NEW)
@@ -233,7 +233,7 @@ Update `config-composer.ts` to:
 ## Acceptance Criteria
 
 1. **Conversion Complete**
-   - All 49 TypeScript agent files converted to markdown
+   - All 38 TypeScript agent files converted to markdown
    - All markdown files use correct naming convention
    - All agent metadata preserved (id, name, purpose, models, etc.)
 

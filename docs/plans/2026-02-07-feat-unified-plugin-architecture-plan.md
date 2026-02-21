@@ -21,7 +21,7 @@ This plan describes the unification of OpenCode plugin capabilities into a singl
 
 The ghostwire codebase originally split capabilities across multiple structures:
 - Core ghostwire agents, hooks, tools, and MCPs
-- External plugin dependencies for compound engineering features
+- External plugin dependencies for compound system features
 - Complex import/mapping layer to bridge incompatible architectures
 - Startup overhead from multi-layer initialization
 
@@ -34,7 +34,7 @@ This fragmentation made it difficult to:
 ## Proposed Solution
 
 Build a **single, unified OpenCode plugin** that:
-1. Consolidates all capabilities from ghostwire and compound engineering
+1. Consolidates all capabilities from ghostwire and the compound system
 2. Provides a clean, role-based agent naming system
 3. Eliminates external plugin dependencies
 4. Maintains modular architecture with clear boundaries
@@ -291,7 +291,7 @@ When adding new features:
 ## Git Commit History
 
 ```
-105375e chore: Clean up compound-engineering-plugin references and archive
+105375e chore: Clean up compound plugin references and archive
 342be97 docs: Add comprehensive release documentation for v3.2.0
 2a0a0dc refactor: reorganize shared utilities and MCP into integration domain
 cce662a feat(unified-plugin): Implement Phase 1 - Architecture + Skeleton
@@ -313,7 +313,7 @@ cce662a feat(unified-plugin): Implement Phase 1 - Architecture + Skeleton
 - `src/platform/config/schema.ts` - Configuration schema
 
 ### Historical Reference
-- `archive/ghostwire/` - Historical compound-engineering-plugin reference
+- `archive/ghostwire/` - Historical compound plugin reference
 
 ## FAQ
 
@@ -329,7 +329,7 @@ A: No. This is a major refactor with breaking changes. The new role-based naming
 **Q: Can I extend the plugin?**  
 A: Yes. Follow the migration path for new components. All agents are registered via factories in `src/orchestration/agents/index.ts`.
 
-**Q: What happened to the compound-engineering-plugin?**  
+**Q: What happened to the compound plugin?**  
 A: All components were migrated to ghostwire natively. Historical references are archived in `archive/ghostwire/` for reference.
 
 **Q: Is agents.yml the source of truth?**  

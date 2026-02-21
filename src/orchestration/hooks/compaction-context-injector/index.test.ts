@@ -2,15 +2,15 @@ import { describe, expect, it, mock, beforeEach, afterEach } from "bun:test";
 
 // Mock dependencies before importing
 const mockInjectHookMessage = mock(() => true);
-mock.module("../../features/hook-message-injector", () => ({
+mock.module("../../../execution/features/hook-message-injector", () => ({
   injectHookMessage: mockInjectHookMessage,
 }));
 
-mock.module("../../shared/logger", () => ({
+mock.module("../../../integration/shared/logger", () => ({
   log: () => {},
 }));
 
-mock.module("../../shared/system-directive", () => ({
+mock.module("../../../integration/shared/system-directive", () => ({
   SYSTEM_DIRECTIVE_PREFIX: "[SYSTEM DIRECTIVE: GHOSTWIRE",
   createSystemDirective: (type: string) => `[SYSTEM DIRECTIVE: GHOSTWIRE - ${type}]`,
   SystemDirectiveTypes: {

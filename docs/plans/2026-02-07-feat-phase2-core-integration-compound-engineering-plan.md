@@ -111,7 +111,7 @@ Create a detailed markdown plan following project conventions with phases, tasks
 
 // Register in BUILTIN_COMMAND_DEFINITIONS
 "grid:workflows:plan": {
-  description: "(compound) Create comprehensive implementation plans",
+  description: "Create comprehensive implementation plans",
   template: `<command-instruction>
 ${WORKFLOWS_PLAN_TEMPLATE}  
 </command-instruction>

@@ -4,7 +4,6 @@ import type { CategoryConfig } from "../../platform/config/schema";
 import type { GhostwireConfig } from "../../platform/config";
 
 import * as agents from "../../orchestration/agents";
-import * as cipherJunior from "../../orchestration/agents/executor";
 import * as commandLoader from "../../execution/features/claude-code-command-loader";
 import * as builtinCommands from "../../execution/features/builtin-commands";
 import * as skillLoader from "../../execution/features/opencode-skill-loader";
@@ -16,6 +15,7 @@ import * as logger from "../../integration/shared/logger";
 import * as modelAvailability from "./model-availability";
 import * as providersCache from "./connected-providers-cache";
 import * as configDir from "./config-dir";
+import * as fs from "node:fs";
 import * as permissionCompat from "../../platform/config/permission-compat";
 import * as modelResolver from "../../orchestration/agents/model-resolver";
 
@@ -27,12 +27,7 @@ beforeEach(() => {
       mode: "primary",
     },
     "advisor-plan": { name: "advisor-plan", prompt: "test", mode: "subagent" },
-  });
-
-  spyOn(cipherJunior, "createExecutorAgent" as any).mockReturnValue({
-    name: "executor",
-    prompt: "test",
-    mode: "subagent",
+    "executor": { name: "executor", prompt: "test", mode: "subagent" },
   });
 
   spyOn(commandLoader, "loadUserCommands" as any).mockResolvedValue({});
@@ -79,6 +74,8 @@ beforeEach(() => {
     project: "/tmp/.opencode",
   });
 
+  spyOn(fs, "readFileSync" as any).mockReturnValue("PLANNER_PROMPT");
+
   spyOn(permissionCompat, "migrateAgentConfig" as any).mockImplementation(
     (config: Record<string, unknown>) => config,
   );
@@ -90,7 +87,6 @@ beforeEach(() => {
 
 afterEach(() => {
   (agents.createBuiltinAgents as any)?.mockRestore?.();
-  (cipherJunior.createExecutorAgent as any)?.mockRestore?.();
   (commandLoader.loadUserCommands as any)?.mockRestore?.();
   (commandLoader.loadProjectCommands as any)?.mockRestore?.();
   (commandLoader.loadOpencodeGlobalCommands as any)?.mockRestore?.();
@@ -113,6 +109,7 @@ afterEach(() => {
   (modelAvailability.fetchAvailableModels as any)?.mockRestore?.();
   (providersCache.readConnectedProvidersCache as any)?.mockRestore?.();
   (configDir.getOpenCodeConfigPaths as any)?.mockRestore?.();
+  (fs.readFileSync as any)?.mockRestore?.();
   (permissionCompat.migrateAgentConfig as any)?.mockRestore?.();
   (modelResolver.resolveModelWithFallback as any)?.mockRestore?.();
 });

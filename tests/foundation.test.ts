@@ -7,29 +7,27 @@ describe('Compound Engineering - Foundation Tests', () => {
       const fs = require('fs');
 
       const agentFiles = [
-        // Phase 1 - Renamed
-        'src/orchestration/agents/operator.ts',
-        'src/orchestration/agents/orchestrator.ts',
-        'src/orchestration/agents/planner.ts',
-        'src/orchestration/agents/executor.ts',
-        // Remaining agents (not yet renamed)
-        'src/orchestration/agents/reviewer-rails.ts',
-        'src/orchestration/agents/reviewer-python.ts',
-        'src/orchestration/agents/reviewer-typescript.ts',
-        'src/orchestration/agents/reviewer-rails-dh.ts',
-        'src/orchestration/agents/reviewer-simplicity.ts',
-        'src/orchestration/agents/researcher-docs.ts',
-        'src/orchestration/agents/researcher-learnings.ts',
-        'src/orchestration/agents/researcher-practices.ts',
-        'src/orchestration/agents/researcher-git.ts',
-        'src/orchestration/agents/designer-sync.ts',
-        'src/orchestration/agents/analyzer-design.ts',
-        'src/orchestration/agents/designer-iterator.ts',
-        'src/orchestration/agents/designer-builder.ts',
-        'src/orchestration/agents/designer-flow.ts',
-        'src/orchestration/agents/advisor-architecture.ts',
-        'src/orchestration/agents/validator-deployment.ts',
-        'src/orchestration/agents/writer-readme.ts'
+        'src/orchestration/agents/operator.md',
+        'src/orchestration/agents/orchestrator.md',
+        'src/orchestration/agents/planner.md',
+        'src/orchestration/agents/executor.md',
+        'src/orchestration/agents/reviewer-rails.md',
+        'src/orchestration/agents/reviewer-python.md',
+        'src/orchestration/agents/reviewer-typescript.md',
+        'src/orchestration/agents/reviewer-rails-dh.md',
+        'src/orchestration/agents/reviewer-simplicity.md',
+        'src/orchestration/agents/researcher-docs.md',
+        'src/orchestration/agents/researcher-learnings.md',
+        'src/orchestration/agents/researcher-practices.md',
+        'src/orchestration/agents/researcher-git.md',
+        'src/orchestration/agents/designer-sync.md',
+        'src/orchestration/agents/analyzer-design.md',
+        'src/orchestration/agents/designer-iterator.md',
+        'src/orchestration/agents/designer-builder.md',
+        'src/orchestration/agents/designer-flow.md',
+        'src/orchestration/agents/advisor-architecture.md',
+        'src/orchestration/agents/validator-deployment.md',
+        'src/orchestration/agents/writer-readme.md'
       ];
 
       agentFiles.forEach(file => {

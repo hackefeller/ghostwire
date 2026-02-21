@@ -56,7 +56,7 @@ ghostwire/
 
 | Task | Location | Notes |
 |------|----------|-------|
-| Add agent | `src/orchestration/agents/` | Create .ts with factory, add to `agentSources` |
+| Add agent | `src/orchestration/agents/` | Create .md with YAML frontmatter and prompt |
 | Add hook | `src/orchestration/hooks/` | Create dir with `createXXXHook()`, register in index.ts |
 | Add tool | `src/execution/tools/` | Dir with index/types/constants/tools.ts |
 | Add MCP | `src/integration/mcp/` | Create config, add to index.ts |

@@ -1,5 +1,5 @@
 import { createBuiltinAgents } from "../../orchestration/agents";
-import { createExecutorAgent } from "../../orchestration/agents/executor";
+import type { AgentConfig as SDKAgentConfig } from "@opencode-ai/sdk";
 import {
   loadUserCommands,
   loadProjectCommands,
@@ -30,10 +30,8 @@ import {
 } from "../../integration/shared";
 import { resolveModelWithFallback } from "../../orchestration/agents/model-resolver";
 import { AGENT_MODEL_REQUIREMENTS } from "../../orchestration/agents/model-requirements";
-import {
-  AUGUR_PLANNER_SYSTEM_PROMPT,
-  AUGUR_PLANNER_PERMISSION,
-} from "../../orchestration/agents/planner";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { DEFAULT_CATEGORIES } from "../../execution/tools/delegate-task/constants";
 import type { ModelCacheState } from "../../plugin-state";
 import type { CategoryConfig } from "../../platform/config/schema";
@@ -132,18 +130,18 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     // config.model represents the currently active model in OpenCode (including UI selection)
     // Pass it as uiSelectedModel so it takes highest priority in model resolution
     const currentModel = config.model as string | undefined;
-    const builtinAgents = await createBuiltinAgents(
-      disabledAgents,
-      pluginConfig.agents,
-      ctx.directory,
-      undefined, // systemDefaultModel - let fallback chain handle this
-      pluginConfig.categories,
-      pluginConfig.git_master,
-      allDiscoveredSkills,
-      ctx.client,
-      browserProvider,
-      currentModel, // uiSelectedModel - takes highest priority
-    );
+     const builtinAgents = await createBuiltinAgents(
+       disabledAgents,
+       pluginConfig.agents,
+       ctx.directory,
+       currentModel, // systemDefaultModel - use active model when fallback yields none
+       pluginConfig.categories,
+       pluginConfig.git_master,
+       allDiscoveredSkills,
+       ctx.client,
+       browserProvider,
+       currentModel, // uiSelectedModel - takes highest priority
+     );
 
     // Claude Code agents: Do NOT apply permission migration
     // Claude Code uses whitelist-based tools format which is semantically different
@@ -183,10 +181,15 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         "operator": builtinAgents["operator"],
       };
 
-      agentConfig["executor"] = createExecutorAgent(
-        pluginConfig.agents?.["executor"],
-        config.model as string | undefined,
-      );
+      const executorBase = builtinAgents["executor"] as SDKAgentConfig | undefined;
+      const executorOverride = pluginConfig.agents?.["executor"] as
+        | Record<string, unknown>
+        | undefined;
+      if (executorBase) {
+        agentConfig["executor"] = executorOverride
+          ? { ...executorBase, ...executorOverride }
+          : executorBase;
+      }
 
       if (builderEnabled) {
         const { name: _buildName, ...buildConfigWithoutName } = configAgent?.build ?? {};
@@ -261,13 +264,17 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         const temperatureToUse = augurOverride?.temperature ?? categoryConfig?.temperature;
         const topPToUse = augurOverride?.top_p ?? categoryConfig?.top_p;
         const maxTokensToUse = augurOverride?.maxTokens ?? categoryConfig?.maxTokens;
+        const plannerMarkdown = readFileSync(
+          join(ctx.directory, "src/orchestration/agents/planner.md"),
+          "utf-8",
+        );
         const augurBase = {
           name: "planner",
           ...(resolvedModel ? { model: resolvedModel } : {}),
           ...(variantToUse ? { variant: variantToUse } : {}),
           mode: "all" as const,
-          prompt: AUGUR_PLANNER_SYSTEM_PROMPT,
-          permission: AUGUR_PLANNER_PERMISSION,
+          prompt: plannerMarkdown,
+          permission: { question: "allow", call_grid_agent: "deny", delegate_task: "allow" },
           description: `${configAgent?.plan?.description ?? "Plan agent"} (planner - Ghostwire)`,
           color: (configAgent?.plan?.color as string) ?? "#FF6347",
           ...(temperatureToUse !== undefined ? { temperature: temperatureToUse } : {}),

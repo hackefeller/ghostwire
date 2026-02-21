@@ -185,7 +185,7 @@ Another system reminder with research keyword.
       expect(cleanText).toContain("researcher-codebase");
       expect(cleanText).toContain("analyze");
       expect(cleanText).not.toContain("search and investigate");
-      expect(cleanText).not.toContain("research");
+      expect(cleanText).not.toContain("research keyword");
     });
   });
 });

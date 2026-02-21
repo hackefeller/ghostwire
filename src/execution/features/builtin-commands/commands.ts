@@ -1,7 +1,10 @@
 import type { CommandDefinition } from "../claude-code-command-loader";
 import type { BuiltinCommandName, BuiltinCommands } from "./types";
 import { INIT_DEEP_TEMPLATE } from "./templates/init-deep";
-import { RALPH_LOOP_TEMPLATE, CANCEL_RALPH_TEMPLATE } from "./templates/ralph-loop";
+import {
+  RALPH_LOOP_TEMPLATE,
+  CANCEL_RALPH_TEMPLATE,
+} from "./templates/ralph-loop";
 import { STOP_CONTINUATION_TEMPLATE } from "./templates/stop-continuation";
 import { REFACTOR_TEMPLATE } from "./templates/refactor";
 import { START_WORK_TEMPLATE } from "./templates/start-work";
@@ -42,19 +45,11 @@ import {
   DOCS_TEST_BROWSER_TEMPLATE,
 } from "./templates/docs";
 import { LINT_RUBY_TEMPLATE } from "./templates/lint-ruby";
-import {
-  RESOLVE_PARALLEL_TEMPLATE,
-  RESOLVE_PR_PARALLEL_TEMPLATE,
-  RESOLVE_TODO_PARALLEL_TEMPLATE,
-} from "./templates/resolve";
-import { REPRODUCE_BUG_TEMPLATE, REPORT_BUG_TEMPLATE } from "./templates/bug";
-import { TRIAGE_TEMPLATE, PLAN_REVIEW_TEMPLATE, LFG_TEMPLATE } from "./templates/workflow";
-import { CHANGELOG_TEMPLATE } from "./templates/changelog";
-import { AGENT_NATIVE_AUDIT_TEMPLATE } from "./templates/audit";
-import { GENERATE_COMMAND_TEMPLATE, HEAL_SKILL_TEMPLATE } from "./templates/generate";
-import { XCODE_TEST_TEMPLATE } from "./templates/xcode";
 
-const BUILTIN_COMMAND_DEFINITIONS: Record<BuiltinCommandName, Omit<CommandDefinition, "name">> = {
+const BUILTIN_COMMAND_DEFINITIONS: Record<
+  BuiltinCommandName,
+  Omit<CommandDefinition, "name">
+> = {
   "init-deep": {
     description: "(builtin) Initialize hierarchical AGENTS.md knowledge base",
     template: `<command-instruction>
@@ -67,7 +62,8 @@ $ARGUMENTS
     argumentHint: "[--create-new] [--max-depth=N]",
   },
   "overclock-loop": {
-    description: "(builtin) Start self-referential development loop until completion",
+    description:
+      "(builtin) Start self-referential development loop until completion",
     template: `<command-instruction>
 ${RALPH_LOOP_TEMPLATE}
 </command-instruction>
@@ -75,10 +71,12 @@ ${RALPH_LOOP_TEMPLATE}
 <user-task>
 $ARGUMENTS
 </user-task>`,
-    argumentHint: '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
+    argumentHint:
+      '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
   },
   "ulw-overclock": {
-    description: "(builtin) Start ultrawork loop - continues until completion with ultrawork mode",
+    description:
+      "(builtin) Start ultrawork loop - continues until completion with ultrawork mode",
     template: `<command-instruction>
 ${RALPH_LOOP_TEMPLATE}
 </command-instruction>
@@ -86,7 +84,8 @@ ${RALPH_LOOP_TEMPLATE}
 <user-task>
 $ARGUMENTS
 </user-task>`,
-    argumentHint: '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
+    argumentHint:
+      '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
   },
   "cancel-overclock": {
     description: "(builtin) Cancel active Ralph Loop",
@@ -128,7 +127,7 @@ ${STOP_CONTINUATION_TEMPLATE}
 </command-instruction>`,
   },
   "ghostwire:workflows:plan": {
-    description: "(compound) Transform feature descriptions into implementation plans",
+    description: "Transform feature descriptions into implementation plans",
     template: `<command-instruction>
 ${WORKFLOWS_PLAN_TEMPLATE}
 </command-instruction>
@@ -139,7 +138,8 @@ $ARGUMENTS
     argumentHint: "[feature description, bug report, or improvement idea]",
   },
   "ghostwire:workflows:create": {
-    description: "(compound) Execute plan by breaking into tasks and coordinating implementation",
+    description:
+      "Execute plan by breaking into tasks and coordinating implementation",
     template: `<command-instruction>
 ${WORKFLOWS_CREATE_TEMPLATE}
 </command-instruction>
@@ -150,7 +150,7 @@ $ARGUMENTS
     argumentHint: "[plan-name or plan-file-path]",
   },
   "ghostwire:workflows:status": {
-    description: "(compound) Check status of in-progress workflow or plan",
+    description: "Check status of in-progress workflow or plan",
     template: `<command-instruction>
 ${WORKFLOWS_STATUS_TEMPLATE}
 </command-instruction>
@@ -161,7 +161,7 @@ $ARGUMENTS
     argumentHint: "[workflow-id or plan-name]",
   },
   "ghostwire:workflows:complete": {
-    description: "(compound) Finalize and archive completed workflow",
+    description: "Finalize and archive completed workflow",
     template: `<command-instruction>
 ${WORKFLOWS_COMPLETE_TEMPLATE}
 </command-instruction>
@@ -172,7 +172,7 @@ $ARGUMENTS
     argumentHint: "[workflow-id or plan-name]",
   },
   "ghostwire:code:refactor": {
-    description: "(compound) Systematically refactor code while maintaining functionality",
+    description: "Systematically refactor code while maintaining functionality",
     template: `<command-instruction>
 ${CODE_REFACTOR_TEMPLATE}
 </command-instruction>
@@ -180,10 +180,11 @@ ${CODE_REFACTOR_TEMPLATE}
 <refactoring-target>
 $ARGUMENTS
 </refactoring-target>`,
-    argumentHint: "<target> [--scope=file|module|project] [--strategy=safe|aggressive]",
+    argumentHint:
+      "<target> [--scope=file|module|project] [--strategy=safe|aggressive]",
   },
   "ghostwire:code:review": {
-    description: "(compound) Conduct comprehensive code reviews with specialist agents",
+    description: "Conduct comprehensive code reviews with specialist agents",
     template: `<command-instruction>
 ${CODE_REVIEW_TEMPLATE}
 </command-instruction>
@@ -191,10 +192,12 @@ ${CODE_REVIEW_TEMPLATE}
 <code-context>
 $ARGUMENTS
 </code-context>`,
-    argumentHint: "[file-path or PR-number] [--type=architecture|security|performance]",
+    argumentHint:
+      "[file-path or PR-number] [--type=architecture|security|performance]",
   },
   "ghostwire:code:optimize": {
-    description: "(compound) Improve performance, reduce bundle size, or enhance efficiency",
+    description:
+      "Improve performance, reduce bundle size, or enhance efficiency",
     template: `<command-instruction>
 ${CODE_OPTIMIZE_TEMPLATE}
 </command-instruction>
@@ -205,7 +208,7 @@ $ARGUMENTS
     argumentHint: "[target] [--area=algorithmic|memory|cpu|network|build]",
   },
   "ghostwire:code:format": {
-    description: "(compound) Apply consistent formatting and style standards",
+    description: "Apply consistent formatting and style standards",
     template: `<command-instruction>
 ${CODE_FORMAT_TEMPLATE}
 </command-instruction>
@@ -216,7 +219,7 @@ $ARGUMENTS
     argumentHint: "[path-to-format] [--dry-run]",
   },
   "ghostwire:git:smart-commit": {
-    description: "(compound) Generate well-structured commits following conventions",
+    description: "Generate well-structured commits following conventions",
     template: `<command-instruction>
 ${GIT_SMART_COMMIT_TEMPLATE}
 </command-instruction>
@@ -227,7 +230,7 @@ $ARGUMENTS
     argumentHint: '[--message="custom message"]',
   },
   "ghostwire:git:branch": {
-    description: "(compound) Create and manage feature branches with naming conventions",
+    description: "Create and manage feature branches with naming conventions",
     template: `<command-instruction>
 ${GIT_BRANCH_TEMPLATE}
 </command-instruction>
@@ -238,7 +241,7 @@ $ARGUMENTS
     argumentHint: "[feature-description] [--type=feature|fix|refactor]",
   },
   "ghostwire:git:merge": {
-    description: "(compound) Merge branches safely with conflict resolution",
+    description: "Merge branches safely with conflict resolution",
     template: `<command-instruction>
 ${GIT_MERGE_TEMPLATE}
 </command-instruction>
@@ -249,7 +252,7 @@ $ARGUMENTS
     argumentHint: "[branch-name] [--strategy=fast-forward|squash|rebase]",
   },
   "ghostwire:git:cleanup": {
-    description: "(compound) Remove stale branches and optimize repository",
+    description: "Remove stale branches and optimize repository",
     template: `<command-instruction>
 ${GIT_CLEANUP_TEMPLATE}
 </command-instruction>
@@ -260,7 +263,7 @@ $ARGUMENTS
     argumentHint: "[--days=N] [--dry-run]",
   },
   "ghostwire:project:init": {
-    description: "(compound) Initialize new project with structure and tooling",
+    description: "Initialize new project with structure and tooling",
     template: `<command-instruction>
 ${PROJECT_INIT_TEMPLATE}
 </command-instruction>
@@ -271,7 +274,7 @@ $ARGUMENTS
     argumentHint: "[project-name] [--type=web|api|library|cli|monorepo]",
   },
   "ghostwire:project:build": {
-    description: "(compound) Compile, transpile, and bundle project code",
+    description: "Compile, transpile, and bundle project code",
     template: `<command-instruction>
 ${PROJECT_BUILD_TEMPLATE}
 </command-instruction>
@@ -282,7 +285,7 @@ $ARGUMENTS
     argumentHint: "[--mode=development|production|staging]",
   },
   "ghostwire:project:deploy": {
-    description: "(compound) Deploy project to specified environment",
+    description: "Deploy project to specified environment",
     template: `<command-instruction>
 ${PROJECT_DEPLOY_TEMPLATE}
 </command-instruction>
@@ -293,7 +296,7 @@ $ARGUMENTS
     argumentHint: "[environment] [--strategy=blue-green|canary|standard]",
   },
   "ghostwire:project:test": {
-    description: "(compound) Run test suites and measure code coverage",
+    description: "Run test suites and measure code coverage",
     template: `<command-instruction>
 ${PROJECT_TEST_TEMPLATE}
 </command-instruction>
@@ -304,7 +307,7 @@ $ARGUMENTS
     argumentHint: "[--type=unit|integration|e2e|all] [--coverage]",
   },
   "ghostwire:util:clean": {
-    description: "(compound) Remove build artifacts and temporary files",
+    description: "Remove build artifacts and temporary files",
     template: `<command-instruction>
 ${UTIL_CLEAN_TEMPLATE}
 </command-instruction>
@@ -315,7 +318,7 @@ $ARGUMENTS
     argumentHint: "[--level=light|standard|deep|aggressive] [--dry-run]",
   },
   "ghostwire:util:backup": {
-    description: "(compound) Create backups of project state and files",
+    description: "Create backups of project state and files",
     template: `<command-instruction>
 ${UTIL_BACKUP_TEMPLATE}
 </command-instruction>
@@ -326,7 +329,7 @@ $ARGUMENTS
     argumentHint: "[--type=snapshot|config|database|selective]",
   },
   "ghostwire:util:restore": {
-    description: "(compound) Restore project from backup",
+    description: "Restore project from backup",
     template: `<command-instruction>
 ${UTIL_RESTORE_TEMPLATE}
 </command-instruction>
@@ -337,7 +340,7 @@ $ARGUMENTS
     argumentHint: "[backup-name] [--selective] [--dry-run]",
   },
   "ghostwire:util:doctor": {
-    description: "(compound) Diagnose project health and configuration",
+    description: "Diagnose project health and configuration",
     template: `<command-instruction>
 ${UTIL_DOCTOR_TEMPLATE}
 </command-instruction>
@@ -348,7 +351,7 @@ $ARGUMENTS
     argumentHint: "[--fix] [--verbose]",
   },
   "ghostwire:docs:deploy-docs": {
-    description: "(compound) Build and deploy documentation to hosting",
+    description: "Build and deploy documentation to hosting",
     template: `<command-instruction>
 ${DOCS_DEPLOY_DOCS_TEMPLATE}
 </command-instruction>
@@ -356,10 +359,11 @@ ${DOCS_DEPLOY_DOCS_TEMPLATE}
 <docs-context>
 $ARGUMENTS
 </docs-context>`,
-    argumentHint: "[--target=github-pages|vercel|netlify|s3] [--version=latest|stable]",
+    argumentHint:
+      "[--target=github-pages|vercel|netlify|s3] [--version=latest|stable]",
   },
   "ghostwire:docs:release-docs": {
-    description: "(compound) Create versioned documentation release",
+    description: "Create versioned documentation release",
     template: `<command-instruction>
 ${DOCS_RELEASE_DOCS_TEMPLATE}
 </command-instruction>
@@ -370,7 +374,7 @@ $ARGUMENTS
     argumentHint: "[version] [--create-migration-guide]",
   },
   "ghostwire:docs:feature-video": {
-    description: "(compound) Create demonstration video for feature",
+    description: "Create demonstration video for feature",
     template: `<command-instruction>
 ${DOCS_FEATURE_VIDEO_TEMPLATE}
 </command-instruction>
@@ -381,7 +385,7 @@ $ARGUMENTS
     argumentHint: "[feature-name] [--type=demo|tutorial|comparison|tip]",
   },
   "ghostwire:docs:test-browser": {
-    description: "(compound) Test documentation in browser environment",
+    description: "Test documentation in browser environment",
     template: `<command-instruction>
 ${DOCS_TEST_BROWSER_TEMPLATE}
 </command-instruction>
@@ -393,7 +397,7 @@ $ARGUMENTS
       "[--browsers=chrome,firefox,safari] [--test-types=visual,functional,accessibility]",
   },
   "ghostwire:lint:ruby": {
-    description: "(compound) Run linting and code quality checks on Ruby and ERB files",
+    description: "Run linting and code quality checks on Ruby and ERB files",
     template: `<command-instruction>
 ${LINT_RUBY_TEMPLATE}
 </command-instruction>
@@ -403,135 +407,17 @@ $ARGUMENTS
 </user-request>`,
     argumentHint: "[--fix] [--files=path1,path2]",
   },
-  "ghostwire:resolve:parallel": {
-    description: "(compound) Resolve all TODO comments using parallel processing",
-    template: `<command-instruction>
-${RESOLVE_PARALLEL_TEMPLATE}
-</command-instruction>`,
-  },
-  "ghostwire:resolve:pr": {
-    description: "(compound) Resolve all PR comments using parallel processing",
-    template: `<command-instruction>
-${RESOLVE_PR_PARALLEL_TEMPLATE}
-</command-instruction>
-
-<user-request>
-$ARGUMENTS
-</user-request>`,
-    argumentHint: "[PR number]",
-  },
-  "ghostwire:resolve:todo": {
-    description: "(compound) Resolve all pending CLI todos using parallel processing",
-    template: `<command-instruction>
-${RESOLVE_TODO_PARALLEL_TEMPLATE}
-</command-instruction>`,
-  },
-  "ghostwire:bug:reproduce": {
-    description: "(compound) Reproduce and investigate a bug using logs and browser",
-    template: `<command-instruction>
-${REPRODUCE_BUG_TEMPLATE}
-</command-instruction>
-
-<user-request>
-$ARGUMENTS
-</user-request>`,
-    argumentHint: "[GitHub issue number]",
-  },
-  "ghostwire:bug:report": {
-    description: "(compound) Report a bug in the ghostwire plugin",
-    template: `<command-instruction>
-${REPORT_BUG_TEMPLATE}
-</command-instruction>
-
-<user-request>
-$ARGUMENTS
-</user-request>`,
-  },
-  "ghostwire:triage": {
-    description: "(compound) Triage and categorize findings for the CLI todo system",
-    template: `<command-instruction>
-${TRIAGE_TEMPLATE}
-</command-instruction>`,
-  },
-  "ghostwire:workflows:plan-review": {
-    description: "(compound) Have multiple specialized agents review a plan in parallel",
-    template: `<command-instruction>
-${PLAN_REVIEW_TEMPLATE}
-</command-instruction>
-
-<user-request>
-$ARGUMENTS
-</user-request>`,
-    argumentHint: "[plan file path]",
-  },
-  "ghostwire:lfg": {
-    description: "(compound) Full autonomous engineering workflow",
-    template: `<command-instruction>
-${LFG_TEMPLATE}
-</command-instruction>
-
-<user-request>
-$ARGUMENTS
-</user-request>`,
-    argumentHint: "[feature description]",
-  },
-  "ghostwire:changelog": {
-    description: "(compound) Create engaging changelogs for recent merges",
-    template: `<command-instruction>
-${CHANGELOG_TEMPLATE}
-</command-instruction>
-
-<user-request>
-$ARGUMENTS
-</user-request>`,
-    argumentHint: "[daily|weekly]",
-  },
-  "ghostwire:agent-native:audit": {
-    description: "(compound) Run comprehensive agent-native architecture review",
-    template: `<command-instruction>
-${AGENT_NATIVE_AUDIT_TEMPLATE}
-</command-instruction>`,
-  },
-  "ghostwire:generate:command": {
-    description: "(compound) Create a new custom slash command",
-    template: `<command-instruction>
-${GENERATE_COMMAND_TEMPLATE}
-</command-instruction>
-
-<user-request>
-$ARGUMENTS
-</user-request>`,
-    argumentHint: "[command description]",
-  },
-  "ghostwire:heal:skill": {
-    description: "(compound) Fix incorrect SKILL.md files",
-    template: `<command-instruction>
-${HEAL_SKILL_TEMPLATE}
-</command-instruction>
-
-<user-request>
-$ARGUMENTS
-</user-request>`,
-    argumentHint: "[skill name or issue description]",
-  },
-  "ghostwire:xcode:test": {
-    description: "(compound) Build and test iOS apps on simulator",
-    template: `<command-instruction>
-${XCODE_TEST_TEMPLATE}
-</command-instruction>
-
-<user-request>
-$ARGUMENTS
-</user-request>`,
-    argumentHint: "[project path] [scheme]",
-  },
 };
 
-export function loadBuiltinCommands(disabledCommands?: BuiltinCommandName[]): BuiltinCommands {
+export function loadBuiltinCommands(
+  disabledCommands?: BuiltinCommandName[],
+): BuiltinCommands {
   const disabled = new Set(disabledCommands ?? []);
   const commands: BuiltinCommands = {};
 
-  for (const [name, definition] of Object.entries(BUILTIN_COMMAND_DEFINITIONS)) {
+  for (const [name, definition] of Object.entries(
+    BUILTIN_COMMAND_DEFINITIONS,
+  )) {
     if (!disabled.has(name as BuiltinCommandName)) {
       const { argumentHint: _argumentHint, ...openCodeCompatible } = definition;
       commands[name] = { ...openCodeCompatible, name } as CommandDefinition;

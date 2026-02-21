@@ -80,15 +80,7 @@ export function isGptModel(model: string): boolean {
   return model.startsWith("openai/") || model.startsWith("github-copilot/gpt-");
 }
 
-export type BuiltinAgentName =
-  | "operator"
-  | "advisor-plan"
-  | "researcher-data"
-  | "researcher-codebase"
-  | "analyzer-media"
-  | "advisor-strategy"
-  | "validator-audit"
-  | "orchestrator";
+export type BuiltinAgentName = string;
 
 export type OverridableAgentName = "build" | BuiltinAgentName;
 

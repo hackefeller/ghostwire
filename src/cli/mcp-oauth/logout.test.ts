@@ -1,10 +1,10 @@
-import { describe, it, expect, beforeEach, afterEach, mock } from "bun:test";
+import { describe, it, expect, beforeEach, afterEach } from "bun:test";
 import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { saveToken } from "../../execution/features/mcp-oauth/storage";
 
-const { logout } = await import("./logout");
+import { logout } from "./logout";
 
 describe("logout command", () => {
   const TEST_CONFIG_DIR = join(tmpdir(), "mcp-oauth-logout-test-" + Date.now());

@@ -4,31 +4,31 @@ exports[`generateModelConfig no providers available returns ULTIMATE_FALLBACK fo
 {
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "data-dive": {
+    "advisor-plan": {
       "model": "opencode/glm-4.7-free",
     },
-    "eye-ops": {
+    "advisor-strategy": {
       "model": "opencode/glm-4.7-free",
     },
-    "eye-scan": {
+    "analyzer-media": {
       "model": "opencode/glm-4.7-free",
     },
-    "grid-sync": {
+    "operator": {
       "model": "opencode/glm-4.7-free",
     },
-    "null-audit": {
+    "orchestrator": {
       "model": "opencode/glm-4.7-free",
     },
-    "scan-ops": {
+    "planner": {
       "model": "opencode/glm-4.7-free",
     },
-    "void-runner": {
+    "researcher-codebase": {
       "model": "opencode/glm-4.7-free",
     },
-    "war-mind": {
+    "researcher-data": {
       "model": "opencode/glm-4.7-free",
     },
-    "zen-planner": {
+    "validator-audit": {
       "model": "opencode/glm-4.7-free",
     },
   },
@@ -65,37 +65,37 @@ exports[`generateModelConfig single native provider uses OpenAI models when only
 {
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "data-dive": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "eye-ops": {
+    "advisor-plan": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "eye-scan": {
+    "advisor-strategy": {
+      "model": "openai/gpt-5.2",
+      "variant": "high",
+    },
+    "analyzer-media": {
       "model": "openai/gpt-5.2",
     },
-    "grid-sync": {
-      "model": "openai/gpt-5.2",
-    },
-    "null-audit": {
-      "model": "openai/gpt-5.2",
-      "variant": "medium",
-    },
-    "scan-ops": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "void-runner": {
+    "operator": {
       "model": "openai/gpt-5.2-codex",
       "variant": "medium",
     },
-    "war-mind": {
+    "orchestrator": {
+      "model": "openai/gpt-5.2",
+    },
+    "planner": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "zen-planner": {
+    "researcher-codebase": {
+      "model": "opencode/gpt-5-nano",
+    },
+    "researcher-data": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "validator-audit": {
       "model": "openai/gpt-5.2",
-      "variant": "high",
+      "variant": "medium",
     },
   },
   "categories": {
@@ -135,35 +135,35 @@ exports[`generateModelConfig single native provider uses Gemini models when only
 {
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "data-dive": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "eye-ops": {
+    "advisor-plan": {
       "model": "google/gemini-3-pro",
       "variant": "max",
     },
-    "eye-scan": {
+    "advisor-strategy": {
+      "model": "google/gemini-3-pro",
+      "variant": "max",
+    },
+    "analyzer-media": {
       "model": "google/gemini-3-flash",
     },
-    "grid-sync": {
+    "operator": {
       "model": "google/gemini-3-pro",
     },
-    "null-audit": {
+    "orchestrator": {
       "model": "google/gemini-3-pro",
-      "variant": "max",
     },
-    "scan-ops": {
+    "planner": {
+      "model": "google/gemini-3-pro",
+    },
+    "researcher-codebase": {
       "model": "opencode/gpt-5-nano",
     },
-    "void-runner": {
-      "model": "google/gemini-3-pro",
+    "researcher-data": {
+      "model": "opencode/glm-4.7-free",
     },
-    "war-mind": {
+    "validator-audit": {
       "model": "google/gemini-3-pro",
       "variant": "max",
-    },
-    "zen-planner": {
-      "model": "google/gemini-3-pro",
     },
   },
   "categories": {
@@ -202,37 +202,37 @@ exports[`generateModelConfig all native providers uses preferred models from fal
 {
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "data-dive": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "eye-ops": {
+    "advisor-plan": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "eye-scan": {
+    "advisor-strategy": {
+      "model": "openai/gpt-5.2",
+      "variant": "high",
+    },
+    "analyzer-media": {
       "model": "google/gemini-3-flash",
     },
-    "grid-sync": {
-      "model": "openai/gpt-5.2",
-    },
-    "null-audit": {
-      "model": "openai/gpt-5.2",
-      "variant": "medium",
-    },
-    "scan-ops": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "void-runner": {
+    "operator": {
       "model": "openai/gpt-5.2-codex",
       "variant": "medium",
     },
-    "war-mind": {
+    "orchestrator": {
+      "model": "openai/gpt-5.2",
+    },
+    "planner": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "zen-planner": {
+    "researcher-codebase": {
+      "model": "opencode/gpt-5-nano",
+    },
+    "researcher-data": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "validator-audit": {
       "model": "openai/gpt-5.2",
-      "variant": "high",
+      "variant": "medium",
     },
   },
   "categories": {
@@ -273,37 +273,37 @@ exports[`generateModelConfig fallback providers uses OpenCode Zen models when on
 {
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "data-dive": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "eye-ops": {
+    "advisor-plan": {
       "model": "opencode/gpt-5.2",
       "variant": "high",
     },
-    "eye-scan": {
+    "advisor-strategy": {
+      "model": "opencode/claude-opus-4-5",
+      "variant": "max",
+    },
+    "analyzer-media": {
       "model": "opencode/gemini-3-flash",
     },
-    "grid-sync": {
+    "operator": {
+      "model": "opencode/claude-opus-4-5",
+      "variant": "max",
+    },
+    "orchestrator": {
       "model": "opencode/kimi-k2.5-free",
     },
-    "null-audit": {
-      "model": "opencode/gpt-5.2",
-      "variant": "medium",
+    "planner": {
+      "model": "opencode/claude-opus-4-5",
+      "variant": "max",
     },
-    "scan-ops": {
+    "researcher-codebase": {
       "model": "opencode/claude-haiku-4-5",
     },
-    "void-runner": {
-      "model": "opencode/claude-opus-4-5",
-      "variant": "max",
+    "researcher-data": {
+      "model": "opencode/glm-4.7-free",
     },
-    "war-mind": {
-      "model": "opencode/claude-opus-4-5",
-      "variant": "max",
-    },
-    "zen-planner": {
-      "model": "opencode/claude-opus-4-5",
-      "variant": "max",
+    "validator-audit": {
+      "model": "opencode/gpt-5.2",
+      "variant": "medium",
     },
   },
   "categories": {
@@ -343,37 +343,37 @@ exports[`generateModelConfig fallback providers uses GitHub Copilot models when 
 {
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "data-dive": {
-      "model": "github-copilot/claude-sonnet-4.5",
-    },
-    "eye-ops": {
+    "advisor-plan": {
       "model": "github-copilot/gpt-5.2",
       "variant": "high",
     },
-    "eye-scan": {
+    "advisor-strategy": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
+    },
+    "analyzer-media": {
       "model": "github-copilot/gemini-3-flash",
     },
-    "grid-sync": {
+    "operator": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
+    },
+    "orchestrator": {
       "model": "github-copilot/claude-sonnet-4.5",
     },
-    "null-audit": {
-      "model": "github-copilot/gpt-5.2",
-      "variant": "medium",
+    "planner": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
     },
-    "scan-ops": {
+    "researcher-codebase": {
       "model": "github-copilot/gpt-5-mini",
     },
-    "void-runner": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
+    "researcher-data": {
+      "model": "github-copilot/claude-sonnet-4.5",
     },
-    "war-mind": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
-    },
-    "zen-planner": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
+    "validator-audit": {
+      "model": "github-copilot/gpt-5.2",
+      "variant": "medium",
     },
   },
   "categories": {
@@ -413,31 +413,31 @@ exports[`generateModelConfig fallback providers uses ZAI model for archiveResear
 {
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "data-dive": {
-      "model": "zai-coding-plan/glm-4.7",
-    },
-    "eye-ops": {
+    "advisor-plan": {
       "model": "opencode/glm-4.7-free",
     },
-    "eye-scan": {
+    "advisor-strategy": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "analyzer-media": {
       "model": "zai-coding-plan/glm-4.6v",
     },
-    "grid-sync": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "null-audit": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "scan-ops": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "void-runner": {
+    "operator": {
       "model": "zai-coding-plan/glm-4.7",
     },
-    "war-mind": {
+    "orchestrator": {
       "model": "opencode/glm-4.7-free",
     },
-    "zen-planner": {
+    "planner": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "researcher-codebase": {
+      "model": "opencode/gpt-5-nano",
+    },
+    "researcher-data": {
+      "model": "zai-coding-plan/glm-4.7",
+    },
+    "validator-audit": {
       "model": "opencode/glm-4.7-free",
     },
   },
@@ -474,37 +474,37 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
 {
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "data-dive": {
-      "model": "github-copilot/claude-sonnet-4.5",
-    },
-    "eye-ops": {
+    "advisor-plan": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "eye-scan": {
+    "advisor-strategy": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
+    },
+    "analyzer-media": {
       "model": "github-copilot/gemini-3-flash",
     },
-    "grid-sync": {
+    "operator": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
+    },
+    "orchestrator": {
       "model": "github-copilot/claude-sonnet-4.5",
     },
-    "null-audit": {
-      "model": "openai/gpt-5.2",
-      "variant": "medium",
+    "planner": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
     },
-    "scan-ops": {
+    "researcher-codebase": {
       "model": "github-copilot/gpt-5-mini",
     },
-    "void-runner": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
+    "researcher-data": {
+      "model": "github-copilot/claude-sonnet-4.5",
     },
-    "war-mind": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
-    },
-    "zen-planner": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
+    "validator-audit": {
+      "model": "openai/gpt-5.2",
+      "variant": "medium",
     },
   },
   "categories": {
@@ -544,36 +544,36 @@ exports[`generateModelConfig mixed provider scenarios uses ZAI combination (arch
 {
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "data-dive": {
-      "model": "zai-coding-plan/glm-4.7",
-    },
-    "eye-ops": {
+    "advisor-plan": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "eye-scan": {
+    "advisor-strategy": {
+      "model": "openai/gpt-5.2",
+      "variant": "high",
+    },
+    "analyzer-media": {
       "model": "openai/gpt-5.2",
     },
-    "grid-sync": {
+    "operator": {
+      "model": "zai-coding-plan/glm-4.7",
+    },
+    "orchestrator": {
       "model": "openai/gpt-5.2",
     },
-    "null-audit": {
+    "planner": {
       "model": "openai/gpt-5.2",
-      "variant": "medium",
+      "variant": "high",
     },
-    "scan-ops": {
+    "researcher-codebase": {
       "model": "opencode/gpt-5-nano",
     },
-    "void-runner": {
+    "researcher-data": {
       "model": "zai-coding-plan/glm-4.7",
     },
-    "war-mind": {
+    "validator-audit": {
       "model": "openai/gpt-5.2",
-      "variant": "high",
-    },
-    "zen-planner": {
-      "model": "openai/gpt-5.2",
-      "variant": "high",
+      "variant": "medium",
     },
   },
   "categories": {
@@ -613,37 +613,37 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
 {
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "data-dive": {
-      "model": "zai-coding-plan/glm-4.7",
-    },
-    "eye-ops": {
+    "advisor-plan": {
       "model": "github-copilot/gpt-5.2",
       "variant": "high",
     },
-    "eye-scan": {
+    "advisor-strategy": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
+    },
+    "analyzer-media": {
       "model": "github-copilot/gemini-3-flash",
     },
-    "grid-sync": {
+    "operator": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
+    },
+    "orchestrator": {
       "model": "opencode/kimi-k2.5-free",
     },
-    "null-audit": {
-      "model": "github-copilot/gpt-5.2",
-      "variant": "medium",
+    "planner": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
     },
-    "scan-ops": {
+    "researcher-codebase": {
       "model": "opencode/claude-haiku-4-5",
     },
-    "void-runner": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
+    "researcher-data": {
+      "model": "zai-coding-plan/glm-4.7",
     },
-    "war-mind": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
-    },
-    "zen-planner": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
+    "validator-audit": {
+      "model": "github-copilot/gpt-5.2",
+      "variant": "medium",
     },
   },
   "categories": {
@@ -683,37 +683,37 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
 {
   "$schema": "https://raw.githubusercontent.com/pontistudios/ghostwire/master/assets/ghostwire.schema.json",
   "agents": {
-    "data-dive": {
-      "model": "zai-coding-plan/glm-4.7",
-    },
-    "eye-ops": {
+    "advisor-plan": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "eye-scan": {
+    "advisor-strategy": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
+    },
+    "analyzer-media": {
       "model": "google/gemini-3-flash",
     },
-    "grid-sync": {
+    "operator": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
+    },
+    "orchestrator": {
       "model": "opencode/kimi-k2.5-free",
     },
-    "null-audit": {
-      "model": "openai/gpt-5.2",
-      "variant": "medium",
+    "planner": {
+      "model": "github-copilot/claude-opus-4.5",
+      "variant": "max",
     },
-    "scan-ops": {
+    "researcher-codebase": {
       "model": "opencode/claude-haiku-4-5",
     },
-    "void-runner": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
+    "researcher-data": {
+      "model": "zai-coding-plan/glm-4.7",
     },
-    "war-mind": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
-    },
-    "zen-planner": {
-      "model": "github-copilot/claude-opus-4.5",
-      "variant": "max",
+    "validator-audit": {
+      "model": "openai/gpt-5.2",
+      "variant": "medium",
     },
   },
   "categories": {

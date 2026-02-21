@@ -66,7 +66,7 @@ describe("includesCaseInsensitive", () => {
 
   test("returns true for case-insensitive match", () => {
     // #given - array with lowercase values
-    const arr = ["researcher-codebase", "researcher-data"];
+    const arr = ["scan-ops", "researcher-data"];
 
     // #when - check uppercase value
     const result = includesCaseInsensitive(arr, "SCAN-OPS");

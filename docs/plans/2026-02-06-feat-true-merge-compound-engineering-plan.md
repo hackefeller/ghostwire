@@ -93,7 +93,7 @@ const agentSources: Record<BuiltinAgentName, AgentSource> = {
 // src/features/builtin-commands/compound/commands.ts
 const COMPOUND_COMMAND_DEFINITIONS: Record<string, Omit<CommandDefinition, "name">> = {
   "grid:workflows:plan": {
-    description: "(compound) Create implementation plans",
+    description: "Create implementation plans",
     template: `<command-instruction>
 You are a master planning agent. Create comprehensive implementation plans.
 ${TEMPLATE}

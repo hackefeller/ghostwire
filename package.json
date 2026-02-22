@@ -29,6 +29,7 @@
     "dev": "bun run script/ensure-plugin-wrapper.ts && bun run script/build-agents-manifest.ts && bun build src/index.ts --watch --outdir dist --target=bun --format=esm --external=@ast-grep/napi",
     "dev:full": "bun run build",
     "sync": "bun run build && cp dist/index.js ~/.config/opencode/plugins/ghostwire.mjs",
+    "sync:docs": "bun run script/sync-docs.ts",
     "postinstall": "node postinstall.mjs",
     "prepublishOnly": "bun run clean && bun run build",
     "check:topology": "bun run script/check-topology.ts",

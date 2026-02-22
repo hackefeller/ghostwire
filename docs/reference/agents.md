@@ -1,12 +1,10 @@
 # Agents
 
-**For the complete, authoritative list of all 31 agents, refer to [`docs/agents.yml`](../agents.yml).**
-
-This file has been superseded by the canonical YAML metadata. All agent information is now maintained in a single source of truth to prevent drift and ensure accuracy.
+**List of agents: [`docs/agents.yml`](../agents.yml).**
 
 ## Quick Reference
 
-Ghostwire provides 31 specialized AI agents organized in 6 phases:
+Ghostwire provides specialized AI agents organized in 6 phases:
 
 - **Phase 1 (Orchestration)**: operator, orchestrator, planner, executor
 - **Phase 2 (Code Review)**: reviewer-rails, reviewer-python, reviewer-typescript, reviewer-rails-dh, reviewer-simplicity

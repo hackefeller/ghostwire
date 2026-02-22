@@ -74,7 +74,7 @@ import { WORKFLOWS_PLAN_TEMPLATE as WORKFLOWS_PLAN_V2_TEMPLATE } from "./templat
 import { WORKFLOWS_REVIEW_TEMPLATE } from "./templates/workflows/review";
 import { WORKFLOWS_WORK_TEMPLATE } from "./templates/workflows/work";
 
-const BUILTIN_COMMAND_DEFINITIONS: Record<
+export const BUILTIN_COMMAND_DEFINITIONS: Record<
   BuiltinCommandName,
   Omit<CommandDefinition, "name">
 > = {
@@ -470,7 +470,8 @@ $ARGUMENTS
     argumentHint: "[skill-name] [--description=...]",
   },
   "ghostwire:deepen-plan": {
-    description: "Enhance implementation plans with deeper research and analysis",
+    description:
+      "Enhance implementation plans with deeper research and analysis",
     template: `<command-instruction>
 ${DEEPEN_PLAN_TEMPLATE}
 </command-instruction>
@@ -669,7 +670,8 @@ $ARGUMENTS
   },
   // Plugin workflow commands
   "ghostwire:workflows:brainstorm": {
-    description: "Scout Recon requirements and approaches through collaborative dialogue",
+    description:
+      "Scout Recon requirements and approaches through collaborative dialogue",
     template: `<command-instruction>
 ${WORKFLOWS_BRAINSTORM_TEMPLATE}
 </command-instruction>

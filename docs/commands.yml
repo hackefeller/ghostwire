@@ -1,192 +1,180 @@
 version: 1
-source: src/execution/features/builtin-commands/types.ts
-description: Canonical command metadata for Ghostwire. This file captures every built-in slash command exposed by the Ghostwire CLI so documentation can reference a single list of names, descriptions, and categories.
-
+source: src/execution/features/builtin-commands/commands.ts
+description: Canonical command metadata for Ghostwire, synchronized from source code.
 metadata:
-  generated: "2026-02-23"
-  commit: ""
-  branch: "dev"
+  generated: '2026-02-22'
   notes:
-    - Categories match the logical groupings used in docs (core, workflow, code, git, project, utility, docs, planning/support)
-    - Command descriptions are brief summaries of each slash command’s behavior
-    - Keep this file in sync with src/execution/features/builtin-commands/commands.ts and docs/AGENTS-COMMANDS-SKILLS.md
-
+    - Categories derived from command namespace
+    - Keep in sync with docs/AGENTS-COMMANDS-SKILLS.md
 commands:
   - name: ghostwire:init-deep
-    description: Initialize ghostwire knowledge and AGENTS.md structure.
-    category: core
+    description: (builtin) Initialize hierarchical AGENTS.md knowledge base
+    category: init-deep
   - name: ghostwire:overclock-loop
-    description: Start a recursive work loop that enforces completion obligations.
-    category: core
-  - name: ghostwire:cancel-overclock
-    description: Cancel any running Ralph Loop or overclock workflow.
-    category: core
+    description: (builtin) Start self-referential development loop until completion
+    category: overclock-loop
   - name: ghostwire:ulw-overclock
-    description: Engage ultra-work mode with relentless execution until success.
-    category: core
+    description: (builtin) Start ultrawork loop - continues until completion with ultrawork mode
+    category: ulw-overclock
+  - name: ghostwire:cancel-overclock
+    description: (builtin) Cancel active Ralph Loop
+    category: cancel-overclock
   - name: ghostwire:refactor
-    description: Refactor code with architecture-aware guidance, TDD, and AST analysis.
-    category: core
+    description: (builtin) Intelligent refactoring command with LSP, AST-grep, architecture analysis, codemap, and TDD verification.
+    category: refactor
   - name: ghostwire:jack-in-work
-    description: Jump into work mode using the current planner plan.
-    category: core
+    description: (builtin) Start operator work session from planner plan
+    category: jack-in-work
   - name: ghostwire:stop-continuation
-    description: Stop any continuation helpers (Ralph Loop, boulder, todos) for the session.
-    category: core
-
+    description: (builtin) Stop all continuation mechanisms (ralph loop, todo continuation, boulder) for this session
+    category: stop-continuation
   - name: ghostwire:workflows:plan
-    description: Convert a feature description into an implementation plan.
-    category: workflow
+    description: Transform feature descriptions into implementation plans
+    category: workflows
   - name: ghostwire:workflows:create
-    description: Execute a plan by breaking it into coordinated tasks.
-    category: workflow
+    description: Execute plan by breaking into tasks and coordinating implementation
+    category: workflows
   - name: ghostwire:workflows:status
-    description: Read the status of a workflow or plan.
-    category: workflow
+    description: Check status of in-progress workflow or plan
+    category: workflows
   - name: ghostwire:workflows:complete
-    description: Finalize and archive a completed workflow.
-    category: workflow
-  - name: workflows:brainstorm
-    description: Brainstorming workflow that scouts requirements and ideas.
-    category: workflow
-  - name: workflows:compound
-    description: Compound knowledge by documenting solved problems and learnings.
-    category: workflow
-  - name: workflows:plan
-    description: Planning workflow for structured planning conversations.
-    category: workflow
-  - name: workflows:review
-    description: High-fidelity review workflow using multiple agents.
-    category: workflow
-  - name: workflows:work
-    description: Execute work plans while keeping quality checks active.
-    category: workflow
-
+    description: Finalize and archive completed workflow
+    category: workflows
   - name: ghostwire:code:refactor
-    description: Refactor code with Claude/AST support and codemap guidance.
+    description: Systematically refactor code while maintaining functionality
     category: code
   - name: ghostwire:code:review
-    description: Perform expert code reviews on the active change.
+    description: Conduct comprehensive code reviews with specialist agents
     category: code
   - name: ghostwire:code:optimize
-    description: Optimize code for performance, readability, and standards.
+    description: Improve performance, reduce bundle size, or enhance efficiency
     category: code
   - name: ghostwire:code:format
-    description: Format code according to repository conventions.
+    description: Apply consistent formatting and style standards
     category: code
-
   - name: ghostwire:git:smart-commit
-    description: Create commits with generated context and messaging.
+    description: Generate well-structured commits following conventions
     category: git
   - name: ghostwire:git:branch
-    description: Manage Git branches with guidance and best practices.
+    description: Create and manage feature branches with naming conventions
     category: git
   - name: ghostwire:git:merge
-    description: Assist with merges and conflict resolution.
+    description: Merge branches safely with conflict resolution
     category: git
   - name: ghostwire:git:cleanup
-    description: Cleanup stale branches and clutter from the repo.
+    description: Remove stale branches and optimize repository
     category: git
-
   - name: ghostwire:project:init
-    description: Initialize a Ghostwire project scaffold.
+    description: Initialize new project with structure and tooling
     category: project
   - name: ghostwire:project:build
-    description: Build the project for the current platform.
+    description: Compile, transpile, and bundle project code
     category: project
   - name: ghostwire:project:deploy
-    description: Deploy application or documentation artifacts.
+    description: Deploy project to specified environment
     category: project
   - name: ghostwire:project:test
-    description: Run the test suite for the project.
+    description: Run test suites and measure code coverage
     category: project
-
   - name: ghostwire:util:clean
-    description: Clean project artifacts and temporary files.
-    category: utility
+    description: Remove build artifacts and temporary files
+    category: util
   - name: ghostwire:util:backup
-    description: Back up important files or repo state.
-    category: utility
+    description: Create backups of project state and files
+    category: util
   - name: ghostwire:util:restore
-    description: Restore data from a previous backup snapshot.
-    category: utility
+    description: Restore project from backup
+    category: util
   - name: ghostwire:util:doctor
-    description: Run diagnostic tooling to surface issues.
-    category: utility
-
+    description: Diagnose project health and configuration
+    category: util
   - name: ghostwire:docs:deploy-docs
-    description: Publish documentation to the configured docs host.
+    description: Build and deploy documentation to hosting
     category: docs
   - name: ghostwire:docs:release-docs
-    description: Create and release versioned documentation.
+    description: Create versioned documentation release
     category: docs
   - name: ghostwire:docs:feature-video
-    description: Guide the creation of a feature demonstration video.
+    description: Create demonstration video for feature
     category: docs
   - name: ghostwire:docs:test-browser
-    description: Run browser testing on documentation or UI.
+    description: Test documentation in browser environment
     category: docs
-
-  - name: plan-review
-    description: Review implementation plans with multiple expert reviewers.
-    category: planning_support
-  - name: changelog
-    description: Curate a changelog entry for the latest work.
-    category: planning_support
-  - name: create-agent-skill
-    description: Scaffold a new Claude Code agent skill.
-    category: planning_support
-  - name: deepen-plan
-    description: Enhance plans with deeper research and analysis.
-    category: planning_support
-  - name: deploy-docs
-    description: Deploy documentation (GitHub Pages, etc.).
-    category: planning_support
-  - name: feature-video
-    description: Record walkthrough videos of highlighted features.
-    category: planning_support
-  - name: generate-command
-    description: Generate custom slash command scaffolds.
-    category: planning_support
-  - name: heal-skill
-    description: Repair or validate an existing agent skill.
-    category: planning_support
-  - name: lfg
-    description: Find collaborators for joint work sessions.
-    category: planning_support
-  - name: quiz-me
-    description: Run interactive quizzes for spaced repetition learning.
-    category: planning_support
-  - name: release-docs
-    description: Release docs tied to a specific version.
-    category: planning_support
-  - name: report-bug
-    description: Report a bug with structured context.
-    category: planning_support
-  - name: reproduce-bug
-    description: Reproduce a bug for investigation.
-    category: planning_support
-  - name: resolve-parallel
-    description: Resolve multiple items in parallel.
-    category: planning_support
-  - name: resolve-pr-parallel
-    description: Resolve multiple PRs in parallel.
-    category: planning_support
-  - name: resolve-todo-parallel
-    description: Resolve todos in parallel for faster closure.
-    category: planning_support
-  - name: sync-tutorials
-    description: Sync tutorials to a GitHub repository.
-    category: planning_support
-  - name: teach-me
-    description: Start a teaching session for a topic.
-    category: planning_support
-  - name: test-browser
-    description: Run targeted browser tests on PRs or branches.
-    category: planning_support
-  - name: triage
-    description: Triage findings into the CLI todo system.
-    category: planning_support
-  - name: xcode-test
-    description: Build/test iOS apps on the simulator via XcodeBuildMCP.
-    category: planning_support
+  - name: ghostwire:lint:ruby
+    description: Run linting and code quality checks on Ruby and ERB files
+    category: lint
+  - name: ghostwire:plan-review
+    description: Review implementation plans with multiple expert reviewers
+    category: plan-review
+  - name: ghostwire:changelog
+    description: Generate and maintain changelog entries
+    category: changelog
+  - name: ghostwire:create-agent-skill
+    description: Create a new Claude Code agent skill with scaffolding
+    category: create-agent-skill
+  - name: ghostwire:deepen-plan
+    description: Enhance implementation plans with deeper research and analysis
+    category: deepen-plan
+  - name: ghostwire:deploy-docs
+    description: Deploy documentation to GitHub Pages
+    category: deploy-docs
+  - name: ghostwire:feature-video
+    description: Create demonstration videos for new features
+    category: feature-video
+  - name: ghostwire:generate-command
+    description: Generate new slash commands with templates and structure
+    category: generate-command
+  - name: ghostwire:heal-skill
+    description: Fix and validate existing agent skills
+    category: heal-skill
+  - name: ghostwire:lfg
+    description: Start a learning for growth session
+    category: lfg
+  - name: ghostwire:quiz-me
+    description: Test your knowledge with interactive quizzes
+    category: quiz-me
+  - name: ghostwire:release-docs
+    description: Create versioned documentation release
+    category: release-docs
+  - name: ghostwire:report-bug
+    description: Report a bug with detailed information and context
+    category: report-bug
+  - name: ghostwire:reproduce-bug
+    description: Reproduce and analyze a reported bug
+    category: reproduce-bug
+  - name: ghostwire:resolve-parallel
+    description: Resolve multiple GitHub issues in parallel
+    category: resolve-parallel
+  - name: ghostwire:resolve-pr-parallel
+    description: Review and resolve multiple pull requests in parallel
+    category: resolve-pr-parallel
+  - name: ghostwire:resolve-todo-parallel
+    description: Resolve all pending CLI todos using parallel processing
+    category: resolve-todo-parallel
+  - name: ghostwire:sync-tutorials
+    description: Sync coding tutorials to GitHub repository
+    category: sync-tutorials
+  - name: ghostwire:teach-me
+    description: Start a teaching and learning session
+    category: teach-me
+  - name: ghostwire:test-browser
+    description: Run browser tests on pages affected by current PR or branch
+    category: test-browser
+  - name: ghostwire:triage
+    description: Triage and categorize findings for the CLI todo system
+    category: triage
+  - name: ghostwire:xcode-test
+    description: Build and test iOS apps on simulator using XcodeBuildMCP
+    category: xcode-test
+  - name: ghostwire:workflows:brainstorm
+    description: Scout Recon requirements and approaches through collaborative dialogue
+    category: workflows
+  - name: ghostwire:workflows:compound
+    description: Document a recently solved problem to compound knowledge
+    category: workflows
+  - name: ghostwire:workflows:review
+    description: Perform exhaustive code reviews using multi-agent analysis
+    category: workflows
+  - name: ghostwire:workflows:work
+    description: Execute work plans efficiently while maintaining quality
+    category: workflows

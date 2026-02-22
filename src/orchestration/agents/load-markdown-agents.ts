@@ -1,10 +1,7 @@
 import { readFileSync, readdirSync, existsSync } from "fs";
 import path from "path";
 import { parseFrontmatter } from "../../integration/shared/frontmatter";
-import {
-  safeValidateAgentMetadata,
-  AgentMetadata,
-} from "./agent-schema";
+import { safeValidateAgentMetadata, AgentMetadata } from "./agent-schema";
 import { BUILTIN_AGENTS_MANIFEST } from "../../execution/features/builtin-agents-manifest";
 
 /**
@@ -30,9 +27,7 @@ export async function loadAgentsFromManifest(): Promise<LoadedAgent[]> {
     return BUILTIN_AGENTS_MANIFEST.slice(); // Convert readonly to mutable array
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    throw new Error(
-      `Cannot load agents manifest: ${errorMsg}`
-    );
+    throw new Error(`Cannot load agents manifest: ${errorMsg}`);
   }
 }
 
@@ -50,21 +45,35 @@ export async function loadAgentsFromManifest(): Promise<LoadedAgent[]> {
 export async function loadMarkdownAgents(
   agentsDir?: string,
 ): Promise<LoadedAgent[]> {
-  // Always try to load from manifest first (embedded, location-independent)
-  // This is the preferred method as it doesn't depend on filesystem paths
+  // If directory provided and exists, load from filesystem (used during build/dev)
+  if (agentsDir && existsSync(agentsDir)) {
+    const files = readdirSync(agentsDir).filter((file) => file.endsWith(".md"));
+    const agents: LoadedAgent[] = [];
+    const ids = new Set<string>();
+
+    for (const file of files) {
+      const agent = loadAgentFromFile(path.join(agentsDir, file));
+      if (ids.has(agent.id)) {
+        throw new Error(`Duplicate agent ID found: ${agent.id}`);
+      }
+      ids.add(agent.id);
+      agents.push(agent);
+    }
+    return agents;
+  }
+
+  // Otherwise load from embedded manifest (preferred for production)
   try {
     return await loadAgentsFromManifest();
   } catch (manifestError) {
-    // If manifest loading fails, don't fall back to filesystem
-    // The manifest should always be available in production
-    const errorMsg = manifestError instanceof Error ? manifestError.message : String(manifestError);
+    const errorMsg =
+      manifestError instanceof Error
+        ? manifestError.message
+        : String(manifestError);
     throw new Error(
-      `Failed to load agents from embedded manifest (manifestError: ${errorMsg}). ${agentsDir ? `Directory was provided: ${agentsDir}` : "No directory provided"}`
+      `Failed to load agents from embedded manifest (manifestError: ${errorMsg}). ${agentsDir ? `Directory was provided: ${agentsDir}` : "No directory provided"}`,
     );
   }
-
-  // Should never reach here - manifest loading is now mandatory
-  return [];
 }
 
 /**
@@ -86,13 +95,13 @@ function loadAgentFromFile(filePath: string): LoadedAgent {
   }
 
   // Parse frontmatter and body
-    const parsed = parseFrontmatter<Record<string, unknown>>(content);
-    if (!parsed.hadFrontmatter) {
-      throw new Error("Markdown file is missing YAML frontmatter");
-    }
-    if (parsed.parseError) {
-      throw new Error("Invalid YAML in frontmatter");
-    }
+  const parsed = parseFrontmatter<Record<string, unknown>>(content);
+  if (!parsed.hadFrontmatter) {
+    throw new Error("Markdown file is missing YAML frontmatter");
+  }
+  if (parsed.parseError) {
+    throw new Error("Invalid YAML in frontmatter");
+  }
 
   const rawMetadata = parsed.data;
   const body = parsed.body;

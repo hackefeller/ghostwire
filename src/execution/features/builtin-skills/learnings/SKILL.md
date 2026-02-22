@@ -358,7 +358,7 @@ Action:
 
 **Invoked by:**
 
-- /compound command (primary interface)
+- /learnings command (primary interface)
 - Manual invocation in conversation after solution confirmed
 - Can be triggered by detecting confirmation phrases like "that worked", "it's fixed", etc.
 

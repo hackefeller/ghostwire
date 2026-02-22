@@ -45,7 +45,7 @@ import {
   DOCS_TEST_BROWSER_TEMPLATE,
 } from "./templates/docs";
 import { LINT_RUBY_TEMPLATE } from "./templates/lint-ruby";
-// Migrated plugin commands
+// Plugin command templates
 import { PLAN_REVIEW_TEMPLATE } from "./templates/plan-review";
 import { CHANGELOG_TEMPLATE } from "./templates/changelog";
 import { CREATE_AGENT_SKILL_TEMPLATE } from "./templates/create-agent-skill";
@@ -67,7 +67,7 @@ import { TEACH_ME_TEMPLATE } from "./templates/teach-me";
 import { TEST_BROWSER_TEMPLATE } from "./templates/test-browser";
 import { TRIAGE_TEMPLATE } from "./templates/triage";
 import { XCODE_TEST_TEMPLATE } from "./templates/xcode-test";
-// Migrated plugin workflow commands
+// Plugin workflow templates
 import { WORKFLOWS_BRAINSTORM_TEMPLATE } from "./templates/workflows/brainstorm";
 import { WORKFLOWS_COMPOUND_TEMPLATE } from "./templates/workflows/compound";
 import { WORKFLOWS_PLAN_TEMPLATE as WORKFLOWS_PLAN_V2_TEMPLATE } from "./templates/workflows/plan";
@@ -435,7 +435,7 @@ $ARGUMENTS
 </user-request>`,
     argumentHint: "[--fix] [--files=path1,path2]",
   },
-  // Migrated plugin commands (non-workflow)
+  // Plugin commands (non-workflow)
   "ghostwire:plan-review": {
     description: "Review implementation plans with multiple expert reviewers",
     template: `<command-instruction>
@@ -667,7 +667,7 @@ $ARGUMENTS
 </xcode-context>`,
     argumentHint: "[scheme name or 'current' to use default]",
   },
-  // Migrated plugin workflow commands
+  // Plugin workflow commands
   "ghostwire:workflows:brainstorm": {
     description: "Scout Recon requirements and approaches through collaborative dialogue",
     template: `<command-instruction>

@@ -225,3 +225,4 @@ notes:
   - Display names use consistent agent ID naming (no decorative aliases)
   - This file is the canonical source for agent identity
   - Keep synchronized with src/integration/shared/agent-display-names.ts
+  - Command and skill catalogs are stored in docs/commands.yml and docs/skills.yml

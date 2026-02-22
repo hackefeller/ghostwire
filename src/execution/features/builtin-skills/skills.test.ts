@@ -83,7 +83,7 @@ describe("createBuiltinSkills", () => {
     const agentBrowserSkills = createBuiltinSkills({ browserProvider: "agent-browser" });
 
     // #then
-    // 4 original skills + 15 migrated plugin skills = 19 total
+    // 4 core skills + 15 plugin skills = 19 total
     expect(defaultSkills).toHaveLength(19);
     expect(agentBrowserSkills).toHaveLength(19);
     // Verify browser skill is correctly selected based on provider

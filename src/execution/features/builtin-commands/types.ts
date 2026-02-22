@@ -33,7 +33,7 @@ export type BuiltinCommandName =
   | "ghostwire:docs:feature-video"
   | "ghostwire:docs:test-browser"
   | "ghostwire:lint:ruby"
-  // Migrated plugin commands (non-workflow)
+  // Plugin commands (non-workflow)
   | "ghostwire:plan-review"
   | "ghostwire:changelog"
   | "ghostwire:create-agent-skill"
@@ -55,7 +55,7 @@ export type BuiltinCommandName =
   | "ghostwire:test-browser"
   | "ghostwire:triage"
   | "ghostwire:xcode-test"
-  // Migrated plugin workflow commands
+  // Plugin workflow commands
   | "ghostwire:workflows:brainstorm"
   | "ghostwire:workflows:compound"
   | "ghostwire:workflows:review"

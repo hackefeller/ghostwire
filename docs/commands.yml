@@ -1,0 +1,192 @@
+version: 1
+source: src/execution/features/builtin-commands/types.ts
+description: Canonical command metadata for Ghostwire. This file captures every built-in slash command exposed by the Ghostwire CLI so documentation can reference a single list of names, descriptions, and categories.
+
+metadata:
+  generated: "2026-02-23"
+  commit: ""
+  branch: "dev"
+  notes:
+    - Categories match the logical groupings used in docs (core, workflow, code, git, project, utility, docs, planning/support)
+    - Command descriptions are brief summaries of each slash command’s behavior
+    - Keep this file in sync with src/execution/features/builtin-commands/commands.ts and docs/AGENTS-COMMANDS-SKILLS.md
+
+commands:
+  - name: ghostwire:init-deep
+    description: Initialize ghostwire knowledge and AGENTS.md structure.
+    category: core
+  - name: ghostwire:overclock-loop
+    description: Start a recursive work loop that enforces completion obligations.
+    category: core
+  - name: ghostwire:cancel-overclock
+    description: Cancel any running Ralph Loop or overclock workflow.
+    category: core
+  - name: ghostwire:ulw-overclock
+    description: Engage ultra-work mode with relentless execution until success.
+    category: core
+  - name: ghostwire:refactor
+    description: Refactor code with architecture-aware guidance, TDD, and AST analysis.
+    category: core
+  - name: ghostwire:jack-in-work
+    description: Jump into work mode using the current planner plan.
+    category: core
+  - name: ghostwire:stop-continuation
+    description: Stop any continuation helpers (Ralph Loop, boulder, todos) for the session.
+    category: core
+
+  - name: ghostwire:workflows:plan
+    description: Convert a feature description into an implementation plan.
+    category: workflow
+  - name: ghostwire:workflows:create
+    description: Execute a plan by breaking it into coordinated tasks.
+    category: workflow
+  - name: ghostwire:workflows:status
+    description: Read the status of a workflow or plan.
+    category: workflow
+  - name: ghostwire:workflows:complete
+    description: Finalize and archive a completed workflow.
+    category: workflow
+  - name: workflows:brainstorm
+    description: Brainstorming workflow that scouts requirements and ideas.
+    category: workflow
+  - name: workflows:compound
+    description: Compound knowledge by documenting solved problems and learnings.
+    category: workflow
+  - name: workflows:plan
+    description: Planning workflow for structured planning conversations.
+    category: workflow
+  - name: workflows:review
+    description: High-fidelity review workflow using multiple agents.
+    category: workflow
+  - name: workflows:work
+    description: Execute work plans while keeping quality checks active.
+    category: workflow
+
+  - name: ghostwire:code:refactor
+    description: Refactor code with Claude/AST support and codemap guidance.
+    category: code
+  - name: ghostwire:code:review
+    description: Perform expert code reviews on the active change.
+    category: code
+  - name: ghostwire:code:optimize
+    description: Optimize code for performance, readability, and standards.
+    category: code
+  - name: ghostwire:code:format
+    description: Format code according to repository conventions.
+    category: code
+
+  - name: ghostwire:git:smart-commit
+    description: Create commits with generated context and messaging.
+    category: git
+  - name: ghostwire:git:branch
+    description: Manage Git branches with guidance and best practices.
+    category: git
+  - name: ghostwire:git:merge
+    description: Assist with merges and conflict resolution.
+    category: git
+  - name: ghostwire:git:cleanup
+    description: Cleanup stale branches and clutter from the repo.
+    category: git
+
+  - name: ghostwire:project:init
+    description: Initialize a Ghostwire project scaffold.
+    category: project
+  - name: ghostwire:project:build
+    description: Build the project for the current platform.
+    category: project
+  - name: ghostwire:project:deploy
+    description: Deploy application or documentation artifacts.
+    category: project
+  - name: ghostwire:project:test
+    description: Run the test suite for the project.
+    category: project
+
+  - name: ghostwire:util:clean
+    description: Clean project artifacts and temporary files.
+    category: utility
+  - name: ghostwire:util:backup
+    description: Back up important files or repo state.
+    category: utility
+  - name: ghostwire:util:restore
+    description: Restore data from a previous backup snapshot.
+    category: utility
+  - name: ghostwire:util:doctor
+    description: Run diagnostic tooling to surface issues.
+    category: utility
+
+  - name: ghostwire:docs:deploy-docs
+    description: Publish documentation to the configured docs host.
+    category: docs
+  - name: ghostwire:docs:release-docs
+    description: Create and release versioned documentation.
+    category: docs
+  - name: ghostwire:docs:feature-video
+    description: Guide the creation of a feature demonstration video.
+    category: docs
+  - name: ghostwire:docs:test-browser
+    description: Run browser testing on documentation or UI.
+    category: docs
+
+  - name: plan-review
+    description: Review implementation plans with multiple expert reviewers.
+    category: planning_support
+  - name: changelog
+    description: Curate a changelog entry for the latest work.
+    category: planning_support
+  - name: create-agent-skill
+    description: Scaffold a new Claude Code agent skill.
+    category: planning_support
+  - name: deepen-plan
+    description: Enhance plans with deeper research and analysis.
+    category: planning_support
+  - name: deploy-docs
+    description: Deploy documentation (GitHub Pages, etc.).
+    category: planning_support
+  - name: feature-video
+    description: Record walkthrough videos of highlighted features.
+    category: planning_support
+  - name: generate-command
+    description: Generate custom slash command scaffolds.
+    category: planning_support
+  - name: heal-skill
+    description: Repair or validate an existing agent skill.
+    category: planning_support
+  - name: lfg
+    description: Find collaborators for joint work sessions.
+    category: planning_support
+  - name: quiz-me
+    description: Run interactive quizzes for spaced repetition learning.
+    category: planning_support
+  - name: release-docs
+    description: Release docs tied to a specific version.
+    category: planning_support
+  - name: report-bug
+    description: Report a bug with structured context.
+    category: planning_support
+  - name: reproduce-bug
+    description: Reproduce a bug for investigation.
+    category: planning_support
+  - name: resolve-parallel
+    description: Resolve multiple items in parallel.
+    category: planning_support
+  - name: resolve-pr-parallel
+    description: Resolve multiple PRs in parallel.
+    category: planning_support
+  - name: resolve-todo-parallel
+    description: Resolve todos in parallel for faster closure.
+    category: planning_support
+  - name: sync-tutorials
+    description: Sync tutorials to a GitHub repository.
+    category: planning_support
+  - name: teach-me
+    description: Start a teaching session for a topic.
+    category: planning_support
+  - name: test-browser
+    description: Run targeted browser tests on PRs or branches.
+    category: planning_support
+  - name: triage
+    description: Triage findings into the CLI todo system.
+    category: planning_support
+  - name: xcode-test
+    description: Build/test iOS apps on the simulator via XcodeBuildMCP.
+    category: planning_support

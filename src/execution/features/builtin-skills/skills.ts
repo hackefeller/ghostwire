@@ -39,7 +39,7 @@ function loadSkillFromDir(dirName: string): BuiltinSkill | null {
   }
 }
 
-function loadMigratedSkills(): BuiltinSkill[] {
+function loadSkillDirectories(): BuiltinSkill[] {
   const skillDirs = [
     "andrew-kane-gem-writer",
     "brainstorming",
@@ -385,7 +385,8 @@ Install: \`bun add -g agent-browser && agent-browser install\`. Run \`agent-brow
 
 const frontendUiUxSkill: BuiltinSkill = {
   name: "frontend-ui-ux",
-  description: "Designer-turned-developer who crafts stunning UI/UX even without design mockups",
+  description:
+    "Designer-turned-developer who crafts stunning UI/UX even without design mockups",
   template: `# Role: Designer-Turned-Developer
 
 You are a designer who learned to code. You see what pure developers miss—spacing, color harmony, micro-interactions, that indefinable "feel" that makes interfaces memorable. Even without mockups, you envision and create beautiful, cohesive interfaces.
@@ -469,7 +470,7 @@ const gitMasterSkill: BuiltinSkill = {
 
 You are a Git expert combining three specializations:
 1. **Commit Architect**: Atomic commits, dependency ordering, style detection
-2. **Rebase Surgeon**: History rewriting, conflict resolution, branch cleanup  
+2. **Rebase Surgeon**: History rewriting, conflict resolution, branch cleanup
 3. **History Archaeologist**: Finding when/where specific changes were introduced
 
 ---
@@ -543,7 +544,7 @@ git status
 git diff --staged --stat
 git diff --stat
 
-# Group 2: History context  
+# Group 2: History context
 git log -30 --oneline
 git log -30 --pretty=format:"%s"
 
@@ -579,7 +580,7 @@ Count from git log -30:
 
 DECISION:
 - If Korean >= 50% -> KOREAN
-- If English >= 50% -> ENGLISH  
+- If English >= 50% -> ENGLISH
 - If Mixed -> Use MAJORITY language
 \`\`\`
 
@@ -599,7 +600,7 @@ plain_count = non-semantic commits with >3 words
 short_count = commits with <=3 words
 
 IF semantic_count >= 15 (50%): STYLE = SEMANTIC
-ELSE IF plain_count >= 15: STYLE = PLAIN  
+ELSE IF plain_count >= 15: STYLE = PLAIN
 ELSE IF short_count >= 10: STYLE = SHORT
 ELSE: STYLE = PLAIN (safe default)
 \`\`\`
@@ -646,7 +647,7 @@ BRANCH_STATE:
   has_upstream: true | false
   commits_ahead: N  # Local-only commits
   merge_base: <hash>
-  
+
 REWRITE_SAFETY:
   - If has_upstream AND commits_ahead > 0 AND already pushed:
     -> WARN before force push
@@ -672,7 +673,7 @@ ELSE IF all commits are local (not pushed):
   -> Fixup freely, reset if needed, rebase to clean
 
 ELSE IF pushed but not merged:
-  -> STRATEGY = CAREFUL_REWRITE  
+  -> STRATEGY = CAREFUL_REWRITE
   -> Fixup OK but warn about force push
 \`\`\`
 </branch_analysis>
@@ -776,7 +777,7 @@ FOR EACH planned commit with 3+ files:
   1. List all files in this commit
   2. Write ONE sentence explaining why they MUST be together
   3. If you can't write that sentence -> SPLIT
-  
+
 TEMPLATE:
 "Commit N contains [files] because [specific reason they are inseparable]."
 
@@ -784,7 +785,7 @@ VALID reasons:
   VALID: "implementation file + its direct test file"
   VALID: "type definition + the only file that uses it"
   VALID: "migration + model change (would break without both)"
-  
+
 INVALID reasons (MUST SPLIT instead):
   INVALID: "all related to feature X" (too vague)
   INVALID: "part of the same PR" (not a reason)
@@ -889,13 +890,13 @@ CONSIDER RESET & REBUILD when:
   - History is messy (many small fixups already)
   - Commits are not atomic (mixed concerns)
   - Dependency order is wrong
-  
+
 RESET WORKFLOW:
   1. git reset --soft $(git merge-base HEAD main)
   2. All changes now staged
   3. Re-commit in proper atomic units
   4. Clean history from scratch
-  
+
 ONLY IF:
   - All commits are local (not pushed)
   - User explicitly allows OR branch is clearly WIP
@@ -971,16 +972,16 @@ git log -1 --oneline
 \`\`\`
 IF style == SEMANTIC AND language == KOREAN:
   -> "feat: 로그인 기능 추가"
-  
+
 IF style == SEMANTIC AND language == ENGLISH:
   -> "feat: add login feature"
-  
+
 IF style == PLAIN AND language == KOREAN:
   -> "로그인 기능 추가"
-  
+
 IF style == PLAIN AND language == ENGLISH:
   -> "Add login feature"
-  
+
 IF style == SHORT:
   -> "format" / "type fix" / "lint"
 \`\`\`
@@ -1018,7 +1019,7 @@ git log --oneline $(git merge-base HEAD main 2>/dev/null || git merge-base HEAD 
 IF fixup was used AND branch has upstream:
   -> Requires: git push --force-with-lease
   -> WARN user about force push implications
-  
+
 IF only new commits:
   -> Regular: git push
 \`\`\`
@@ -1030,7 +1031,7 @@ COMMIT SUMMARY:
   Strategy: <what was done>
   Commits created: N
   Fixups merged: M
-  
+
 HISTORY:
   <hash1> <message1>
   <hash2> <message2>
@@ -1290,7 +1291,7 @@ REBASE SUMMARY:
   Commits before: N
   Commits after: M
   Conflicts resolved: K
-  
+
 HISTORY (after rebase):
   <hash1> <message1>
   <hash2> <message2>
@@ -1512,7 +1513,7 @@ DETAILS:
   Author: John Doe <john@example.com>
   Date: 2024-06-15
   Files changed: 3
-  
+
 DIFF EXCERPT (if applicable):
   + def calculate_discount(price, rate):
   +     return price * (1 - rate)
@@ -1791,11 +1792,20 @@ export interface CreateBuiltinSkillsOptions {
   browserProvider?: BrowserAutomationProvider;
 }
 
-export function createBuiltinSkills(options: CreateBuiltinSkillsOptions = {}): BuiltinSkill[] {
+export function createBuiltinSkills(
+  options: CreateBuiltinSkillsOptions = {},
+): BuiltinSkill[] {
   const { browserProvider = "playwright" } = options;
 
-  const browserSkill = browserProvider === "agent-browser" ? agentBrowserSkill : playwrightSkill;
-  const migratedSkills = loadMigratedSkills();
+  const browserSkill =
+    browserProvider === "agent-browser" ? agentBrowserSkill : playwrightSkill;
+  const builtinSkills = loadSkillDirectories();
 
-  return [browserSkill, frontendUiUxSkill, gitMasterSkill, devBrowserSkill, ...migratedSkills];
+  return [
+    browserSkill,
+    frontendUiUxSkill,
+    gitMasterSkill,
+    devBrowserSkill,
+    ...builtinSkills,
+  ];
 }

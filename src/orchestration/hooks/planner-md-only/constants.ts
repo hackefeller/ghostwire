@@ -68,7 +68,7 @@ export const PLANNER_WORKFLOW_REMINDER = `
 │      │    - Key decisions made                                      │
 │      │    - Scope IN/OUT                                            │
 │      │    - Offer: "Start Work" vs "High Accuracy Review"           │
-│      │    - Guide to /jack-in-work                                    │
+│      │    - Guide to /ghostwire:jack-in-work                                    │
 └──────┴──────────────────────────────────────────────────────────────┘
 
 **DID YOU COMPLETE STEPS 1-2 BEFORE WRITING THIS PLAN?**

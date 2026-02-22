@@ -326,13 +326,13 @@ See the full [Configuration Documentation](docs/configurations.md) for detailed 
 
 **Curious about the philosophy behind this project?** Read the [Ultrawork Manifesto](docs/ultrawork-manifesto.md).
 
-Install Oh My OpenCode.
+Install Ghostwire.
 
 I've used LLMs worth $24,000 tokens purely for personal development.
 Tried every tool out there, configured them to death. OpenCode won.
 
 The answers to every problem I hit are baked into this plugin. Just install and go.
-If OpenCode is Debian/Arch, Oh My OpenCode is Ubuntu/[Omarchy](https://omarchy.org/).
+If OpenCode is Debian/Arch, `ghostwire` is Ubuntu/[Omarchy](https://omarchy.org/).
 
 
 Heavily influenced by [AmpCode](https://ampcode.com) and [Claude Code](https://code.claude.com/docs/overview)—I've ported their features here, often improved. And I'm still building.

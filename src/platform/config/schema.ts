@@ -201,8 +201,13 @@ export const HookNameSchema = z.enum([
 ]);
 
 export const BuiltinCommandNameSchema = z.enum([
-  "init-deep",
-  "jack-in-work",
+  "ghostwire:init-deep",
+  "ghostwire:jack-in-work",
+  "ghostwire:overclock-loop",
+  "ghostwire:cancel-overclock",
+  "ghostwire:ulw-overclock",
+  "ghostwire:refactor",
+  "ghostwire:stop-continuation",
   // Ghostwire workflows commands
   "ghostwire:workflows:plan",
   "ghostwire:workflows:create",
@@ -233,6 +238,34 @@ export const BuiltinCommandNameSchema = z.enum([
   "ghostwire:docs:release-docs",
   "ghostwire:docs:feature-video",
   "ghostwire:docs:test-browser",
+  "ghostwire:lint:ruby",
+  // Migrated plugin commands (non-workflow)
+  "ghostwire:plan-review",
+  "ghostwire:changelog",
+  "ghostwire:create-agent-skill",
+  "ghostwire:deepen-plan",
+  "ghostwire:deploy-docs",
+  "ghostwire:feature-video",
+  "ghostwire:generate-command",
+  "ghostwire:heal-skill",
+  "ghostwire:lfg",
+  "ghostwire:quiz-me",
+  "ghostwire:release-docs",
+  "ghostwire:report-bug",
+  "ghostwire:reproduce-bug",
+  "ghostwire:resolve-parallel",
+  "ghostwire:resolve-pr-parallel",
+  "ghostwire:resolve-todo-parallel",
+  "ghostwire:sync-tutorials",
+  "ghostwire:teach-me",
+  "ghostwire:test-browser",
+  "ghostwire:triage",
+  "ghostwire:xcode-test",
+  // Migrated plugin workflow commands
+  "ghostwire:workflows:brainstorm",
+  "ghostwire:workflows:compound",
+  "ghostwire:workflows:review",
+  "ghostwire:workflows:work",
 ]);
 
 export const AgentOverrideConfigSchema = z.object({

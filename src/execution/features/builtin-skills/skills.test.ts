@@ -75,7 +75,7 @@ describe("createBuiltinSkills", () => {
     }
   });
 
-  test("returns exactly 4 skills regardless of provider", () => {
+  test("returns expected number of skills regardless of provider", () => {
     // #given
 
     // #when
@@ -83,7 +83,11 @@ describe("createBuiltinSkills", () => {
     const agentBrowserSkills = createBuiltinSkills({ browserProvider: "agent-browser" });
 
     // #then
-    expect(defaultSkills).toHaveLength(4);
-    expect(agentBrowserSkills).toHaveLength(4);
+    // 4 original skills + 15 migrated plugin skills = 19 total
+    expect(defaultSkills).toHaveLength(19);
+    expect(agentBrowserSkills).toHaveLength(19);
+    // Verify browser skill is correctly selected based on provider
+    expect(defaultSkills[0].name).toBe("playwright");
+    expect(agentBrowserSkills[0].name).toBe("agent-browser");
   });
 });

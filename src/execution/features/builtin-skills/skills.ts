@@ -1,5 +1,74 @@
 import type { BuiltinSkill } from "./types";
 import type { BrowserAutomationProvider } from "../../../platform/config/schema";
+import { parseFrontmatter } from "../../../integration/shared/frontmatter";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+interface SkillFrontmatter {
+  name: string;
+  description: string;
+}
+
+function loadSkillFromDir(dirName: string): BuiltinSkill | null {
+  const skillDir = join(__dirname, dirName);
+  const skillMdPath = join(skillDir, "SKILL.md");
+
+  if (!existsSync(skillMdPath)) {
+    return null;
+  }
+
+  try {
+    const content = readFileSync(skillMdPath, "utf-8");
+    const { data, body } = parseFrontmatter<SkillFrontmatter>(content);
+
+    const frontmatter = data ?? {};
+    const skillName = frontmatter.name || dirName;
+    const description = frontmatter.description || "";
+
+    return {
+      name: skillName,
+      description: description,
+      template: body.trim(),
+    };
+  } catch (error) {
+    console.error(`Failed to load skill from ${dirName}:`, error);
+    return null;
+  }
+}
+
+function loadMigratedSkills(): BuiltinSkill[] {
+  const skillDirs = [
+    "andrew-kane-gem-writer",
+    "brainstorming",
+    "coding-tutor",
+    "compound-docs",
+    "create-agent-skills",
+    "dhh-rails-style",
+    "dspy-ruby",
+    "every-style-editor",
+    "file-todos",
+    "frontend-design",
+    "gemini-imagegen",
+    "git-worktree",
+    "ralph-loop",
+    "rclone",
+    "skill-creator",
+  ];
+
+  const skills: BuiltinSkill[] = [];
+
+  for (const dir of skillDirs) {
+    const skill = loadSkillFromDir(dir);
+    if (skill) {
+      skills.push(skill);
+    }
+  }
+
+  return skills;
+}
 
 const playwrightSkill: BuiltinSkill = {
   name: "playwright",
@@ -1726,6 +1795,7 @@ export function createBuiltinSkills(options: CreateBuiltinSkillsOptions = {}): B
   const { browserProvider = "playwright" } = options;
 
   const browserSkill = browserProvider === "agent-browser" ? agentBrowserSkill : playwrightSkill;
+  const migratedSkills = loadMigratedSkills();
 
-  return [browserSkill, frontendUiUxSkill, gitMasterSkill, devBrowserSkill];
+  return [browserSkill, frontendUiUxSkill, gitMasterSkill, devBrowserSkill, ...migratedSkills];
 }

@@ -1,19 +1,20 @@
 version: 1
 source: src/integration/shared/agent-display-names.ts
-description: Canonical source of truth for agent metadata. Lists all 31 agents with purposes and models.
+description: Canonical source of truth for agent metadata. Lists all 31 agents organized by functional category.
 
 metadata:
-  generated: "2026-02-20"
-  commit: "4d04a59"
+  generated: "2026-02-21"
+  commit: ""
   branch: "dev"
   notes:
-    - All agents organized by Phase (1-6)
+    - All agents organized by functional category
     - Display names match agent IDs for consistency
     - Keep this file in sync with src/integration/shared/agent-display-names.ts
     - All agent references in documentation should use these canonical IDs
 
 agents:
-  # === PHASE 1: Orchestration (4 agents) ===
+  # === ORCHESTRATION (4 agents) ===
+  # Core agents that coordinate other agents and manage workflow
 
   - id: operator
     display_name: operator
@@ -35,7 +36,7 @@ agents:
     model: anthropic/claude-opus-4-5
     purpose: Execution specialist that implements tasks with focus on completion
 
-  # === PHASE 2: Code Review (5 agents) ===
+  # === CODE REVIEW (7 agents) ===
 
   - id: reviewer-rails
     display_name: reviewer-rails
@@ -62,7 +63,17 @@ agents:
     model: anthropic/claude-sonnet-4-5
     purpose: Code simplicity reviewer focusing on YAGNI principles
 
-  # === PHASE 3: Research (5 agents) ===
+  - id: reviewer-security
+    display_name: reviewer-security
+    model: openai/gpt-5.3-codex
+    purpose: Security audits, vulnerability assessments, and security reviews of code
+
+  - id: reviewer-races
+    display_name: reviewer-races
+    model: openai/gpt-5.3-codex
+    purpose: JavaScript and Stimulus race condition reviewer
+
+  # === RESEARCH (8 agents) ===
 
   - id: researcher-docs
     display_name: researcher-docs
@@ -84,12 +95,27 @@ agents:
     model: anthropic/claude-sonnet-4-5
     purpose: Git history analyzer for understanding code evolution
 
+  - id: researcher-codebase
+    display_name: researcher-codebase
+    model: github-copilot/claude-haiku-4.5
+    purpose: Codebase search specialist finding files and code patterns
+
+  - id: researcher-data
+    display_name: researcher-data
+    model: zai-coding-plan/glm-4.7
+    purpose: External library and documentation researcher for open-source codebases
+
+  - id: researcher-repo
+    display_name: researcher-repo
+    model: openai/gpt-5.3-codex
+    purpose: Repository structure and convention researcher
+
   - id: analyzer-media
     display_name: analyzer-media
     model: google/gemini-3-flash
     purpose: Media file analyzer for PDFs, images, diagrams beyond raw text
 
-  # === PHASE 4: Design (5 agents) ===
+  # === DESIGN (5 agents) ===
 
   - id: designer-flow
     display_name: designer-flow
@@ -116,7 +142,7 @@ agents:
     model: anthropic/claude-opus-4-5
     purpose: Frontend design implementation specialist
 
-  # === PHASE 5: Advisory/Validation/Documentation (8 agents) ===
+  # === ADVISORY (3 agents) ===
 
   - id: advisor-architecture
     display_name: advisor-architecture
@@ -133,6 +159,8 @@ agents:
     model: anthropic/claude-opus-4-5
     purpose: High-IQ read-only consultation specialist for debugging and architecture
 
+  # === VALIDATION (4 agents) ===
+
   - id: validator-audit
     display_name: validator-audit
     model: anthropic/claude-opus-4-5
@@ -142,6 +170,40 @@ agents:
     display_name: validator-deployment
     model: anthropic/claude-sonnet-4-5
     purpose: Deployment verification specialist with pre/post-deploy checklists
+
+  - id: validator-bugs
+    display_name: validator-bugs
+    model: openai/gpt-5.3-codex
+    purpose: Bug reproduction and validation specialist
+
+  - id: analyzer-patterns
+    display_name: analyzer-patterns
+    model: openai/gpt-5.3-codex
+    purpose: Design pattern recognition and code organization specialist
+
+  # === SPECIALIZED (4 agents) ===
+
+  - id: expert-migrations
+    display_name: expert-migrations
+    model: openai/gpt-5.3-codex
+    purpose: Data migration and backfill expert
+
+  - id: guardian-data
+    display_name: guardian-data
+    model: openai/gpt-5.3-codex
+    purpose: Database migration and data integrity expert
+
+  - id: resolver-pr
+    display_name: resolver-pr
+    model: openai/gpt-5.3-codex
+    purpose: PR comment resolution specialist
+
+  - id: oracle-performance
+    display_name: oracle-performance
+    model: openai/gpt-5.3-codex
+    purpose: Performance analysis and optimization specialist
+
+  # === DOCUMENTATION (3 agents) ===
 
   - id: writer-readme
     display_name: writer-readme
@@ -158,67 +220,8 @@ agents:
     model: anthropic/claude-sonnet-4-5
     purpose: Style guide editor ensuring consistent voice and mechanics
 
-  # === PHASE 6: Legacy Agents (2 agents - Final Phase) ===
-
-  - id: researcher-codebase
-    display_name: researcher-codebase
-    model: github-copilot/claude-haiku-4.5
-    purpose: Codebase search specialist finding files and code patterns
-
-  - id: researcher-data
-    display_name: researcher-data
-    model: zai-coding-plan/glm-4.7
-    purpose: External library and documentation researcher for open-source codebases
-
-  # === PHASE 16: New Agents from Export (9 agents) ===
-
-  - id: reviewer-security
-    display_name: reviewer-security
-    model: openai/gpt-5.3-codex
-    purpose: Security audits, vulnerability assessments, and security reviews of code
-
-  - id: validator-bugs
-    display_name: validator-bugs
-    model: openai/gpt-5.3-codex
-    purpose: Bug reproduction and validation specialist
-
-  - id: guardian-data
-    display_name: guardian-data
-    model: openai/gpt-5.3-codex
-    purpose: Database migration and data integrity expert
-
-  - id: expert-migrations
-    display_name: expert-migrations
-    model: openai/gpt-5.3-codex
-    purpose: Data migration and backfill expert
-
-  - id: resolver-pr
-    display_name: resolver-pr
-    model: openai/gpt-5.3-codex
-    purpose: PR comment resolution specialist
-
-  - id: oracle-performance
-    display_name: oracle-performance
-    model: openai/gpt-5.3-codex
-    purpose: Performance analysis and optimization specialist
-
-  - id: reviewer-races
-    display_name: reviewer-races
-    model: openai/gpt-5.3-codex
-    purpose: JavaScript and Stimulus race condition reviewer
-
-  - id: analyzer-patterns
-    display_name: analyzer-patterns
-    model: openai/gpt-5.3-codex
-    purpose: Design pattern recognition and code organization specialist
-
-  - id: researcher-repo
-    display_name: researcher-repo
-    model: openai/gpt-5.3-codex
-    purpose: Repository structure and convention researcher
-
 notes:
-  - All 31 agents accounted for across 6 phases
+  - All 31 agents organized by functional category
   - Display names use consistent agent ID naming (no decorative aliases)
   - This file is the canonical source for agent identity
   - Keep synchronized with src/integration/shared/agent-display-names.ts

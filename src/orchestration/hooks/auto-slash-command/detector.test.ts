@@ -160,26 +160,26 @@ After`;
   });
 
   describe("isExcludedCommand", () => {
-    it("should exclude overclock-loop", () => {
-      // #given overclock-loop command
+    it("should exclude ghostwire:overclock-loop", () => {
+      // #given ghostwire:overclock-loop command
       // #when checking exclusion
       // #then should be excluded
-      expect(isExcludedCommand("overclock-loop")).toBe(true);
+      expect(isExcludedCommand("ghostwire:overclock-loop")).toBe(true);
     });
 
-    it("should exclude cancel-overclock", () => {
-      // #given cancel-overclock command
+    it("should exclude ghostwire:cancel-overclock", () => {
+      // #given ghostwire:cancel-overclock command
       // #when checking exclusion
       // #then should be excluded
-      expect(isExcludedCommand("cancel-overclock")).toBe(true);
+      expect(isExcludedCommand("ghostwire:cancel-overclock")).toBe(true);
     });
 
     it("should be case-insensitive for exclusion", () => {
       // #given uppercase variants
       // #when checking exclusion
       // #then should still be excluded
-      expect(isExcludedCommand("OVERCLOCK-LOOP")).toBe(true);
-      expect(isExcludedCommand("CANCEL-OVERCLOCK")).toBe(true);
+      expect(isExcludedCommand("GHOSTWIRE:OVERCLOCK-LOOP")).toBe(true);
+      expect(isExcludedCommand("GHOSTWIRE:CANCEL-OVERCLOCK")).toBe(true);
     });
 
     it("should not exclude regular commands", () => {
@@ -229,9 +229,9 @@ After`;
       expect(result?.command).toBe("commit");
     });
 
-    it("should NOT detect excluded commands", () => {
-      // #given excluded command
-      const text = "/overclock-loop do something";
+    it("should NOT detect excluded commands (with ghostwire: prefix)", () => {
+      // #given excluded command with ghostwire: prefix
+      const text = "/ghostwire:overclock-loop do something";
 
       // #when detecting
       const result = detectSlashCommand(text);

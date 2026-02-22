@@ -1,13 +1,13 @@
 import type { CommandDefinition } from "../claude-code-command-loader";
 
 export type BuiltinCommandName =
-  | "init-deep"
-  | "overclock-loop"
-  | "cancel-overclock"
-  | "ulw-overclock"
-  | "refactor"
-  | "jack-in-work"
-  | "stop-continuation"
+  | "ghostwire:init-deep"
+  | "ghostwire:overclock-loop"
+  | "ghostwire:cancel-overclock"
+  | "ghostwire:ulw-overclock"
+  | "ghostwire:refactor"
+  | "ghostwire:jack-in-work"
+  | "ghostwire:stop-continuation"
   | "ghostwire:workflows:plan"
   | "ghostwire:workflows:create"
   | "ghostwire:workflows:status"
@@ -32,7 +32,34 @@ export type BuiltinCommandName =
   | "ghostwire:docs:release-docs"
   | "ghostwire:docs:feature-video"
   | "ghostwire:docs:test-browser"
-  | "ghostwire:lint:ruby";
+  | "ghostwire:lint:ruby"
+  // Migrated plugin commands (non-workflow)
+  | "ghostwire:plan-review"
+  | "ghostwire:changelog"
+  | "ghostwire:create-agent-skill"
+  | "ghostwire:deepen-plan"
+  | "ghostwire:deploy-docs"
+  | "ghostwire:feature-video"
+  | "ghostwire:generate-command"
+  | "ghostwire:heal-skill"
+  | "ghostwire:lfg"
+  | "ghostwire:quiz-me"
+  | "ghostwire:release-docs"
+  | "ghostwire:report-bug"
+  | "ghostwire:reproduce-bug"
+  | "ghostwire:resolve-parallel"
+  | "ghostwire:resolve-pr-parallel"
+  | "ghostwire:resolve-todo-parallel"
+  | "ghostwire:sync-tutorials"
+  | "ghostwire:teach-me"
+  | "ghostwire:test-browser"
+  | "ghostwire:triage"
+  | "ghostwire:xcode-test"
+  // Migrated plugin workflow commands
+  | "ghostwire:workflows:brainstorm"
+  | "ghostwire:workflows:compound"
+  | "ghostwire:workflows:review"
+  | "ghostwire:workflows:work";
 
 export interface BuiltinCommandConfig {
   disabled_commands?: BuiltinCommandName[];

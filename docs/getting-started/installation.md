@@ -27,7 +27,7 @@ After you install it, you can read this [overview guide](./overview.md) to under
 
 ## For LLM Agents
 
-If you're an LLM Agent helping set up ghostwire, welcome. Ghostwire is the plugin package name (formerly Oh My OpenCode).
+If you're an LLM Agent helping set up ghostwire, welcome. Ghostwire is the plugin package name.
 
 follow these steps:
 

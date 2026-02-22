@@ -23,6 +23,11 @@ import {
   findCaseInsensitive,
   includesCaseInsensitive,
 } from "../../integration/shared";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const PLUGIN_ROOT = join(__dirname, "../..");
 import {
   fetchAvailableModels,
   isModelAvailable,
@@ -304,11 +309,12 @@ export async function createBuiltinAgents(
   browserProvider?: BrowserAutomationProvider,
   uiSelectedModel?: string,
 ): Promise<Record<string, AgentConfig>> {
-  const markdownAgents = await loadMarkdownAgents(
-    directory
-      ? `${directory}/src/orchestration/agents`
-      : `${process.cwd()}/src/orchestration/agents`,
-  );
+  // If no directory provided, don't construct one - let loadMarkdownAgents
+  // use the embedded manifest exclusively
+  const agentsDir = directory
+    ? join(directory, "src/orchestration/agents")
+    : undefined;
+  const markdownAgents = await loadMarkdownAgents(agentsDir);
   const markdownAgentMap = new Map(
     markdownAgents.map((agent) => [agent.id, agent]),
   );

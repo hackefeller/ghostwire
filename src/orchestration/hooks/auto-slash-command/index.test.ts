@@ -115,12 +115,12 @@ describe("createAutoSlashCommandHook", () => {
   });
 
   describe("excluded commands", () => {
-    it("should NOT trigger for overclock-loop command", async () => {
-      // #given overclock-loop command
+    it("should NOT trigger for ghostwire:overclock-loop command", async () => {
+      // #given ghostwire:overclock-loop command
       const hook = createAutoSlashCommandHook();
       const sessionID = `test-session-ralph-${Date.now()}`;
       const input = createMockInput(sessionID);
-      const output = createMockOutput("/overclock-loop do something");
+      const output = createMockOutput("/ghostwire:overclock-loop do something");
       const originalText = output.parts[0].text;
 
       // #when hook is called
@@ -130,12 +130,12 @@ describe("createAutoSlashCommandHook", () => {
       expect(output.parts[0].text).toBe(originalText);
     });
 
-    it("should NOT trigger for cancel-overclock command", async () => {
-      // #given cancel-overclock command
+    it("should NOT trigger for ghostwire:cancel-overclock command", async () => {
+      // #given ghostwire:cancel-overclock command
       const hook = createAutoSlashCommandHook();
       const sessionID = `test-session-cancel-${Date.now()}`;
       const input = createMockInput(sessionID);
-      const output = createMockOutput("/cancel-overclock");
+      const output = createMockOutput("/ghostwire:cancel-overclock");
       const originalText = output.parts[0].text;
 
       // #when hook is called

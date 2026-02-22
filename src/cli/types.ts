@@ -10,6 +10,7 @@ export interface InstallArgs {
   kimiForCoding?: BooleanArg;
   skipAuth?: boolean;
   installPath?: string;
+  localOnly?: boolean;
 }
 
 export interface InstallConfig {

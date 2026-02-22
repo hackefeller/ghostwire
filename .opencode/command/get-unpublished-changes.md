@@ -55,22 +55,22 @@ For each commit, you MUST:
 ### feat
 | Scope | What Changed |
 |-------|--------------|
-| X | 실제 변경 내용 설명 |
+| X |  Actual change description |
 
 ### fix
 | Scope | What Changed |
 |-------|--------------|
-| X | 실제 변경 내용 설명 |
+| X |  Actual change description |
 
 ### refactor
 | Scope | What Changed |
 |-------|--------------|
-| X | 실제 변경 내용 설명 |
+| X |  Actual change description |
 
 ### docs
 | Scope | What Changed |
 |-------|--------------|
-| X | 실제 변경 내용 설명 |
+| X |  Actual change description |
 
 ### Breaking Changes
 None 또는 목록

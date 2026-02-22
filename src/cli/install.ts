@@ -376,15 +376,20 @@ async function runNonTuiInstall(args: InstallArgs): Promise<number> {
 
   const config = argsToConfig(args);
 
-  printStep(step++, totalSteps, "Adding ghostwire plugin...");
-  const pluginResult = await addPluginToOpenCodeConfig(VERSION);
-  if (!pluginResult.success) {
-    printError(`Failed: ${pluginResult.error}`);
-    return 1;
+  if (!args.localOnly) {
+    printStep(step++, totalSteps, "Adding ghostwire plugin...");
+    const pluginResult = await addPluginToOpenCodeConfig(VERSION);
+    if (!pluginResult.success) {
+      printError(`Failed: ${pluginResult.error}`);
+      return 1;
+    }
+    printSuccess(
+      `Plugin ${isUpdate ? "verified" : "added"} ${SYMBOLS.arrow} ${color.dim(pluginResult.configPath)}`,
+    );
+  } else {
+    printStep(step++, totalSteps, "Skipping OpenCode plugin list (local-only mode)...");
+    printSuccess("Using local plugin registration only");
   }
-  printSuccess(
-    `Plugin ${isUpdate ? "verified" : "added"} ${SYMBOLS.arrow} ${color.dim(pluginResult.configPath)}`,
-  );
 
   if (args.installPath) {
     printStep(step++, totalSteps, "Registering with Claude Code plugins...");

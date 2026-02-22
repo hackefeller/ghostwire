@@ -46,6 +46,7 @@ program
   .option("--kimi-for-coding <value>", "Kimi For Coding subscription: no, yes (default: no)")
   .option("--skip-auth", "Skip authentication setup hints")
   .option("--install-path <path>", "Path to plugin installation (for local development)")
+  .option("--local-only", "Only register as local plugin (don't add to OpenCode plugin list)")
   .addHelpText("after", INSTALL_HELP)
   .action(async (options) => {
     const args: InstallArgs = {
@@ -58,6 +59,7 @@ program
       kimiForCoding: options.kimiForCoding,
       skipAuth: options.skipAuth ?? false,
       installPath: options.installPath,
+      localOnly: options.localOnly ?? false,
     };
     const exitCode = await install(args);
     process.exit(exitCode);

@@ -45,12 +45,40 @@ import {
   DOCS_TEST_BROWSER_TEMPLATE,
 } from "./templates/docs";
 import { LINT_RUBY_TEMPLATE } from "./templates/lint-ruby";
+// Migrated plugin commands
+import { PLAN_REVIEW_TEMPLATE } from "./templates/plan-review";
+import { CHANGELOG_TEMPLATE } from "./templates/changelog";
+import { CREATE_AGENT_SKILL_TEMPLATE } from "./templates/create-agent-skill";
+import { DEEPEN_PLAN_TEMPLATE } from "./templates/deepen-plan";
+import { DEPLOY_DOCS_TEMPLATE } from "./templates/deploy-docs";
+import { FEATURE_VIDEO_TEMPLATE } from "./templates/feature-video";
+import { GENERATE_COMMAND_TEMPLATE } from "./templates/generate-command";
+import { HEAL_SKILL_TEMPLATE } from "./templates/heal-skill";
+import { LFG_TEMPLATE } from "./templates/lfg";
+import { QUIZ_ME_TEMPLATE } from "./templates/quiz-me";
+import { RELEASE_DOCS_TEMPLATE } from "./templates/release-docs";
+import { REPORT_BUG_TEMPLATE } from "./templates/report-bug";
+import { REPRODUCE_BUG_TEMPLATE } from "./templates/reproduce-bug";
+import { RESOLVE_PARALLEL_TEMPLATE } from "./templates/resolve-parallel";
+import { RESOLVE_PR_PARALLEL_TEMPLATE } from "./templates/resolve-pr-parallel";
+import { RESOLVE_TODO_PARALLEL_TEMPLATE } from "./templates/resolve-todo-parallel";
+import { SYNC_TUTORIALS_TEMPLATE } from "./templates/sync-tutorials";
+import { TEACH_ME_TEMPLATE } from "./templates/teach-me";
+import { TEST_BROWSER_TEMPLATE } from "./templates/test-browser";
+import { TRIAGE_TEMPLATE } from "./templates/triage";
+import { XCODE_TEST_TEMPLATE } from "./templates/xcode-test";
+// Migrated plugin workflow commands
+import { WORKFLOWS_BRAINSTORM_TEMPLATE } from "./templates/workflows/brainstorm";
+import { WORKFLOWS_COMPOUND_TEMPLATE } from "./templates/workflows/compound";
+import { WORKFLOWS_PLAN_TEMPLATE as WORKFLOWS_PLAN_V2_TEMPLATE } from "./templates/workflows/plan";
+import { WORKFLOWS_REVIEW_TEMPLATE } from "./templates/workflows/review";
+import { WORKFLOWS_WORK_TEMPLATE } from "./templates/workflows/work";
 
 const BUILTIN_COMMAND_DEFINITIONS: Record<
   BuiltinCommandName,
   Omit<CommandDefinition, "name">
 > = {
-  "init-deep": {
+  "ghostwire:init-deep": {
     description: "(builtin) Initialize hierarchical AGENTS.md knowledge base",
     template: `<command-instruction>
 ${INIT_DEEP_TEMPLATE}
@@ -61,7 +89,7 @@ $ARGUMENTS
 </user-request>`,
     argumentHint: "[--create-new] [--max-depth=N]",
   },
-  "overclock-loop": {
+  "ghostwire:overclock-loop": {
     description:
       "(builtin) Start self-referential development loop until completion",
     template: `<command-instruction>
@@ -74,7 +102,7 @@ $ARGUMENTS
     argumentHint:
       '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
   },
-  "ulw-overclock": {
+  "ghostwire:ulw-overclock": {
     description:
       "(builtin) Start ultrawork loop - continues until completion with ultrawork mode",
     template: `<command-instruction>
@@ -87,13 +115,13 @@ $ARGUMENTS
     argumentHint:
       '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
   },
-  "cancel-overclock": {
+  "ghostwire:cancel-overclock": {
     description: "(builtin) Cancel active Ralph Loop",
     template: `<command-instruction>
 ${CANCEL_RALPH_TEMPLATE}
 </command-instruction>`,
   },
-  refactor: {
+  "ghostwire:refactor": {
     description:
       "(builtin) Intelligent refactoring command with LSP, AST-grep, architecture analysis, codemap, and TDD verification.",
     template: `<command-instruction>
@@ -102,7 +130,7 @@ ${REFACTOR_TEMPLATE}
     argumentHint:
       "<refactoring-target> [--scope=<file|module|project>] [--strategy=<safe|aggressive>]",
   },
-  "jack-in-work": {
+  "ghostwire:jack-in-work": {
     description: "(builtin) Start operator work session from planner plan",
     agent: "orchestrator",
     template: `<command-instruction>
@@ -119,7 +147,7 @@ $ARGUMENTS
 </user-request>`,
     argumentHint: "[plan-name]",
   },
-  "stop-continuation": {
+  "ghostwire:stop-continuation": {
     description:
       "(builtin) Stop all continuation mechanisms (ralph loop, todo continuation, boulder) for this session",
     template: `<command-instruction>
@@ -406,6 +434,283 @@ ${LINT_RUBY_TEMPLATE}
 $ARGUMENTS
 </user-request>`,
     argumentHint: "[--fix] [--files=path1,path2]",
+  },
+  // Migrated plugin commands (non-workflow)
+  "ghostwire:plan-review": {
+    description: "Review implementation plans with multiple expert reviewers",
+    template: `<command-instruction>
+${PLAN_REVIEW_TEMPLATE}
+</command-instruction>
+
+<plan-file>
+$ARGUMENTS
+</plan-file>`,
+    argumentHint: "[plan-file-path]",
+  },
+  "ghostwire:changelog": {
+    description: "Generate and maintain changelog entries",
+    template: `<command-instruction>
+${CHANGELOG_TEMPLATE}
+</command-instruction>
+
+<changelog-context>
+$ARGUMENTS
+</changelog-context>`,
+    argumentHint: "[--type=feature|fix|breaking] [--version=X.Y.Z]",
+  },
+  "ghostwire:create-agent-skill": {
+    description: "Create a new Claude Code agent skill with scaffolding",
+    template: `<command-instruction>
+${CREATE_AGENT_SKILL_TEMPLATE}
+</command-instruction>
+
+<skill-context>
+$ARGUMENTS
+</skill-context>`,
+    argumentHint: "[skill-name] [--description=...]",
+  },
+  "ghostwire:deepen-plan": {
+    description: "Enhance implementation plans with deeper research and analysis",
+    template: `<command-instruction>
+${DEEPEN_PLAN_TEMPLATE}
+</command-instruction>
+
+<plan-file>
+$ARGUMENTS
+</plan-file>`,
+    argumentHint: "[plan-file-path] [--agents=performance,security,ui]",
+  },
+  "ghostwire:deploy-docs": {
+    description: "Deploy documentation to GitHub Pages",
+    template: `<command-instruction>
+${DEPLOY_DOCS_TEMPLATE}
+</command-instruction>
+
+<docs-context>
+$ARGUMENTS
+</docs-context>`,
+    argumentHint: "[--version=latest|stable] [--dry-run]",
+  },
+  "ghostwire:feature-video": {
+    description: "Create demonstration videos for new features",
+    template: `<command-instruction>
+${FEATURE_VIDEO_TEMPLATE}
+</command-instruction>
+
+<feature-context>
+$ARGUMENTS
+</feature-context>`,
+    argumentHint: "[feature-name] [--type=demo|tutorial]",
+  },
+  "ghostwire:generate-command": {
+    description: "Generate new slash commands with templates and structure",
+    template: `<command-instruction>
+${GENERATE_COMMAND_TEMPLATE}
+</command-instruction>
+
+<command-spec>
+$ARGUMENTS
+</command-spec>`,
+    argumentHint: "[command-name] [--description=...]",
+  },
+  "ghostwire:heal-skill": {
+    description: "Fix and validate existing agent skills",
+    template: `<command-instruction>
+${HEAL_SKILL_TEMPLATE}
+</command-instruction>
+
+<skill-path>
+$ARGUMENTS
+</skill-path>`,
+    argumentHint: "[skill-directory-path]",
+  },
+  "ghostwire:lfg": {
+    description: "Start a learning for growth session",
+    template: `<command-instruction>
+${LFG_TEMPLATE}
+</command-instruction>
+
+<learning-topic>
+$ARGUMENTS
+</learning-topic>`,
+    argumentHint: "[topic] [--level=beginner|intermediate|advanced]",
+  },
+  "ghostwire:quiz-me": {
+    description: "Test your knowledge with interactive quizzes",
+    template: `<command-instruction>
+${QUIZ_ME_TEMPLATE}
+</command-instruction>
+
+<quiz-topic>
+$ARGUMENTS
+</quiz-topic>`,
+    argumentHint: "[topic] [--difficulty=easy|medium|hard]",
+  },
+  "ghostwire:release-docs": {
+    description: "Create versioned documentation release",
+    template: `<command-instruction>
+${RELEASE_DOCS_TEMPLATE}
+</command-instruction>
+
+<release-context>
+$ARGUMENTS
+</release-context>`,
+    argumentHint: "[version] [--create-migration-guide]",
+  },
+  "ghostwire:report-bug": {
+    description: "Report a bug with detailed information and context",
+    template: `<command-instruction>
+${REPORT_BUG_TEMPLATE}
+</command-instruction>
+
+<bug-context>
+$ARGUMENTS
+</bug-context>`,
+    argumentHint: "[--description=...] [--severity=critical|high|medium|low]",
+  },
+  "ghostwire:reproduce-bug": {
+    description: "Reproduce and analyze a reported bug",
+    template: `<command-instruction>
+${REPRODUCE_BUG_TEMPLATE}
+</command-instruction>
+
+<bug-reproduction>
+$ARGUMENTS
+</bug-reproduction>`,
+    argumentHint: "[issue-number or bug-description]",
+  },
+  "ghostwire:resolve-parallel": {
+    description: "Resolve multiple GitHub issues in parallel",
+    template: `<command-instruction>
+${RESOLVE_PARALLEL_TEMPLATE}
+</command-instruction>
+
+<issues-context>
+$ARGUMENTS
+</issues-context>`,
+    argumentHint: "[issue-numbers or filter]",
+  },
+  "ghostwire:resolve-pr-parallel": {
+    description: "Review and resolve multiple pull requests in parallel",
+    template: `<command-instruction>
+${RESOLVE_PR_PARALLEL_TEMPLATE}
+</command-instruction>
+
+<pr-context>
+$ARGUMENTS
+</pr-context>`,
+    argumentHint: "[pr-numbers or filter]",
+  },
+  "ghostwire:resolve-todo-parallel": {
+    description: "Resolve all pending CLI todos using parallel processing",
+    template: `<command-instruction>
+${RESOLVE_TODO_PARALLEL_TEMPLATE}
+</command-instruction>
+
+<todos-context>
+$ARGUMENTS
+</todos-context>`,
+    argumentHint: "[optional: specific todo ID or pattern]",
+  },
+  "ghostwire:sync-tutorials": {
+    description: "Sync coding tutorials to GitHub repository",
+    template: `<command-instruction>
+${SYNC_TUTORIALS_TEMPLATE}
+</command-instruction>
+
+<sync-context>
+$ARGUMENTS
+</sync-context>`,
+    argumentHint: "[]",
+  },
+  "ghostwire:teach-me": {
+    description: "Start a teaching and learning session",
+    template: `<command-instruction>
+${TEACH_ME_TEMPLATE}
+</command-instruction>
+
+<learning-context>
+$ARGUMENTS
+</learning-context>`,
+    argumentHint: "[topic]",
+  },
+  "ghostwire:test-browser": {
+    description: "Run browser tests on pages affected by current PR or branch",
+    template: `<command-instruction>
+${TEST_BROWSER_TEMPLATE}
+</command-instruction>
+
+<test-context>
+$ARGUMENTS
+</test-context>`,
+    argumentHint: "[PR number, branch name, or 'current' for current branch]",
+  },
+  "ghostwire:triage": {
+    description: "Triage and categorize findings for the CLI todo system",
+    template: `<command-instruction>
+${TRIAGE_TEMPLATE}
+</command-instruction>
+
+<findings-context>
+$ARGUMENTS
+</findings-context>`,
+    argumentHint: "[findings list or source type]",
+  },
+  "ghostwire:xcode-test": {
+    description: "Build and test iOS apps on simulator using XcodeBuildMCP",
+    template: `<command-instruction>
+${XCODE_TEST_TEMPLATE}
+</command-instruction>
+
+<xcode-context>
+$ARGUMENTS
+</xcode-context>`,
+    argumentHint: "[scheme name or 'current' to use default]",
+  },
+  // Migrated plugin workflow commands
+  "ghostwire:workflows:brainstorm": {
+    description: "Scout Recon requirements and approaches through collaborative dialogue",
+    template: `<command-instruction>
+${WORKFLOWS_BRAINSTORM_TEMPLATE}
+</command-instruction>
+
+<brainstorm-context>
+$ARGUMENTS
+</brainstorm-context>`,
+    argumentHint: "[feature idea or problem to scout-recon]",
+  },
+  "ghostwire:workflows:compound": {
+    description: "Document a recently solved problem to compound knowledge",
+    template: `<command-instruction>
+${WORKFLOWS_COMPOUND_TEMPLATE}
+</command-instruction>
+
+<compound-context>
+$ARGUMENTS
+</compound-context>`,
+    argumentHint: "[optional: brief context about the fix]",
+  },
+  "ghostwire:workflows:review": {
+    description: "Perform exhaustive code reviews using multi-agent analysis",
+    template: `<command-instruction>
+${WORKFLOWS_REVIEW_TEMPLATE}
+</command-instruction>
+
+<review-context>
+$ARGUMENTS
+</review-context>`,
+    argumentHint: "[PR number, GitHub URL, branch name, or latest]",
+  },
+  "ghostwire:workflows:work": {
+    description: "Execute work plans efficiently while maintaining quality",
+    template: `<command-instruction>
+${WORKFLOWS_WORK_TEMPLATE}
+</command-instruction>
+
+<work-context>
+$ARGUMENTS
+</work-context>`,
+    argumentHint: "[plan file, specification, or todo file path]",
   },
 };
 

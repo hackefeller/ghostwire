@@ -53,6 +53,7 @@ import {
   mergeSkills,
 } from "./execution/features/opencode-skill-loader";
 import { createBuiltinSkills } from "./execution/features/builtin-skills";
+import { createBuiltinAgents } from "./orchestration/agents";
 import { getSystemMcpServerNames } from "./execution/features/claude-code-mcp-loader";
 import {
   setMainSession,
@@ -404,6 +405,19 @@ const GhostwirePlugin: Plugin = async (ctx) => {
   });
 
   const commands = discoverCommandsSync();
+  
+  // Create builtin agents with configuration
+  const builtinAgents = await createBuiltinAgents(
+    pluginConfig.disabled_agents ?? [],
+    pluginConfig.agents,
+    ctx.directory,
+    undefined,
+    pluginConfig.categories,
+    pluginConfig.git_master,
+    mergedSkills,
+    ctx.client,
+  );
+
   const slashcommandTool = createSlashcommandTool({
     commands,
     skills: mergedSkills,
@@ -420,6 +434,24 @@ const GhostwirePlugin: Plugin = async (ctx) => {
   });
 
   return {
+    agent: builtinAgents,
+
+    skill: mergedSkills.reduce(
+      (acc, skill) => {
+        acc[skill.name] = skill;
+        return acc;
+      },
+      {} as Record<string, (typeof mergedSkills)[0]>,
+    ),
+
+    command: commands.reduce(
+      (acc, command) => {
+        acc[command.name] = command;
+        return acc;
+      },
+      {} as Record<string, (typeof commands)[0]>,
+    ),
+
     tool: {
       ...builtinTools,
       ...backgroundTools,
@@ -723,7 +755,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
         const command = args?.command?.replace(/^\//, "").toLowerCase();
         const sessionID = input.sessionID || getMainSessionID();
 
-        if (command === "ralph-loop" && sessionID) {
+        if ((command === "ralph-loop" || command === "ghostwire:overclock-loop") && sessionID) {
           const rawArgs = args?.command?.replace(/^\/?(ralph-loop)\s*/i, "") || "";
           const taskMatch = rawArgs.match(/^["'](.+?)["']/);
           const prompt =
@@ -738,10 +770,10 @@ const GhostwirePlugin: Plugin = async (ctx) => {
             maxIterations: maxIterMatch ? parseInt(maxIterMatch[1], 10) : undefined,
             completionPromise: promiseMatch?.[1],
           });
-        } else if (command === "cancel-overclock" && sessionID) {
+        } else if (command === "ghostwire:cancel-overclock" && sessionID) {
           ralphLoop.cancelLoop(sessionID);
-        } else if (command === "ulw-overclock" && sessionID) {
-          const rawArgs = args?.command?.replace(/^\/?(ulw-overclock)\s*/i, "") || "";
+        } else if (command === "ghostwire:ulw-overclock" && sessionID) {
+          const rawArgs = args?.command?.replace(/^\/?(ghostwire:ulw-overclock)\s*/i, "") || "";
           const taskMatch = rawArgs.match(/^["'](.+?)["']/);
           const prompt =
             taskMatch?.[1] ||
@@ -764,7 +796,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
         const command = args?.command?.replace(/^\//, "").toLowerCase();
         const sessionID = input.sessionID || getMainSessionID();
 
-        if (command === "stop-continuation" && sessionID) {
+        if (command === "ghostwire:stop-continuation" && sessionID) {
           stopContinuationGuard?.stop(sessionID);
           todoContinuationEnforcer?.cancelAllCountdowns();
           ralphLoop?.cancelLoop(sessionID);

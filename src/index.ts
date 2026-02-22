@@ -407,10 +407,12 @@ const GhostwirePlugin: Plugin = async (ctx) => {
   const commands = discoverCommandsSync();
   
   // Create builtin agents with configuration
+  // Don't pass ctx.directory - let it use PLUGIN_ROOT to load from embedded manifest
+  // This ensures agents are always available regardless of what directory is being worked on
   const builtinAgents = await createBuiltinAgents(
     pluginConfig.disabled_agents ?? [],
     pluginConfig.agents,
-    ctx.directory,
+    undefined, // Use PLUGIN_ROOT + embedded manifest, not ctx.directory
     undefined,
     pluginConfig.categories,
     pluginConfig.git_master,

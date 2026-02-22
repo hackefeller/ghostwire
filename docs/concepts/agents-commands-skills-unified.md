@@ -206,53 +206,131 @@ COMMAND
 
 ---
 
-## The Two Types of Commands
+## Commands: 50+ Built-in Commands Organized by Category
 
-### Type 1: Workflow Commands
-**Structured workflows that orchestrate agents.**
+Commands are organized into functional categories. Each command is a complete workflow that may invoke agents, tools, or both.
+
+### Core Workflow Commands (5)
+**Multi-phase workflows that orchestrate agents.**
 
 | Command | Purpose | Agents |
 |---------|---------|--------|
 | `/ghostwire:workflows:plan` | Plan a feature | planner, researcher-* |
 | `/ghostwire:workflows:work` | Execute a plan | executor, researcher-*, reviewer-* |
 | `/ghostwire:workflows:brainstorm` | Brainstorm ideas | advisor-*, researcher-* |
-| `/ghostwire:code:review` | Review code | reviewer-* |
-| `/ghostwire:code:refactor` | Refactor code | reviewer-*, researcher-* |
-
-**Characteristics:**
-- Define multi-phase workflows
-- Invoke agents at specific points
-- Verify results between phases
-- Handle errors and retries
-- Maintain state
-
-**When Used:**
-- User wants a structured workflow
-- Multiple agents need coordination
-- Results need verification
+| `/ghostwire:workflows:compound` | Document learnings | writer-*, editor-* |
+| `/ghostwire:workflows:review` | Exhaustive review | reviewer-*, validator-* |
 
 ---
 
-### Type 2: Utility Commands
-**Simple commands that don't invoke agents.**
+### Code Commands (4)
+**Code analysis and transformation workflows.**
 
-| Command | Purpose |
-|---------|---------|
-| `/ghostwire:git:smart-commit` | Smart commits |
-| `/ghostwire:project:build` | Build project |
-| `/ghostwire:project:test` | Run tests |
-| `/ghostwire:util:clean` | Clean project |
+| Command | Purpose | Agents |
+|---------|---------|--------|
+| `/ghostwire:code:review` | Review code | reviewer-* |
+| `/ghostwire:code:refactor` | Refactor code | reviewer-*, researcher-* |
+| `/ghostwire:code:optimize` | Optimize code | oracle-performance, reviewer-* |
+| `/ghostwire:code:format` | Format code | (no agents) |
 
-**Characteristics:**
-- No agent invocation
-- Direct tool execution
-- Simple, focused tasks
-- Fast execution
+---
 
-**When Used:**
-- User wants direct action
-- No reasoning needed
-- Simple, well-defined task
+### Git Commands (4)
+**Git workflow automation.**
+
+| Command | Purpose | Agents |
+|---------|---------|--------|
+| `/ghostwire:git:smart-commit` | Smart commits | (no agents) |
+| `/ghostwire:git:branch` | Branch management | (no agents) |
+| `/ghostwire:git:merge` | Merge assistance | (no agents) |
+| `/ghostwire:git:cleanup` | Cleanup branches | (no agents) |
+
+---
+
+### Project Commands (4)
+**Project-level operations.**
+
+| Command | Purpose | Agents |
+|---------|---------|--------|
+| `/ghostwire:project:init` | Initialize project | researcher-repo |
+| `/ghostwire:project:build` | Build project | (no agents) |
+| `/ghostwire:project:deploy` | Deploy project | validator-deployment |
+| `/ghostwire:project:test` | Run tests | (no agents) |
+
+---
+
+### Utility Commands (4)
+**Project maintenance and diagnostics.**
+
+| Command | Purpose | Agents |
+|---------|---------|--------|
+| `/ghostwire:util:clean` | Clean project | (no agents) |
+| `/ghostwire:util:backup` | Backup files | (no agents) |
+| `/ghostwire:util:restore` | Restore files | (no agents) |
+| `/ghostwire:util:doctor` | Run diagnostics | (no agents) |
+
+---
+
+### Documentation Commands (4)
+**Documentation and testing workflows.**
+
+| Command | Purpose | Agents |
+|---------|---------|--------|
+| `/ghostwire:docs:deploy-docs` | Deploy documentation | (no agents) |
+| `/ghostwire:docs:release-docs` | Release documentation | (no agents) |
+| `/ghostwire:docs:feature-video` | Create feature video | (no agents) |
+| `/ghostwire:docs:test-browser` | Browser testing | designer-builder, validator-* |
+
+---
+
+### Specialized Commands (20+)
+**Domain-specific workflows and utilities.**
+
+| Command | Purpose | Agents |
+|---------|---------|--------|
+| `/ghostwire:init-deep` | Initialize with deep analysis | researcher-codebase |
+| `/ghostwire:overclock-loop` | Run task completion loop | operator, orchestrator |
+| `/ghostwire:ulw-overclock` | Ultra-work mode | operator, orchestrator |
+| `/ghostwire:jack-in-work` | Jump into work mode | operator, orchestrator |
+| `/ghostwire:refactor` | Refactor with analysis | reviewer-*, researcher-* |
+| `/ghostwire:plan-review` | Review a plan | reviewer-rails, reviewer-simplicity |
+| `/ghostwire:test-browser` | Browser testing | designer-builder, validator-* |
+| `/ghostwire:xcode-test` | iOS testing | designer-builder, validator-* |
+| `/ghostwire:triage` | Triage issues | researcher-codebase, validator-* |
+| `/ghostwire:resolve-parallel` | Resolve multiple items | executor, reviewer-* |
+| `/ghostwire:resolve-pr-parallel` | Resolve PRs in parallel | executor, reviewer-* |
+| `/ghostwire:resolve-todo-parallel` | Resolve todos in parallel | executor, reviewer-* |
+| `/ghostwire:create-agent-skill` | Create agent skills | writer-*, editor-* |
+| `/ghostwire:deepen-plan` | Enhance plans with research | researcher-*, advisor-* |
+| `/ghostwire:generate-command` | Generate custom commands | writer-*, editor-* |
+| `/ghostwire:heal-skill` | Fix broken skills | reviewer-*, validator-* |
+| `/ghostwire:report-bug` | Report bugs | validator-bugs |
+| `/ghostwire:reproduce-bug` | Reproduce bugs | validator-bugs |
+| `/ghostwire:sync-tutorials` | Sync tutorials | writer-*, editor-* |
+| `/ghostwire:changelog` | Create changelogs | writer-*, editor-* |
+| `/ghostwire:lfg` | Looking for group | advisor-*, researcher-* |
+| `/ghostwire:teach-me` | Interactive learning | advisor-*, researcher-* |
+| `/ghostwire:quiz-me` | Interactive quizzes | advisor-*, researcher-* |
+| `/ghostwire:lint:ruby` | Ruby linting | reviewer-ruby |
+
+---
+
+### Key Insight About Commands
+
+**Commands are not just "two types"** - they're 50+ specialized workflows organized by category. Each command:
+
+1. **Defines a complete workflow** - Multi-phase process with specific steps
+2. **Invokes agents strategically** - At specific points where reasoning is needed
+3. **Uses tools directly** - For operations that don't need reasoning
+4. **Verifies results** - Between phases to catch errors early
+5. **Maintains state** - Via `.ghostwire/` files for complex workflows
+
+**The key distinction is not "type" but "purpose":**
+- Some commands focus on **planning** (workflows:plan)
+- Some focus on **execution** (workflows:work)
+- Some focus on **analysis** (code:review)
+- Some focus on **automation** (git:smart-commit)
+- Some focus on **coordination** (resolve-parallel)
 
 ---
 

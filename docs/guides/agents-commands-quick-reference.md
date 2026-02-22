@@ -118,7 +118,9 @@
 
 ## Command Quick Lookup
 
-### Core Workflow Commands
+Ghostwire includes **50+ built-in commands** organized by category.
+
+### Core Workflow Commands (5)
 
 | Command | Purpose | Agents |
 |---------|---------|--------|
@@ -128,7 +130,7 @@
 | `/ghostwire:workflows:compound` | Document learnings | writer-*, editor-* |
 | `/ghostwire:workflows:review` | Exhaustive review | reviewer-*, validator-* |
 
-### Code Commands
+### Code Commands (4)
 
 | Command | Purpose | Agents |
 |---------|---------|--------|
@@ -137,7 +139,7 @@
 | `/ghostwire:code:optimize` | Optimize code | oracle-performance, reviewer-* |
 | `/ghostwire:code:format` | Format code | (no agents) |
 
-### Git Commands
+### Git Commands (4)
 
 | Command | Purpose | Agents |
 |---------|---------|--------|
@@ -146,7 +148,7 @@
 | `/ghostwire:git:merge` | Merge assistance | (no agents) |
 | `/ghostwire:git:cleanup` | Cleanup branches | (no agents) |
 
-### Project Commands
+### Project Commands (4)
 
 | Command | Purpose | Agents |
 |---------|---------|--------|
@@ -155,7 +157,7 @@
 | `/ghostwire:project:deploy` | Deploy project | validator-deployment |
 | `/ghostwire:project:test` | Run tests | (no agents) |
 
-### Utility Commands
+### Utility Commands (4)
 
 | Command | Purpose | Agents |
 |---------|---------|--------|
@@ -164,15 +166,32 @@
 | `/ghostwire:util:restore` | Restore files | (no agents) |
 | `/ghostwire:util:doctor` | Run diagnostics | (no agents) |
 
-### Specialized Commands
+### Documentation Commands (4)
 
 | Command | Purpose | Agents |
 |---------|---------|--------|
-| `/plan-review` | Review a plan | reviewer-rails, reviewer-simplicity |
-| `/test-browser` | Browser testing | designer-builder, validator-* |
-| `/xcode-test` | iOS testing | designer-builder, validator-* |
-| `/resolve-parallel` | Resolve multiple items | executor, reviewer-* |
-| `/triage` | Triage issues | researcher-codebase, validator-* |
+| `/ghostwire:docs:deploy-docs` | Deploy documentation | (no agents) |
+| `/ghostwire:docs:release-docs` | Release documentation | (no agents) |
+| `/ghostwire:docs:feature-video` | Create feature video | (no agents) |
+| `/ghostwire:docs:test-browser` | Browser testing | designer-builder, validator-* |
+
+### Specialized Commands (20+)
+
+| Command | Purpose | Agents |
+|---------|---------|--------|
+| `/ghostwire:init-deep` | Initialize with deep analysis | researcher-codebase |
+| `/ghostwire:overclock-loop` | Run task completion loop | operator, orchestrator |
+| `/ghostwire:ulw-overclock` | Ultra-work mode | operator, orchestrator |
+| `/ghostwire:jack-in-work` | Jump into work mode | operator, orchestrator |
+| `/ghostwire:refactor` | Refactor with analysis | reviewer-*, researcher-* |
+| `/ghostwire:plan-review` | Review a plan | reviewer-rails, reviewer-simplicity |
+| `/ghostwire:test-browser` | Browser testing | designer-builder, validator-* |
+| `/ghostwire:xcode-test` | iOS testing | designer-builder, validator-* |
+| `/ghostwire:triage` | Triage issues | researcher-codebase, validator-* |
+| `/ghostwire:resolve-parallel` | Resolve multiple items | executor, reviewer-* |
+| `/ghostwire:resolve-pr-parallel` | Resolve PRs in parallel | executor, reviewer-* |
+| `/ghostwire:resolve-todo-parallel` | Resolve todos in parallel | executor, reviewer-* |
+| And 10+ more... | | |
 
 ---
 

@@ -555,38 +555,93 @@ Each chef is specialized. The head chef coordinates. The order (command) drives 
 
 ## The Command Ecosystem
 
-### Core Commands (Entry Points)
+Ghostwire includes **50+ built-in commands** organized by category. Each command is a complete workflow that may invoke agents, tools, or both.
 
-These are the main commands you'll use:
+### Core Workflow Commands (5)
+
+These are the main entry points for complex work:
 
 | Command | Purpose | Agents Used |
 |---------|---------|-------------|
 | `/ghostwire:workflows:plan` | Plan a feature | planner, researcher-* |
 | `/ghostwire:workflows:work` | Execute a plan | executor, researcher-*, reviewer-* |
-| `/ghostwire:code:review` | Review code | reviewer-* |
-| `/ghostwire:code:refactor` | Refactor code | reviewer-*, researcher-* |
 | `/ghostwire:workflows:brainstorm` | Brainstorm ideas | advisor-*, researcher-* |
-
-### Specialized Commands
-
-These handle specific scenarios:
-
-| Command | Purpose | Agents Used |
-|---------|---------|-------------|
-| `/plan-review` | Review a plan | reviewer-rails, reviewer-simplicity |
-| `/test-browser` | Test in browser | designer-builder, validator-* |
-| `/xcode-test` | Test iOS app | designer-builder, validator-* |
-| `/resolve-parallel` | Resolve multiple items | executor, reviewer-* |
-
-### Workflow Commands
-
-These manage complex workflows:
-
-| Command | Purpose | Agents Used |
-|---------|---------|-------------|
-| `/ghostwire:workflows:brainstorm` | Brainstorm approach | advisor-*, researcher-* |
 | `/ghostwire:workflows:compound` | Document learnings | writer-*, editor-* |
 | `/ghostwire:workflows:review` | Exhaustive review | reviewer-*, validator-* |
+
+### Code Commands (4)
+
+Code analysis and transformation:
+
+| Command | Purpose | Agents Used |
+|---------|---------|-------------|
+| `/ghostwire:code:review` | Review code | reviewer-* |
+| `/ghostwire:code:refactor` | Refactor code | reviewer-*, researcher-* |
+| `/ghostwire:code:optimize` | Optimize code | oracle-performance, reviewer-* |
+| `/ghostwire:code:format` | Format code | (no agents) |
+
+### Git Commands (4)
+
+Git workflow automation:
+
+| Command | Purpose | Agents Used |
+|---------|---------|-------------|
+| `/ghostwire:git:smart-commit` | Smart commits | (no agents) |
+| `/ghostwire:git:branch` | Branch management | (no agents) |
+| `/ghostwire:git:merge` | Merge assistance | (no agents) |
+| `/ghostwire:git:cleanup` | Cleanup branches | (no agents) |
+
+### Project Commands (4)
+
+Project-level operations:
+
+| Command | Purpose | Agents Used |
+|---------|---------|-------------|
+| `/ghostwire:project:init` | Initialize project | researcher-repo |
+| `/ghostwire:project:build` | Build project | (no agents) |
+| `/ghostwire:project:deploy` | Deploy project | validator-deployment |
+| `/ghostwire:project:test` | Run tests | (no agents) |
+
+### Utility Commands (4)
+
+Project maintenance:
+
+| Command | Purpose | Agents Used |
+|---------|---------|-------------|
+| `/ghostwire:util:clean` | Clean project | (no agents) |
+| `/ghostwire:util:backup` | Backup files | (no agents) |
+| `/ghostwire:util:restore` | Restore files | (no agents) |
+| `/ghostwire:util:doctor` | Run diagnostics | (no agents) |
+
+### Documentation Commands (4)
+
+Documentation and testing:
+
+| Command | Purpose | Agents Used |
+|---------|---------|-------------|
+| `/ghostwire:docs:deploy-docs` | Deploy documentation | (no agents) |
+| `/ghostwire:docs:release-docs` | Release documentation | (no agents) |
+| `/ghostwire:docs:feature-video` | Create feature video | (no agents) |
+| `/ghostwire:docs:test-browser` | Browser testing | designer-builder, validator-* |
+
+### Specialized Commands (20+)
+
+Domain-specific workflows:
+
+| Command | Purpose | Agents Used |
+|---------|---------|-------------|
+| `/ghostwire:init-deep` | Initialize with deep analysis | researcher-codebase |
+| `/ghostwire:overclock-loop` | Run task completion loop | operator, orchestrator |
+| `/ghostwire:jack-in-work` | Jump into work mode | operator, orchestrator |
+| `/ghostwire:refactor` | Refactor with analysis | reviewer-*, researcher-* |
+| `/ghostwire:plan-review` | Review a plan | reviewer-rails, reviewer-simplicity |
+| `/ghostwire:test-browser` | Browser testing | designer-builder, validator-* |
+| `/ghostwire:xcode-test` | iOS testing | designer-builder, validator-* |
+| `/ghostwire:triage` | Triage issues | researcher-codebase, validator-* |
+| `/ghostwire:resolve-parallel` | Resolve multiple items | executor, reviewer-* |
+| `/ghostwire:resolve-pr-parallel` | Resolve PRs in parallel | executor, reviewer-* |
+| `/ghostwire:resolve-todo-parallel` | Resolve todos in parallel | executor, reviewer-* |
+| And 10+ more specialized commands... | | |
 
 ---
 

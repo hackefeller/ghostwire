@@ -264,10 +264,10 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         const temperatureToUse = augurOverride?.temperature ?? categoryConfig?.temperature;
         const topPToUse = augurOverride?.top_p ?? categoryConfig?.top_p;
         const maxTokensToUse = augurOverride?.maxTokens ?? categoryConfig?.maxTokens;
-        const plannerMarkdown = readFileSync(
-          join(ctx.directory, "src/orchestration/agents/planner.md"),
-          "utf-8",
-        );
+        // Get planner prompt from builtin agents instead of reading from file
+        // This ensures it works regardless of what directory is being used
+        const plannerAgent = builtinAgents["planner"];
+        const plannerMarkdown = plannerAgent?.prompt || "";
         const augurBase = {
           name: "planner",
           ...(resolvedModel ? { model: resolvedModel } : {}),

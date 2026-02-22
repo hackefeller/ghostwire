@@ -99,6 +99,8 @@ Commands **do**:
 
 ## Agent Types and Their Roles
 
+Ghostwire includes **38 agents** organized into 8 functional categories.
+
 ### 1. **Orchestration Agents** (4 agents)
 
 These coordinate other agents and manage workflows:
@@ -112,32 +114,57 @@ These coordinate other agents and manage workflows:
 
 **Key insight:** Even orchestration agents need commands to be invoked. They don't self-start.
 
-### 2. **Specialist Agents** (27 agents)
+### 2. **Specialist Agents** (34 agents)
 
 These perform focused work in specific domains:
 
 **Code Review Agents** (7)
-- `reviewer-rails`, `reviewer-python`, `reviewer-typescript`
-- `reviewer-rails-dh`, `reviewer-simplicity`, `reviewer-security`, `reviewer-races`
+- `reviewer-rails` - Kieran-style Rails code review
+- `reviewer-python` - Python code review
+- `reviewer-typescript` - TypeScript code review
+- `reviewer-rails-dh` - DHH-style Rails review
+- `reviewer-simplicity` - Code clarity and YAGNI
+- `reviewer-security` - Security audits
+- `reviewer-races` - Race condition detection
 
 **Research Agents** (8)
-- `researcher-docs`, `researcher-learnings`, `researcher-practices`, `researcher-git`
-- `researcher-codebase`, `researcher-data`, `researcher-repo`, `analyzer-media`
+- `researcher-codebase` - Codebase search and patterns
+- `researcher-docs` - Framework documentation
+- `researcher-learnings` - Internal knowledge
+- `researcher-practices` - Best practices
+- `researcher-git` - Git history analysis
+- `researcher-data` - External libraries and docs
+- `researcher-repo` - Repository structure
+- `analyzer-media` - PDFs, images, diagrams
 
 **Design Agents** (5)
-- `designer-flow`, `designer-sync`, `designer-iterator`, `analyzer-design`, `designer-builder`
+- `designer-flow` - User journey and spec flow
+- `designer-builder` - Frontend implementation
+- `designer-sync` - Figma synchronization
+- `designer-iterator` - Visual improvements
+- `analyzer-design` - Design validation
 
 **Advisory Agents** (3)
-- `advisor-architecture`, `advisor-strategy`, `advisor-plan`
+- `advisor-architecture` - Architecture design
+- `advisor-strategy` - Pre-planning consultation
+- `advisor-plan` - High-IQ debugging
 
 **Validation Agents** (4)
-- `validator-audit`, `validator-deployment`, `validator-bugs`, `analyzer-patterns`
+- `validator-audit` - Plan validation
+- `validator-deployment` - Deployment verification
+- `validator-bugs` - Bug reproduction
+- `analyzer-patterns` - Pattern recognition
 
 **Specialized Agents** (4)
-- `expert-migrations`, `guardian-data`, `resolver-pr`, `oracle-performance`
+- `expert-migrations` - Data migrations
+- `guardian-data` - Data integrity
+- `resolver-pr` - PR comment resolution
+- `oracle-performance` - Performance analysis
 
 **Documentation Agents** (3)
-- `writer-readme`, `writer-gem`, `editor-style`
+- `writer-readme` - README writing
+- `writer-gem` - Gem documentation
+- `editor-style` - Style guides
 
 ---
 

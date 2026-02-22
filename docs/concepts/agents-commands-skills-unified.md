@@ -133,7 +133,9 @@ COMMAND
 
 ## The Three Types of Agents
 
-### Type 1: Orchestration Agents
+Ghostwire includes **38 agents** organized into 8 functional categories.
+
+### Type 1: Orchestration Agents (4)
 **Coordinate other agents and manage workflows.**
 
 | Agent | Purpose |
@@ -156,18 +158,56 @@ COMMAND
 
 ---
 
-### Type 2: Specialist Agents
+### Type 2: Specialist Agents (34)
 **Execute focused work in specific domains.**
 
-| Category | Agents |
-|----------|--------|
-| Code Review | reviewer-rails, reviewer-python, reviewer-typescript, reviewer-security, etc. |
-| Research | researcher-codebase, researcher-docs, researcher-data, researcher-git, etc. |
-| Design | designer-flow, designer-builder, designer-sync, etc. |
-| Advisory | advisor-architecture, advisor-strategy, advisor-plan |
-| Validation | validator-audit, validator-deployment, validator-bugs |
-| Specialized | expert-migrations, guardian-data, resolver-pr, oracle-performance |
-| Documentation | writer-readme, writer-gem, editor-style |
+**Code Review (7 agents)**
+- `reviewer-rails` - Kieran-style Rails code review
+- `reviewer-python` - Python code review
+- `reviewer-typescript` - TypeScript code review
+- `reviewer-rails-dh` - DHH-style Rails review
+- `reviewer-simplicity` - Code clarity and YAGNI
+- `reviewer-security` - Security audits
+- `reviewer-races` - Race condition detection
+
+**Research (8 agents)**
+- `researcher-codebase` - Codebase search and patterns
+- `researcher-docs` - Framework documentation
+- `researcher-learnings` - Internal knowledge
+- `researcher-practices` - Best practices
+- `researcher-git` - Git history analysis
+- `researcher-data` - External libraries and docs
+- `researcher-repo` - Repository structure
+- `analyzer-media` - PDFs, images, diagrams
+
+**Design (5 agents)**
+- `designer-flow` - User journey and spec flow
+- `designer-builder` - Frontend implementation
+- `designer-sync` - Figma synchronization
+- `designer-iterator` - Visual improvements
+- `analyzer-design` - Design validation
+
+**Advisory (3 agents)**
+- `advisor-architecture` - Architecture design
+- `advisor-strategy` - Pre-planning consultation
+- `advisor-plan` - High-IQ debugging
+
+**Validation (4 agents)**
+- `validator-audit` - Plan validation
+- `validator-deployment` - Deployment verification
+- `validator-bugs` - Bug reproduction
+- `analyzer-patterns` - Pattern recognition
+
+**Specialized (4 agents)**
+- `expert-migrations` - Data migrations
+- `guardian-data` - Data integrity
+- `resolver-pr` - PR comment resolution
+- `oracle-performance` - Performance analysis
+
+**Documentation (3 agents)**
+- `writer-readme` - README writing
+- `writer-gem` - Gem documentation
+- `editor-style` - Style guides
 
 **Characteristics:**
 - Focused expertise in one domain
@@ -334,17 +374,19 @@ Commands are organized into functional categories. Each command is a complete wo
 
 ---
 
-## The Two Types of Skills
+## Skills: 19 Built-in Skills
 
-### Type 1: Knowledge Skills
-**Inject specialized knowledge into agents.**
+Ghostwire includes **19 built-in skills** that enhance agents with specialized knowledge and tool access.
 
-| Skill | Knowledge |
-|-------|-----------|
-| `git-master` | Git expertise and atomic commits |
+### Core Skills (4)
+**Essential skills for common tasks.**
+
+| Skill | Purpose |
+|-------|---------|
+| `git-master` | Git expertise: atomic commits, rebase, squash, history search |
 | `frontend-ui-ux` | Frontend design and UX patterns |
 | `dev-browser` | Browser automation and testing |
-| `playwright` | Playwright browser automation |
+| `agent-browser` | Browser automation via Playwright |
 
 **Characteristics:**
 - Provide domain expertise
@@ -359,25 +401,64 @@ Commands are organized into functional categories. Each command is a complete wo
 
 ---
 
-### Type 2: Tool Skills
-**Enable access to specialized tools.**
+### Domain-Specific Skills (15)
+**Specialized knowledge for specific domains and frameworks.**
 
-| Skill | Tools |
-|-------|-------|
-| `playwright` | Browser automation (Playwright MCP) |
-| `git-master` | Git operations (atomic commits, rebase) |
-| `dev-browser` | Browser interaction and testing |
+**Ruby/Rails Skills**
+- `andrew-kane-gem-writer` - Andrew Kane gem documentation style
+- `dhh-rails-style` - DHH/37signals Rails philosophy
+- `dspy-ruby` - DSPy Ruby integration
+
+**Documentation Skills**
+- `compound-docs` - Compound documentation patterns
+- `every-style-editor` - Every style guide editor
+- `file-todos` - File-based todo management
+
+**Development Skills**
+- `brainstorming` - Brainstorming and ideation
+- `coding-tutor` - Coding tutorials and learning
+- `create-agent-skills` - Creating new agent skills
+- `frontend-design` - Frontend design patterns
+- `gemini-imagegen` - Gemini image generation
+- `git-worktree` - Git worktree management
+- `ralph-loop` - Ralph loop execution
+- `rclone` - Rclone file synchronization
+- `skill-creator` - Skill creation and scaffolding
 
 **Characteristics:**
-- Provide tool access
-- Enable specialized operations
+- Provide specialized knowledge for specific domains
+- Enable tool access for specialized operations
 - Loaded via `load_skills=["..."]`
-- Can be combined
+- Can be combined for complex tasks
 
 **When Used:**
-- Agent needs specialized tools
+- Agent needs specialized knowledge for a domain
 - Task requires tool access
-- Want to enable specific capabilities
+- Want to enhance agent capabilities with domain expertise
+
+---
+
+### How Skills Work
+
+Skills enhance agents by:
+1. **Providing knowledge** - Domain expertise and best practices
+2. **Enabling tools** - Access to specialized MCPs and utilities
+3. **Guiding reasoning** - Patterns and conventions for the domain
+4. **Improving quality** - Domain-specific standards and practices
+
+**Example:**
+```
+delegate_task(
+  category="visual-engineering",
+  load_skills=["frontend-ui-ux", "playwright"],
+  prompt="Build a responsive navbar..."
+)
+```
+
+This invokes an agent with:
+- Frontend UI/UX expertise
+- Browser automation capabilities
+- Enhanced reasoning for visual work
 
 ---
 

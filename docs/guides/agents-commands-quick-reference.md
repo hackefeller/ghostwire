@@ -41,6 +41,8 @@
 
 ## Agent Quick Lookup
 
+Ghostwire includes **38 agents** organized into 8 functional categories.
+
 ### By Task
 
 | Task | Agent | Command |
@@ -58,7 +60,7 @@
 | Validate deployment | `validator-deployment` | `/ghostwire:workflows:work` |
 | Debug architecture | `advisor-plan` | `/ghostwire:plan-review` |
 
-### By Category
+### By Category (38 total)
 
 **Orchestration (4)**
 - `operator` - Primary orchestrator
@@ -67,7 +69,7 @@
 - `executor` - Execution specialist
 
 **Code Review (7)**
-- `reviewer-rails` - Rails code
+- `reviewer-rails` - Kieran-style Rails
 - `reviewer-python` - Python code
 - `reviewer-typescript` - TypeScript code
 - `reviewer-rails-dh` - DHH-style Rails
@@ -76,7 +78,7 @@
 - `reviewer-races` - Race conditions
 
 **Research (8)**
-- `researcher-codebase` - Find code patterns
+- `researcher-codebase` - Code patterns
 - `researcher-docs` - Framework docs
 - `researcher-learnings` - Internal knowledge
 - `researcher-practices` - Best practices

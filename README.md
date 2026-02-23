@@ -172,7 +172,7 @@ Hand this doc to an agent and let them set it up.
 As following:
 
 ```
-Hey please read this readme and tell me why it is different from other agent harness? why is this actually good? https://raw.githubusercontent.com/pontistudios/ghostwire/refs/heads/dev/README.md
+Hey please read this readme and tell me why it is different from other agent harness? why is this actually good? https://raw.githubusercontent.com/pontistudios/ghostwire/refs/heads/main/README.md
 ```
 
 ### 🪄 The Magic Word: `ultrawork`
@@ -243,7 +243,7 @@ Copy and paste this prompt to your LLM agent (Claude Code, AmpCode, Cursor, etc.
 
 ```
 Install and configure ghostwire by following the instructions here:
-https://raw.githubusercontent.com/pontistudios/ghostwire/refs/heads/master/docs/guide/installation.md
+https://raw.githubusercontent.com/pontistudios/ghostwire/refs/heads/main/docs/guide/installation.md
 ```
 
 Or read the [Installation Guide](docs/guide/installation.md) directly—but **we strongly recommend letting an agent handle it. Humans make mistakes.**
@@ -253,7 +253,7 @@ Or read the [Installation Guide](docs/guide/installation.md) directly—but **we
 Fetch the installation guide and follow it:
 
 ```bash
-curl -s https://raw.githubusercontent.com/pontistudios/ghostwire/refs/heads/master/docs/guide/installation.md
+curl -s https://raw.githubusercontent.com/pontistudios/ghostwire/refs/heads/main/docs/guide/installation.md
 ```
 
 ## Uninstallation

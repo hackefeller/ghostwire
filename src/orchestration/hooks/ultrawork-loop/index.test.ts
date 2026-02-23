@@ -2,12 +2,12 @@ import { describe, expect, test, beforeEach, afterEach } from "bun:test";
 import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { createRalphLoopHook } from "./index";
+import { createUltraworkLoopHook } from "./index";
 import { readState, writeState, clearState } from "./storage";
-import type { RalphLoopState } from "./types";
+import type { UltraworkLoopState } from "./types";
 
-describe("overclock-loop", () => {
-  const TEST_DIR = join(tmpdir(), "overclock-loop-test-" + Date.now());
+describe("ultrawork-loop", () => {
+  const TEST_DIR = join(tmpdir(), "ultrawork-loop-test-" + Date.now());
   let promptCalls: Array<{ sessionID: string; text: string }>;
   let toastCalls: Array<{ title: string; message: string; variant: string }>;
   let messagesCalls: Array<{ sessionID: string }>;
@@ -49,7 +49,7 @@ describe("overclock-loop", () => {
         },
       },
       directory: TEST_DIR,
-    } as unknown as Parameters<typeof createRalphLoopHook>[0];
+    } as unknown as Parameters<typeof createUltraworkLoopHook>[0];
   }
 
   beforeEach(() => {
@@ -75,7 +75,7 @@ describe("overclock-loop", () => {
   describe("storage", () => {
     test("should write and read state correctly", () => {
       // #given - a state object
-      const state: RalphLoopState = {
+      const state: UltraworkLoopState = {
         active: true,
         iteration: 1,
         max_iterations: 50,
@@ -102,7 +102,7 @@ describe("overclock-loop", () => {
 
     test("should handle ultrawork field", () => {
       // #given - a state object with ultrawork enabled
-      const state: RalphLoopState = {
+      const state: UltraworkLoopState = {
         active: true,
         iteration: 1,
         max_iterations: 50,
@@ -132,7 +132,7 @@ describe("overclock-loop", () => {
 
     test("should clear state correctly", () => {
       // #given - existing state
-      const state: RalphLoopState = {
+      const state: UltraworkLoopState = {
         active: true,
         iteration: 1,
         max_iterations: 50,
@@ -153,7 +153,7 @@ describe("overclock-loop", () => {
 
     test("should handle multiline prompts", () => {
       // #given - state with multiline prompt
-      const state: RalphLoopState = {
+      const state: UltraworkLoopState = {
         active: true,
         iteration: 1,
         max_iterations: 10,
@@ -174,7 +174,7 @@ describe("overclock-loop", () => {
   describe("hook", () => {
     test("should start loop and write state", () => {
       // #given - hook instance
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
 
       // #when - start loop
       const success = hook.startLoop("session-123", "Build something", {
@@ -195,7 +195,7 @@ describe("overclock-loop", () => {
 
     test("should accept ultrawork option in startLoop", () => {
       // #given - hook instance
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
 
       // #when - start loop with ultrawork
       hook.startLoop("session-123", "Build something", { ultrawork: true });
@@ -207,7 +207,7 @@ describe("overclock-loop", () => {
 
     test("should handle missing ultrawork option in startLoop", () => {
       // #given - hook instance
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
 
       // #when - start loop without ultrawork
       hook.startLoop("session-123", "Build something");
@@ -219,7 +219,7 @@ describe("overclock-loop", () => {
 
     test("should inject continuation when loop active and no completion detected", async () => {
       // #given - active loop state
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Build a feature", { maxIterations: 10 });
 
       // #when - session goes idle
@@ -244,7 +244,7 @@ describe("overclock-loop", () => {
 
     test("should stop loop when max iterations reached", async () => {
       // #given - loop at max iteration
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Build something", { maxIterations: 2 });
 
       const state = hook.getState()!;
@@ -264,7 +264,7 @@ describe("overclock-loop", () => {
 
       // #then - warning toast shown
       expect(toastCalls.length).toBe(1);
-      expect(toastCalls[0].title).toBe("Ralph Loop Stopped");
+      expect(toastCalls[0].title).toBe("Ultrawork Loop Stopped");
       expect(toastCalls[0].variant).toBe("warning");
 
       // #then - state should be cleared
@@ -273,7 +273,7 @@ describe("overclock-loop", () => {
 
     test("should cancel loop via cancelLoop", () => {
       // #given - active loop
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Test task");
 
       // #when - cancel loop
@@ -286,7 +286,7 @@ describe("overclock-loop", () => {
 
     test("should not cancel loop for different session", () => {
       // #given - active loop for session-123
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Test task");
 
       // #when - try to cancel for different session
@@ -299,7 +299,7 @@ describe("overclock-loop", () => {
 
     test("should skip injection during recovery", async () => {
       // #given - active loop and session in recovery
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Test task");
 
       await hook.event({
@@ -323,7 +323,7 @@ describe("overclock-loop", () => {
 
     test("should clear state on session deletion", async () => {
       // #given - active loop
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Test task");
 
       // #when - session deleted
@@ -340,7 +340,7 @@ describe("overclock-loop", () => {
 
     test("should not inject for different session than loop owner", async () => {
       // #given - loop owned by session-123
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Test task");
 
       // #when - different session goes idle
@@ -357,7 +357,7 @@ describe("overclock-loop", () => {
 
     test("should clear orphaned state when original session no longer exists", async () => {
       // #given - state file exists from a previous session that no longer exists
-      const state: RalphLoopState = {
+      const state: UltraworkLoopState = {
         active: true,
         iteration: 3,
         max_iterations: 50,
@@ -369,7 +369,7 @@ describe("overclock-loop", () => {
       writeState(TEST_DIR, state);
 
       // Mock sessionExists to return false for the orphaned session
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         checkSessionExists: async (sessionID: string) => {
           // Orphaned session doesn't exist, current session does
           return sessionID !== "orphaned-session-999";
@@ -392,7 +392,7 @@ describe("overclock-loop", () => {
 
     test("should NOT clear state when original session still exists (different active session)", async () => {
       // #given - state file exists from a session that still exists
-      const state: RalphLoopState = {
+      const state: UltraworkLoopState = {
         active: true,
         iteration: 2,
         max_iterations: 50,
@@ -404,7 +404,7 @@ describe("overclock-loop", () => {
       writeState(TEST_DIR, state);
 
       // Mock sessionExists to return true for the active session
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         checkSessionExists: async (sessionID: string) => {
           // Original session still exists
           return sessionID === "active-session-123" || sessionID === "new-session-456";
@@ -428,7 +428,7 @@ describe("overclock-loop", () => {
 
     test("should use default config values", () => {
       // #given - hook with config
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         config: {
           enabled: true,
           default_max_iterations: 200,
@@ -445,7 +445,7 @@ describe("overclock-loop", () => {
 
     test("should not inject when no loop is active", async () => {
       // #given - no active loop
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
 
       // #when - session goes idle
       await hook.event({
@@ -462,7 +462,7 @@ describe("overclock-loop", () => {
     test("should detect completion promise and stop loop", async () => {
       // #given - active loop with transcript containing completion
       const transcriptPath = join(TEST_DIR, "transcript.jsonl");
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         getTranscriptPath: () => transcriptPath,
       });
       hook.startLoop("session-123", "Build something", { completionPromise: "COMPLETE" });
@@ -486,7 +486,7 @@ describe("overclock-loop", () => {
 
       // #then - loop completed, no continuation
       expect(promptCalls.length).toBe(0);
-      expect(toastCalls.some((t) => t.title === "Ralph Loop Complete!")).toBe(true);
+      expect(toastCalls.some((t) => t.title === "Ultrawork Loop Complete!")).toBe(true);
       expect(hook.getState()).toBeNull();
     });
 
@@ -499,7 +499,7 @@ describe("overclock-loop", () => {
           parts: [{ type: "text", text: "I have completed the task. <promise>API_DONE</promise>" }],
         },
       ];
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         getTranscriptPath: () => join(TEST_DIR, "nonexistent.jsonl"),
       });
       hook.startLoop("session-123", "Build something", { completionPromise: "API_DONE" });
@@ -514,7 +514,7 @@ describe("overclock-loop", () => {
 
       // #then - loop completed via API detection, no continuation
       expect(promptCalls.length).toBe(0);
-      expect(toastCalls.some((t) => t.title === "Ralph Loop Complete!")).toBe(true);
+      expect(toastCalls.some((t) => t.title === "Ultrawork Loop Complete!")).toBe(true);
       expect(hook.getState()).toBeNull();
 
       // #then - messages API was called with correct session ID
@@ -524,7 +524,7 @@ describe("overclock-loop", () => {
 
     test("should handle multiple iterations correctly", async () => {
       // #given - active loop
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Build feature", { maxIterations: 5 });
 
       // #when - multiple idle events
@@ -542,7 +542,7 @@ describe("overclock-loop", () => {
 
     test("should include prompt and promise in continuation message", async () => {
       // #given - loop with specific prompt and promise
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Create a calculator app", {
         completionPromise: "CALCULATOR_DONE",
         maxIterations: 10,
@@ -560,7 +560,7 @@ describe("overclock-loop", () => {
 
     test("should clear loop state on user abort (MessageAbortedError)", async () => {
       // #given - active loop
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Build something");
       expect(hook.getState()).not.toBeNull();
 
@@ -581,7 +581,7 @@ describe("overclock-loop", () => {
 
     test("should NOT set recovery mode on user abort", async () => {
       // #given - active loop
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Build something");
 
       // #when - user aborts (Ctrl+C)
@@ -621,7 +621,7 @@ describe("overclock-loop", () => {
           parts: [{ type: "text", text: "Working on more features..." }],
         },
       ];
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         getTranscriptPath: () => join(TEST_DIR, "nonexistent.jsonl"),
       });
       hook.startLoop("session-123", "Build something", { completionPromise: "DONE" });
@@ -647,7 +647,7 @@ describe("overclock-loop", () => {
           parts: [{ type: "text", text: "Task complete! <promise>DONE</promise>" }],
         },
       ];
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         getTranscriptPath: () => join(TEST_DIR, "nonexistent.jsonl"),
       });
       hook.startLoop("session-123", "Build something", { completionPromise: "DONE" });
@@ -659,13 +659,13 @@ describe("overclock-loop", () => {
 
       // #then - loop should complete (last message has completion promise)
       expect(promptCalls.length).toBe(0);
-      expect(toastCalls.some((t) => t.title === "Ralph Loop Complete!")).toBe(true);
+      expect(toastCalls.some((t) => t.title === "Ultrawork Loop Complete!")).toBe(true);
       expect(hook.getState()).toBeNull();
     });
 
     test("should allow starting new loop while previous loop is active (different session)", async () => {
       // #given - active loop in session A
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-A", "First task", { maxIterations: 10 });
       expect(hook.getState()?.session_id).toBe("session-A");
       expect(hook.getState()?.prompt).toBe("First task");
@@ -696,7 +696,7 @@ describe("overclock-loop", () => {
 
     test("should allow starting new loop in same session (restart)", async () => {
       // #given - active loop in session A at iteration 5
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-A", "First task", { maxIterations: 10 });
 
       // Simulate some iterations
@@ -736,7 +736,7 @@ describe("overclock-loop", () => {
       // containing `<promise>DONE</promise>` is recorded as a user message and
       // falsely triggers completion detection
       const transcriptPath = join(TEST_DIR, "transcript.jsonl");
-      const templateText = `You are starting a Ralph Loop...
+      const templateText = `You are starting a Ultrawork Loop...
 Output <promise>DONE</promise> when fully complete`;
       const userEntry = JSON.stringify({
         type: "user",
@@ -745,7 +745,7 @@ Output <promise>DONE</promise> when fully complete`;
       });
       writeFileSync(transcriptPath, userEntry + "\n");
 
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         getTranscriptPath: () => transcriptPath,
       });
       hook.startLoop("session-123", "Build something", { completionPromise: "DONE" });
@@ -776,7 +776,7 @@ Original task: Build something`;
       });
       writeFileSync(transcriptPath, userEntry + "\n");
 
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         getTranscriptPath: () => transcriptPath,
       });
       hook.startLoop("session-123", "Build something", { completionPromise: "DONE" });
@@ -806,7 +806,7 @@ Original task: Build something`;
       });
       writeFileSync(transcriptPath, toolResultEntry + "\n");
 
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         getTranscriptPath: () => transcriptPath,
       });
       hook.startLoop("session-123", "Build something", { completionPromise: "DONE" });
@@ -821,7 +821,7 @@ Original task: Build something`;
 
       // #then - loop should complete (tool_result contains actual completion output)
       expect(promptCalls.length).toBe(0);
-      expect(toastCalls.some((t) => t.title === "Ralph Loop Complete!")).toBe(true);
+      expect(toastCalls.some((t) => t.title === "Ultrawork Loop Complete!")).toBe(true);
       expect(hook.getState()).toBeNull();
     });
 
@@ -839,7 +839,7 @@ Original task: Build something`;
       mockSessionMessages = [
         { info: { role: "assistant" }, parts: [{ type: "text", text: "No promise here" }] },
       ];
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         getTranscriptPath: () => transcriptPath,
       });
       hook.startLoop("session-123", "Build something", { completionPromise: "DONE" });
@@ -862,7 +862,7 @@ Original task: Build something`;
     test("should show ultrawork completion toast", async () => {
       // #given - hook with ultrawork mode and completion in transcript
       const transcriptPath = join(TEST_DIR, "transcript.jsonl");
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         getTranscriptPath: () => transcriptPath,
       });
       writeFileSync(
@@ -887,7 +887,7 @@ Original task: Build something`;
     test("should show regular completion toast when ultrawork disabled", async () => {
       // #given - hook without ultrawork
       const transcriptPath = join(TEST_DIR, "transcript.jsonl");
-      const hook = createRalphLoopHook(createMockPluginInput(), {
+      const hook = createUltraworkLoopHook(createMockPluginInput(), {
         getTranscriptPath: () => transcriptPath,
       });
       writeFileSync(
@@ -904,12 +904,12 @@ Original task: Build something`;
       await hook.event({ event: { type: "session.idle", properties: { sessionID: "test-id" } } });
 
       // #then - regular toast shown
-      expect(toastCalls.some((t) => t.title === "Ralph Loop Complete!")).toBe(true);
+      expect(toastCalls.some((t) => t.title === "Ultrawork Loop Complete!")).toBe(true);
     });
 
     test("should prepend ultrawork to continuation prompt when ultrawork=true", async () => {
       // #given - hook with ultrawork mode enabled
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Build API", { ultrawork: true });
 
       // #when - session goes idle (continuation triggered)
@@ -924,7 +924,7 @@ Original task: Build something`;
 
     test("should NOT prepend ultrawork to continuation prompt when ultrawork=false", async () => {
       // #given - hook without ultrawork mode
-      const hook = createRalphLoopHook(createMockPluginInput());
+      const hook = createUltraworkLoopHook(createMockPluginInput());
       hook.startLoop("session-123", "Build API");
 
       // #when - session goes idle (continuation triggered)
@@ -955,7 +955,7 @@ Original task: Build something`;
           },
         },
       };
-      const hook = createRalphLoopHook(errorMock as any, {
+      const hook = createUltraworkLoopHook(errorMock as any, {
         getTranscriptPath: () => join(TEST_DIR, "nonexistent.jsonl"),
         apiTimeout: 100,
       });

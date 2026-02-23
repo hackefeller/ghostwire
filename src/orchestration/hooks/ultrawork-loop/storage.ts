@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, writeFileSync, unlinkSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { parseFrontmatter } from "../../../integration/shared/frontmatter";
-import type { RalphLoopState } from "./types";
+import type { UltraworkLoopState } from "./types";
 import {
   DEFAULT_STATE_FILE,
   DEFAULT_COMPLETION_PROMISE,
@@ -12,7 +12,7 @@ export function getStateFilePath(directory: string, customPath?: string): string
   return customPath ? join(directory, customPath) : join(directory, DEFAULT_STATE_FILE);
 }
 
-export function readState(directory: string, customPath?: string): RalphLoopState | null {
+export function readState(directory: string, customPath?: string): UltraworkLoopState | null {
   const filePath = getStateFilePath(directory, customPath);
 
   if (!existsSync(filePath)) {
@@ -57,7 +57,7 @@ export function readState(directory: string, customPath?: string): RalphLoopStat
   }
 }
 
-export function writeState(directory: string, state: RalphLoopState, customPath?: string): boolean {
+export function writeState(directory: string, state: UltraworkLoopState, customPath?: string): boolean {
   const filePath = getStateFilePath(directory, customPath);
 
   try {
@@ -98,7 +98,7 @@ export function clearState(directory: string, customPath?: string): boolean {
   }
 }
 
-export function incrementIteration(directory: string, customPath?: string): RalphLoopState | null {
+export function incrementIteration(directory: string, customPath?: string): UltraworkLoopState | null {
   const state = readState(directory, customPath);
   if (!state) return null;
 

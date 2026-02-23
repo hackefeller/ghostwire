@@ -3,19 +3,19 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import {
-  readBoulderState,
-  writeBoulderState,
+  readUltraworkState,
+  writeUltraworkState,
   appendSessionId,
-  clearBoulderState,
+  clearUltraworkState,
   getPlanProgress,
   getPlanName,
-  createBoulderState,
+  createUltraworkState,
   findPlannerPlans,
 } from "./storage";
-import type { BoulderState } from "./types";
+import type { UltraworkState } from "./types";
 
-describe("boulder-state", () => {
-  const TEST_DIR = join(tmpdir(), "boulder-state-test-" + Date.now());
+describe("ultrawork-state", () => {
+  const TEST_DIR = join(tmpdir(), "ultrawork-state-test-" + Date.now());
   const SISYPHUS_DIR = join(TEST_DIR, ".operator");
 
   beforeEach(() => {
@@ -25,7 +25,7 @@ describe("boulder-state", () => {
     if (!existsSync(SISYPHUS_DIR)) {
       mkdirSync(SISYPHUS_DIR, { recursive: true });
     }
-    clearBoulderState(TEST_DIR);
+    clearUltraworkState(TEST_DIR);
   });
 
   afterEach(() => {
@@ -34,27 +34,27 @@ describe("boulder-state", () => {
     }
   });
 
-  describe("readBoulderState", () => {
-    test("should return null when no boulder.json exists", () => {
-      // #given - no boulder.json file
+  describe("readUltraworkState", () => {
+    test("should return null when no ultrawork.json exists", () => {
+      // #given - no ultrawork.json file
       // #when
-      const result = readBoulderState(TEST_DIR);
+      const result = readUltraworkState(TEST_DIR);
       // #then
       expect(result).toBeNull();
     });
 
-    test("should read valid boulder state", () => {
-      // #given - valid boulder.json
-      const state: BoulderState = {
+    test("should read valid ultrawork state", () => {
+      // #given - valid ultrawork.json
+      const state: UltraworkState = {
         active_plan: "/path/to/plan.md",
         started_at: "2026-01-02T10:00:00Z",
         session_ids: ["session-1", "session-2"],
         plan_name: "my-plan",
       };
-      writeBoulderState(TEST_DIR, state);
+      writeUltraworkState(TEST_DIR, state);
 
       // #when
-      const result = readBoulderState(TEST_DIR);
+      const result = readUltraworkState(TEST_DIR);
 
       // #then
       expect(result).not.toBeNull();
@@ -64,10 +64,10 @@ describe("boulder-state", () => {
     });
   });
 
-  describe("writeBoulderState", () => {
+  describe("writeUltraworkState", () => {
     test("should write state and create .ghostwire directory if needed", () => {
       // #given - state to write
-      const state: BoulderState = {
+      const state: UltraworkState = {
         active_plan: "/test/plan.md",
         started_at: "2026-01-02T12:00:00Z",
         session_ids: ["ses-123"],
@@ -75,8 +75,8 @@ describe("boulder-state", () => {
       };
 
       // #when
-      const success = writeBoulderState(TEST_DIR, state);
-      const readBack = readBoulderState(TEST_DIR);
+      const success = writeUltraworkState(TEST_DIR, state);
+      const readBack = readUltraworkState(TEST_DIR);
 
       // #then
       expect(success).toBe(true);
@@ -88,13 +88,13 @@ describe("boulder-state", () => {
   describe("appendSessionId", () => {
     test("should append new session id to existing state", () => {
       // #given - existing state with one session
-      const state: BoulderState = {
+      const state: UltraworkState = {
         active_plan: "/plan.md",
         started_at: "2026-01-02T10:00:00Z",
         session_ids: ["session-1"],
         plan_name: "plan",
       };
-      writeBoulderState(TEST_DIR, state);
+      writeUltraworkState(TEST_DIR, state);
 
       // #when
       const result = appendSessionId(TEST_DIR, "session-2");
@@ -106,24 +106,24 @@ describe("boulder-state", () => {
 
     test("should not duplicate existing session id", () => {
       // #given - state with session-1 already
-      const state: BoulderState = {
+      const state: UltraworkState = {
         active_plan: "/plan.md",
         started_at: "2026-01-02T10:00:00Z",
         session_ids: ["session-1"],
         plan_name: "plan",
       };
-      writeBoulderState(TEST_DIR, state);
+      writeUltraworkState(TEST_DIR, state);
 
       // #when
       appendSessionId(TEST_DIR, "session-1");
-      const result = readBoulderState(TEST_DIR);
+      const result = readUltraworkState(TEST_DIR);
 
       // #then
       expect(result?.session_ids).toEqual(["session-1"]);
     });
 
     test("should return null when no state exists", () => {
-      // #given - no boulder.json
+      // #given - no ultrawork.json
       // #when
       const result = appendSessionId(TEST_DIR, "new-session");
       // #then
@@ -131,20 +131,20 @@ describe("boulder-state", () => {
     });
   });
 
-  describe("clearBoulderState", () => {
-    test("should remove boulder.json", () => {
+  describe("clearUltraworkState", () => {
+    test("should remove ultrawork.json", () => {
       // #given - existing state
-      const state: BoulderState = {
+      const state: UltraworkState = {
         active_plan: "/plan.md",
         started_at: "2026-01-02T10:00:00Z",
         session_ids: ["session-1"],
         plan_name: "plan",
       };
-      writeBoulderState(TEST_DIR, state);
+      writeUltraworkState(TEST_DIR, state);
 
       // #when
-      const success = clearBoulderState(TEST_DIR);
-      const result = readBoulderState(TEST_DIR);
+      const success = clearUltraworkState(TEST_DIR);
+      const result = readUltraworkState(TEST_DIR);
 
       // #then
       expect(success).toBe(true);
@@ -152,9 +152,9 @@ describe("boulder-state", () => {
     });
 
     test("should succeed even when no file exists", () => {
-      // #given - no boulder.json
+      // #given - no ultrawork.json
       // #when
-      const success = clearBoulderState(TEST_DIR);
+      const success = clearUltraworkState(TEST_DIR);
       // #then
       expect(success).toBe(true);
     });
@@ -237,14 +237,14 @@ describe("boulder-state", () => {
     });
   });
 
-  describe("createBoulderState", () => {
+  describe("createUltraworkState", () => {
     test("should create state with correct fields", () => {
       // #given
       const planPath = "/path/to/auth-refactor.md";
       const sessionId = "ses-abc123";
 
       // #when
-      const state = createBoulderState(planPath, sessionId);
+      const state = createUltraworkState(planPath, sessionId);
 
       // #then
       expect(state.active_plan).toBe(planPath);

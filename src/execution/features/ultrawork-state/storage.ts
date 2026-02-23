@@ -1,20 +1,20 @@
 /**
- * Boulder State Storage
+ * Ultrawork State Storage
  *
- * Handles reading/writing boulder.json for active plan tracking.
+ * Handles reading/writing ultrawork.json for active plan tracking.
  */
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
 import { dirname, join, basename } from "node:path";
-import type { BoulderState, PlanProgress } from "./types";
-import { BOULDER_DIR, BOULDER_FILE, PLANNER_PLANS_DIR } from "./constants";
+import type { UltraworkState, PlanProgress } from "./types";
+import { ULTRAWORK_DIR, ULTRAWORK_FILE, PLANNER_PLANS_DIR } from "./constants";
 
-export function getBoulderFilePath(directory: string): string {
-  return join(directory, BOULDER_DIR, BOULDER_FILE);
+export function getUltraworkFilePath(directory: string): string {
+  return join(directory, ULTRAWORK_DIR, ULTRAWORK_FILE);
 }
 
-export function readBoulderState(directory: string): BoulderState | null {
-  const filePath = getBoulderFilePath(directory);
+export function readUltraworkState(directory: string): UltraworkState | null {
+  const filePath = getUltraworkFilePath(directory);
 
   if (!existsSync(filePath)) {
     return null;
@@ -22,14 +22,14 @@ export function readBoulderState(directory: string): BoulderState | null {
 
   try {
     const content = readFileSync(filePath, "utf-8");
-    return JSON.parse(content) as BoulderState;
+    return JSON.parse(content) as UltraworkState;
   } catch {
     return null;
   }
 }
 
-export function writeBoulderState(directory: string, state: BoulderState): boolean {
-  const filePath = getBoulderFilePath(directory);
+export function writeUltraworkState(directory: string, state: UltraworkState): boolean {
+  const filePath = getUltraworkFilePath(directory);
 
   try {
     const dir = dirname(filePath);
@@ -44,13 +44,13 @@ export function writeBoulderState(directory: string, state: BoulderState): boole
   }
 }
 
-export function appendSessionId(directory: string, sessionId: string): BoulderState | null {
-  const state = readBoulderState(directory);
+export function appendSessionId(directory: string, sessionId: string): UltraworkState | null {
+  const state = readUltraworkState(directory);
   if (!state) return null;
 
   if (!state.session_ids.includes(sessionId)) {
     state.session_ids.push(sessionId);
-    if (writeBoulderState(directory, state)) {
+    if (writeUltraworkState(directory, state)) {
       return state;
     }
   }
@@ -58,8 +58,8 @@ export function appendSessionId(directory: string, sessionId: string): BoulderSt
   return state;
 }
 
-export function clearBoulderState(directory: string): boolean {
-  const filePath = getBoulderFilePath(directory);
+export function clearUltraworkState(directory: string): boolean {
+  const filePath = getUltraworkFilePath(directory);
 
   try {
     if (existsSync(filePath)) {
@@ -135,9 +135,9 @@ export function getPlanName(planPath: string): string {
 }
 
 /**
- * Create a new boulder state for a plan.
+ * Create a new ultrawork state for a plan.
  */
-export function createBoulderState(planPath: string, sessionId: string): BoulderState {
+export function createUltraworkState(planPath: string, sessionId: string): UltraworkState {
   return {
     active_plan: planPath,
     started_at: new Date().toISOString(),

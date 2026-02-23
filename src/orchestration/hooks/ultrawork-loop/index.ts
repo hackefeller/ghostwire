@@ -5,7 +5,7 @@ import { log } from "../../../integration/shared/logger";
 import { SYSTEM_DIRECTIVE_PREFIX } from "../../../integration/shared/system-directive";
 import { readState, writeState, clearState, incrementIteration } from "./storage";
 import { HOOK_NAME, DEFAULT_MAX_ITERATIONS, DEFAULT_COMPLETION_PROMISE } from "./constants";
-import type { RalphLoopState, RalphLoopOptions } from "./types";
+import type { UltraworkLoopState, UltraworkLoopOptions } from "./types";
 import { getTranscriptPath as getDefaultTranscriptPath } from "../claude-code-hooks/transcript";
 import {
   findNearestMessageWithFields,
@@ -55,7 +55,7 @@ IMPORTANT:
 Original task:
 {{PROMPT}}`;
 
-export interface RalphLoopHook {
+export interface UltraworkLoopHook {
   event: (input: { event: { type: string; properties?: unknown } }) => Promise<void>;
   startLoop: (
     sessionID: string,
@@ -63,12 +63,12 @@ export interface RalphLoopHook {
     options?: { maxIterations?: number; completionPromise?: string; ultrawork?: boolean },
   ) => boolean;
   cancelLoop: (sessionID: string) => boolean;
-  getState: () => RalphLoopState | null;
+  getState: () => UltraworkLoopState | null;
 }
 
 const DEFAULT_API_TIMEOUT = 3000;
 
-export function createRalphLoopHook(ctx: PluginInput, options?: RalphLoopOptions): RalphLoopHook {
+export function createUltraworkLoopHook(ctx: PluginInput, options?: UltraworkLoopOptions): UltraworkLoopHook {
   const sessions = new Map<string, SessionState>();
   const config = options?.config;
   const stateDir = config?.state_dir;
@@ -156,7 +156,7 @@ export function createRalphLoopHook(ctx: PluginInput, options?: RalphLoopOptions
     prompt: string,
     loopOptions?: { maxIterations?: number; completionPromise?: string; ultrawork?: boolean },
   ): boolean => {
-    const state: RalphLoopState = {
+    const state: UltraworkLoopState = {
       active: true,
       iteration: 1,
       max_iterations:
@@ -192,7 +192,7 @@ export function createRalphLoopHook(ctx: PluginInput, options?: RalphLoopOptions
     return success;
   };
 
-  const getState = (): RalphLoopState | null => {
+  const getState = (): UltraworkLoopState | null => {
     return readState(ctx.directory, stateDir);
   };
 
@@ -259,7 +259,7 @@ export function createRalphLoopHook(ctx: PluginInput, options?: RalphLoopOptions
         });
         clearState(ctx.directory, stateDir);
 
-        const title = state.ultrawork ? "ULTRAWORK LOOP COMPLETE!" : "Ralph Loop Complete!";
+        const title = state.ultrawork ? "ULTRAWORK LOOP COMPLETE!" : "Ultrawork Loop Complete!";
         const message = state.ultrawork
           ? `JUST ULW ULW! Task completed after ${state.iteration} iteration(s)`
           : `Task completed after ${state.iteration} iteration(s)`;
@@ -289,7 +289,7 @@ export function createRalphLoopHook(ctx: PluginInput, options?: RalphLoopOptions
         await ctx.client.tui
           .showToast({
             body: {
-              title: "Ralph Loop Stopped",
+              title: "Ultrawork Loop Stopped",
               message: `Max iterations (${state.max_iterations}) reached without completion`,
               variant: "warning",
               duration: 5000,
@@ -327,7 +327,7 @@ export function createRalphLoopHook(ctx: PluginInput, options?: RalphLoopOptions
       await ctx.client.tui
         .showToast({
           body: {
-            title: "Ralph Loop",
+            title: "Ultrawork Loop",
             message: `Iteration ${newState.iteration}/${newState.max_iterations}`,
             variant: "info",
             duration: 2000,

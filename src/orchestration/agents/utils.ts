@@ -203,7 +203,7 @@ export function buildAgent(
     }
   }
 
-  if (!base.model) {
+  if (!base.model || base.model === "inherit") {
     base.model = model;
   }
 

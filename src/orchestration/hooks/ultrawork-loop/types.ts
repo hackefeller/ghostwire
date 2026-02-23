@@ -1,6 +1,6 @@
-import type { RalphLoopConfig } from "../../../platform/config";
+import type { UltraworkLoopConfig } from "../../../platform/config";
 
-export interface RalphLoopState {
+export interface UltraworkLoopState {
   active: boolean;
   iteration: number;
   max_iterations: number;
@@ -11,8 +11,8 @@ export interface RalphLoopState {
   ultrawork?: boolean;
 }
 
-export interface RalphLoopOptions {
-  config?: RalphLoopConfig;
+export interface UltraworkLoopOptions {
+  config?: UltraworkLoopConfig;
   getTranscriptPath?: (sessionId: string) => string;
   apiTimeout?: number;
   checkSessionExists?: (sessionId: string) => Promise<boolean>;

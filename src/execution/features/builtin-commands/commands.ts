@@ -2,9 +2,9 @@ import type { CommandDefinition } from "../claude-code-command-loader";
 import type { BuiltinCommandName, BuiltinCommands } from "./types";
 import { INIT_DEEP_TEMPLATE } from "./templates/init-deep";
 import {
-  RALPH_LOOP_TEMPLATE,
-  CANCEL_RALPH_TEMPLATE,
-} from "./templates/ralph-loop";
+  ULTRAWORK_LOOP_TEMPLATE,
+  CANCEL_ULTRAWORK_TEMPLATE,
+} from "./templates/ultrawork-loop";
 import { STOP_CONTINUATION_TEMPLATE } from "./templates/stop-continuation";
 import { REFACTOR_TEMPLATE } from "./templates/refactor";
 import { START_WORK_TEMPLATE } from "./templates/start-work";
@@ -89,11 +89,11 @@ $ARGUMENTS
 </user-request>`,
     argumentHint: "[--create-new] [--max-depth=N]",
   },
-  "ghostwire:overclock-loop": {
+  "ghostwire:ultrawork-loop": {
     description:
       "(builtin) Start self-referential development loop until completion",
     template: `<command-instruction>
-${RALPH_LOOP_TEMPLATE}
+${ULTRAWORK_LOOP_TEMPLATE}
 </command-instruction>
 
 <user-task>
@@ -102,11 +102,11 @@ $ARGUMENTS
     argumentHint:
       '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
   },
-  "ghostwire:ulw-overclock": {
+  "ghostwire:ulw-ultrawork": {
     description:
       "(builtin) Start ultrawork loop - continues until completion with ultrawork mode",
     template: `<command-instruction>
-${RALPH_LOOP_TEMPLATE}
+${ULTRAWORK_LOOP_TEMPLATE}
 </command-instruction>
 
 <user-task>
@@ -115,10 +115,10 @@ $ARGUMENTS
     argumentHint:
       '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
   },
-  "ghostwire:cancel-overclock": {
-    description: "(builtin) Cancel active Ralph Loop",
+  "ghostwire:cancel-ultrawork": {
+    description: "(builtin) Cancel active Ultrawork Loop",
     template: `<command-instruction>
-${CANCEL_RALPH_TEMPLATE}
+${CANCEL_ULTRAWORK_TEMPLATE}
 </command-instruction>`,
   },
   "ghostwire:refactor": {
@@ -149,7 +149,7 @@ $ARGUMENTS
   },
   "ghostwire:stop-continuation": {
     description:
-      "(builtin) Stop all continuation mechanisms (ralph loop, todo continuation, boulder) for this session",
+      "(builtin) Stop all continuation mechanisms (ultrawork loop, todo continuation, ultrawork state) for this session",
     template: `<command-instruction>
 ${STOP_CONTINUATION_TEMPLATE}
 </command-instruction>`,

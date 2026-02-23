@@ -1,6 +1,6 @@
-export const RALPH_LOOP_TEMPLATE = `You are starting a Ralph Loop - a self-referential development loop that runs until task completion.
+export const ULTRAWORK_LOOP_TEMPLATE = `You are starting an Ultrawork Loop - a self-referential development loop that runs until task completion.
 
-## How Ralph Loop Works
+## How Ultrawork Loop Works
 
 1. You will work on the task continuously
 2. When you believe the task is FULLY complete, output: \`<promise>{{COMPLETION_PROMISE}}</promise>\`
@@ -19,7 +19,7 @@ export const RALPH_LOOP_TEMPLATE = `You are starting a Ralph Loop - a self-refer
 
 1. **Completion**: Output your completion promise tag when fully complete
 2. **Max Iterations**: Loop stops automatically at limit
-3. **Cancel**: User runs \`/cancel-overclock\` command
+3. **Cancel**: User runs \`/cancel-ultrawork\` command
 
 ## Your Task
 
@@ -28,7 +28,7 @@ Parse the arguments below and begin working on the task. The format is:
 
 Default completion promise is "DONE" and default max iterations is 100.`;
 
-export const CANCEL_RALPH_TEMPLATE = `Cancel the currently active Ralph Loop.
+export const CANCEL_ULTRAWORK_TEMPLATE = `Cancel the currently active Ultrawork Loop.
 
 This will:
 1. Stop the loop from continuing

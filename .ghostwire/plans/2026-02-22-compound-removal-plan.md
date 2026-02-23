@@ -79,7 +79,7 @@ Rename all "compound" references to "learnings" throughout the Ghostwire codebas
 | `docs/concepts/agents-commands-skills-unified.md` | Remove compound refs, update solutions→learnings |
 
 #### Keep as historical (no change):
-- `specs/044-plugin-to-builtin-migration/` - Historical migration specs
+- `.ghostwire/specs/044-plugin-to-builtin-migration/` - Historical migration specs
 
 ### 5. Plugin Documentation
 

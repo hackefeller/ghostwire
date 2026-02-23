@@ -1,11 +1,11 @@
 /**
- * Boulder State Types
+ * Ultrawork State Types
  *
  * Manages the active work plan state for the operator orchestrator.
- * Named after the operator boulder—the eternal task that must be rolled.
+ * Named after the operator ultrawork—the eternal task that must be rolled.
  */
 
-export interface BoulderState {
+export interface UltraworkState {
   /** Absolute path to the active plan file */
   active_plan: string;
   /** ISO timestamp when work started */

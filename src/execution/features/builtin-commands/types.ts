@@ -2,9 +2,9 @@ import type { CommandDefinition } from "../claude-code-command-loader";
 
 export type BuiltinCommandName =
   | "ghostwire:init-deep"
-  | "ghostwire:overclock-loop"
-  | "ghostwire:cancel-overclock"
-  | "ghostwire:ulw-overclock"
+  | "ghostwire:ultrawork-loop"
+  | "ghostwire:cancel-ultrawork"
+  | "ghostwire:ulw-ultrawork"
   | "ghostwire:refactor"
   | "ghostwire:jack-in-work"
   | "ghostwire:stop-continuation"

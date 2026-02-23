@@ -64,7 +64,13 @@ export type BuiltinCommandName =
   | "ghostwire:spec:create"
   | "ghostwire:spec:plan"
   | "ghostwire:spec:tasks"
-  | "ghostwire:spec:implement";
+  | "ghostwire:spec:implement"
+  | "ghostwire:spec:clarify"
+  | "ghostwire:spec:analyze"
+  | "ghostwire:spec:checklist"
+  | "ghostwire:spec:to-issues"
+  // Project commands
+  | "ghostwire:project:constitution";
 
 export interface BuiltinCommandConfig {
   disabled_commands?: BuiltinCommandName[];

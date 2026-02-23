@@ -79,7 +79,13 @@ import {
   SPEC_PLAN_TEMPLATE,
   SPEC_TASKS_TEMPLATE,
   SPEC_IMPLEMENT_TEMPLATE,
+  SPEC_CLARIFY_TEMPLATE,
+  SPEC_ANALYZE_TEMPLATE,
+  SPEC_CHECKLIST_TEMPLATE,
+  SPEC_TO_ISSUES_TEMPLATE,
 } from "./templates/spec";
+// Project command templates
+import { PROJECT_CONSTITUTION_TEMPLATE } from "./templates/project/constitution";
 
 export const BUILTIN_COMMAND_DEFINITIONS: Record<
   BuiltinCommandName,
@@ -765,6 +771,62 @@ ${SPEC_IMPLEMENT_TEMPLATE}
 $ARGUMENTS
 </tasks-path>`,
     argumentHint: "[path to tasks.md or auto-detect from branch]",
+  },
+  "ghostwire:spec:clarify": {
+    description: "Interactive Q&A to resolve specification ambiguities",
+    template: `<command-instruction>
+${SPEC_CLARIFY_TEMPLATE}
+</command-instruction>
+
+<specification-path>
+$ARGUMENTS
+</specification-path>`,
+    argumentHint: "[path to spec.md or auto-detect from branch]",
+  },
+  "ghostwire:spec:analyze": {
+    description: "Cross-artifact consistency validation",
+    template: `<command-instruction>
+${SPEC_ANALYZE_TEMPLATE}
+</command-instruction>
+
+<feature-directory>
+$ARGUMENTS
+</feature-directory>`,
+    argumentHint: "[path to feature directory or auto-detect from branch]",
+  },
+  "ghostwire:spec:checklist": {
+    description: "Generate domain-specific checklists",
+    template: `<command-instruction>
+${SPEC_CHECKLIST_TEMPLATE}
+</command-instruction>
+
+<domain-and-feature>
+$ARGUMENTS
+</domain-and-feature>`,
+    argumentHint: "[domain] [feature name] (e.g., 'security user-auth')",
+  },
+  "ghostwire:spec:to-issues": {
+    description: "Convert tasks to GitHub issues",
+    template: `<command-instruction>
+${SPEC_TO_ISSUES_TEMPLATE}
+</command-instruction>
+
+<tasks-path>
+$ARGUMENTS
+</tasks-path>`,
+    argumentHint: "[path to tasks.md or auto-detect from branch]",
+  },
+  // Project commands
+  "ghostwire:project:constitution": {
+    description: "Create or update project constitution with core principles",
+    template: `<command-instruction>
+${PROJECT_CONSTITUTION_TEMPLATE}
+</command-instruction>
+
+<project-name>
+$ARGUMENTS
+</project-name>`,
+    argumentHint: "[project name] (optional, defaults to repo name)",
   },
 };
 

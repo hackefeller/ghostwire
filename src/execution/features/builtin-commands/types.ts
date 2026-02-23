@@ -59,7 +59,12 @@ export type BuiltinCommandName =
   | "ghostwire:workflows:brainstorm"
   | "ghostwire:workflows:learnings"
   | "ghostwire:workflows:review"
-  | "ghostwire:workflows:work";
+  | "ghostwire:workflows:work"
+  // Spec commands (from specify integration)
+  | "ghostwire:spec:create"
+  | "ghostwire:spec:plan"
+  | "ghostwire:spec:tasks"
+  | "ghostwire:spec:implement";
 
 export interface BuiltinCommandConfig {
   disabled_commands?: BuiltinCommandName[];

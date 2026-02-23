@@ -73,6 +73,13 @@ import { WORKFLOWS_LEARNINGS_TEMPLATE } from "./templates/workflows/learnings";
 import { WORKFLOWS_PLAN_TEMPLATE as WORKFLOWS_PLAN_V2_TEMPLATE } from "./templates/workflows/plan";
 import { WORKFLOWS_REVIEW_TEMPLATE } from "./templates/workflows/review";
 import { WORKFLOWS_WORK_TEMPLATE } from "./templates/workflows/work";
+// Spec command templates (from specify integration)
+import {
+  SPEC_CREATE_TEMPLATE,
+  SPEC_PLAN_TEMPLATE,
+  SPEC_TASKS_TEMPLATE,
+  SPEC_IMPLEMENT_TEMPLATE,
+} from "./templates/spec";
 
 export const BUILTIN_COMMAND_DEFINITIONS: Record<
   BuiltinCommandName,
@@ -713,6 +720,51 @@ ${WORKFLOWS_WORK_TEMPLATE}
 $ARGUMENTS
 </work-context>`,
     argumentHint: "[plan file, specification, or todo file path]",
+  },
+  // Spec commands (from specify integration)
+  "ghostwire:spec:create": {
+    description: "Create feature specification from natural language description",
+    template: `<command-instruction>
+${SPEC_CREATE_TEMPLATE}
+</command-instruction>
+
+<feature-description>
+$ARGUMENTS
+</feature-description>`,
+    argumentHint: '"feature description in natural language"',
+  },
+  "ghostwire:spec:plan": {
+    description: "Create implementation plan from feature specification",
+    template: `<command-instruction>
+${SPEC_PLAN_TEMPLATE}
+</command-instruction>
+
+<specification-path>
+$ARGUMENTS
+</specification-path>`,
+    argumentHint: "[path to spec.md or auto-detect from branch]",
+  },
+  "ghostwire:spec:tasks": {
+    description: "Generate actionable tasks from implementation plan",
+    template: `<command-instruction>
+${SPEC_TASKS_TEMPLATE}
+</command-instruction>
+
+<plan-path>
+$ARGUMENTS
+</plan-path>`,
+    argumentHint: "[path to plan.md or auto-detect from branch]",
+  },
+  "ghostwire:spec:implement": {
+    description: "Execute all tasks from task breakdown",
+    template: `<command-instruction>
+${SPEC_IMPLEMENT_TEMPLATE}
+</command-instruction>
+
+<tasks-path>
+$ARGUMENTS
+</tasks-path>`,
+    argumentHint: "[path to tasks.md or auto-detect from branch]",
   },
 };
 

@@ -409,16 +409,16 @@ const GhostwirePlugin: Plugin = async (ctx) => {
   // Create builtin agents with configuration
   // Don't pass ctx.directory - let it use PLUGIN_ROOT to load from embedded manifest
   // This ensures agents are always available regardless of what directory is being worked on
-  const builtinAgents = await createBuiltinAgents(
-    pluginConfig.disabled_agents ?? [],
-    pluginConfig.agents,
-    undefined, // Use PLUGIN_ROOT + embedded manifest, not ctx.directory
-    pluginConfig.default_model, // System default model from config
-    pluginConfig.categories,
-    pluginConfig.git_master,
-    mergedSkills,
-    ctx.client,
-  );
+  const builtinAgents = await createBuiltinAgents({
+    disabledAgents: pluginConfig.disabled_agents ?? [],
+    agentOverrides: pluginConfig.agents,
+    // Use PLUGIN_ROOT + embedded manifest, not ctx.directory
+    systemDefaultModel: pluginConfig.default_model,
+    categories: pluginConfig.categories,
+    gitMasterConfig: pluginConfig.git_master,
+    discoveredSkills: mergedSkills,
+    client: ctx.client,
+  });
 
   const slashcommandTool = createSlashcommandTool({
     commands,

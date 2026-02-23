@@ -297,18 +297,34 @@ function mapScopeToLocation(scope: SkillScope): AvailableSkill["location"] {
   return "plugin";
 }
 
+export interface CreateBuiltinAgentsOptions {
+  disabledAgents?: string[];
+  agentOverrides?: AgentOverrides;
+  directory?: string;
+  systemDefaultModel?: string;
+  categories?: CategoriesConfig;
+  gitMasterConfig?: GitMasterConfig;
+  discoveredSkills?: LoadedSkill[];
+  client?: any;
+  browserProvider?: BrowserAutomationProvider;
+  uiSelectedModel?: string;
+}
+
 export async function createBuiltinAgents(
-  disabledAgents: string[] = [],
-  agentOverrides: AgentOverrides = {},
-  directory?: string,
-  systemDefaultModel?: string,
-  categories?: CategoriesConfig,
-  gitMasterConfig?: GitMasterConfig,
-  discoveredSkills: LoadedSkill[] = [],
-  client?: any,
-  browserProvider?: BrowserAutomationProvider,
-  uiSelectedModel?: string,
+  options: CreateBuiltinAgentsOptions,
 ): Promise<Record<string, AgentConfig>> {
+  const {
+    disabledAgents = [],
+    agentOverrides = {},
+    directory,
+    systemDefaultModel,
+    categories,
+    gitMasterConfig,
+    discoveredSkills = [],
+    client,
+    browserProvider,
+    uiSelectedModel,
+  } = options;
   // If no directory provided, don't construct one - let loadMarkdownAgents
   // use the embedded manifest exclusively
   const agentsDir = directory

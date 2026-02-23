@@ -130,18 +130,18 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     // config.model represents the currently active model in OpenCode (including UI selection)
     // Pass it as uiSelectedModel so it takes highest priority in model resolution
     const currentModel = config.model as string | undefined;
-     const builtinAgents = await createBuiltinAgents(
-       disabledAgents,
-       pluginConfig.agents,
-       ctx.directory,
-       currentModel, // systemDefaultModel - use active model when fallback yields none
-       pluginConfig.categories,
-       pluginConfig.git_master,
-       allDiscoveredSkills,
-       ctx.client,
-       browserProvider,
-       currentModel, // uiSelectedModel - takes highest priority
-     );
+    const builtinAgents = await createBuiltinAgents({
+      disabledAgents,
+      agentOverrides: pluginConfig.agents,
+      directory: ctx.directory,
+      systemDefaultModel: currentModel, // use active model when fallback yields none
+      categories: pluginConfig.categories,
+      gitMasterConfig: pluginConfig.git_master,
+      discoveredSkills: allDiscoveredSkills,
+      client: ctx.client,
+      browserProvider,
+      uiSelectedModel: currentModel, // takes highest priority
+    });
 
     // Claude Code agents: Do NOT apply permission migration
     // Claude Code uses whitelist-based tools format which is semantically different

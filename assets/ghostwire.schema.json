@@ -3062,6 +3062,9 @@
     },
     "default_model": {
       "type": "string"
+    },
+    "inject_agents_globally": {
+      "type": "boolean"
     }
   }
 }

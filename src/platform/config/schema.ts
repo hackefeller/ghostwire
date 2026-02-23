@@ -609,6 +609,8 @@ export const GhostwireConfigSchema = z.object({
   tmux: TmuxConfigSchema.optional(),
   /** Default model for agents when no specific model is configured (e.g., "anthropic/claude-sonnet-4-5") */
   default_model: z.string().optional(),
+  /** Whether to inject Ghostwire builtin agents into global OpenCode config (default: true) */
+  inject_agents_globally: z.boolean().optional(),
 });
 
 export type GhostwireConfig = z.infer<typeof GhostwireConfigSchema>;

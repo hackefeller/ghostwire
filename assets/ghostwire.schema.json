@@ -3059,6 +3059,9 @@
           "minimum": 20
         }
       }
+    },
+    "default_model": {
+      "type": "string"
     }
   }
 }

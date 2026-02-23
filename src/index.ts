@@ -413,7 +413,7 @@ const GhostwirePlugin: Plugin = async (ctx) => {
     pluginConfig.disabled_agents ?? [],
     pluginConfig.agents,
     undefined, // Use PLUGIN_ROOT + embedded manifest, not ctx.directory
-    undefined,
+    pluginConfig.default_model, // System default model from config
     pluginConfig.categories,
     pluginConfig.git_master,
     mergedSkills,

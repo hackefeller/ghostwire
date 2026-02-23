@@ -607,6 +607,8 @@ export const GhostwireConfigSchema = z.object({
   git_master: GitMasterConfigSchema.optional(),
   browser_automation_engine: BrowserAutomationConfigSchema.optional(),
   tmux: TmuxConfigSchema.optional(),
+  /** Default model for agents when no specific model is configured (e.g., "anthropic/claude-sonnet-4-5") */
+  default_model: z.string().optional(),
 });
 
 export type GhostwireConfig = z.infer<typeof GhostwireConfigSchema>;

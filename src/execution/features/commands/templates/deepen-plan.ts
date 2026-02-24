@@ -1,4 +1,5 @@
-export const DEEPEN_PLAN_TEMPLATE = `# Deepen Plan - Power Enhancement Mode
+export const DEEPEN_PLAN_TEMPLATE = `<command-instruction>
+# Deepen Plan - Power Enhancement Mode
 
 ## Introduction
 
@@ -13,10 +14,11 @@ This command takes an existing plan (from \`/workflows:plan\`) and enhances each
 - Real-world implementation examples
 
 The result is a deeply grounded, production-ready plan with concrete implementation details.
+</command-instruction>
 
-## Plan File
-
-<plan_path> #$ARGUMENTS </plan_path>
+<plan_path>
+#$ARGUMENTS
+</plan_path>
 
 **If the plan path above is empty:**
 

@@ -1,4 +1,5 @@
-export const REFACTOR_TEMPLATE = `# Intelligent Refactor Command
+export const REFACTOR_TEMPLATE = `<command-instruction>
+# Intelligent Refactor Command
 
 ## Usage
 \`\`\`
@@ -612,8 +613,9 @@ When you encounter deprecated methods/APIs during refactoring:
 ---
 
 **Remember: Refactoring without tests is reckless. Refactoring without understanding is destructive. This command ensures you do neither.**
+</command-instruction>
 
-<user-request>
+<refactoring-target>
 $ARGUMENTS
-</user-request>
+</refactoring-target>
 `;

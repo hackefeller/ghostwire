@@ -1,4 +1,4 @@
-export const WORKFLOWS_WORK_TEMPLATE = `
+export const WORKFLOWS_WORK_TEMPLATE = `<command-instruction>
 # Work Plan Execution Command
 
 Execute a work plan efficiently while maintaining quality and finishing features.
@@ -359,4 +359,6 @@ For most features: tests + linting + following patterns is sufficient.
 - **Forgetting TodoWrite** - Track progress or lose track of what's done
 - **80% done syndrome** - Finish the feature, don't move on early
 - **Over-reviewing simple changes** - Save reviewer agents for complex work
+</input_document>
+</command-instruction>
 `;

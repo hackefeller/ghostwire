@@ -1,4 +1,5 @@
-export const WORKFLOWS_PLAN_TEMPLATE = `
+export const WORKFLOWS_PLAN_TEMPLATE = `<command-instruction>
+
 # Create a plan for a new feature or bug fix
 
 ## Introduction
@@ -9,7 +10,7 @@ Transform feature descriptions, bug reports, or improvement ideas into well-stru
 
 ## Feature Description
 
-<feature_description> #$ARGUMENTS </feature_description>
+<feature_description> #<feature-request>$ARGUMENTS</feature-request> </feature_description>
 
 **If the feature description above is empty, ask the user:** "What would you like to plan? Please describe the feature, bug fix, or improvement you have in mind."
 
@@ -550,4 +551,5 @@ When user selects "Create Issue", detect their project tracker from CLAUDE.md:
    - Ask if they want to proceed to \`/workflows:work\` or \`/plan_review\`
 
 NEVER CODE! Just research and write the plan.
+</command-instruction>
 `;

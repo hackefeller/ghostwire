@@ -8,17 +8,13 @@ export type CommandName =
   | "ghostwire:project:deploy"
   | "ghostwire:project:test"
   | "ghostwire:project:constitution"
-  // Work loop commands (new names + old aliases for backward compat)
+  // Work loop commands
   | "ghostwire:work:loop"
-  | "ghostwire:ultrawork-loop" // OLD: deprecated, use work:loop
   | "ghostwire:work:cancel"
-  | "ghostwire:cancel-ultrawork" // OLD: deprecated, use work:cancel
   | "ghostwire:refactor"
-  // Workflow execution commands (new names + old aliases for backward compat)
+  // Workflow execution commands
   | "ghostwire:workflows:execute"
-  | "ghostwire:jack-in-work" // OLD: deprecated, use workflows:execute
   | "ghostwire:workflows:stop"
-  | "ghostwire:stop-continuation" // OLD: deprecated, use workflows:stop
   | "ghostwire:workflows:plan"
   | "ghostwire:workflows:create"
   | "ghostwire:workflows:status"
@@ -45,13 +41,10 @@ export type CommandName =
   | "ghostwire:changelog"
   | "ghostwire:create-agent-skill"
   | "ghostwire:deepen-plan"
-  | "ghostwire:deploy-docs"
-  | "ghostwire:feature-video"
   | "ghostwire:generate-command"
   | "ghostwire:heal-skill"
   | "ghostwire:lfg"
   | "ghostwire:quiz-me"
-  | "ghostwire:release-docs"
   | "ghostwire:report-bug"
   | "ghostwire:reproduce-bug"
   | "ghostwire:resolve-parallel"
@@ -59,7 +52,6 @@ export type CommandName =
   | "ghostwire:resolve-todo-parallel"
   | "ghostwire:sync-tutorials"
   | "ghostwire:teach-me"
-  | "ghostwire:test-browser"
   | "ghostwire:triage"
   | "ghostwire:xcode-test"
   // Plugin workflow commands
@@ -75,9 +67,7 @@ export type CommandName =
   | "ghostwire:spec:clarify"
   | "ghostwire:spec:analyze"
   | "ghostwire:spec:checklist"
-  | "ghostwire:spec:to-issues"
-  // DEPRECATED: Old command names (kept for backward compatibility)
-  | "ghostwire:init-deep"; // OLD: deprecated, use project:map
+  | "ghostwire:spec:to-issues";
 
 export interface CommandConfig {
   disabled_commands?: CommandName[];

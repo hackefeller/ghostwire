@@ -1,4 +1,4 @@
-export const TRIAGE_TEMPLATE = `
+export const TRIAGE_TEMPLATE = `<command-instruction>
 1. Set the /model to Haiku
 2. Read all pending todos in the todos/ directory
 
@@ -12,6 +12,11 @@ This command is for:
 - Processing security audit results
 - Reviewing performance analysis
 - Handling any other categorized findings that need tracking
+</command-instruction>
+
+<triage-items>
+$ARGUMENTS
+</triage-items>
 
 ## Workflow
 
@@ -298,4 +303,5 @@ What would you like to do next?
 1. run /resolve_todo_parallel to resolve the todos
 2. commit the todos
 3. nothing, go chill
-\`\`\``;
+\`\`\`
+</triage-items>`;

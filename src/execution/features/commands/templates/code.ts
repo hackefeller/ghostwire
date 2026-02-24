@@ -1,4 +1,5 @@
-export const CODE_REFACTOR_TEMPLATE = `# Code:Refactor Command
+export const CODE_REFACTOR_TEMPLATE = `<command-instruction>
+# Code:Refactor Command
 
 Systematically refactor code while maintaining functionality and improving clarity, performance, or maintainability.
 
@@ -26,9 +27,15 @@ Systematically refactor code while maintaining functionality and improving clari
 - **Move** - Reorganize code for better structure
 - **Simplify** - Remove duplication and complexity
 - **Performance** - Optimize without changing behavior
+</command-instruction>
+
+<refactoring-target>
+$ARGUMENTS
+</refactoring-target>
 `;
 
-export const CODE_REVIEW_TEMPLATE = `# Code:Review Command
+export const CODE_REVIEW_TEMPLATE = `<command-instruction>
+# Code:Review Command
 
 Conduct comprehensive code reviews leveraging multiple specialist agents.
 
@@ -57,9 +64,15 @@ Conduct comprehensive code reviews leveraging multiple specialist agents.
 - Priority-ordered issues
 - Actionable suggestions
 - References to relevant patterns or best practices
+</command-instruction>
+
+<code-context>
+$ARGUMENTS
+</code-context>
 `;
 
-export const CODE_OPTIMIZE_TEMPLATE = `# Code:Optimize Command
+export const CODE_OPTIMIZE_TEMPLATE = `<command-instruction>
+# Code:Optimize Command
 
 Improve performance, reduce bundle size, or enhance runtime efficiency.
 
@@ -86,9 +99,15 @@ Improve performance, reduce bundle size, or enhance runtime efficiency.
 - Run full test suite
 - Check production-like environment behavior
 - Monitor for regressions
+</command-instruction>
+
+<optimization-target>
+$ARGUMENTS
+</optimization-target>
 `;
 
-export const CODE_FORMAT_TEMPLATE = `# Code:Format Command
+export const CODE_FORMAT_TEMPLATE = `<command-instruction>
+# Code:Format Command
 
 Apply consistent formatting and style standards across codebase.
 
@@ -112,4 +131,9 @@ Apply consistent formatting and style standards across codebase.
 - Formatting changes should be separate from functional changes
 - Always get team consensus on formatting rules before bulk formatting
 - Don't mix formatting with functional changes
+</command-instruction>
+
+<format-scope>
+$ARGUMENTS
+</format-scope>
 `;

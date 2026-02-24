@@ -1,4 +1,5 @@
-export const WORKFLOWS_REVIEW_TEMPLATE = `
+export const WORKFLOWS_REVIEW_TEMPLATE = `<command-instruction>
+
 # Review Command
 
 <command_purpose> Perform exhaustive code reviews using multi-agent analysis, ultra-thinking, and Git worktrees for deep local inspection. </command_purpose>
@@ -20,7 +21,7 @@ export const WORKFLOWS_REVIEW_TEMPLATE = `
 
 ### 1. Determine Review Target & Setup (ALWAYS FIRST)
 
-<review_target> #$ARGUMENTS </review_target>
+<review_target> #<review-request>$ARGUMENTS</review-request> </review_target>
 
 <thinking>
 First, I need to determine the review target type and set up the code for analysis.
@@ -511,4 +512,5 @@ Any **🔴 P1 (CRITICAL)** findings must be addressed before merging the PR. Pre
 \`\`\`
 
 \`\`\`
+</command-instruction>
 `;

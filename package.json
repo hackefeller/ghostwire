@@ -79,6 +79,8 @@
     "@types/js-yaml": "^4.0.9",
     "@types/picomatch": "^3.0.2",
     "bun-types": "latest",
+    "oxfmt": "^0.35.0",
+    "oxlint": "^1.50.0",
     "nanospinner": "^1.2.2",
     "typescript": "^5.7.3"
   },

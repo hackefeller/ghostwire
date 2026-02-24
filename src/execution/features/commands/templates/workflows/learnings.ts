@@ -1,4 +1,5 @@
-export const WORKFLOWS_LEARNINGS_TEMPLATE = `# /learnings
+export const WORKFLOWS_LEARNINGS_TEMPLATE = `<command-instruction>
+# /learnings
 
 Coordinate multiple subagents working in parallel to document a recently solved problem.
 
@@ -205,4 +206,6 @@ Based on problem type, these agents can enhance documentation:
 ## Related Commands
 
 - \`/research [topic]\` - Deep investigation (searches docs/learnings/ for patterns)
-- \`/workflows:plan\` - Planning workflow (references documented solutions)`;
+- \`/workflows:plan\` - Planning workflow (references documented solutions)
+</command-instruction>
+`;

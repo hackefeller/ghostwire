@@ -48,13 +48,14 @@ describe("Regression Tests", () => {
       expect(invalidCommands.length).toBe(0)
     })
 
-    test("new project:map command exists alongside deprecated init-deep", () => {
+    test("new project:map command exists (init-deep has been removed)", () => {
       //#given
       const { CommandNameSchema } = require('../src/platform/config/schema');
       
       //#when & #then
       expect(CommandNameSchema.safeParse("ghostwire:project:map").success).toBe(true)
-      expect(CommandNameSchema.safeParse("ghostwire:init-deep").success).toBe(true)
+      // init-deep has been removed - use project:map instead
+      expect(CommandNameSchema.safeParse("ghostwire:init-deep").success).toBe(false)
     })
   })
 
@@ -101,7 +102,7 @@ describe("Regression Tests", () => {
   })
 
   describe("Backward Compatibility: Old Command Names", () => {
-    test("old command names are recognized in schema with ghostwire: prefix", () => {
+    test("old command names have been removed (use new names instead)", () => {
       //#given
       const { CommandNameSchema } = require('../src/platform/config/schema');
       const oldCommandNames = [
@@ -111,42 +112,21 @@ describe("Regression Tests", () => {
         "ghostwire:stop-continuation"
       ]
 
-      //#when & #then
+      //#when & #then - all old names should now fail
       oldCommandNames.forEach((oldCmd) => {
-        expect(CommandNameSchema.safeParse(oldCmd).success).toBe(true)
+        expect(CommandNameSchema.safeParse(oldCmd).success).toBe(false)
       })
     })
 
-    test("jack-in-work (deprecated) still exists in schema", () => {
+    test("new command names work correctly", () => {
       //#given
       const { CommandNameSchema } = require('../src/platform/config/schema');
 
       //#when & #then
-      expect(CommandNameSchema.safeParse("ghostwire:jack-in-work").success).toBe(true)
-    })
-
-    test("ultrawork-loop (deprecated) still exists in schema", () => {
-      //#given
-      const { CommandNameSchema } = require('../src/platform/config/schema');
-
-      //#when & #then
-      expect(CommandNameSchema.safeParse("ghostwire:ultrawork-loop").success).toBe(true)
-    })
-
-    test("cancel-ultrawork (deprecated) still exists in schema", () => {
-      //#given
-      const { CommandNameSchema } = require('../src/platform/config/schema');
-
-      //#when & #then
-      expect(CommandNameSchema.safeParse("ghostwire:cancel-ultrawork").success).toBe(true)
-    })
-
-    test("stop-continuation (deprecated) still exists in schema", () => {
-      //#given
-      const { CommandNameSchema } = require('../src/platform/config/schema');
-
-      //#when & #then
-      expect(CommandNameSchema.safeParse("ghostwire:stop-continuation").success).toBe(true)
+      expect(CommandNameSchema.safeParse("ghostwire:workflows:execute").success).toBe(true)
+      expect(CommandNameSchema.safeParse("ghostwire:work:loop").success).toBe(true)
+      expect(CommandNameSchema.safeParse("ghostwire:work:cancel").success).toBe(true)
+      expect(CommandNameSchema.safeParse("ghostwire:workflows:stop").success).toBe(true)
     })
   })
 
@@ -186,20 +166,19 @@ describe("Regression Tests", () => {
       })
     })
 
-    test("new commands map to correct old commands for backward compatibility", () => {
+    test("new commands exist (old aliases have been removed)", () => {
       //#given
       const { CommandNameSchema } = require('../src/platform/config/schema');
-      const mappings = [
-        ["ghostwire:workflows:execute", "ghostwire:jack-in-work"],
-        ["ghostwire:work:loop", "ghostwire:ultrawork-loop"],
-        ["ghostwire:work:cancel", "ghostwire:cancel-ultrawork"],
-        ["ghostwire:workflows:stop", "ghostwire:stop-continuation"]
+      const newCommands = [
+        "ghostwire:workflows:execute",
+        "ghostwire:work:loop",
+        "ghostwire:work:cancel",
+        "ghostwire:workflows:stop"
       ]
 
-      //#when & #then
-      mappings.forEach(([newCmd, oldCmd]) => {
-        expect(CommandNameSchema.safeParse(newCmd).success).toBe(true)
-        expect(CommandNameSchema.safeParse(oldCmd).success).toBe(true)
+      //#when & #then - new commands work, old aliases are removed
+      newCommands.forEach((cmd) => {
+        expect(CommandNameSchema.safeParse(cmd).success).toBe(true)
       })
     })
   })

@@ -1,4 +1,5 @@
-export const INIT_DEEP_TEMPLATE = `# /init-deep
+export const PROJECT_MAP_TEMPLATE = `<command-instruction>
+# /init-deep
 
 Generate hierarchical AGENTS.md files. Root + complexity-scored subdirectories.
 
@@ -297,4 +298,9 @@ Hierarchy:
 - **Over-documenting**: Not every dir needs AGENTS.md
 - **Redundancy**: Child never repeats parent
 - **Generic content**: Remove anything that applies to ALL projects
-- **Verbose style**: Telegraphic or die`;
+- **Verbose style**: Telegraphic or die
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`;

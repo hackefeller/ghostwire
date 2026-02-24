@@ -1,4 +1,8 @@
-export const WORKFLOWS_PLAN_TEMPLATE = `<command-instruction>
+import type { CommandDefinition } from "../../claude-code-command-loader";
+
+export const NAME = "ghostwire:workflows:plan";
+export const DESCRIPTION = "Transform feature descriptions into implementation plans [Phase: PLAN]";
+export const TEMPLATE = `<command-instruction>
 Note: The current year is 2026. Use 2026 for date-sensitive references unless the system date differs.
 
 # Workflows:Plan Command (Canonical)
@@ -141,3 +145,11 @@ After writing the plan:
 NEVER implement code in this command. Produce planning output only.
 </command-instruction>
 `;
+export const ARGUMENT_HINT = "[feature description, bug report, or improvement idea]";
+
+export const COMMAND: CommandDefinition = {
+  name: NAME,
+  description: DESCRIPTION,
+  template: TEMPLATE,
+  argumentHint: ARGUMENT_HINT,
+};

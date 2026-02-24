@@ -85,6 +85,10 @@ OpenCode plugin: multi-model agent orchestration (Claude Opus 4.5, GPT-5.2, Gemi
 ✅ Phase 4.2: Execution orchestrator (state machine)  
 ✅ Phase 5: workflows:create hook (feature → tasks)  
 ✅ Phase 6: Testing (89 tests, 265 assertions)
+✅ Phase 15: workflows:execute hook (task execution with delegation)
+✅ Phase 16: workflows:status hook (progress tracking and reporting)
+
+**Status**: ✅ **COMPLETE - All 4 workflow commands implemented**
 
 ## PROJECT CONSTITUTION
 
@@ -148,7 +152,7 @@ ghostwire/
 | Add command | `src/execution/features/commands/` | Add template + register in commands.ts |
 | Config schema | `src/platform/config/schema.ts` | Zod schema, run `bun run build:schema` |
 | **Task queue** | `src/execution/features/task-queue/` | **NEW**: Types, parser, parallelization, delegation, orchestrator |
-| **Workflow hooks** | `src/orchestration/hooks/workflows-create/` | **NEW**: workflows:create command handler |
+| **Workflow hooks** | `src/orchestration/hooks/workflows-*` | **NEW**: workflows:create, workflows:execute, workflows:status command handlers |
 | Background agents | `src/execution/features/background-agent/manager.ts` | Task lifecycle, concurrency (1419 lines) |
 | Orchestrator | `src/orchestration/hooks/grid-sync/index.ts` | Main orchestration hook (757 lines) |
 
@@ -168,8 +172,10 @@ ghostwire/
 **Test Coverage**: 
 - Task queue: 82 unit tests
 - Workflows-create: 12 hook tests
-- Integration: 7 end-to-end tests
-- **Total: 89 new tests** ✅
+- Workflows-execute: 7 hook tests
+- Workflows-status: 9 hook tests
+- Integration: 10 end-to-end tests
+- **Total: 120 new tests** ✅
 
 ## CONVENTIONS
 

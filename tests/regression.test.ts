@@ -90,4 +90,108 @@ describe("Regression Tests", () => {
       expect(skills.find(s => s.name === 'learnings')).toBeDefined()
     })
   })
+
+  describe("Backward Compatibility: Old Command Names", () => {
+    test("old command names are recognized in schema with ghostwire: prefix", () => {
+      //#given
+      const { CommandNameSchema } = require('../src/platform/config/schema');
+      const oldCommandNames = [
+        "ghostwire:jack-in-work",
+        "ghostwire:ultrawork-loop",
+        "ghostwire:cancel-ultrawork",
+        "ghostwire:stop-continuation"
+      ]
+
+      //#when & #then
+      oldCommandNames.forEach((oldCmd) => {
+        expect(CommandNameSchema.safeParse(oldCmd).success).toBe(true)
+      })
+    })
+
+    test("jack-in-work (deprecated) still exists in schema", () => {
+      //#given
+      const { CommandNameSchema } = require('../src/platform/config/schema');
+
+      //#when & #then
+      expect(CommandNameSchema.safeParse("ghostwire:jack-in-work").success).toBe(true)
+    })
+
+    test("ultrawork-loop (deprecated) still exists in schema", () => {
+      //#given
+      const { CommandNameSchema } = require('../src/platform/config/schema');
+
+      //#when & #then
+      expect(CommandNameSchema.safeParse("ghostwire:ultrawork-loop").success).toBe(true)
+    })
+
+    test("cancel-ultrawork (deprecated) still exists in schema", () => {
+      //#given
+      const { CommandNameSchema } = require('../src/platform/config/schema');
+
+      //#when & #then
+      expect(CommandNameSchema.safeParse("ghostwire:cancel-ultrawork").success).toBe(true)
+    })
+
+    test("stop-continuation (deprecated) still exists in schema", () => {
+      //#given
+      const { CommandNameSchema } = require('../src/platform/config/schema');
+
+      //#when & #then
+      expect(CommandNameSchema.safeParse("ghostwire:stop-continuation").success).toBe(true)
+    })
+  })
+
+  describe("New Task-Driven Command Names", () => {
+    test("all new workflow commands are defined with ghostwire: prefix", () => {
+      //#given
+      const newWorkflowCommands = [
+        "ghostwire:workflows:create",
+        "ghostwire:workflows:execute",
+        "ghostwire:workflows:status",
+        "ghostwire:workflows:complete",
+        "ghostwire:workflows:plan"
+      ]
+
+      //#when
+      const { CommandNameSchema } = require('../src/platform/config/schema');
+
+      //#then
+      newWorkflowCommands.forEach((cmd) => {
+        expect(CommandNameSchema.safeParse(cmd).success).toBe(true)
+      })
+    })
+
+    test("all new work loop commands are defined with ghostwire: prefix", () => {
+      //#given
+      const newWorkCommands = [
+        "ghostwire:work:loop",
+        "ghostwire:work:cancel"
+      ]
+
+      //#when
+      const { CommandNameSchema } = require('../src/platform/config/schema');
+
+      //#then
+      newWorkCommands.forEach((cmd) => {
+        expect(CommandNameSchema.safeParse(cmd).success).toBe(true)
+      })
+    })
+
+    test("new commands map to correct old commands for backward compatibility", () => {
+      //#given
+      const { CommandNameSchema } = require('../src/platform/config/schema');
+      const mappings = [
+        ["ghostwire:workflows:execute", "ghostwire:jack-in-work"],
+        ["ghostwire:work:loop", "ghostwire:ultrawork-loop"],
+        ["ghostwire:work:cancel", "ghostwire:cancel-ultrawork"],
+        ["ghostwire:workflows:stop", "ghostwire:stop-continuation"]
+      ]
+
+      //#when & #then
+      mappings.forEach(([newCmd, oldCmd]) => {
+        expect(CommandNameSchema.safeParse(newCmd).success).toBe(true)
+        expect(CommandNameSchema.safeParse(oldCmd).success).toBe(true)
+      })
+    })
+  })
 })

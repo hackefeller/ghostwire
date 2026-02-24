@@ -193,7 +193,6 @@
           "ghostwire:jack-in-work",
           "ghostwire:ultrawork-loop",
           "ghostwire:cancel-ultrawork",
-          "ghostwire:ulw-ultrawork",
           "ghostwire:refactor",
           "ghostwire:stop-continuation",
           "ghostwire:workflows:plan",

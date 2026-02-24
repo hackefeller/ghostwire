@@ -4,7 +4,6 @@ export type CommandName =
   | "ghostwire:init-deep"
   | "ghostwire:ultrawork-loop"
   | "ghostwire:cancel-ultrawork"
-  | "ghostwire:ulw-ultrawork"
   | "ghostwire:refactor"
   | "ghostwire:jack-in-work"
   | "ghostwire:stop-continuation"

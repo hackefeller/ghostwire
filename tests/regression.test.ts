@@ -28,7 +28,7 @@ describe("Regression Tests", () => {
   describe("No Breaking Changes to Existing Commands", () => {
     test("plugin commands remain unchanged", () => {
       //#given
-      const pluginCommands = ["init-deep", "ultrawork-loop", "ulw-ultrawork", "cancel-ultrawork", "refactor", "jack-in-work", "stop-continuation"]
+      const pluginCommands = ["init-deep", "ultrawork-loop", "cancel-ultrawork", "refactor", "jack-in-work", "stop-continuation"]
 
       //#when & #then
       pluginCommands.forEach((cmd) => {
@@ -39,7 +39,7 @@ describe("Regression Tests", () => {
 
     test("plugin command names use consistent pattern", () => {
       //#given
-      const pluginCommands = ["init-deep", "ultrawork-loop", "ulw-ultrawork", "cancel-ultrawork", "refactor", "jack-in-work", "stop-continuation"]
+      const pluginCommands = ["init-deep", "ultrawork-loop", "cancel-ultrawork", "refactor", "jack-in-work", "stop-continuation"]
 
       //#when
       const invalidCommands = pluginCommands.filter((cmd) => !cmd.match(/^[a-z]+(-[a-z]+)*$/))

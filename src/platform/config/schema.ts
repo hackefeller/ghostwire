@@ -202,7 +202,6 @@ export const CommandNameSchema = z.enum([
   "ghostwire:jack-in-work",
   "ghostwire:ultrawork-loop",
   "ghostwire:cancel-ultrawork",
-  "ghostwire:ulw-ultrawork",
   "ghostwire:refactor",
   "ghostwire:stop-continuation",
   // Ghostwire workflows commands

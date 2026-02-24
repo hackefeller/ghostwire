@@ -774,22 +774,6 @@ const GhostwirePlugin: Plugin = async (ctx) => {
           });
         } else if (command === "ghostwire:cancel-ultrawork" && sessionID) {
           ultraworkLoop.cancelLoop(sessionID);
-        } else if (command === "ghostwire:ulw-ultrawork" && sessionID) {
-          const rawArgs = args?.command?.replace(/^\/?(ghostwire:ulw-ultrawork)\s*/i, "") || "";
-          const taskMatch = rawArgs.match(/^["'](.+?)["']/);
-          const prompt =
-            taskMatch?.[1] ||
-            rawArgs.split(/\s+--/)[0]?.trim() ||
-            "Complete the task as instructed";
-
-          const maxIterMatch = rawArgs.match(/--max-iterations=(\d+)/i);
-          const promiseMatch = rawArgs.match(/--completion-promise=["']?([^"'\s]+)["']?/i);
-
-          ultraworkLoop.startLoop(sessionID, prompt, {
-            ultrawork: true,
-            maxIterations: maxIterMatch ? parseInt(maxIterMatch[1], 10) : undefined,
-            completionPromise: promiseMatch?.[1],
-          });
         }
       }
 

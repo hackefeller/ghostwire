@@ -115,19 +115,6 @@ $ARGUMENTS
     argumentHint:
       '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
   },
-  "ghostwire:ulw-ultrawork": {
-    description:
-      "Start ultrawork loop - continues until completion with ultrawork mode",
-    template: `<command-instruction>
-${ULTRAWORK_LOOP_TEMPLATE}
-</command-instruction>
-
-<user-task>
-$ARGUMENTS
-</user-task>`,
-    argumentHint:
-      '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
-  },
   "ghostwire:cancel-ultrawork": {
     description: "Cancel active Ultrawork Loop",
     template: `<command-instruction>

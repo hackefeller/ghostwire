@@ -63,10 +63,10 @@ Run ALL or most of these agents at the same time:
 7. Task architecture-strategist(PR content)
 8. Task code-philosopher(PR content)
 9. Task security-sentinel(PR content)
-10. Task performance-seer-advisor(PR content)
+10. Task oracle-performance(PR content)
 11. Task devops-harmony-analyst(PR content)
 12. Task data-integrity-guardian(PR content)
-13. Task agent-native-reviewer(PR content) - Verify new features are agent-accessible
+13. Task advisor-architecture(PR content) - Verify new features are agent-accessible
 
 </parallel_tasks>
 
@@ -365,9 +365,9 @@ After creating all todo files, present comprehensive summary:
 
 - reviewer-rails
 - security-sentinel
-- performance-seer-advisor
+- oracle-performance
 - architecture-strategist
-- agent-native-reviewer
+- advisor-architecture
 - [other agents]
 
 ### Next Steps:

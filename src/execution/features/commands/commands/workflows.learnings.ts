@@ -70,7 +70,7 @@ This command launches multiple specialized subagents IN PARALLEL to maximize eff
 
 Based on problem type detected, automatically invoke applicable agents:
 
-- **performance_issue** → \`performance-seer-advisor\`
+- **performance_issue** → \`oracle-performance\`
 - **security_issue** → \`security-sentinel\`
 - **database_issue** → \`data-integrity-guardian\`
 - **test_failure** → \`cora-test-reviewer\`
@@ -131,7 +131,7 @@ Primary Subagent Results:
   ✓ Documentation Writer: Created complete markdown
 
 Specialized Agent Reviews (Auto-Triggered):
-  ✓ performance-seer-advisor: Validated query optimization approach
+  ✓ oracle-performance: Validated query optimization approach
   ✓ reviewer-rails: Code examples meet Rails standards
   ✓ reviewer-simplicity: Solution is appropriately minimal
   ✓ every-style-editor: Documentation style verified
@@ -191,7 +191,7 @@ Based on problem type, these agents can enhance documentation:
 
 ### Specific Domain Experts
 
-- **performance-seer-advisor**: Analyzes performance_issue category solutions
+- **oracle-performance**: Analyzes performance_issue category solutions
 - **security-sentinel**: Reviews security_issue solutions for vulnerabilities
 - **cora-test-reviewer**: Creates test cases for prevention strategies
 - **data-integrity-guardian**: Reviews database_issue migrations and queries

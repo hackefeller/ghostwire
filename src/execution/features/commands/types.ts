@@ -1,7 +1,13 @@
 import type { CommandDefinition } from "../claude-code-command-loader";
 
 export type CommandName =
-  | "ghostwire:init-deep"
+  // Project commands
+  | "ghostwire:project:init"
+  | "ghostwire:project:map"
+  | "ghostwire:project:build"
+  | "ghostwire:project:deploy"
+  | "ghostwire:project:test"
+  | "ghostwire:project:constitution"
   // Work loop commands (new names + old aliases for backward compat)
   | "ghostwire:work:loop"
   | "ghostwire:ultrawork-loop" // OLD: deprecated, use work:loop
@@ -25,10 +31,6 @@ export type CommandName =
   | "ghostwire:git:branch"
   | "ghostwire:git:merge"
   | "ghostwire:git:cleanup"
-  | "ghostwire:project:init"
-  | "ghostwire:project:build"
-  | "ghostwire:project:deploy"
-  | "ghostwire:project:test"
   | "ghostwire:util:clean"
   | "ghostwire:util:backup"
   | "ghostwire:util:restore"
@@ -74,8 +76,8 @@ export type CommandName =
   | "ghostwire:spec:analyze"
   | "ghostwire:spec:checklist"
   | "ghostwire:spec:to-issues"
-  // Project commands
-  | "ghostwire:project:constitution";
+  // DEPRECATED: Old command names (kept for backward compatibility)
+  | "ghostwire:init-deep"; // OLD: deprecated, use project:map
 
 export interface CommandConfig {
   disabled_commands?: CommandName[];

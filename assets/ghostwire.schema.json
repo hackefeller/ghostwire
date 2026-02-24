@@ -189,7 +189,6 @@
       "items": {
         "type": "string",
         "enum": [
-          "ghostwire:init-deep",
           "ghostwire:work:loop",
           "ghostwire:ultrawork-loop",
           "ghostwire:work:cancel",
@@ -212,6 +211,7 @@
           "ghostwire:git:merge",
           "ghostwire:git:cleanup",
           "ghostwire:project:init",
+          "ghostwire:project:map",
           "ghostwire:project:build",
           "ghostwire:project:deploy",
           "ghostwire:project:test",
@@ -248,7 +248,8 @@
           "ghostwire:workflows:brainstorm",
           "ghostwire:workflows:learnings",
           "ghostwire:workflows:review",
-          "ghostwire:workflows:work"
+          "ghostwire:workflows:work",
+          "ghostwire:init-deep"
         ]
       }
     },

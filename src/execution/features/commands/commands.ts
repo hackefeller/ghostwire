@@ -91,8 +91,20 @@ export const COMMAND_DEFINITIONS: Record<
   CommandName,
   Omit<CommandDefinition, "name">
 > = {
+  "ghostwire:project:map": {
+    description: "Map project structure and generate hierarchical AGENTS.md knowledge base",
+    template: `<command-instruction>
+${INIT_DEEP_TEMPLATE}
+</command-instruction>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+    argumentHint: "[--create-new] [--max-depth=N]",
+  },
+  // DEPRECATED: Old name for project:map - kept for backward compatibility
   "ghostwire:init-deep": {
-    description: "Initialize hierarchical AGENTS.md knowledge base",
+    description: "Map project structure and generate AGENTS.md [DEPRECATED: use /ghostwire:project:map]",
     template: `<command-instruction>
 ${INIT_DEEP_TEMPLATE}
 </command-instruction>

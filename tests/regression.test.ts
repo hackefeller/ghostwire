@@ -47,6 +47,15 @@ describe("Regression Tests", () => {
       //#then
       expect(invalidCommands.length).toBe(0)
     })
+
+    test("new project:map command exists alongside deprecated init-deep", () => {
+      //#given
+      const { CommandNameSchema } = require('../src/platform/config/schema');
+      
+      //#when & #then
+      expect(CommandNameSchema.safeParse("ghostwire:project:map").success).toBe(true)
+      expect(CommandNameSchema.safeParse("ghostwire:init-deep").success).toBe(true)
+    })
   })
 
   describe("No Breaking Changes to Existing Skills", () => {

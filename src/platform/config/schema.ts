@@ -198,7 +198,12 @@ export const HookNameSchema = z.enum([
 ]);
 
 export const CommandNameSchema = z.enum([
-  "ghostwire:init-deep",
+  // Ghostwire project commands
+  "ghostwire:project:init",
+  "ghostwire:project:map",
+  "ghostwire:project:build",
+  "ghostwire:project:deploy",
+  "ghostwire:project:test",
   // Work loop commands (new names + old aliases for backward compat)
   "ghostwire:work:loop",
   "ghostwire:ultrawork-loop", // OLD: deprecated, use work:loop
@@ -225,11 +230,6 @@ export const CommandNameSchema = z.enum([
   "ghostwire:git:branch",
   "ghostwire:git:merge",
   "ghostwire:git:cleanup",
-  // Ghostwire project commands
-  "ghostwire:project:init",
-  "ghostwire:project:build",
-  "ghostwire:project:deploy",
-  "ghostwire:project:test",
   // Ghostwire utility commands
   "ghostwire:util:clean",
   "ghostwire:util:backup",
@@ -268,6 +268,8 @@ export const CommandNameSchema = z.enum([
   "ghostwire:workflows:learnings",
   "ghostwire:workflows:review",
   "ghostwire:workflows:work",
+  // DEPRECATED: Old command names (kept for backward compatibility)
+  "ghostwire:init-deep", // OLD: deprecated, use project:map
 ]);
 
 export const AgentOverrideConfigSchema = z.object({

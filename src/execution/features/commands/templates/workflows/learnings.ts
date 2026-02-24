@@ -70,7 +70,7 @@ Based on problem type detected, automatically invoke applicable agents:
 - **security_issue** → \`security-sentinel\`
 - **database_issue** → \`data-integrity-guardian\`
 - **test_failure** → \`cora-test-reviewer\`
-- Any code-heavy issue → \`kieran-rails-reviewer\` + \`code-simplicity-reviewer\`
+- Any code-heavy issue → \`reviewer-rails\` + \`reviewer-simplicity\`
 
 ## What It Captures
 
@@ -128,8 +128,8 @@ Primary Subagent Results:
 
 Specialized Agent Reviews (Auto-Triggered):
   ✓ performance-seer-advisor: Validated query optimization approach
-  ✓ kieran-rails-reviewer: Code examples meet Rails standards
-  ✓ code-simplicity-reviewer: Solution is appropriately minimal
+  ✓ reviewer-rails: Code examples meet Rails standards
+  ✓ reviewer-simplicity: Solution is appropriately minimal
   ✓ every-style-editor: Documentation style verified
 
 File created:
@@ -181,8 +181,8 @@ Based on problem type, these agents can enhance documentation:
 
 ### Code Quality & Review
 
-- **kieran-rails-reviewer**: Reviews code examples for Rails best practices
-- **code-simplicity-reviewer**: Ensures solution code is minimal and clear
+- **reviewer-rails**: Reviews code examples for Rails best practices
+- **reviewer-simplicity**: Ensures solution code is minimal and clear
 - **pattern-recognition-specialist**: Identifies anti-patterns or repeating issues
 
 ### Specific Domain Experts

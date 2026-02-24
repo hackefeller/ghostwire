@@ -18,13 +18,13 @@ Conduct comprehensive code reviews leveraging multiple specialist agents.
 
 ## Key Agents & Tasks
 
-- Use \`kieran-rails-reviewer\` for Ruby/Rails code
-- Use \`kieran-python-reviewer\` for Python code
-- Use \`kieran-typescript-reviewer\` for TypeScript/JavaScript
-- Use \`dhh-rails-reviewer\` for architectural opinions
+- Use \`reviewer-rails\` for Ruby/Rails code
+- Use \`reviewer-python\` for Python code
+- Use \`reviewer-typescript\` for TypeScript/JavaScript
+- Use \`reviewer-rails-dh\` for architectural opinions
 - Use \`security-sentinel\` for security issues
-- Use \`performance-seerAdvisor\` for optimization
-- Use \`code-simplicity-reviewer\` for YAGNI violations
+- Use \`performance-advisor-plan\` for optimization
+- Use \`reviewer-simplicity\` for YAGNI violations
 
 ## Output
 

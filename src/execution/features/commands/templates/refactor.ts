@@ -81,7 +81,7 @@ Should I proceed with [recommendation], or would you prefer differently?
 
 \`\`\`
 TodoWrite([
-  {"id": "phase-1", "content": "PHASE 1: Codebase Analysis - launch parallel scoutRecon agents", "status": "pending", "priority": "high"},
+  {"id": "phase-1", "content": "PHASE 1: Codebase Analysis - launch parallel researcher-codebase agents", "status": "pending", "priority": "high"},
   {"id": "phase-2", "content": "PHASE 2: Build Codemap - map dependencies and impact zones", "status": "pending", "priority": "high"},
   {"id": "phase-3", "content": "PHASE 3: Test Assessment - analyze test coverage and verification strategy", "status": "pending", "priority": "high"},
   {"id": "phase-4", "content": "PHASE 4: Plan Generation - invoke Plan agent for detailed refactoring plan", "status": "pending", "priority": "high"},
@@ -466,7 +466,7 @@ If ANY verification fails:
 4. **OPTIONS**:
    - Fix the issue and retry
    - Skip this step (if optional)
-   - Consult seerAdvisor agent for help
+   - Consult advisor-plan agent for help
    - Ask user for guidance
 
 **NEVER proceed to next step with broken tests.**

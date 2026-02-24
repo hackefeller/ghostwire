@@ -20,7 +20,7 @@ Generate hierarchical AGENTS.md files. Root + complexity-scored subdirectories.
 ## Workflow (High-Level)
 
 1. **Discovery + Analysis** (concurrent)
-   - Fire background scoutRecon agents immediately
+   - Fire background researcher-codebase agents immediately
    - Main session: bash structure + LSP codemap + read existing AGENTS.md
 2. **Score & Decide** - Determine AGENTS.md locations from merged findings
 3. **Generate** - Root first, then subdirs in parallel
@@ -30,7 +30,7 @@ Generate hierarchical AGENTS.md files. Root + complexity-scored subdirectories.
 **TodoWrite ALL phases. Mark in_progress → completed in real-time.**
 \`\`\`
 TodoWrite([
-  { id: "discovery", content: "Fire scoutRecon agents + LSP codemap + read existing", status: "pending", priority: "high" },
+  { id: "discovery", content: "Fire researcher-codebase agents + LSP codemap + read existing", status: "pending", priority: "high" },
   { id: "scoring", content: "Score directories, determine locations", status: "pending", priority: "high" },
   { id: "generate", content: "Generate AGENTS.md files (root + subdirs)", status: "pending", priority: "high" },
   { id: "review", content: "Deduplicate, validate, trim", status: "pending", priority: "medium" }

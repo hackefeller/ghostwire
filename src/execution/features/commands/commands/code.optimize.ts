@@ -18,7 +18,7 @@ Improve performance, reduce bundle size, or enhance runtime efficiency.
 
 ## Key Agents & Tasks
 
-- Use \`performance-seerAdvisor\` for systematic optimization
+- Use \`performance-advisor-plan\` for systematic optimization
 - Measure performance before and after optimizations
 - Profile code to identify actual bottlenecks
 - Prioritize high-impact optimizations

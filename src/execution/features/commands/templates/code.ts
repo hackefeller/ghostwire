@@ -14,8 +14,8 @@ Systematically refactor code while maintaining functionality and improving clari
 
 ## Key Agents & Tasks
 
-- Use \`kieran-typescript-reviewer\` or \`kieran-python-reviewer\` for language-specific reviews
-- Use \`code-simplicity-reviewer\` to ensure simplifications don't over-engineer
+- Use \`reviewer-typescript\` or \`reviewer-python\` for language-specific reviews
+- Use \`reviewer-simplicity\` to ensure simplifications don't over-engineer
 - Use \`pattern-recognition-specialist\` to identify and apply consistent patterns
 - Run comprehensive test suites before/after refactoring
 
@@ -50,13 +50,13 @@ Conduct comprehensive code reviews leveraging multiple specialist agents.
 
 ## Key Agents & Tasks
 
-- Use \`kieran-rails-reviewer\` for Ruby/Rails code
-- Use \`kieran-python-reviewer\` for Python code
-- Use \`kieran-typescript-reviewer\` for TypeScript/JavaScript
-- Use \`dhh-rails-reviewer\` for architectural opinions
+- Use \`reviewer-rails\` for Ruby/Rails code
+- Use \`reviewer-python\` for Python code
+- Use \`reviewer-typescript\` for TypeScript/JavaScript
+- Use \`reviewer-rails-dh\` for architectural opinions
 - Use \`security-sentinel\` for security issues
-- Use \`performance-seerAdvisor\` for optimization
-- Use \`code-simplicity-reviewer\` for YAGNI violations
+- Use \`performance-advisor-plan\` for optimization
+- Use \`reviewer-simplicity\` for YAGNI violations
 
 ## Output
 
@@ -87,7 +87,7 @@ Improve performance, reduce bundle size, or enhance runtime efficiency.
 
 ## Key Agents & Tasks
 
-- Use \`performance-seerAdvisor\` for systematic optimization
+- Use \`performance-advisor-plan\` for systematic optimization
 - Measure performance before and after optimizations
 - Profile code to identify actual bottlenecks
 - Prioritize high-impact optimizations

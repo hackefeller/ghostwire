@@ -50,8 +50,8 @@ Ensure that the code is ready for analysis (either in worktree or on current bra
 
 Run ALL or most of these agents at the same time:
 
-1. Task kieran-rails-reviewer(PR content)
-2. Task dhh-rails-reviewer(PR title)
+1. Task reviewer-rails(PR content)
+2. Task reviewer-rails-dh(PR title)
 3. If turbo is used: Task rails-turbo-expert(PR content)
 4. Task git-history-analyzer(PR content)
 5. Task dependency-detective(PR content)
@@ -185,7 +185,7 @@ Complete system context map with component interactions
 
 ### 4. Simplification and Minimalism Review
 
-Run the Task code-simplicity-reviewer() to see if we can simplify the code.
+Run the Task reviewer-simplicity() to see if we can simplify the code.
 
 ### 5. Findings Synthesis and Todo Creation Using file-todos Skill
 
@@ -359,7 +359,7 @@ After creating all todo files, present comprehensive summary:
 
 ### Review Agents Used:
 
-- kieran-rails-reviewer
+- reviewer-rails
 - security-sentinel
 - performance-seer-advisor
 - architecture-strategist

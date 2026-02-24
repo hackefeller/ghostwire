@@ -18,8 +18,8 @@ Systematically refactor code while maintaining functionality and improving clari
 
 ## Key Agents & Tasks
 
-- Use \`kieran-typescript-reviewer\` or \`kieran-python-reviewer\` for language-specific reviews
-- Use \`code-simplicity-reviewer\` to ensure simplifications don't over-engineer
+- Use \`reviewer-typescript\` or \`reviewer-python\` for language-specific reviews
+- Use \`reviewer-simplicity\` to ensure simplifications don't over-engineer
 - Use \`pattern-recognition-specialist\` to identify and apply consistent patterns
 - Run comprehensive test suites before/after refactoring
 

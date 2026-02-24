@@ -16,7 +16,7 @@ Generate hierarchical AGENTS.md files. Root + complexity-scored subdirectories.
 ## Workflow (High-Level)
 
 1. **Discovery + Analysis** (concurrent)
-   - Fire background scoutRecon agents immediately
+   - Fire background researcher-codebase agents immediately
    - Main session: bash structure + LSP codemap + read existing AGENTS.md
 2. **Score & Decide** - Determine AGENTS.md locations from merged findings
 3. **Generate** - Root first, then subdirs in parallel
@@ -26,7 +26,7 @@ Generate hierarchical AGENTS.md files. Root + complexity-scored subdirectories.
 **TodoWrite ALL phases. Mark in_progress → completed in real-time.**
 \`\`\`
 TodoWrite([
-  { id: "discovery", content: "Fire scoutRecon agents + LSP codemap + read existing", status: "pending", priority: "high" },
+  { id: "discovery", content: "Fire researcher-codebase agents + LSP codemap + read existing", status: "pending", priority: "high" },
   { id: "scoring", content: "Score directories, determine locations", status: "pending", priority: "high" },
   { id: "generate", content: "Generate AGENTS.md files (root + subdirs)", status: "pending", priority: "high" },
   { id: "review", content: "Deduplicate, validate, trim", status: "pending", priority: "medium" }
@@ -55,7 +55,7 @@ delegate_task(agent="researcher-codebase", prompt="Test patterns: FIND test conf
 \`\`\`
 
 <dynamic-agents>
-**DYNAMIC AGENT SPAWNING**: After bash analysis, spawn ADDITIONAL scoutRecon agents based on project scale:
+**DYNAMIC AGENT SPAWNING**: After bash analysis, spawn ADDITIONAL researcher-codebase agents based on project scale:
 
 | Factor | Threshold | Additional Agents |
 |--------|-----------|-------------------|
@@ -130,7 +130,7 @@ LspWorkspaceSymbols(filePath=".", query="function")
 LspFindReferences(filePath="...", line=X, character=Y)
 \`\`\`
 
-**LSP Fallback**: If unavailable, rely on scoutRecon agents + AST-grep.
+**LSP Fallback**: If unavailable, rely on researcher-codebase agents + AST-grep.
 
 ### Collect Background Results
 
@@ -139,7 +139,7 @@ LspFindReferences(filePath="...", line=X, character=Y)
 for each task_id: background_output(task_id="...")
 \`\`\`
 
-**Merge: bash + LSP + existing + scoutRecon findings. Mark "discovery" as completed.**
+**Merge: bash + LSP + existing + researcher-codebase findings. Mark "discovery" as completed.**
 
 ---
 
@@ -154,7 +154,7 @@ for each task_id: background_output(task_id="...")
 | File count | 3x | >20 | bash |
 | Subdir count | 2x | >5 | bash |
 | Code ratio | 2x | >70% | bash |
-| Unique patterns | 1x | Has own config | scoutRecon |
+| Unique patterns | 1x | Has own config | researcher-codebase |
 | Module boundary | 2x | Has index.ts/__init__.py | bash |
 | Symbol density | 2x | >30 symbols | LSP |
 | Export count | 2x | >10 exports | LSP |
@@ -293,7 +293,7 @@ Hierarchy:
 ## Anti-Patterns
 
 - **Static agent count**: MUST vary agents based on project size/depth
-- **Sequential execution**: MUST parallel (scoutRecon + LSP concurrent)
+- **Sequential execution**: MUST parallel (researcher-codebase + LSP concurrent)
 - **Ignoring existing**: ALWAYS read existing first, even with --create-new
 - **Over-documenting**: Not every dir needs AGENTS.md
 - **Redundancy**: Child never repeats parent

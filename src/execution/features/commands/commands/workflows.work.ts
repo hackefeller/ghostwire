@@ -179,7 +179,7 @@ This command takes a work document (plan, specification, or todo file) and execu
    - **reviewer-rails**: Verify Rails conventions (Rails projects)
    - **oracle-performance**: Check for performance issues
    - **security-sentinel**: Scan for security vulnerabilities
-   - **cora-test-reviewer**: Review test quality (Rails projects with comprehensive test coverage)
+   - **cora-test-reviewer**: (skill, not agent) Review test quality
 
    Run reviewers in parallel with Task tool:
 

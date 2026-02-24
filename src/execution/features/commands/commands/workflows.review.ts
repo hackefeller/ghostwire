@@ -54,19 +54,18 @@ Ensure that the code is ready for analysis (either in worktree or on current bra
 
 Run ALL or most of these agents at the same time:
 
-1. Task reviewer-rails(PR content)
-2. Task reviewer-rails-dh(PR title)
-3. If turbo is used: Task rails-turbo-expert(PR content)
-4. Task git-history-analyzer(PR content)
-5. Task dependency-detective(PR content)
-6. Task pattern-recognition-specialist(PR content)
-7. Task architecture-strategist(PR content)
-8. Task code-philosopher(PR content)
-9. Task security-sentinel(PR content)
-10. Task oracle-performance(PR content)
-11. Task devops-harmony-analyst(PR content)
-12. Task data-integrity-guardian(PR content)
-13. Task advisor-architecture(PR content) - Verify new features are agent-accessible
+1. Task advisor-dhh(PR title)
+2. If turbo is used: Use skill "rails-turbo-expert" (not an agent)
+3. Task researcher-git(PR content)
+4. Task expert-migrations(PR content)
+5. Task analyzer-patterns(PR content)
+6. Task advisor-architecture(PR content)
+7. Task reviewer-simplicity(PR content)
+8. Task security-sentinel(PR content)
+9. Task oracle-performance(PR content)
+10. Task validator-deployment(PR content)
+11. Task guardian-data(PR content)
+12. Task reviewer-rails(PR content) - Verify new features are agent-accessible
 
 </parallel_tasks>
 
@@ -78,8 +77,8 @@ These agents are run ONLY when the PR matches specific criteria. Check the PR fi
 
 **If PR contains database migrations (db/migrate/\*.rb files) or data backfills:**
 
-14. Task data-migration-expert(PR content) - Validates ID mappings match production, checks for swapped values, verifies rollback safety
-15. Task deployment-verification-agent(PR content) - Creates Go/No-Go deployment checklist with SQL verification queries
+14. Task expert-migrations(PR content) - Validates ID mappings match production, checks for swapped values, verifies rollback safety
+15. Task validator-deployment(PR content) - Creates Go/No-Go deployment checklist with SQL verification queries
 
 **When to run migration agents:**
 
@@ -91,8 +90,8 @@ These agents are run ONLY when the PR matches specific criteria. Check the PR fi
 
 **What these agents check:**
 
-- \`data-migration-expert\`: Verifies hard-coded mappings match production reality (prevents swapped IDs), checks for orphaned associations, validates dual-write patterns
-- \`deployment-verification-agent\`: Produces executable pre/post-deploy checklists with SQL queries, rollback procedures, and monitoring plans
+- \`expert-migrations\`: Verifies hard-coded mappings match production reality (prevents swapped IDs), checks for orphaned associations, validates dual-write patterns
+- \`validator-deployment\`: Produces executable pre/post-deploy checklists with SQL queries, rollback procedures, and monitoring plans
 
 </conditional_agents>
 
@@ -366,7 +365,6 @@ After creating all todo files, present comprehensive summary:
 - reviewer-rails
 - security-sentinel
 - oracle-performance
-- architecture-strategist
 - advisor-architecture
 - [other agents]
 

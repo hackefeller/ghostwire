@@ -20,7 +20,7 @@ Systematically refactor code while maintaining functionality and improving clari
 
 - Use \`reviewer-typescript\` or \`reviewer-python\` for language-specific reviews
 - Use \`reviewer-simplicity\` to ensure simplifications don't over-engineer
-- Use \`pattern-recognition-specialist\` to identify and apply consistent patterns
+- Use \`analyzer-patterns\` to identify and apply consistent patterns
 - Run comprehensive test suites before/after refactoring
 
 ## Refactoring Types

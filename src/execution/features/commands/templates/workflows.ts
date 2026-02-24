@@ -14,9 +14,9 @@ Transform feature descriptions, bug reports, or improvement ideas into well-stru
 
 ## Key Agents & Tasks
 
-- Use \`repo-research-analyst\` for codebase patterns and conventions
-- Use \`learnings-researcher\` for institutional knowledge and gotchas
-- Use \`best-practices-researcher\` and \`framework-docs-researcher\` for external guidance
+- Use \`researcher-repo\` for codebase patterns and conventions
+- Use \`researcher-learnings\` for institutional knowledge and gotchas
+- Use \`researcher-practices\` and \`researcher-docs\` for external guidance
 - Use \`spec-flow-analyzer\` to validate the specification
 - Use AskUserQuestion for refinement and decision points
 

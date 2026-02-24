@@ -183,20 +183,20 @@ Based on problem type, these agents can enhance documentation:
 
 - **reviewer-rails**: Reviews code examples for Rails best practices
 - **reviewer-simplicity**: Ensures solution code is minimal and clear
-- **pattern-recognition-specialist**: Identifies anti-patterns or repeating issues
+- **analyzer-patterns**: Identifies anti-patterns or repeating issues
 
 ### Specific Domain Experts
 
-- **performance-seer-advisor**: Analyzes performance_issue category solutions
+- **oracle-performance**: Analyzes performance_issue category solutions
 - **security-sentinel**: Reviews security_issue solutions for vulnerabilities
-- **cora-test-reviewer**: Creates test cases for prevention strategies
-- **data-integrity-guardian**: Reviews database_issue migrations and queries
+- **cora-test-reviewer**: (skill, not agent) Creates test cases for prevention strategies
+- **guardian-data**: Reviews database_issue migrations and queries
 
 ### Enhancement & Documentation
 
-- **best-practices-researcher**: Enriches solution with industry best practices
+- **researcher-practices**: Enriches solution with industry best practices
 - **every-style-editor**: Reviews documentation style and clarity
-- **framework-docs-researcher**: Links to Rails/gem documentation references
+- **researcher-docs**: Links to Rails/gem documentation references
 
 ### When to Invoke
 

@@ -36,7 +36,8 @@
     "dev-setup": "bun run task.ts dev-setup",
     "help": "bun run task.ts help",
     "postinstall": "node postinstall.mjs",
-    "prepublishOnly": "bun run task.ts build"
+    "prepublishOnly": "bun run task.ts build",
+    "validate:agent-references": "bun script/validate-agent-references.ts"
   },
   "keywords": [
     "opencode",

@@ -22,11 +22,133 @@ import {
   isValidAgentId,
   isValidCommandName,
   isValidSkillName,
+  AGENT_PLANNER,
+  AGENT_ADVISOR_PLAN,
+  AGENT_ADVISOR_STRATEGY,
+  AGENT_ADVISOR_ARCHITECTURE,
+  AGENT_RESEARCHER_CODEBASE,
+  AGENT_RESEARCHER_DATA,
+  AGENT_RESEARCHER_DOCS,
+  AGENT_RESEARCHER_GIT,
+  AGENT_RESEARCHER_LEARNINGS,
+  AGENT_RESEARCHER_PRACTICES,
+  AGENT_RESEARCHER_REPO,
+  AGENT_REVIEWER_RAILS,
+  AGENT_REVIEWER_PYTHON,
+  AGENT_REVIEWER_TYPESCRIPT,
+  AGENT_REVIEWER_RAILS_DH,
+  AGENT_REVIEWER_SECURITY,
+  AGENT_REVIEWER_SIMPLICITY,
+  AGENT_REVIEWER_RACES,
+  AGENT_DESIGNER_BUILDER,
+  AGENT_DESIGNER_FLOW,
+  AGENT_DESIGNER_ITERATOR,
+  AGENT_DESIGNER_SYNC,
+  AGENT_VALIDATOR_AUDIT,
+  AGENT_VALIDATOR_BUGS,
+  AGENT_VALIDATOR_DEPLOYMENT,
+  AGENT_WRITER_README,
+  AGENT_WRITER_GEM,
+  AGENT_EDITOR_STYLE,
+  AGENT_OPERATOR,
+  AGENT_EXECUTOR,
+  AGENT_ORCHESTRATOR,
+  AGENT_ANALYZER_DESIGN,
+  AGENT_ANALYZER_MEDIA,
+  AGENT_ANALYZER_PATTERNS,
+  AGENT_ORACLE_PERFORMANCE,
+  AGENT_GUARDIAN_DATA,
+  AGENT_EXPERT_MIGRATIONS,
+  AGENT_RESOLVER_PR,
+  CATEGORY_VISUAL_ENGINEERING,
+  CATEGORY_ULTRABRAIN,
+  CATEGORY_DEEP,
+  CATEGORY_ARTISTRY,
+  CATEGORY_QUICK,
+  CATEGORY_UNSPECIFIED_LOW,
+  CATEGORY_UNSPECIFIED_HIGH,
+  CATEGORY_WRITING,
 } from "../src/orchestration/agents/constants";
 
 const PROJECT_ROOT = join(import.meta.dir, "..");
 const COMMANDS_DIR = join(PROJECT_ROOT, "src/execution/features/commands/commands");
 const TEMPLATES_DIR = join(PROJECT_ROOT, "src/execution/features/commands/templates");
+
+/**
+ * Map of constant names to their runtime values
+ * Used to resolve ${CONSTANT_NAME} references back to actual values
+ */
+const AGENT_CONSTANT_MAP: Record<string, string> = {
+  AGENT_PLANNER,
+  AGENT_ADVISOR_PLAN,
+  AGENT_ADVISOR_STRATEGY,
+  AGENT_ADVISOR_ARCHITECTURE,
+  AGENT_RESEARCHER_CODEBASE,
+  AGENT_RESEARCHER_DATA,
+  AGENT_RESEARCHER_DOCS,
+  AGENT_RESEARCHER_GIT,
+  AGENT_RESEARCHER_LEARNINGS,
+  AGENT_RESEARCHER_PRACTICES,
+  AGENT_RESEARCHER_REPO,
+  AGENT_REVIEWER_RAILS,
+  AGENT_REVIEWER_PYTHON,
+  AGENT_REVIEWER_TYPESCRIPT,
+  AGENT_REVIEWER_RAILS_DH,
+  AGENT_REVIEWER_SECURITY,
+  AGENT_REVIEWER_SIMPLICITY,
+  AGENT_REVIEWER_RACES,
+  AGENT_DESIGNER_BUILDER,
+  AGENT_DESIGNER_FLOW,
+  AGENT_DESIGNER_ITERATOR,
+  AGENT_DESIGNER_SYNC,
+  AGENT_VALIDATOR_AUDIT,
+  AGENT_VALIDATOR_BUGS,
+  AGENT_VALIDATOR_DEPLOYMENT,
+  AGENT_WRITER_README,
+  AGENT_WRITER_GEM,
+  AGENT_EDITOR_STYLE,
+  AGENT_OPERATOR,
+  AGENT_EXECUTOR,
+  AGENT_ORCHESTRATOR,
+  AGENT_ANALYZER_DESIGN,
+  AGENT_ANALYZER_MEDIA,
+  AGENT_ANALYZER_PATTERNS,
+  AGENT_ORACLE_PERFORMANCE,
+  AGENT_GUARDIAN_DATA,
+  AGENT_EXPERT_MIGRATIONS,
+  AGENT_RESOLVER_PR,
+};
+
+const CATEGORY_CONSTANT_MAP: Record<string, string> = {
+  CATEGORY_VISUAL_ENGINEERING,
+  CATEGORY_ULTRABRAIN,
+  CATEGORY_DEEP,
+  CATEGORY_ARTISTRY,
+  CATEGORY_QUICK,
+  CATEGORY_UNSPECIFIED_LOW,
+  CATEGORY_UNSPECIFIED_HIGH,
+  CATEGORY_WRITING,
+};
+
+/**
+ * Resolve a constant reference ${CONSTANT_NAME} to its actual value
+ */
+function resolveConstant(value: string): string {
+  // Check if value is a constant reference ${CONSTANT_NAME}
+  const constantMatch = value.match(/^\$\{([^}]+)\}$/);
+  if (constantMatch) {
+    const constantName = constantMatch[1];
+    // Try agent constants first
+    if (constantName in AGENT_CONSTANT_MAP) {
+      return AGENT_CONSTANT_MAP[constantName];
+    }
+    // Try category constants
+    if (constantName in CATEGORY_CONSTANT_MAP) {
+      return CATEGORY_CONSTANT_MAP[constantName];
+    }
+  }
+  return value;
+}
 
 /**
  * Extract all references from a file
@@ -113,16 +235,18 @@ async function validateDirectory(dir: string): Promise<string[]> {
     const { subagentTypes, categories, commands, skills } = extractReferences(content);
     const relativePath = file.replace(PROJECT_ROOT + "/", "");
 
-    // Validate agent IDs
+    // Validate agent IDs (resolve constant references first)
     for (const { value, line } of subagentTypes) {
-      if (!isValidAgentId(value)) {
+      const resolvedValue = resolveConstant(value);
+      if (!isValidAgentId(resolvedValue)) {
         errors.push(`${relativePath}:${line}: Invalid subagent_type="${value}"`);
       }
     }
 
-    // Validate categories
+    // Validate categories (resolve constant references first)
     for (const { value, line } of categories) {
-      if (!VALID_CATEGORIES.includes(value as any)) {
+      const resolvedValue = resolveConstant(value);
+      if (!VALID_CATEGORIES.includes(resolvedValue as any)) {
         errors.push(`${relativePath}:${line}: Invalid category="${value}"`);
       }
     }

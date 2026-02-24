@@ -102,9 +102,9 @@ $ARGUMENTS
 </user-request>`,
     argumentHint: "[--create-new] [--max-depth=N]",
   },
-  "ghostwire:ultrawork-loop": {
+  "ghostwire:work:loop": {
     description:
-      "Start self-referential development loop until completion",
+      "Start iterative work loop until completion (ad-hoc, no plan required) [Phase: EXECUTE]",
     template: `<command-instruction>
 ${ULTRAWORK_LOOP_TEMPLATE}
 </command-instruction>
@@ -115,8 +115,29 @@ $ARGUMENTS
     argumentHint:
       '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
   },
+  // DEPRECATED: Old name for work:loop - kept for backward compatibility
+  "ghostwire:ultrawork-loop": {
+    description:
+      "Start self-referential development loop until completion [DEPRECATED: use /ghostwire:work:loop]",
+    template: `<command-instruction>
+${ULTRAWORK_LOOP_TEMPLATE}
+</command-instruction>
+
+<user-task>
+$ARGUMENTS
+</user-task>`,
+    argumentHint:
+      '"task description" [--completion-promise=TEXT] [--max-iterations=N]',
+  },
+  "ghostwire:work:cancel": {
+    description: "Cancel active work loop",
+    template: `<command-instruction>
+${CANCEL_ULTRAWORK_TEMPLATE}
+</command-instruction>`,
+  },
+  // DEPRECATED: Old name for work:cancel - kept for backward compatibility
   "ghostwire:cancel-ultrawork": {
-    description: "Cancel active Ultrawork Loop",
+    description: "Cancel active Ultrawork Loop [DEPRECATED: use /ghostwire:work:cancel]",
     template: `<command-instruction>
 ${CANCEL_ULTRAWORK_TEMPLATE}
 </command-instruction>`,
@@ -130,8 +151,8 @@ ${REFACTOR_TEMPLATE}
     argumentHint:
       "<refactoring-target> [--scope=<file|module|project>] [--strategy=<safe|aggressive>]",
   },
-  "ghostwire:jack-in-work": {
-    description: "Start operator work session from planner plan",
+  "ghostwire:workflows:execute": {
+    description: "Execute planned tasks from workflow plan (task-driven, with subagent delegation) [Phase: EXECUTE]",
     agent: "orchestrator",
     template: `<command-instruction>
 ${START_WORK_TEMPLATE}
@@ -147,15 +168,40 @@ $ARGUMENTS
 </user-request>`,
     argumentHint: "[plan-name]",
   },
+  // DEPRECATED: Old name for workflows:execute - kept for backward compatibility
+  "ghostwire:jack-in-work": {
+    description: "Start operator work session from planner plan [DEPRECATED: use /ghostwire:workflows:execute]",
+    agent: "orchestrator",
+    template: `<command-instruction>
+${START_WORK_TEMPLATE}
+</command-instruction>
+
+<session-context>
+Session ID: $SESSION_ID
+Timestamp: $TIMESTAMP
+</session-context>
+
+<user-request>
+$ARGUMENTS
+</user-request>`,
+    argumentHint: "[plan-name]",
+  },
+  "ghostwire:workflows:stop": {
+    description: "Stop all workflow continuation mechanisms",
+    template: `<command-instruction>
+${STOP_CONTINUATION_TEMPLATE}
+</command-instruction>`,
+  },
+  // DEPRECATED: Old name for workflows:stop - kept for backward compatibility
   "ghostwire:stop-continuation": {
     description:
-      "Stop all continuation mechanisms (ultrawork loop, todo continuation, ultrawork state) for this session",
+      "Stop all continuation mechanisms (ultrawork loop, todo continuation, ultrawork state) for this session [DEPRECATED: use /ghostwire:workflows:stop]",
     template: `<command-instruction>
 ${STOP_CONTINUATION_TEMPLATE}
 </command-instruction>`,
   },
   "ghostwire:workflows:plan": {
-    description: "Transform feature descriptions into implementation plans",
+    description: "Transform feature descriptions into implementation plans [Phase: PLAN]",
     template: `<command-instruction>
 ${WORKFLOWS_PLAN_TEMPLATE}
 </command-instruction>
@@ -167,7 +213,7 @@ $ARGUMENTS
   },
   "ghostwire:workflows:create": {
     description:
-      "Execute plan by breaking into tasks and coordinating implementation",
+      "Break down workflow plan into atomic tasks with delegation metadata [Phase: BREAKDOWN]",
     template: `<command-instruction>
 ${WORKFLOWS_CREATE_TEMPLATE}
 </command-instruction>

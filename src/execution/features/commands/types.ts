@@ -2,11 +2,17 @@ import type { CommandDefinition } from "../claude-code-command-loader";
 
 export type CommandName =
   | "ghostwire:init-deep"
-  | "ghostwire:ultrawork-loop"
-  | "ghostwire:cancel-ultrawork"
+  // Work loop commands (new names + old aliases for backward compat)
+  | "ghostwire:work:loop"
+  | "ghostwire:ultrawork-loop" // OLD: deprecated, use work:loop
+  | "ghostwire:work:cancel"
+  | "ghostwire:cancel-ultrawork" // OLD: deprecated, use work:cancel
   | "ghostwire:refactor"
-  | "ghostwire:jack-in-work"
-  | "ghostwire:stop-continuation"
+  // Workflow execution commands (new names + old aliases for backward compat)
+  | "ghostwire:workflows:execute"
+  | "ghostwire:jack-in-work" // OLD: deprecated, use workflows:execute
+  | "ghostwire:workflows:stop"
+  | "ghostwire:stop-continuation" // OLD: deprecated, use workflows:stop
   | "ghostwire:workflows:plan"
   | "ghostwire:workflows:create"
   | "ghostwire:workflows:status"

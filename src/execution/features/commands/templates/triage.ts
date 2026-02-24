@@ -1,5 +1,6 @@
-export const TRIAGE_TEMPLATE = `- First set the /model to Haiku
-- Then read all pending todos in the todos/ directory
+export const TRIAGE_TEMPLATE = `
+1. Set the /model to Haiku
+2. Read all pending todos in the todos/ directory
 
 Present all findings, decisions, or issues here one by one for triage. The goal is to go through each item and decide whether to add it to the CLI todo system.
 

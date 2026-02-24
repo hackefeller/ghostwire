@@ -199,11 +199,17 @@ export const HookNameSchema = z.enum([
 
 export const CommandNameSchema = z.enum([
   "ghostwire:init-deep",
-  "ghostwire:jack-in-work",
-  "ghostwire:ultrawork-loop",
-  "ghostwire:cancel-ultrawork",
+  // Work loop commands (new names + old aliases for backward compat)
+  "ghostwire:work:loop",
+  "ghostwire:ultrawork-loop", // OLD: deprecated, use work:loop
+  "ghostwire:work:cancel",
+  "ghostwire:cancel-ultrawork", // OLD: deprecated, use work:cancel
   "ghostwire:refactor",
-  "ghostwire:stop-continuation",
+  // Workflow execution commands (new names + old aliases for backward compat)
+  "ghostwire:workflows:execute",
+  "ghostwire:jack-in-work", // OLD: deprecated, use workflows:execute
+  "ghostwire:workflows:stop",
+  "ghostwire:stop-continuation", // OLD: deprecated, use workflows:stop
   // Ghostwire workflows commands
   "ghostwire:workflows:plan",
   "ghostwire:workflows:create",

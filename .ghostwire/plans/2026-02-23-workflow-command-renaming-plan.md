@@ -19,29 +19,69 @@ The current command naming (`ultrawork-loop`, `jack-in-work`, `workflows:work`) 
 
 ## Proposed Workflow Stages
 
+### **CRITICAL: Task-Driven Architecture**
+
+All workflows MUST be task-driven. The BREAKDOWN phase is **MANDATORY (not optional)**, and:
+- Plans are decomposed into **atomic tasks** suitable for subagent delegation
+- Each task has structured metadata: ID, subject, description, dependencies, owner, category, skills, estimated effort
+- Tasks are stored in **JSON format** for reliable parsing and subagent routing
+- **Hybrid parallelization**: Orchestrator auto-determines parallelization based on dependencies, but humans can manually specify "wave" groupings to override
+- Tasks enable **parallel execution** of independent work across subagents
+- Tasks support **cross-session resumption** (pick up where you left off)
+
 ### Stage 1: PLAN
 Gather requirements, understand the problem, create a high-level plan.
 - **Command**: `/ghostwire:workflows:plan`
 - **Description**: Transform feature descriptions into implementation plans
-- **Output**: `.ghostwire/plans/{plan-name}.md`
+- **Output**: `.ghostwire/plans/{plan-name}.md` with plan goals, scope, constraints
+- **Note**: Plan is high-level only (NOT task-level detail)
 
-### Stage 2: BREAKDOWN (Optional - already exists in workflows:plan sometimes)
-Break plan into actionable tasks.
-- **Command**: `/ghostwire:workflows:breakdown` (OR rename workflows:create)
-- **Description**: Break down plan into specific tasks and subtasks
-- **Output**: Updated plan file with structured tasks
+### Stage 2: BREAKDOWN (MANDATORY - Integrated into workflows:create)
+Break plan into actionable tasks **with structured metadata for subagent delegation**.
+- **Command**: `/ghostwire:workflows:create` (unchanged, but now mandatory breakdown happens inside)
+- **Description**: Break down plan into atomic tasks with dependencies and delegation metadata
+- **Output**: Updated plan file with:
+  - Structured task list (JSON blocks, not just checkboxes)
+  - Task metadata: id, subject, description, owner (subagent category), category, skills, blockedBy, blocks, estimatedEffort, wave
+  - Dependency graph (which tasks block which others)
+  - Parallel execution plan (wave 1, 2, 3, etc. for auto-grouped tasks)
+- **Key difference from old "workflows:create"**:
+  - OLD: Optional breakdown, tasks were just checkboxes
+  - NEW: MANDATORY breakdown with full structured metadata for delegation
+  - Enables orchestrator to delegate individual tasks to appropriate subagents
+  - Enables parallel execution of independent tasks
+- **Example task structure in plan**:
+  ```json
+  {
+    "id": "task-001",
+    "subject": "Set up database schema",
+    "description": "Create auth tables (users, tokens, roles) with proper indexes",
+    "owner": "backend",
+    "category": "ultrabrain",
+    "skills": ["database-design"],
+    "estimatedEffort": "2h",
+    "blockedBy": [],
+    "blocks": ["task-002", "task-003"],
+    "wave": 1
+  }
+  ```
 
 ### Stage 3: EXECUTE
-Execute the planned tasks.
-- **Two paths:**
-  - **3a. Execute Planned Work**: `/ghostwire:workflows:execute` (rename from jack-in-work)
-    - Takes existing plan
-    - Executes task list
-    - Tracks progress across sessions
-  - **3b. Execute Ad-hoc Work**: `/ghostwire:work:loop` (rename from ultrawork-loop)
-    - No plan required
-    - Iterative loop until completion
-    - For exploration or quick fixes
+Execute the planned tasks (using task-driven architecture).
+- **Command**: `/ghostwire:workflows:execute` (rename from jack-in-work)
+- **Description**: Execute planned tasks from workflow plan (with atomic task delegation)
+- **Process**:
+  1. Read plan file
+  2. Parse structured task list
+  3. Determine execution order and parallelization (hybrid: auto + manual waves)
+  4. **Delegate individual tasks to subagents** based on category/skills metadata
+  5. Run tasks in parallel (respecting dependencies)
+  6. Track progress for cross-session resumption
+- **Alternative path for ad-hoc work** (no plan):
+  - **Command**: `/ghostwire:work:loop` (rename from ultrawork-loop)
+  - No plan required, no task breakdown needed
+  - Iterative loop until completion promise met
+  - For quick fixes, exploration, or when planning overhead not worth it
 
 ### Stage 4: REVIEW
 Review code, verify functionality, document learnings.
@@ -60,8 +100,8 @@ Finalize the workflow, merge changes, cleanup state.
 | Phase | Old Command | New Command | Notes |
 |-------|-------------|-------------|-------|
 | PLAN | `workflows:plan` | **KEEP: `/ghostwire:workflows:plan`** | No change needed |
-| BREAKDOWN | `workflows:create` | **RENAME → `/ghostwire:workflows:breakdown`** | Clarifies it's about task breakdown |
-| EXECUTE (Planned) | `jack-in-work` | **RENAME → `/ghostwire:workflows:execute`** | Consolidates into workflows namespace |
+| BREAKDOWN | `workflows:create` | **KEEP: `/ghostwire:workflows:create`** | Now MANDATORY with structured task metadata (integrated breakdown) |
+| EXECUTE (Planned) | `jack-in-work` | **RENAME → `/ghostwire:workflows:execute`** | Consolidates into workflows namespace, task-driven execution |
 | EXECUTE (Ad-hoc) | `ultrawork-loop` | **RENAME → `/ghostwire:work:loop`** | New namespace for non-workflow work |
 | REVIEW | `workflows:review` | **KEEP: `/ghostwire:workflows:review`** | Already clear |
 | REVIEW (Docs) | `workflows:learnings` | **KEEP: `/ghostwire:workflows:learnings`** | Already clear |
@@ -95,6 +135,43 @@ If nesting is too deep, consider:
 
 ## Implementation Tasks
 
+### Task-Driven Execution Architecture
+
+**Critical capability change for `/ghostwire:workflows:create` and `/ghostwire:workflows:execute`:**
+
+#### workflows:create (BREAKDOWN phase) → Task structure output
+- Input: Existing plan (from `workflows:plan`)
+- Output: **Structured task list in JSON format** (appended to plan file)
+- Task metadata MUST include:
+  - `id`: Unique identifier (e.g., "task-001")
+  - `subject`: Brief title (e.g., "Set up database schema")
+  - `description`: Detailed description of what to do
+  - `owner`: Subagent category/owner (e.g., "backend", "frontend", "devops")
+  - `category`: Delegation category ("visual-engineering", "ultrabrain", "quick", "deep", "artistry")
+  - `skills`: Array of skills needed (e.g., ["database-design", "sql"])
+  - `estimatedEffort`: Time estimate (e.g., "2h", "30m")
+  - `blockedBy`: Array of task IDs that must complete first (dependencies)
+  - `blocks`: Array of task IDs that depend on this task
+  - `wave`: Integer (1, 2, 3...) for manual parallelization groups (optional, overrides auto-parallelization)
+  - `status`: "pending" | "in_progress" | "completed" (initially "pending")
+
+#### workflows:execute (EXECUTE phase) → Task-driven delegation
+- Input: Plan file with structured task list
+- Process:
+  1. Parse task list from plan
+  2. Determine execution order:
+     - By default: Orchestrator analyzes dependencies and parallelizes automatically
+     - If `wave` specified: Use manual wave groupings instead
+     - Respects `blockedBy`/`blocks` relationships
+  3. **Delegate tasks to subagents**:
+     - Group tasks by `category` and `skills`
+     - Use `delegate_task(category=X, load_skills=Y, description=Z)` for each task
+     - Run independent tasks in parallel (across multiple subagents)
+  4. Track progress:
+     - Update task status in plan file as work completes
+     - Enable cross-session resumption (pick up incomplete tasks)
+  5. Output: Completed plan with all tasks marked "completed"
+
 ### Phase 1: Command Definition Changes (10 files)
 
 #### 1.1 Update Command Names and Descriptions
@@ -102,57 +179,41 @@ If nesting is too deep, consider:
 
 Changes:
 ```typescript
-// OLD:
-"ghostwire:jack-in-work": {
-  description: "Start operator work session from planner plan",
+// KEEP - but update description to mention task-driven execution
+"ghostwire:workflows:create": {
+  description: "Break down workflow plan into atomic tasks with delegation metadata [Phase: BREAKDOWN]",
   agent: "orchestrator",
-  // ...
+  // ... ensure this now REQUIRES task structure output
 }
 
-// NEW:
+// RENAME
+"ghostwire:jack-in-work": {  // OLD
+// becomes:
 "ghostwire:workflows:execute": {
-  description: "Execute planned tasks from workflow plan",
+  description: "Execute planned tasks from workflow plan (task-driven, with subagent delegation) [Phase: EXECUTE]",
   agent: "orchestrator",
-  // ...
+  // ... ensure this reads structured task list and delegates individual tasks
 }
 
-// OLD:
-"ghostwire:ultrawork-loop": {
-  description: "Start self-referential development loop until completion",
-  // ...
-}
-
-// NEW:
+// RENAME
+"ghostwire:ultrawork-loop": {  // OLD
+// becomes:
 "ghostwire:work:loop": {
-  description: "Start iterative work loop until completion (ad-hoc, no plan required)",
+  description: "Start iterative work loop until completion (ad-hoc, no plan required) [Phase: EXECUTE]",
   // ...
 }
 
-// OLD:
-"ghostwire:cancel-ultrawork": {
-  description: "Cancel active Ultrawork Loop",
-  // ...
-}
-
-// NEW:
+// RENAME
+"ghostwire:cancel-ultrawork": {  // OLD
+// becomes:
 "ghostwire:work:cancel": {
   description: "Cancel active work loop",
   // ...
 }
 
-// NEW:
-"ghostwire:workflows:breakdown": {
-  description: "Break down workflow plan into actionable tasks",
-  // (rename from workflows:create - or add as alias)
-}
-
-// OLD:
-"ghostwire:stop-continuation": {
-  description: "Stop all continuation mechanisms...",
-  // ...
-}
-
-// NEW:
+// RENAME
+"ghostwire:stop-continuation": {  // OLD
+// becomes:
 "ghostwire:workflows:stop": {
   description: "Stop all workflow continuation mechanisms",
   // ...
@@ -354,31 +415,64 @@ Update any example commands in documentation.
 
 ## Backward Compatibility Strategy
 
-### Option A: Keep Old Names as Aliases (Recommended)
+### Key Decision: Integrated Breakdown (NOT separate command)
+- Old: `/ghostwire:workflows:create` was optional, produced simple checklist
+- New: `/ghostwire:workflows:create` is now MANDATORY and produces structured tasks
+- This is a **capability enhancement**, not a breaking change
+- Old behavior (simple checklist) still works, but new behavior (structured tasks) is recommended
+
+### Task Structure Compatibility
+- When `workflows:create` runs, it MUST output tasks in JSON format
+- If old workflows don't have structured tasks, `workflows:execute` should:
+  - Option A: Auto-convert simple checkboxes to minimal task structure
+  - Option B: Require re-breakdown with new `workflows:create` command
+- **Recommendation**: Option A (auto-convert for backward compat)
+
+### Command Name Aliases
 - Old commands still work but show deprecation warning
 - Easier migration path for users
 - Can remove old names in version X.0.0
 
-### Option B: Hard Cutover
-- Only support new names immediately
-- Might break user workflows
-- Cleaner codebase
-
-**Recommendation**: **Option A** - Keep aliases with deprecation warnings
+**Old → New Aliases:**
+- `ghostwire:jack-in-work` → `ghostwire:workflows:execute`
+- `ghostwire:ultrawork-loop` → `ghostwire:work:loop`
+- `ghostwire:cancel-ultrawork` → `ghostwire:work:cancel`
+- `ghostwire:stop-continuation` → `ghostwire:workflows:stop`
 
 ---
 
 ## Success Criteria
 
+### Command Renaming & Backward Compatibility
 - [ ] All new commands are defined in `commands.ts`
 - [ ] All new commands appear in `CommandNameSchema` and `CommandName` type
-- [ ] Old command names still route to correct handlers (backward compat)
+- [ ] Old command names still route to correct handlers (backward compat with deprecation warning)
 - [ ] Build succeeds: `bun run build` exits with 0
-- [ ] All tests pass: `bun test` shows no new failures
 - [ ] Regression tests specifically verify both old and new command names
+
+### Task-Driven Architecture (Critical)
+- [ ] `workflows:create` outputs **structured task list in JSON format** (not just checkboxes)
+- [ ] Each task includes all required fields: id, subject, description, owner, category, skills, estimatedEffort, blockedBy, blocks, wave, status
+- [ ] `workflows:execute` **reads structured task list** and delegates individual tasks to subagents
+- [ ] `workflows:execute` uses `delegate_task(category=..., load_skills=..., description=...)` for each task
+- [ ] Parallelization strategy implemented: **auto-determined by dependency analysis** (can be overridden by manual `wave` specification)
+- [ ] Cross-session resumption works: `workflows:execute` can resume incomplete tasks across multiple invocations
+- [ ] Task status is tracked and updated in plan file as work progresses
+
+### Testing & Verification
+- [ ] All tests pass: `bun test` shows no new failures
+- [ ] Task structure schema is defined and validated (task JSON parse doesn't fail)
+- [ ] Integration tests verify:
+  - `workflows:create` produces valid task JSON
+  - `workflows:execute` can parse and delegate tasks
+  - Parallel execution respects dependencies
+  - Cross-session resumption works correctly
+
+### Documentation & Migration
 - [ ] Documentation is updated with new command names
 - [ ] Help text shows workflow stage for each command
-- [ ] Migration guide is clear and accessible
+- [ ] Migration guide explains task-driven architecture
+- [ ] Example plan files show JSON task structure
 
 ---
 

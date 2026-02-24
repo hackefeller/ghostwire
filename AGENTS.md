@@ -152,7 +152,7 @@ ghostwire/
 | Add tool | `src/execution/tools/` | Dir with index/types/constants/tools.ts |
 | Add MCP | `src/integration/mcp/` | Create config, add to index.ts |
 | Add skill | `src/execution/features/skills/` | Create dir with SKILL.md |
-| Add command | `src/execution/features/commands/` | Add template + register in commands.ts |
+| Add command | `src/execution/features/commands/commands/` | One command per file: `workflows.plan.ts`, `code.refactor.ts`, etc. |
 | Config schema | `src/platform/config/schema.ts` | Zod schema, run `bun run build:schema` |
 | **Task queue** | `src/execution/features/task-queue/` | **NEW**: Types, parser, parallelization, delegation, orchestrator |
 | **Workflow hooks** | `src/orchestration/hooks/workflows-*` | **NEW**: workflows:create, workflows:execute, workflows:status command handlers |

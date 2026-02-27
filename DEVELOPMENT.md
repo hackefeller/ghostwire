@@ -9,7 +9,7 @@ Ghostwire uses a **self-contained, location-independent plugin architecture**:
 1. **Build-time manifest generation**
    - Scans `agents` directory for markdown agent definitions
    - Extracts all metadata and prompts
-   - Generates `src/execution/features/agents-manifest.ts` with embedded agent data (181KB, 38 agents)
+   - Generates `src/execution/features/agents-manifest.ts` with embedded agent data.
 
 2. **Smart loading** in `src/orchestration/agents/load-markdown-agents.ts`
    - Primary: Load from embedded manifest (no filesystem needed)
@@ -28,7 +28,7 @@ Ghostwire uses a **self-contained, location-independent plugin architecture**:
 # Build the project and create the global plugin wrapper
 cd ~/Developer/ghostwire
 bun run build
-bun run sync
+bunx ghostwire install --no-tui --openai=no --gemini=no --copilot=no --local-sync
 
 # Verify the global plugin exists
 ls -la ~/.config/opencode/plugins/ghostwire.mjs
@@ -63,8 +63,9 @@ bun run dev:full
 ### Manual Sync to Global (if needed)
 
 ```bash
-bun run sync
-# One-time: runs full build and copies dist/index.js to ~/.config/opencode/plugins/ghostwire.mjs
+bun run build
+bunx ghostwire install --no-tui --openai=no --gemini=no --copilot=no --local-sync
+# Copies local dist/index.js to ~/.config/opencode/plugins/ghostwire.mjs
 ```
 
 ## File Structure
@@ -90,7 +91,7 @@ bun run sync
 | `bun run dev`       | Watch + rebuild to dist/ (for local testing)                           |
 | `bun run dev:full`  | Full build: plugin + types + schema + CLI                              |
 | `bun run build`     | Build without types/schema/CLI                                         |
-| `bun run sync`      | Build + copy dist/index.js to ~/.config/opencode/plugins/ghostwire.mjs |
+| `ghostwire install --local-sync` | Sync local dist/index.js to ~/.config/opencode/plugins/ghostwire.mjs |
 | `bun run typecheck` | Type check only                                                        |
 | `bun test`          | Run all tests (1929 tests)                                             |
 
@@ -130,7 +131,7 @@ ls -lh ~/Developer/ghostwire/dist/index.js
 
 # Rebuild
 cd ~/Developer/ghostwire
-bun run build && bun run sync
+bun run build && bunx ghostwire install --no-tui --openai=no --gemini=no --copilot=no --local-sync
 ```
 
 ### Manifest out of sync

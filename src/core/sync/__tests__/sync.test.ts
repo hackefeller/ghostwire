@@ -29,7 +29,7 @@ function linkOutput(target: string): RenderedOutput {
 }
 
 describe("sync planner", () => {
-  it("plans unchanged outputs for rewrite", () => {
+  it("plans outputs for rewrite", () => {
     const output = fileOutput("same");
     const plan = planSync("catalog", [output], [toManifestEntry(output)]);
 

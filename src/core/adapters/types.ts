@@ -68,6 +68,11 @@ export interface ToolCommandAdapter {
   formatAgent?(template: AgentTemplate, version: string): string;
 
   /**
+   * Optional: Skip mirroring skills for hosts that discover them natively.
+   */
+  mirrorSkills?: boolean;
+
+  /**
    * Optional: Returns the file path for the skills discovery manifest.
    * @returns Path from project root (e.g., '.claude/skills-index.md')
    */
@@ -80,17 +85,6 @@ export interface ToolCommandAdapter {
    * @returns Complete manifest file content
    */
   formatManifest?(skills: SkillTemplate[], version: string): string;
-}
-
-/**
- * Result of generating a file
- */
-export interface GeneratedFile {
-  /** Absolute or relative file path */
-  path: string;
-
-  /** Complete file content */
-  content: string;
 }
 
 /**

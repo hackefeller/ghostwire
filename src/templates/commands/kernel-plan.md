@@ -4,20 +4,25 @@ kind: command
 tags:
   - workflow
   - planning
-description: Plan work and knowledge in the repo .kernel project OS.
+description: Turn a spark into goals, tasks, and knowledge in the repo-local .kernel project memory.
 group: workflow
-argumentHint: goal, epic, task, or knowledge to plan
+argumentHint: spark, optional goal/task ref, or empty for interactive intake
 backedBySkill: kernel-plan
 ---
 
-Use this before implementation begins, or whenever scope, sequence, or project knowledge is unclear.
+Use this to turn an unstructured idea, bug, feature request, or strategic direction into durable work in `.kernel`.
 
-Plan into `.kernel`, not chat:
+Start with a spark, not a record type.  
+Kernel investigates the repo and `.kernel` first, asks only necessary questions, then decides the right structure and breaks the work into concrete tasks.
 
-- Goals live in `.kernel/work/goals/<id>/goal.md`
-- Epics live in `.kernel/work/epics/<id>/epic.md`
-- Tasks live in `.kernel/work/tasks/active/<id>/task.md`
-- Knowledge lives in `.kernel/knowledge/research|runbooks|concepts/<id>/<kind>.md`
-- Learnings live in `.kernel/knowledge/learnings/<slug>.md`
+Plans live in `.kernel`, not chat:
 
-Each record has one markdown file with frontmatter. Link research, runbooks, concepts, and learnings from work records instead of copying knowledge around.
+- Goals live in `.kernel/work/goals/<id>/goal.md` (outcome containers)
+- Tasks live in `.kernel/work/tasks/active/<id>/task.md` (executable work units)
+- Knowledge lives in `.kernel/knowledge/notes/<id>/note.md` (reusable findings, procedures, and decisions)
+- Learnings live in `.kernel/knowledge/learnings/<slug>.md` (captured after task completion)
+- Local runtime state lives in `.kernel/state.json`
+
+Each record has one markdown file with frontmatter. Link knowledge instead of duplicating rationale across work records.
+
+Goals group tasks.

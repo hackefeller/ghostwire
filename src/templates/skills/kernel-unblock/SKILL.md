@@ -18,18 +18,19 @@ termination:
 outputs:
   - Updated task, follow-up task, or linked knowledge record
 disableModelInvocation: true
+userInvocable: false
 allowedTools:
   - bash
 ---
 
 # kernel-unblock
 
-Read the blocked task's `.kernel/work/tasks/active/<task-id>/task.md`, inspect linked epics/goals/knowledge, and classify the blocker.
+Read the blocked task's `.kernel/work/tasks/active/<task-id>/task.md`, inspect linked goals/knowledge, and classify the blocker.
 
 Outcomes:
 
 - Resolve and continue
 - Update the task plan/checklist
 - Create a follow-up task
-- Capture missing context as research, runbook, or concept
+- Capture missing context as a knowledge note
 - Re-plan if scope changed

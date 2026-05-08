@@ -9,6 +9,7 @@ import {
   restoreTask,
   taskStatus,
 } from "../../core/project-os/index.js";
+
 import { printOutput } from "./output.js";
 
 function parseCsv(value?: string): string[] | undefined {
@@ -22,14 +23,12 @@ export function registerTaskCommand(program: Command): void {
     .command("new <title>")
     .description("Create a new task")
     .option("--goal <goalId>", "Goal ID")
-    .option("--epic <epicId>", "Epic ID")
     .option("--tag <tags>", "Comma-separated tags")
     .option("--knowledge <ids>", "Comma-separated linked knowledge IDs")
-    .action(async (title: string, options: { goal?: string; epic?: string; tag?: string; knowledge?: string }) => {
+    .action(async (title: string, options: { goal?: string; tag?: string; knowledge?: string }) => {
       printOutput(
         await createTask(title, {
           goalId: options.goal,
-          epicId: options.epic,
           tags: parseCsv(options.tag),
           linkedKnowledgeIds: parseCsv(options.knowledge),
         }),

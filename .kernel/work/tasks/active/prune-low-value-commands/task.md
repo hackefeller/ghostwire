@@ -3,7 +3,6 @@ id: prune-low-value-commands
 title: Prune low-value commands
 status: active
 goalId: simplify-command-surface
-epicId: refactor-planning-and-execution-guidance
 createdAt: 2026-05-05T18:04:33.000Z
 updatedAt: 2026-05-05T18:04:33.000Z
 checklist:

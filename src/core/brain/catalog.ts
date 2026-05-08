@@ -295,6 +295,3 @@ export async function loadCatalogSource(homePath: string): Promise<CatalogSource
   };
 }
 
-export function getBuiltInPackageIds(): string[] {
-  return [];
-}

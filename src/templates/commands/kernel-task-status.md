@@ -8,4 +8,4 @@ target: task status
 argumentHint: optional task id
 ---
 
-Use this to inspect the active task without changing state. The next unchecked checklist item is included in the output.
+Use this to inspect the active task without changing state. The next unchecked checklist item is included in the output, and the active task pointer comes from `.kernel/state.json` when no task id is provided.

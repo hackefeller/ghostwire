@@ -1,10 +1,11 @@
 /**
  * Pi (pi-coding-agent) adapter
  *
- * Formats skills for Pi — a minimal terminal coding harness.
+ * Formats Pi-facing resources for Pi — a minimal terminal coding harness.
  *
- * Directory conventions (Agent Skills standard):
- * - Skills:         .pi/skills/<name>/SKILL.md
+ * Directory conventions (Pi docs / Agent Skills standard):
+ * - Skills:          ~/.agents/skills/<name>/SKILL.md (Pi discovers these directly)
+ * - Prompt templates: ~/.pi/agent/prompts/<name>.md
  *
  * Pi implements the Agent Skills standard and scans directories to discover skills.
  * Skills are loaded on-demand based on description matching.
@@ -20,23 +21,23 @@ import type { ToolCommandAdapter } from "./types.js";
 import type { CommandTemplate, SkillTemplate } from "../templates/types.js";
 import {
   closeSkillFrontmatter,
-  escapeYamlValue,
   formatBaseSkillFrontmatter,
-  formatCompatibilityCommand,
   formatManifestContent,
+  formatPromptTemplate,
 } from "./shared.js";
 
 export const piAdapter: ToolCommandAdapter = {
   toolId: "pi",
   toolName: "Pi",
   skillsDir: ".pi",
+  mirrorSkills: false,
 
   getSkillPath(skillName: string): string {
     return path.join(".pi", "skills", skillName, "SKILL.md");
   },
 
   getCommandPath(commandName: string): string {
-    return path.join(".pi", "commands", `${commandName}.md`);
+    return path.join(".pi", "agent", "prompts", `${commandName}.md`);
   },
 
   formatSkill(template: SkillTemplate, version: string): string {
@@ -48,13 +49,12 @@ export const piAdapter: ToolCommandAdapter = {
     );
   },
 
-  formatCommand(template: CommandTemplate, version: string): string {
-    return formatCompatibilityCommand(template, version, "Pi");
+  formatCommand(template: CommandTemplate, _version: string): string {
+    return formatPromptTemplate(template);
   },
 
   getManifestPath(): string {
-    // Pi doesn't require a manifest to discover skills (scans directories),
-    // but an index is useful for quick reference
+    // Kept only so the sync cleanup can remove legacy mirrored layouts.
     return path.join(".pi", "skills-index.md");
   },
 

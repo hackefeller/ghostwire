@@ -11,14 +11,7 @@ import type {
 } from "../templates/types.js";
 import { VALID_TAGS } from "../templates/types.js";
 import { parseFrontmatter } from "../templates/frontmatter.js";
-
-type GlobResult = Record<string, unknown>;
-
-declare global {
-  interface ImportMeta {
-    glob(pattern: string, options?: { query?: string; import?: string; eager?: boolean }): GlobResult;
-  }
-}
+import { BUNDLED_TEMPLATE_FILES } from "./bundled-templates.js";
 
 export interface TemplateRegistry {
   skills: SkillTemplate[];
@@ -34,24 +27,21 @@ const DEFAULT_COMMAND_TARGETS = new Set([
   "goal status",
   "goal list",
   "goal done",
-  "epic new",
-  "epic plan",
-  "epic status",
-  "epic list",
-  "epic done",
   "task new",
   "task plan",
   "task done",
   "task status",
   "task archive",
   "task list",
-  "research new",
-  "runbook new",
-  "concept new",
   "knowledge list",
 ]);
 
 const registryCache = new Map<string, TemplateRegistry>();
+
+interface BundledTemplateFile {
+  path: string;
+  content: string;
+}
 
 const TemplateProfileSchema = z.enum(["core", "extended"] satisfies [TemplateProfile, ...TemplateProfile[]]);
 const CommandGroupSchema = z.enum(["system", "workflow", "specialist"]);
@@ -382,30 +372,12 @@ function loadFromFilesystem(): TemplateRegistry {
   });
 }
 
-function loadBundled(): TemplateRegistry {
-  const skillFiles = import.meta.glob("../templates/skills/*/SKILL.md", {
-    query: "?raw",
-    import: "default",
-    eager: true,
-  });
-
-  const agentFiles = import.meta.glob("../templates/agents/*/AGENT.md", {
-    query: "?raw",
-    import: "default",
-    eager: true,
-  });
-
-  const commandFiles = import.meta.glob("../templates/commands/*.md", {
-    query: "?raw",
-    import: "default",
-    eager: true,
-  });
-
+function loadFromBundledFiles(): TemplateRegistry {
   const skills: SkillTemplate[] = [];
-  for (const [filePath, content] of Object.entries(skillFiles)) {
+  for (const { path: filePath, content } of BUNDLED_TEMPLATE_FILES.skills as readonly BundledTemplateFile[]) {
     const dirName = filePath.split("/").slice(-2, -1)[0];
     try {
-      const template = parseSkillTemplate(filePath, content as string);
+      const template = parseSkillTemplate(filePath, content);
       template.name = dirName;
       skills.push(template);
     } catch (err) {
@@ -414,10 +386,10 @@ function loadBundled(): TemplateRegistry {
   }
 
   const agents: AgentTemplate[] = [];
-  for (const [filePath, content] of Object.entries(agentFiles)) {
+  for (const { path: filePath, content } of BUNDLED_TEMPLATE_FILES.agents as readonly BundledTemplateFile[]) {
     const dirName = filePath.split("/").slice(-2, -1)[0];
     try {
-      const template = parseAgentTemplate(filePath, content as string);
+      const template = parseAgentTemplate(filePath, content);
       template.name = dirName;
       agents.push(template);
     } catch (err) {
@@ -426,10 +398,10 @@ function loadBundled(): TemplateRegistry {
   }
 
   const commands: CommandTemplate[] = [];
-  for (const [filePath, content] of Object.entries(commandFiles)) {
+  for (const { path: filePath, content } of BUNDLED_TEMPLATE_FILES.commands as readonly BundledTemplateFile[]) {
     const fileName = filePath.split("/").pop()!.replace(".md", "");
     try {
-      const template = parseCommandTemplate(filePath, content as string);
+      const template = parseCommandTemplate(filePath, content);
       template.name = fileName;
       commands.push(template);
     } catch (err) {
@@ -444,6 +416,10 @@ function loadBundled(): TemplateRegistry {
   });
 }
 
+function hasTemplates(registry: TemplateRegistry): boolean {
+  return registry.skills.length > 0 || registry.agents.length > 0 || registry.commands.length > 0;
+}
+
 export function loadTemplateRegistry(): TemplateRegistry {
   const cacheKey = "bundled";
   const cached = registryCache.get(cacheKey);
@@ -451,24 +427,18 @@ export function loadTemplateRegistry(): TemplateRegistry {
     return cached;
   }
 
-  let registry: TemplateRegistry;
-
-  try {
-    const skillFiles = import.meta.glob("../templates/skills/*/SKILL.md", {
-      query: "?raw",
-      import: "default",
-      eager: true,
-    });
-    const hasBundled = skillFiles && Object.keys(skillFiles).length > 0;
-    registry = hasBundled ? loadBundled() : loadFromFilesystem();
-  } catch {
-    registry = loadFromFilesystem();
+  const bundled = loadFromBundledFiles();
+  if (hasTemplates(bundled)) {
+    registryCache.set(cacheKey, bundled);
+    return bundled;
   }
 
-  registryCache.set(cacheKey, registry);
-  return registry;
+  const filesystem = loadFromFilesystem();
+  if (hasTemplates(filesystem)) {
+    registryCache.set(cacheKey, filesystem);
+    return filesystem;
+  }
+
+  throw new Error("No kernel templates were found. Rebuild the binary from the repository source.");
 }
 
-export function getTemplateRootStat(): number {
-  return Date.now();
-}

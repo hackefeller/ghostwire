@@ -50,13 +50,11 @@ export interface SyncHostResult {
   created: number;
   updated: number;
   removed: number;
-  unchanged: number;
   tracked: string[];
 }
 
 export interface SyncResult {
   catalogPath: string;
-  importedLegacySkills: string[];
   hosts: SyncHostResult[];
 }
 
@@ -65,7 +63,6 @@ export interface InitResult {
   catalogPath: string;
   detectedHosts: HostId[];
   enabledHosts: HostId[];
-  importedLegacySkills: string[];
 }
 
 export interface DoctorIssue {

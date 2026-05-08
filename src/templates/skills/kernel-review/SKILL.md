@@ -27,9 +27,8 @@ metadata:
     - optimize
 when:
   - a deliverable is complete and ready for sign-off
-  - an epic or task checkpoint has been reached and work should be reviewed before continuing
+  - a goal or task checkpoint has been reached and work should be reviewed before continuing
   - before handing off, deploying, or merging
-  - after an implementation workflow completes a set of sub-issues
   - user asks to review, refactor, format, or optimize code
   - there are lint violations, style inconsistencies, or performance issues
 applicability:
@@ -51,6 +50,7 @@ outputs:
   - Refactored code with unchanged behaviour
   - Lint-clean, formatted code
 disableModelInvocation: true
+userInvocable: false
 argumentHint: task, PR link, or file/directory to review (optional)
 allowedTools:
   - Read
@@ -65,7 +65,7 @@ Answer: _is this done well enough to move forward?_
 
 ### 1. Read the local plan
 
-- Read the relevant `.kernel` task, epic, or goal markdown to retrieve the goal and acceptance criteria.
+- Read the relevant `.kernel` task or goal markdown to retrieve the goal and acceptance criteria.
 - Identify the goal and what "done" means for this work.
 
 ### 2. Examine the output

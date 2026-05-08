@@ -4,7 +4,7 @@
 
 It gives you one canonical place on your machine to define skills, agents, and commands, then syncs that brain into the dot-directories your agent hosts already use.
 
-It also gives each repo a committed `.kernel/` directory that acts as the full living documentation system for the project: goals, epics, tasks, research, runbooks, concepts, learnings, and local runtime state.
+It also gives each repo a committed `.kernel/` directory that acts as the full living documentation system for the project: goals, tasks, research, runbooks, concepts, learnings, and local runtime state.
 
 ## What It Does
 
@@ -13,7 +13,7 @@ It also gives each repo a committed `.kernel/` directory that acts as the full l
 - Keeps host-specific formatting at the edge through small materializers
 - Manages repo-local project memory in `.kernel/`
 - Uses one markdown file with frontmatter per trackable record
-- Keeps `.kernel/state/` ignored for local pointers and runtime state
+- Keeps `.kernel/state.json` ignored for local pointers and runtime state
 
 ## Layout
 
@@ -40,8 +40,6 @@ It also gives each repo a committed `.kernel/` directory that acts as the full l
   work/
     goals/<id>/
       goal.md
-    epics/<id>/
-      epic.md
     tasks/
       active/<id>/
         task.md
@@ -55,8 +53,7 @@ It also gives each repo a committed `.kernel/` directory that acts as the full l
     concepts/<id>/
       concept.md
     learnings/<slug>.md
-  state/
-    pointers.json
+  state.json
 ```
 
 ## CLI
@@ -66,8 +63,7 @@ kernel sync
 kernel doctor
 kernel host list
 kernel goal new "<title>"
-kernel epic new "<title>" --goal <goalId>
-kernel task new "<title>" --epic <epicId>
+kernel task new "<title>" --goal <goalId>
 kernel task status [id]
 kernel task done <checklist-item>
 kernel task archive [id]
@@ -83,8 +79,8 @@ kernel concept new "<title>"
 npm install -g @hackefeller/kernel
 kernel sync
 kernel goal new "make onboarding effortless"
-kernel epic new "document setup path" --goal make-onboarding-effortless
-kernel task new "write setup guide" --epic document-setup-path
+kernel goal new "document setup path"
+kernel task new "write setup guide" --goal document-setup-path
 kernel task status
 ```
 

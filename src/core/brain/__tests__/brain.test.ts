@@ -103,11 +103,12 @@ describe("brain v2", () => {
     expect(await fs.readFile(catalogCommandPath, "utf-8")).toContain("kernel-local-command");
     await expect(fs.stat(bundledSkillPath)).rejects.toThrow();
 
-    const linkedSkillPath = path.join(homeDir, ".pi", "skills", "kernel-local-skill");
-    expect((await fs.lstat(linkedSkillPath)).isSymbolicLink()).toBe(true);
-    expect(await fs.readlink(linkedSkillPath)).toBe(path.join(homeDir, ".agents", "skills", "kernel-local-skill"));
-    expect(await fs.readFile(path.join(homeDir, ".pi", "commands", "kernel-local-command.md"), "utf-8")).toContain(
+    await expect(fs.stat(path.join(homeDir, ".pi", "skills"))).rejects.toThrow();
+    await expect(fs.stat(path.join(homeDir, ".pi", "skills", "kernel-local-skill"))).rejects.toThrow();
+    await expect(fs.stat(path.join(homeDir, ".pi", "skills-index.md"))).rejects.toThrow();
+    expect(await fs.readFile(path.join(homeDir, ".pi", "agent", "prompts", "kernel-local-command.md"), "utf-8")).toContain(
       "Local command",
     );
+    await expect(fs.stat(path.join(homeDir, ".pi", "commands"))).rejects.toThrow();
   });
 });

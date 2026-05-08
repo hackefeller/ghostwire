@@ -8,4 +8,4 @@ target: goal done
 argumentHint: optional goal id
 ---
 
-Mark a goal done only after linked epics are done or explicitly deferred in `goal.md`.
+Mark a goal done only after linked tasks are done or explicitly deferred in `goal.md`.

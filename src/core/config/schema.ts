@@ -67,18 +67,3 @@ export interface ToolDefinition {
   notes?: string;
 }
 
-/**
- * Configuration validation result
- */
-export interface ValidationResult {
-  /** Whether configuration is valid */
-  valid: boolean;
-
-  /** Validation error messages */
-  errors: string[];
-}
-
-/**
- * Configuration file paths
- */
-export const CONFIG_FILENAME = "config.yaml";

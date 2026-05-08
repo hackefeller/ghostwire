@@ -3,24 +3,23 @@ name: kernel-do
 kind: command
 tags:
   - workflow
-description: Execute the active .kernel task checklist item by item.
+description: Resolve and execute the next actionable task from .kernel.
 group: workflow
-argumentHint: optional task id or checklist item
+argumentHint: optional goal or task ref
 backedBySkill: kernel-execute
 ---
 
-Use this when a task exists under `.kernel/work/tasks/active/` and implementation should begin or continue.
+Use this to pick the next task to work on and get the context you need to execute it.
 
-Before editing code:
+Without arguments: Kernel resolves the highest-priority next actionable task and shows you its context.
 
-1. Run `kernel task status`.
-2. Read `.kernel/work/tasks/active/<task-id>/task.md`.
-3. Note the next unchecked checklist item from the status output.
+With a goal ref: Kernel finds the next unblocked task within that goal.
 
-After verifying a checklist item, run:
+With a task ref: Kernel loads that specific task directly.
 
-```bash
-kernel task done <checklist-item-id>
-```
+Before you start:
+1. Read the task's acceptance criteria
+2. Read linked knowledge
+3. Note dependencies and validation steps
 
-Use `--task <taskId>` when completing an item outside the active task pointer.
+Execute the task by working through its acceptance criteria. If the scope changes or clarification is needed, pause and re-plan with `kernel plan`.

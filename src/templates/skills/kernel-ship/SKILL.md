@@ -99,8 +99,8 @@ Ship to any environment safely. Validates production readiness first, then execu
 Write the verdict to a deployment record or associated `.kernel` task (optional):
 
 ```bash
-# Optional: Create a deployment runbook or research note
-kernel runbook new "Deployment validation for <feature>"
+# Optional: Capture deployment procedure as a knowledge note
+kernel knowledge new "Deployment validation for <feature>"
 ```
 
 Or, if associated with a task, record deployment validation in `.kernel/work/tasks/active/<taskId>/task.md` under `## Journal`.

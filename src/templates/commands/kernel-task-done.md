@@ -10,4 +10,4 @@ argumentHint: checklist item id or title
 
 Use this after verifying a checklist item.
 
-Pass the checklist item id or title slug. Use `--task <taskId>` when the active task pointer should not be used.
+Pass the checklist item id or title slug. Use `--task <taskId>` when the active task pointer in `.kernel/state.json` should not be used.

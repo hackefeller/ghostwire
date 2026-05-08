@@ -162,6 +162,14 @@ export function formatCompatibilityCommand(
   return closeCommandFrontmatter(lines, body);
 }
 
+export function formatPromptTemplate(template: CommandTemplate): string {
+  const lines = ["---", `description: ${escapeYamlValue(template.description)}`];
+  if (template.argumentsHint) {
+    lines.push(`argument-hint: ${escapeYamlValue(template.argumentsHint)}`);
+  }
+  return closeCommandFrontmatter(lines, template.instructions.trim());
+}
+
 // ─── Agent body ───────────────────────────────────────────────────────────────
 
 /**

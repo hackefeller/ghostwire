@@ -16,7 +16,7 @@ describe("printOutput", () => {
     logSpy = spyOn(console, "log").mockImplementation(() => undefined);
     tableSpy = spyOn(console, "table").mockImplementation(() => undefined);
 
-    printOutput([{ host: "claude", created: 1, updated: 0, removed: 0, unchanged: 8 }], {});
+    printOutput([{ host: "claude", created: 1, updated: 0, removed: 0 }], {});
 
     expect(tableSpy).toHaveBeenCalledTimes(1);
     expect(tableSpy?.mock.calls[0]?.[0]).toEqual([
@@ -25,7 +25,6 @@ describe("printOutput", () => {
         written: 1,
         replaced: 0,
         removed: 0,
-        preserved: 8,
       },
     ]);
   });
@@ -43,7 +42,6 @@ describe("printOutput", () => {
             created: 1,
             updated: 0,
             removed: 0,
-            unchanged: 8,
             tracked: ["/tmp/.claude/skills/kernel-review"],
           },
         ],
@@ -58,7 +56,6 @@ describe("printOutput", () => {
         written: 1,
         replaced: 0,
         removed: 0,
-        preserved: 8,
       },
     ]);
   });

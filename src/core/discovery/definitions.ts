@@ -47,20 +47,3 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
 /**
  * Get a tool definition by ID
  */
-export function getToolDefinition(toolId: string): ToolDefinition | undefined {
-  return TOOL_DEFINITIONS.find((tool) => tool.id === toolId);
-}
-
-/**
- * Get all tool definitions
- */
-export function getAllToolDefinitions(): ToolDefinition[] {
-  return TOOL_DEFINITIONS;
-}
-
-/**
- * Get only available/supported tools
- */
-export function getAvailableTools(): ToolDefinition[] {
-  return TOOL_DEFINITIONS.filter((tool) => tool.available);
-}

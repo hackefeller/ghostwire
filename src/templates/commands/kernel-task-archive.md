@@ -12,7 +12,7 @@ Archive a task when its planned work is complete or deliberately closed, then wr
 
 ## Steps
 
-1. **Identify the task.** If an ID was provided use it; otherwise read the active task from `.kernel/work/tasks/`.
+1. **Identify the task.** If an ID was provided use it; otherwise read the active task pointer from `.kernel/state.json` and resolve the corresponding record under `.kernel/work/tasks/active/`.
 
 2. **Run the archive CLI.**
    ```
@@ -20,7 +20,7 @@ Archive a task when its planned work is complete or deliberately closed, then wr
    ```
    Note any incomplete checklist warnings from the output.
 
-3. **Read the task record.** Open `task.md` from the archived location (`.kernel/work/tasks/archived/<taskId>/`). Read linked knowledge, epic, and goal IDs from the task frontmatter.
+3. **Read the task record.** Open `task.md` from the archived location (`.kernel/work/tasks/archived/<taskId>/`). Read linked knowledge and goal IDs from the task frontmatter.
 
 4. **Write a learnings essay.** Create `.kernel/knowledge/learnings/<slug>.md` where `<slug>` is a short kebab-case summary of the task's core insight (not the task ID). Start with frontmatter metadata, then use this exact structure — every section is required:
 
@@ -32,8 +32,6 @@ taskId: <taskId>
 archivedAt: <YYYY-MM-DD>
 linkedGoalIds:
   - <goal-id>
-linkedEpicIds:
-  - <epic-id>
 linkedKnowledgeIds:
   - <knowledge-id>
 ---
@@ -71,7 +69,7 @@ What is measurably different now? List what works, what was confirmed correct, a
 ## References
 
 - Task: `<taskId>` (archived <YYYY-MM-DD>)
-- Link any relevant epics, goals, research, or concept records by ID.
+- Link any relevant goals, research, or concept records by ID.
 ```
 
 5. **Ensure the learnings directory exists** before writing:

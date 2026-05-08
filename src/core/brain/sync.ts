@@ -6,7 +6,7 @@ import { applySyncPlan, planSync } from "../sync/index.js";
 import { directoryExists, fileExists, writeFile } from "../utils/file-system.js";
 import { loadCatalogSource } from "./catalog.js";
 import { ensureBrainConfig, getCatalogRoot, getSyncManifestPath, loadBrainConfig } from "./config.js";
-import { detectInstalledHosts, getHostDescriptor, listKnownHosts } from "./hosts.js";
+import { detectInstalledHosts, getHostAdapter, getHostDescriptor, listKnownHosts } from "./hosts.js";
 import { syncBuiltInCatalog } from "./storage.js";
 import type {
     HostId,
@@ -78,8 +78,17 @@ async function cleanupCatalogOrphans(homePath: string, tracked: Set<string>): Pr
 
 async function cleanupHostOrphans(hostId: HostId, homePath: string, tracked: Set<string>): Promise<number> {
   const host = getHostDescriptor(hostId);
+  const adapter = getHostAdapter(hostId);
   const hostBase = path.join(homePath, host.homeDir);
   let removed = 0;
+
+  if (adapter.mirrorSkills === false && adapter.getManifestPath) {
+    const manifestPath = path.join(hostBase, adapter.getManifestPath());
+    if (await fileExists(manifestPath)) {
+      await fs.rm(manifestPath, { force: true });
+      removed += 1;
+    }
+  }
 
   async function walk(currentPath: string): Promise<void> {
     const entries = await fs.readdir(currentPath, { withFileTypes: true }).catch(() => []);
@@ -104,6 +113,10 @@ async function cleanupHostOrphans(hostId: HostId, homePath: string, tracked: Set
     const absoluteDir = path.join(hostBase, relativeDir);
     if (await directoryExists(absoluteDir)) {
       await walk(absoluteDir);
+      const remaining = await fs.readdir(absoluteDir).catch(() => []);
+      if (remaining.length === 0) {
+        await fs.rmdir(absoluteDir).catch(() => undefined);
+      }
     }
   }
 
@@ -173,7 +186,6 @@ export async function syncKernelBrain(homePath = os.homedir()): Promise<SyncResu
           created: 0,
           updated: 0,
           removed,
-          unchanged: 0,
           tracked: [],
         });
       }
@@ -183,7 +195,6 @@ export async function syncKernelBrain(homePath = os.homedir()): Promise<SyncResu
   await saveSyncManifest(nextManifest, homePath);
   return {
     catalogPath: getCatalogRoot(homePath),
-    importedLegacySkills: [],
     hosts,
   };
 }

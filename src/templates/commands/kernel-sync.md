@@ -8,6 +8,7 @@ description: Sync the Kernel catalog into every enabled agent host so commands,
   skills, and agents stay current.
 group: system
 target: sync
+backedBySkill: kernel-sync
 ---
 
 Use this after changing Kernel templates or host configuration.

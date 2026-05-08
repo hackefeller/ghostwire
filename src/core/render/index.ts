@@ -137,15 +137,17 @@ export function renderHostOutputs(
   const outputs: RenderedOutput[] = [];
   const catalogRoot = getCatalogRoot(homePath);
 
-  for (const skill of catalog.skills) {
-    outputs.push({
-      scope: hostId,
-      templateId: skill.name,
-      kind: "symlink",
-      path: path.join(homePath, getHostDescriptor(hostId).homeDir, "skills", skill.name),
-      target: path.join(catalogRoot, "skills", skill.name),
-      adapterVersion: version,
-    });
+  if (adapter.mirrorSkills !== false) {
+    for (const skill of catalog.skills) {
+      outputs.push({
+        scope: hostId,
+        templateId: skill.name,
+        kind: "symlink",
+        path: path.join(homePath, getHostDescriptor(hostId).homeDir, "skills", skill.name),
+        target: path.join(catalogRoot, "skills", skill.name),
+        adapterVersion: version,
+      });
+    }
   }
 
   if (adapter.getAgentPath && adapter.formatAgent) {
@@ -174,7 +176,7 @@ export function renderHostOutputs(
     }
   }
 
-  if (adapter.getManifestPath && adapter.formatManifest) {
+  if (adapter.mirrorSkills !== false && adapter.getManifestPath && adapter.formatManifest) {
     outputs.push({
       scope: hostId,
       templateId: `${hostId}-manifest`,

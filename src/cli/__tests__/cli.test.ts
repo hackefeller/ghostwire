@@ -25,44 +25,53 @@ describe("kernel sync", () => {
   });
 
   it("syncs canonical .agents catalog and enabled hosts", async () => {
-    const staleSkillContents = "stale";
-    const skillName = getBuiltInCatalog().skills[0]!.name;
+    const originalCwd = process.cwd();
+    const projectDir = await mkTmpDir();
+    process.chdir(projectDir);
 
-    const canonicalSkillPath = path.join(homeDir, ".agents", "skills", skillName, "SKILL.md");
-    const canonicalCommandPath = path.join(homeDir, ".agents", "commands", "kernel-sync.yaml");
-    const unrelatedFile = path.join(homeDir, ".claude", "notes.txt");
+    try {
+      const staleSkillContents = "stale";
+      const skillName = getBuiltInCatalog().skills[0]!.name;
 
-    await fs.mkdir(path.dirname(canonicalSkillPath), { recursive: true });
-    await fs.mkdir(path.dirname(unrelatedFile), { recursive: true });
-    await fs.writeFile(canonicalSkillPath, staleSkillContents, "utf-8");
-    await fs.writeFile(unrelatedFile, "keep me", "utf-8");
+      const canonicalSkillPath = path.join(homeDir, ".agents", "skills", skillName, "SKILL.md");
+      const canonicalCommandPath = path.join(homeDir, ".agents", "commands", "kernel-sync.yaml");
+      const unrelatedFile = path.join(homeDir, ".claude", "notes.txt");
 
-    const result = await syncKernelBrain(homeDir);
+      await fs.mkdir(path.dirname(canonicalSkillPath), { recursive: true });
+      await fs.mkdir(path.dirname(unrelatedFile), { recursive: true });
+      await fs.writeFile(canonicalSkillPath, staleSkillContents, "utf-8");
+      await fs.writeFile(unrelatedFile, "keep me", "utf-8");
 
-    expect(result.catalogPath).toBe(path.join(homeDir, ".agents"));
+      const result = await syncKernelBrain(homeDir);
 
-    expect((await fs.stat(canonicalSkillPath)).isFile()).toBe(true);
-    expect(await fs.readFile(canonicalSkillPath, "utf-8")).not.toBe(staleSkillContents);
-    expect((await fs.stat(canonicalCommandPath)).isFile()).toBe(true);
-    const claudeKernelCommandPath = path.join(homeDir, ".claude", "commands", "kernel", "kernel-sync.md");
-    expect((await fs.stat(claudeKernelCommandPath)).isFile()).toBe(true);
-    expect(await fs.readFile(unrelatedFile, "utf-8")).toBe("keep me");
+      expect(result.catalogPath).toBe(path.join(homeDir, ".agents"));
 
-    const claudeSkillLink = path.join(homeDir, ".claude", "skills", skillName);
-    const codexSkillLink = path.join(homeDir, ".codex", "skills", skillName);
-    const copilotSkillLink = path.join(homeDir, ".copilot", "skills", skillName);
-    const piSkillLink = path.join(homeDir, ".pi", "skills", skillName);
+      expect((await fs.stat(canonicalSkillPath)).isFile()).toBe(true);
+      expect(await fs.readFile(canonicalSkillPath, "utf-8")).not.toBe(staleSkillContents);
+      expect((await fs.stat(canonicalCommandPath)).isFile()).toBe(true);
+      const claudeKernelCommandPath = path.join(homeDir, ".claude", "commands", "kernel", "kernel-sync.md");
+      expect((await fs.stat(claudeKernelCommandPath)).isFile()).toBe(true);
+      expect(await fs.readFile(unrelatedFile, "utf-8")).toBe("keep me");
 
-    expect((await fs.lstat(claudeSkillLink)).isSymbolicLink()).toBe(true);
-    expect(await fs.readlink(claudeSkillLink)).toBe(path.join(homeDir, ".agents", "skills", skillName));
-    expect((await fs.lstat(codexSkillLink)).isSymbolicLink()).toBe(true);
-    expect((await fs.lstat(copilotSkillLink)).isSymbolicLink()).toBe(true);
-    expect((await fs.lstat(piSkillLink)).isSymbolicLink()).toBe(true);
+      const claudeSkillLink = path.join(homeDir, ".claude", "skills", skillName);
+      const codexSkillLink = path.join(homeDir, ".codex", "skills", skillName);
+      const copilotSkillLink = path.join(homeDir, ".copilot", "skills", skillName);
+      const piSkillLink = path.join(homeDir, ".pi", "skills", skillName);
 
-    // agents directory is intentionally empty — all former agents are now commands
-    const agentsDir = path.join(homeDir, ".agents", "agents");
-    const agentEntries = await fs.readdir(agentsDir).catch(() => []);
-    expect(agentEntries).toHaveLength(0);
+      expect((await fs.lstat(claudeSkillLink)).isSymbolicLink()).toBe(true);
+      expect(await fs.readlink(claudeSkillLink)).toBe(path.join(homeDir, ".agents", "skills", skillName));
+      expect((await fs.lstat(codexSkillLink)).isSymbolicLink()).toBe(true);
+      expect((await fs.lstat(copilotSkillLink)).isSymbolicLink()).toBe(true);
+      await expect(fs.lstat(piSkillLink)).rejects.toThrow();
+
+      // agents directory is intentionally empty — all former agents are now commands
+      const agentsDir = path.join(homeDir, ".agents", "agents");
+      const agentEntries = await fs.readdir(agentsDir).catch(() => []);
+      expect(agentEntries).toHaveLength(0);
+    } finally {
+      process.chdir(originalCwd);
+      await fs.rm(projectDir, { recursive: true, force: true });
+    }
   });
 
   it("removes stale legacy workflow skills and commands from enabled hosts", async () => {
@@ -89,18 +98,12 @@ describe("program", () => {
     const { program } = await import("../index.js");
     const commandNames = new Set(program.commands.map((command) => command.name()));
 
-    expect(commandNames.has("init")).toBe(false);
     expect(commandNames.has("sync")).toBe(true);
     expect(commandNames.has("doctor")).toBe(true);
     expect(commandNames.has("host")).toBe(true);
     expect(commandNames.has("goal")).toBe(true);
-    expect(commandNames.has("epic")).toBe(true);
     expect(commandNames.has("task")).toBe(true);
-    expect(commandNames.has("decision")).toBe(false);
-    expect(commandNames.has("research")).toBe(true);
-    expect(commandNames.has("runbook")).toBe(true);
-    expect(commandNames.has("concept")).toBe(true);
-    expect(commandNames.has("work")).toBe(false);
+    expect(commandNames.has("knowledge")).toBe(true);
     expect(program.options.some((option) => option.long === "--json")).toBe(true);
     expect(program.version()).toBe(packageJson.version);
   });

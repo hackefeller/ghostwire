@@ -9,7 +9,6 @@
 import { Command } from "commander";
 import packageJson from "../../package.json";
 import { registerDoctorCommand } from "./commands/doctor.js";
-import { registerEpicCommand } from "./commands/epic.js";
 import { registerGoalCommand } from "./commands/goal.js";
 import { registerHostCommand } from "./commands/host.js";
 import { registerKnowledgeCommands } from "./commands/knowledge.js";
@@ -29,7 +28,6 @@ registerSyncCommand(program);
 registerDoctorCommand(program);
 registerHostCommand(program);
 registerGoalCommand(program);
-registerEpicCommand(program);
 registerTaskCommand(program);
 registerKnowledgeCommands(program);
 

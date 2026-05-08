@@ -1,13 +1,11 @@
 import { describe, expect, it } from "bun:test";
 import { AGENT_NAMES, COMMAND_NAMES, SKILL_NAMES } from "../../../templates/constants.js";
-import type { AgentTemplate, SkillTemplate } from "../../templates/types.js";
-import {
-  claudeAdapter,
-  codexAdapter,
-  githubCopilotAdapter,
-  piAdapter,
-  type ToolCommandAdapter,
-} from "../index.js";
+import type { AgentTemplate, CommandTemplate, SkillTemplate } from "../../templates/types.js";
+import { claudeAdapter } from "../claude.js";
+import { codexAdapter } from "../codex.js";
+import { githubCopilotAdapter } from "../github-copilot.js";
+import { piAdapter } from "../pi.js";
+import type { ToolCommandAdapter } from "../types.js";
 
 const allAdapters: ToolCommandAdapter[] = [
   claudeAdapter,
@@ -30,6 +28,15 @@ const testSkillTemplate: SkillTemplate = {
     category: "Orchestration",
     tags: ["planning"],
   },
+};
+
+const testCommandTemplate: CommandTemplate = {
+  name: "planner-prompt",
+  kind: "command",
+  tags: ["workflow", "planning"],
+  description: "Planning prompt",
+  instructions: "Plan the work.",
+  argumentsHint: "goal",
 };
 
 const testAgentTemplate: AgentTemplate = {
@@ -80,11 +87,17 @@ describe("Adapter Registry", () => {
 describe("Pi Adapter", () => {
   it("uses .pi directory", () => {
     expect(piAdapter.skillsDir).toBe(".pi");
+    expect(piAdapter.mirrorSkills).toBe(false);
   });
 
   it("generates correct skill path", () => {
     const path = piAdapter.getSkillPath("planner");
     expect(path).toBe(".pi/skills/planner/SKILL.md");
+  });
+
+  it("generates correct command prompt path", () => {
+    const path = piAdapter.getCommandPath!("planner-prompt");
+    expect(path).toBe(".pi/agent/prompts/planner-prompt.md");
   });
 
   it("formats skill with frontmatter", () => {
@@ -93,6 +106,14 @@ describe("Pi Adapter", () => {
     expect(result).toContain("name: planner");
     expect(result).toContain("description: Planning agent");
     expect(result).toContain('generatedBy: "1.0.0"');
+  });
+
+  it("formats command as a prompt template", () => {
+    const result = piAdapter.formatCommand!(testCommandTemplate, "1.0.0");
+    expect(result).toContain("description: Planning prompt");
+    expect(result).toContain("argument-hint: goal");
+    expect(result).not.toContain("native-command");
+    expect(result).not.toContain("tool: Pi");
   });
 });
 

@@ -22,7 +22,3 @@ export const DEFAULT_CONFIG_FILENAME = "config.yaml";
  */
 export const CONFIG_DIR_NAME = ".kernel";
 
-/**
- * Current configuration schema version
- */
-export const CONFIG_VERSION = "1.0.0";

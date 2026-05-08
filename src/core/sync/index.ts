@@ -58,7 +58,7 @@ export function planSync(
   return { scope, actions, remove, tracked };
 }
 
-async function applyAction(action: SyncAction): Promise<"created" | "updated" | "unchanged"> {
+async function applyAction(action: SyncAction): Promise<"created" | "updated"> {
   const stat = await fs.lstat(action.path).catch(() => null);
   if (action.kind === "symlink") {
     await fs.rm(action.path, { force: true, recursive: true });
@@ -77,7 +77,6 @@ export async function applySyncPlan(plan: SyncPlan): Promise<SyncHostResult> {
   let removed = 0;
   let created = 0;
   let updated = 0;
-  let unchanged = 0;
 
   for (const entryPath of plan.remove) {
     await fs.rm(entryPath, { force: true, recursive: true });
@@ -88,10 +87,8 @@ export async function applySyncPlan(plan: SyncPlan): Promise<SyncHostResult> {
     const result = await applyAction(action);
     if (result === "created") {
       created += 1;
-    } else if (result === "updated") {
-      updated += 1;
     } else {
-      unchanged += 1;
+      updated += 1;
     }
   }
 
@@ -100,7 +97,6 @@ export async function applySyncPlan(plan: SyncPlan): Promise<SyncHostResult> {
     created,
     updated,
     removed,
-    unchanged,
     tracked: plan.tracked.map((entry) => entry.path),
   };
 }

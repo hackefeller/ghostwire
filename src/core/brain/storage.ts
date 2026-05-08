@@ -2,7 +2,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import * as os from "os";
 import { applySyncPlan, planSync } from "../sync/index.js";
-import { ensureDir, listDirs, readFile } from "../utils/file-system.js";
+import { ensureDir } from "../utils/file-system.js";
 import { loadCatalogSource } from "./catalog.js";
 import { getCatalogRoot } from "./config.js";
 import type { SyncHostResult, SyncManifestEntry } from "./types.js";
@@ -36,44 +36,3 @@ export async function syncBuiltInCatalog(
   return { tracked: plan.tracked, result };
 }
 
-export async function listCatalogSkillNames(homePath = os.homedir()): Promise<string[]> {
-  return (await listDirs(getSkillsRoot(homePath))).sort();
-}
-
-export async function listCatalogAgentNames(homePath = os.homedir()): Promise<string[]> {
-  return (await listDirs(getAgentsRoot(homePath))).sort();
-}
-
-export async function listCatalogCommandNames(homePath = os.homedir()): Promise<string[]> {
-  const entries = await fs.readdir(getCommandsRoot(homePath), { withFileTypes: true }).catch(() => []);
-  return entries
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".yaml"))
-    .map((entry) => entry.name.replace(/\.yaml$/, ""))
-    .sort();
-}
-
-export async function loadCatalogSkillContent(
-  skillName: string,
-  homePath = os.homedir(),
-): Promise<string> {
-  return readFile(path.join(getSkillsRoot(homePath), skillName, "SKILL.md"));
-}
-
-export async function loadCatalogAgentContent(
-  agentName: string,
-  homePath = os.homedir(),
-): Promise<string> {
-  return readFile(path.join(getAgentsRoot(homePath), agentName, "AGENT.md"));
-}
-
-export function getCatalogSkillDir(skillName: string, homePath = os.homedir()): string {
-  return path.join(getSkillsRoot(homePath), skillName);
-}
-
-export function getCatalogAgentsRoot(homePath = os.homedir()): string {
-  return getAgentsRoot(homePath);
-}
-
-export function getCatalogCommandsRoot(homePath = os.homedir()): string {
-  return getCommandsRoot(homePath);
-}

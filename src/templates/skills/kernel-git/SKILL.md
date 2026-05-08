@@ -41,6 +41,7 @@ outputs:
   - Git commands and workflow guidance
   - Branch strategy or commit message recommendations
   - Compact CI status summary and first actionable GitHub Actions failure
+userInvocable: false
 ---
 
 Advanced git workflows, history management, and collaboration patterns.

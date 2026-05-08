@@ -5,8 +5,8 @@ tags:
   - workflow
   - exploration
 profile: core
-description: Investigate unknowns, tradeoffs, and risks for .kernel tasks, epics,
-  goals, or knowledge records. Write durable findings back to linked knowledge.
+description: Investigate unknowns, tradeoffs, and risks for .kernel tasks, goals,
+  or knowledge records. Write durable findings back to linked knowledge.
 license: MIT
 metadata:
   author: project
@@ -19,6 +19,7 @@ termination:
 outputs:
   - Research records linked to work
 disableModelInvocation: true
+userInvocable: false
 allowedTools:
   - bash
 ---
@@ -27,6 +28,6 @@ allowedTools:
 
 Investigate unknowns and route findings to the right `.kernel` home.
 
-- If the finding changes execution, update the relevant `task.md`, `epic.md`, or `goal.md`.
-- If the finding is reusable, create `kernel research new` and link it from the work record.
+- If the finding changes execution, update the relevant `task.md` or `goal.md`.
+- If the finding is reusable, create a knowledge note and link it from the work record.
 - Keep evidence grounded in source files, command output, or existing `.kernel` records.

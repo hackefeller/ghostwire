@@ -18,8 +18,7 @@ function toTableRow(entry: Record<string, unknown>): Record<string, unknown> {
     "host" in entry &&
     "created" in entry &&
     "updated" in entry &&
-    "removed" in entry &&
-    "unchanged" in entry;
+    "removed" in entry;
 
   if (isSyncSummary) {
     return {
@@ -27,7 +26,6 @@ function toTableRow(entry: Record<string, unknown>): Record<string, unknown> {
       written: entry.created,
       replaced: entry.updated,
       removed: entry.removed,
-      preserved: entry.unchanged,
     };
   }
 

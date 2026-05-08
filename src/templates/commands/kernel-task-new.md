@@ -2,12 +2,12 @@
 name: kernel-task-new
 kind: command
 tags: [workflow, planning]
-description: Create an executable task under .kernel/work/tasks/active.
+description: "[Legacy] Create an executable task directly. For primary planning workflows, use `kernel plan` instead."
 group: workflow
 target: task new
 argumentHint: title
 ---
 
-Create a task for one executable unit of work.
+[Advanced] Create a task directly without planning. For primary planning workflows, use `kernel plan` instead.
 
-Use `--epic <epicId>` or `--goal <goalId>` for parent linkage. Use `--knowledge <ids>` for linked research, runbooks, or concepts.
+Use `--goal <goalId>` for parent linkage. Use `--knowledge <ids>` for linked research, runbooks, or concepts.

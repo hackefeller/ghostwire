@@ -1,6 +1,13 @@
 import { describe, expect, it } from "bun:test";
-import { loadTemplateRegistry, parseAgentTemplate, parseCommandTemplate, parseSkillTemplate } from "../index.js";
+import * as fs from "node:fs/promises";
+import * as os from "node:os";
+import * as path from "node:path";
+import { loadTemplateRegistry, parseAgentTemplate, parseCommandTemplate, parseSkillTemplate, resetTemplateRegistryCache } from "../index.js";
 import { resolveCatalog } from "../resolver.js";
+
+async function mkTmpDir(): Promise<string> {
+  return fs.mkdtemp(path.join(os.tmpdir(), "kernel-registry-test-"));
+}
 
 describe("template registry", () => {
   const registry = loadTemplateRegistry();
@@ -11,8 +18,6 @@ describe("template registry", () => {
     expect(registry.commands.some((template) => template.name === "kernel-plan")).toBe(true);
     expect(registry.commands.some((template) => template.name === "kernel-task-plan")).toBe(true);
     expect(registry.commands.some((template) => template.name === "kernel-goal-new")).toBe(true);
-    expect(registry.commands.some((template) => template.name === "kernel-research-new")).toBe(true);
-    expect(registry.commands.some((template) => template.name === "kernel-work-plan")).toBe(false);
     expect(registry.agents).toHaveLength(0);
   });
 
@@ -56,5 +61,22 @@ group: invalid
 body`;
 
     expect(() => parseCommandTemplate("command.md", content)).toThrow("Invalid group in command.md");
+  });
+
+  it("loads bundled templates when cwd is outside the repo", async () => {
+    const originalCwd = process.cwd();
+    const tmpDir = await mkTmpDir();
+    process.chdir(tmpDir);
+    resetTemplateRegistryCache();
+
+    try {
+      const registry = loadTemplateRegistry();
+      expect(registry.skills.some((template) => template.name === "kernel-review")).toBe(true);
+      expect(registry.agents).toHaveLength(0);
+    } finally {
+      process.chdir(originalCwd);
+      resetTemplateRegistryCache();
+      await fs.rm(tmpDir, { recursive: true, force: true });
+    }
   });
 });

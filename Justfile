@@ -47,7 +47,7 @@ validate-binary:
     git init >/dev/null
     printf '{"name":"kernel-cli-validation"}\n' > package.json
 
-    HOME="$HOME_FIXTURE" "$KERNEL" --json init | jq -e '.project.kernelDir == ".kernel"' >/dev/null
+    HOME="$HOME_FIXTURE" "$KERNEL" --json sync | jq -e '.catalogPath | length > 0' >/dev/null
     test -f .kernel/README.md
     test -f .kernel/project.md
     test -f .kernel/.gitignore
@@ -58,53 +58,36 @@ validate-binary:
     GOAL_ID="$(printf '%s' "$GOAL_JSON" | jq -r '.goalId')"
     printf 'goal=%s\n' "$GOAL_ID"
 
-    DECISION_JSON="$(HOME="$HOME_FIXTURE" "$KERNEL" --json decision new 'Use repo-local project OS')"
+    DECISION_JSON="$(HOME="$HOME_FIXTURE" "$KERNEL" --json note 'Use repo-local project OS')"
     DECISION_ID="$(printf '%s' "$DECISION_JSON" | jq -r '.knowledgeId')"
-    printf 'decision=%s\n' "$DECISION_ID"
+    printf 'note=%s\n' "$DECISION_ID"
 
-    EPIC_JSON="$(HOME="$HOME_FIXTURE" "$KERNEL" --json epic new 'Document setup path' --goal "$GOAL_ID" --target-date 2026-06-30)"
-    EPIC_ID="$(printf '%s' "$EPIC_JSON" | jq -r '.epicId')"
-    printf 'epic=%s\n' "$EPIC_ID"
-
-    TASK_JSON="$(HOME="$HOME_FIXTURE" "$KERNEL" --json task new 'Write setup guide' --epic "$EPIC_ID" --knowledge "$DECISION_ID")"
+    TASK_JSON="$(HOME="$HOME_FIXTURE" "$KERNEL" --json task new 'Write setup guide' --goal "$GOAL_ID" --knowledge "$DECISION_ID")"
     TASK_ID="$(printf '%s' "$TASK_JSON" | jq -r '.taskId')"
     printf 'task=%s\n' "$TASK_ID"
 
-    test "$(find .kernel/work/goals/"$GOAL_ID" -maxdepth 1 -type f | wc -l | tr -d ' ')" = "2"
     test -f .kernel/work/goals/"$GOAL_ID"/goal.md
-    test -f .kernel/work/goals/"$GOAL_ID"/goal.yaml
 
-    test "$(find .kernel/work/epics/"$EPIC_ID" -maxdepth 1 -type f | wc -l | tr -d ' ')" = "2"
-    test -f .kernel/work/epics/"$EPIC_ID"/epic.md
-    test -f .kernel/work/epics/"$EPIC_ID"/epic.yaml
-
-    test "$(find .kernel/work/tasks/active/"$TASK_ID" -maxdepth 1 -type f | wc -l | tr -d ' ')" = "2"
     test -f .kernel/work/tasks/active/"$TASK_ID"/task.md
-    test -f .kernel/work/tasks/active/"$TASK_ID"/task.yaml
 
-    test "$(find .kernel/knowledge/decisions/"$DECISION_ID" -maxdepth 1 -type f | wc -l | tr -d ' ')" = "2"
-    test -f .kernel/knowledge/decisions/"$DECISION_ID"/decision.md
-    test -f .kernel/knowledge/decisions/"$DECISION_ID"/decision.yaml
+    test -f .kernel/knowledge/notes/"$DECISION_ID"/note.md
 
     HOME="$HOME_FIXTURE" "$KERNEL" --json goal status "$GOAL_ID" | jq -e '.goalId == "'"$GOAL_ID"'"' >/dev/null
-    HOME="$HOME_FIXTURE" "$KERNEL" --json epic status "$EPIC_ID" | jq -e '.goalId == "'"$GOAL_ID"'"' >/dev/null
-    HOME="$HOME_FIXTURE" "$KERNEL" --json task status "$TASK_ID" | jq -e '.epicId == "'"$EPIC_ID"'"' >/dev/null
-    HOME="$HOME_FIXTURE" "$KERNEL" --json decision status "$DECISION_ID" | jq -e '.knowledgeId == "'"$DECISION_ID"'"' >/dev/null
+    HOME="$HOME_FIXTURE" "$KERNEL" --json task status "$TASK_ID" | jq -e '.goalId == "'"$GOAL_ID"'"' >/dev/null
+    HOME="$HOME_FIXTURE" "$KERNEL" --json knowledge status "$DECISION_ID" | jq -e '.knowledgeId == "'"$DECISION_ID"'"' >/dev/null
 
     HOME="$HOME_FIXTURE" "$KERNEL" --json goal list | jq -e '.items | length == 1' >/dev/null
-    HOME="$HOME_FIXTURE" "$KERNEL" --json epic list | jq -e '.items | length == 1' >/dev/null
     HOME="$HOME_FIXTURE" "$KERNEL" --json task list | jq -e '.tasks | length == 1' >/dev/null
-    HOME="$HOME_FIXTURE" "$KERNEL" --json decision list | jq -e '.items | length == 1' >/dev/null
+    HOME="$HOME_FIXTURE" "$KERNEL" --json knowledge list | jq -e '.items | length == 1' >/dev/null
 
     HOME="$HOME_FIXTURE" "$KERNEL" --json goal plan "$GOAL_ID" >/dev/null
-    HOME="$HOME_FIXTURE" "$KERNEL" --json epic plan "$EPIC_ID" >/dev/null
     HOME="$HOME_FIXTURE" "$KERNEL" --json task plan "$TASK_ID" >/dev/null
 
     HOME="$HOME_FIXTURE" "$KERNEL" --json task next "$TASK_ID" | jq -e '.checklistItemId == "clarify-scope"' >/dev/null
     HOME="$HOME_FIXTURE" "$KERNEL" --json task done clarify-scope --task "$TASK_ID" | jq -e '.remaining == 3' >/dev/null
 
     grep -q -- '- \[x\] Clarify scope and acceptance criteria' .kernel/work/tasks/active/"$TASK_ID"/task.md
-    grep -q 'done: true' .kernel/work/tasks/active/"$TASK_ID"/task.yaml
+    grep -q 'done: true' .kernel/work/tasks/active/"$TASK_ID"/task.md
 
     HOME="$HOME_FIXTURE" "$KERNEL" --json task archive "$TASK_ID" | jq -e '.archivedTo | contains(".kernel/work/tasks/archived/")' >/dev/null
     test ! -d .kernel/work/tasks/active/"$TASK_ID"
